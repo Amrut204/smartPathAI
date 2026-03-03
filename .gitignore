@@ -1,0 +1,47 @@
+﻿# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build outputs
+client/dist/
+server/dist/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Test artifacts
+test-results/
+playwright-report/
+smoke-report*.json
+
+# Runtime logs and temp files
+*.log
+*.err.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.pid
+*.tmp
+tmp*
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+server/.env
+client/.env
+
+# Local assets/data not meant for git
+material/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Misc local files
+tmp.cookies.txt
+home-shot.png

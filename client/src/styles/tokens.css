@@ -1,0 +1,43 @@
+:root {
+  --font-sans: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, monospace;
+
+  --color-bg: #060c14;
+  --color-surface: #0c1524;
+  --color-surface-elevated: #101b2e;
+  --color-text: #e8f1ff;
+  --color-text-muted: #90a6c2;
+  --color-border: #22344f;
+
+  --color-primary: var(--tenant-primary, #29d3c4);
+  --color-primary-strong: #13b39d;
+  --color-accent: #ff8a3d;
+  --color-success: #44d592;
+  --color-warning: #ffb347;
+  --color-danger: #ff6678;
+
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+
+  --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.32);
+  --shadow-md: 0 20px 42px rgba(0, 0, 0, 0.46);
+
+  --transition-fast: 120ms ease;
+  --transition-base: 220ms ease;
+
+  --breakpoint-mobile: 768px;
+  --breakpoint-tablet: 1024px;
+  --breakpoint-desktop: 1440px;
+}
