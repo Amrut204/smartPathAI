@@ -14,7 +14,9 @@
     "enrich:mock-questions": "node --env-file=.env scripts/enrich-mock-questions-from-text.mjs",
     "enrich:mock-questions:dry": "node --env-file=.env scripts/enrich-mock-questions-from-text.mjs --dry-run",
     "normalize:mock-titles": "node --env-file=.env scripts/normalize-mock-test-titles.mjs",
-    "normalize:mock-titles:dry": "node --env-file=.env scripts/normalize-mock-test-titles.mjs --dry-run"
+    "normalize:mock-titles:dry": "node --env-file=.env scripts/normalize-mock-test-titles.mjs --dry-run",
+    "seed:selected-folders": "node --env-file=.env scripts/seed-selected-material-folders.mjs --purge",
+    "seed:selected-folders:dry": "node --env-file=.env scripts/seed-selected-material-folders.mjs --dry-run"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
