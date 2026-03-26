@@ -55,6 +55,8 @@ export interface PaginatedResourcesResult {
   limit: number;
 }
 
+export type ResourceListFilter = "all" | "pdf" | "notes" | "guide" | "notebook" | "external";
+
 type ResourcePageResponse = {
   items: ResourceItem[];
   pagination: {
@@ -120,8 +122,9 @@ async function fetchResourcePage(url: string): Promise<ResourcePageResponse> {
   };
 }
 
-export function useResources(topicId?: string, options?: { limit?: number }) {
+export function useResources(topicId?: string, options?: { limit?: number; filter?: ResourceListFilter }) {
   const limit = options?.limit ?? 24;
+  const filter = options?.filter ?? "all";
 
   const swr = useSWRInfinite<ResourcePageResponse>(
     (pageIndex, previousPageData) => {
@@ -133,6 +136,9 @@ export function useResources(topicId?: string, options?: { limit?: number }) {
       params.set("limit", String(limit));
       if (topicId) {
         params.set("topicId", topicId);
+      }
+      if (filter !== "all") {
+        params.set("filter", filter);
       }
       if (pageIndex > 0) {
         const cursor = previousPageData?.pagination.cursor;

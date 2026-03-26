@@ -48,12 +48,14 @@ router.get(
   asyncHandler(requireCompletedStudentProfile),
   asyncHandler(async (req, res) => {
     const topicId = req.query.topicId as string | undefined;
+    const filter = typeof req.query.filter === "string" ? req.query.filter : undefined;
     const limit = clampListLimit(req.query.limit, { defaultLimit: 24, maxLimit: 100 });
     const cursor = typeof req.query.cursor === "string" ? req.query.cursor : undefined;
     const data = await StudentService.getResourcesPage(req.auth!.tenantId, {
       topicId,
       limit,
       cursor,
+      filter: filter as "all" | "pdf" | "notes" | "guide" | "notebook" | "external" | undefined,
     });
     res.json(successResponse(data.items, {
       pagination: {

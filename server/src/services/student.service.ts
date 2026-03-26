@@ -1432,6 +1432,7 @@ export const StudentService = {
       topicId?: string;
       limit?: number;
       cursor?: string;
+      filter?: "all" | "pdf" | "notes" | "guide" | "notebook" | "external";
     },
   ) {
     return StudentRepository.getResourcesPage(tenantId, params);

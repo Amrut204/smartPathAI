@@ -792,6 +792,22 @@ function dedupeResourceItems(items: Array<ReturnType<typeof toResourceDto>>) {
   return output;
 }
 
+type ResourceListFilter = "all" | "pdf" | "notes" | "guide" | "notebook" | "external";
+
+function matchesResourceListFilter(
+  resource: ReturnType<typeof toResourceDto>,
+  filter: ResourceListFilter,
+) {
+  const type = String(resource.resourceType ?? "").toLowerCase();
+  if (filter === "all") return true;
+  if (filter === "pdf") return type === "pdf";
+  if (filter === "notes") return type === "text" || type === "notes" || type === "document";
+  if (filter === "guide") return type === "markdown";
+  if (filter === "notebook") return type === "notebook";
+  if (filter === "external") return type === "external_link" || resource.sourceMode === "external";
+  return true;
+}
+
 async function ensureResourceViewIndexes() {
   if (resourceViewIndexesEnsured) return;
   const db = await getMongoDb();
@@ -2009,14 +2025,18 @@ export const StudentRepository = {
       topicId?: string;
       limit?: number;
       cursor?: string;
+      filter?: ResourceListFilter;
     },
   ) {
     const limit = Math.max(1, Math.min(Number(params?.limit ?? 24), 100));
     const allItems = await this.getResources(tenantId, params?.topicId);
+    const filteredItems = params?.filter && params.filter !== "all"
+      ? allItems.filter((item) => matchesResourceListFilter(item, params.filter!))
+      : allItems;
     const startIndex = params?.cursor
-      ? Math.max(0, allItems.findIndex((item) => item.id === params.cursor) + 1)
+      ? Math.max(0, filteredItems.findIndex((item) => item.id === params.cursor) + 1)
       : 0;
-    const slicedItems = allItems.slice(startIndex, startIndex + limit + 1);
+    const slicedItems = filteredItems.slice(startIndex, startIndex + limit + 1);
     const hasMore = slicedItems.length > limit;
     const items = hasMore ? slicedItems.slice(0, limit) : slicedItems;
 

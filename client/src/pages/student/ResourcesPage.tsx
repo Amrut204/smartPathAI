@@ -6,6 +6,7 @@ import { PilotFeedbackStrip } from "../../components/composites/PilotFeedbackStr
 import { isClientFeatureEnabled } from "../../config/features";
 import {
   type ResourceItem,
+  type ResourceListFilter,
   type ResourceStorageBudgetStatus,
   useResourceStorageBudget,
   useResources,
@@ -15,9 +16,7 @@ import { useStudentDashboard } from "../../hooks/use-student-dashboard";
 import { Button, Card, Input, Skeleton, Tabs } from "../../components/ui";
 import { finishPerfMark, startPerfMark } from "../../utils/perf";
 
-type ResourceFilter = "all" | "pdf" | "notes" | "guide" | "notebook" | "external";
-
-const RESOURCE_FILTERS: Array<{ id: ResourceFilter; label: string }> = [
+const RESOURCE_FILTERS: Array<{ id: ResourceListFilter; label: string }> = [
   { id: "all", label: "All" },
   { id: "pdf", label: "PDFs" },
   { id: "notes", label: "Notes" },
@@ -55,7 +54,7 @@ function resourceSummary(resource: ResourceItem): string {
     || "No description available.";
 }
 
-function matchesFilter(resource: ResourceItem, filter: ResourceFilter) {
+function matchesFilter(resource: ResourceItem, filter: ResourceListFilter) {
   const type = String(resource.resourceType ?? "").toLowerCase();
   if (filter === "all") return true;
   if (filter === "pdf") return type === "pdf";
@@ -140,7 +139,7 @@ export default function ResourcesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const topicFromUrl = (searchParams.get("topic") ?? "").trim();
   const [topicInput, setTopicInput] = useState(topicFromUrl);
-  const [activeFilter, setActiveFilter] = useState<ResourceFilter>("all");
+  const [activeFilter, setActiveFilter] = useState<ResourceListFilter>("all");
   const [aiLoading, setAiLoading] = useState(false);
   const [aiResponse, setAiResponse] = useState("");
   const [aiError, setAiError] = useState<string | null>(null);
@@ -153,7 +152,7 @@ export default function ResourcesPage() {
     isLoadingMore,
     hasMore,
     loadMore,
-  } = useResources();
+  } = useResources(undefined, { filter: activeFilter });
   const { data: storageBudget } = useResourceStorageBudget();
   const { data: dashboard } = useStudentDashboard();
   const { data: topicSearchData, error: topicSearchError, isLoading: topicSearchLoading } = useTopicSearch(topicFromUrl || null);
@@ -301,6 +300,11 @@ export default function ResourcesPage() {
           <span>{activeItems.length} resource(s) loaded in this view</span>
           {topicFromUrl ? (
             <span>Showing topic results for "{topicFromUrl}"</span>
+          ) : null}
+          {!topicFromUrl && activeFilter !== "all" ? (
+            <span>
+              Showing the latest {RESOURCE_FILTERS.find((item) => item.id === activeFilter)?.label.toLowerCase()} from the library.
+            </span>
           ) : null}
           {showExpandedResources && dashboard ? (
             <span>Recommended for {branchTrackLabel}: {branchTrackFocusAreas.map((item) => item.topicName).join(", ")}</span>
