@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: smartpath-server
+    env: docker
+    rootDir: server
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+
+  - type: web
+    name: smartpath-client
+    env: docker
+    rootDir: client
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    healthCheckPath: /
+    envVars:
+      - key: API_UPSTREAM
+        value: https://smartpath-server.onrender.com # replace if your backend service name differs

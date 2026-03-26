@@ -1,0 +1,1130 @@
+{
+  "provider": "llama",
+  "model": "meta-llama/Llama-3.1-70B-Instruct-Turbo-offline",
+  "topic": "Data Structures - Linked Lists",
+  "subject": "technical",
+  "category": "data-structures",
+  "difficulty": "medium",
+  "promptStyle": "code_practical",
+  "generatedAt": "2026-03-12T18:08:26.437Z",
+  "elapsedMs": 0,
+  "count": 50,
+  "cost": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "usd": 0,
+    "inr": 0
+  },
+  "prompt": "Create 50 practical placement test questions for campus recruitment.\n\nTOPIC: Data Structures - Linked Lists\nDIFFICULTY: medium\n\nOUTPUT FORMAT (JSON only):\n{\n  \"questions\": [\n    {\n      \"questionText\": \"Clear, concise question\",\n      \"codeSnippet\": \"// Code if question involves programming (optional)\",\n      \"options\": [\"Option 1\", \"Option 2\", \"Option 3\", \"Option 4\"],\n      \"correctAnswer\": \"A/B/C/D\",\n      \"explanation\": \"Practical explanation with examples\",\n      \"language\": \"C/Java/Python if code involved, otherwise null\",\n      \"estimatedTime\": 60,\n      \"tags\": [\"tag1\", \"tag2\"]\n    }\n  ]\n}\n\nGUIDELINES FOR PROGRAMMING QUESTIONS:\n- Use clean, readable code snippets (under 15 lines)\n- Follow standard conventions\n- For code output questions: show execution flow in explanation\n- For non-programming topics: focus on practical application\n- Include both theoretical and problem-solving questions\n- Cover edge cases and common pitfalls\n\nGenerate exactly 50 questions. Output ONLY valid JSON.",
+  "rawText": "{\"questions\":[{\"questionText\":\"In simple chaining, what data structure is appropriate? Data Structure MCQ on Abstract Data Types Multiple Choice Questions on Application of Stacks Data Structure MCQ on Arrays Types Data Structure MCQ on Types of Lists Multiple Choice Questions on Binary Trees Data Structure MCQs on B-Trees Data Structure MCQ on Trees MCQ on Heap Data Structure Multiple Choice Questions on Trie Data Structure MCQ on Hash Tables Data Structure MCQ on Graph\",\"options\":[\"Doubly linked list\",\"Circular linked list\",\"Singly linked list\",\"Binary trees Chapterwise Multiple Choice Questions on Data Structure Our 1000+ multiple choice questions and answers (MCQs) on “Data Structure – I” (along with 1000+ MCQs on “Data Structure – II (Algorithms)”) focuses on all chapters of Data Structure covering 200+ topics. You can find MCQs on Data Structure – II (Algorithms) here . This Data Structure MCQ will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. Abstract Data Types Application of Stacks Arrays Types Types of Lists Binary Trees B-Trees Trees Heap Trie Hash Tables Graph The section contains Data Structure multiple choice questions and answers on arrays, stacks, queues, single linked lists, doubly and circular linked lists, stacks using arrays and linked lists, queues using arrays, stacks and linked lists, priority queues and double ended queues. Array and Array Operations Stack Operations – 1 Stack Operations – 2 Stack Operations – 3 Queue Operations Singly Linked Lists Operations – 1 Singly Linked Lists Operations – 2 Singly Linked Lists Operations – 3 Singly Linked Lists Doubly Linked Lists Circular Linked Lists Stack using Array Stack using Linked List Queue using Array Queue using Linked List Priority Queue Double Ended Queue (Deque) Queue using Stacks Stack using Queues The section contains Data Structure questions and answers on decimal to binary using stacks, towers of hanoi, expression evaluation of infix, prefix and postfix, conversions like infix to postfix, postfix to infix, prefix to infix and infix to prefix conversions, reversing the word using stack and balanced parenthesis. Decimal to Binary using Stacks Evaluation of an Infix Expression (Not Parenthesized) Evaluation of a Prefix Expression Evaluation of a Postfix Expression Infix to Prefix Conversion Infix to Postfix Conversion Prefix to Infix Conversion Postfix to Infix Conversion Towers of Hanoi Reverse a Word using Stack Balanced Parenthesis The section contains Data Structure MCQs on bit array, dynamic and parallel array, count inversion, rotation and reversal array operations, end array operations, sparse and suffix array, matrix and sparse matrix. Bit Array Dynamic Array Variable Length Array Parallel Array Sparse Array Suffix Array Matrix Sparse Matrix Count Inversion Rotation Array Operation Reversal Array Operation Number of Jumps to Reach End-array Operation The section contains Data Structure multiple choice questions and answers on skip list, self organizing list, xor linked list and free list. Skip List Self Organizing List Unrolled Linked List Xor Linked List Free List Triply Linked List The section contains Data Structure questions and answers on binary trees using arrays and linked lists, preorder, postorder and inorder traversal, avl tree, binary tree properties and operations, cartesian tree, weight balanced tree, red black and splay trees, threaded binary tree and binary search trees, aa tree, top tree, treap, tango tree and rope. Binary Trees using Array Binary Trees using Linked Lists Binary Tree Operations Preorder Traversal Postorder Traversal Inorder Traversal Binary Tree Properties Binary Search Tree Balanced Binary Tree Self Balancing Binary Search Tree Randomized Binary Search Tree AA Tree AVL Tree Cartesian Tree Weight Balanced Tree Red Black Tree Top Tree Splay Tree Treap Threaded Binary Tree Tango Tree Rope The section contains Data Structure MCQs on b tree, b+ tree and 2-3 tree. B-Tree B+ Tree 2-3 Tree The section contains Data Structure multiple choice questions and answers on trees like ternary tree, k-ary tree, kd tree, expression tree, bin, van emde boas tree and disjoint set data structure. Ternary Tree – 1 Ternary Tree – 2 K-ary Tree – 1 K-ary Tree – 2 Van Emde Boas Tree Disjoint-Set Data Structure Bin KD Tree Abstract Syntax Tree Parse Tree Expression Tree The section contains Data Structure questions and answers on heap, binary and weak heap, binomial and fibonacci heap, d ary heap, ternary heap, pairing and leftlist heap, skew heap, min and max heap. Heap Binary Heap Weak Heap Binomial and Fibonacci Heap D-ary Heap Ternary Heap – 1 Ternary Heap – 2 Pairing Heap Leftlist Heap Skew Heap Min/Max Heap The section contains Data Structure MCQs on trie and suffix tree. Trie Suffix Tree – 1 Suffix Tree – 2 The section contains Data Structure multiple choice questions and answers on hash tables, direct addressing tables, hash tables chaining using linked lists, doubly linked lists, binary trees and list heads, hash tables with linear and quadratic probing, hashing functions, hash tree, min hash and double hashing. Hash Tables Hash Tables Chaining using Linked Lists Hash Tables Chaining using Doubly Linked Lists Hash Tables Chaining with Binary Trees Hash Tables Chaining with List Heads Hash Tables with Linear Probing Hash Tables with Quadratic Probing Hashing Functions Double Hashing Hash Tree Min Hash Direct Addressing Tables The section contains Data Structure questions and answers on graph, adjacency matrix, incidence matrix, adjacency list, directed and undirected graph, directed acyclic graphs, multigraph and hypergraph, binary decision diagrams & and-inverter graph. Graph Adjacency Matrix Incidence Matrix and Graph Structured Stack Adjacency List Undirected Graph Directed Graph Directed Acyclic Graph Propositional and Directed Acyclic Word Graph Multigraph and Hypergraph Binary Decision Diagrams & and Inverter Graph To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. Important Links: Design & Analysis of Algorithms Multiple Choice Questions C Multiple Choice Questions C++ Multiple Choice Questions Java Multiple Choice Questions Python Multiple Choice Questions C# Multiple Choice Questions Computer Science Multiple Choice Questions Data Structure and Algorithms Books Data Structure Online Test\"],\"correctAnswer\":\"A\",\"explanation\":\"Deletion becomes easier with doubly linked list, hence it is appropriate.\",\"estimatedTime\":75,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following application makes use of a circular linked list?\",\"options\":[\"Recursive function calls\",\"Undo operation in a text editor\",\"Implement Hash Tables\",\"Allocating CPU to resources\"],\"correctAnswer\":\"D\",\"explanation\":\"Generally, round robin fashion is employed to allocate CPU time to resources which makes use of the circular linked list data structure. Recursive function calls use stack data structure. Undo Operation in text editor uses doubly linked lists. Hash tables uses singly linked lists.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Checked – Compile time) Checked exception can be handled using throws and try-catch public class CheckedExceptions { public static void main(String[] args) throws IOException { System.out.println(\\\"Program is started..\\\"); System.out.println(\\\"Program is progress..\\\"); // try { FileInputStream file=new FileInputStream(\\\"C:\\\\\\\\file.txt\\\"); } catch (FileNotFoundException e) { e.printStackTrace(); } // FileInputStream file=new FileInputStream(\\\"C:\\\\\\\\file.txt\\\"); System.out.println(file.read()); System.out.println(\\\"Program is completed..\\\"); try-catch throws Collections: The Collections Framework in Java provides a set of interfaces and classes to store and manage objects efficiently. Collection (Interface) List (I) Set (I) Map (I) Ordered, allows duplicates Unordered, no duplicates stored in the form of key, value pairs ArrayList (C)→ Dynamic array, fast access HashSet (C) → Uses HashMap internally, no order HashMap (C) LinkedList (C)→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {\",\"options\":[\"→ Dynamic array, fast access HashSet\",\"→ Uses HashMap internally, no order HashMap\",\"LinkedList\",\"→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {\"],\"correctAnswer\":\"A\",\"explanation\":\"This question is mapped to Data Structures - Linked Lists. The correct answer is A based on the original source question.\",\"estimatedTime\":75,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is also known as Rope data structure?\",\"options\":[\"Linked List\",\"Array\",\"String\",\"Cord\"],\"correctAnswer\":\"D\",\"explanation\":\"Array is a linear data structure. Strings are a collection and sequence of codes, alphabets or characters. Linked List is a linear data structure having a node containing data input and the address of the next node. The cord is also known as the rope data structure.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What will be the output of the following PHP code? <?php $fruits = array ( \\\"apple\\\" , \\\"orange\\\" , \\\"banana\\\" ) ; echo (next( $fruits )) ; echo (next( $fruits )) ; ?>\",\"options\":[\"orangebanana\",\"appleorange\",\"orangeorange\",\"appleapple\"],\"correctAnswer\":\"A\",\"explanation\":\"The next() function returns the array value residing at the position immediately following that of the current array pointer.\",\"estimatedTime\":75,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is not the application of stack?\",\"options\":[\"Data Transfer between two asynchronous process\",\"Compiler Syntax Analyzer\",\"Tracking of local variables at run time\",\"A parentheses balancing program\"],\"correctAnswer\":\"A\",\"explanation\":\"Data transfer between the two asynchronous process uses the queue data structure for synchronisation. The rest are all stack applications.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is the most widely used external memory data structure?\",\"options\":[\"B-tree\",\"Red-black tree\",\"AVL tree\",\"Both AVL tree and Red-black tree\"],\"correctAnswer\":\"A\",\"explanation\":\"In external memory, the data is transferred in form of blocks. These blocks have data valued and pointers. And B-tree can hold both the data values and pointers. So B-tree is used as an external memory data structure.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is true about stack pointer?\",\"options\":[\"Stack pointer contains the address of the top of the stack memory\",\"Stack pointer is an 8-bit register\",\"Stack pointer stores data permanently\",\"Stack pointer is initialized after stack operation\"],\"correctAnswer\":\"A\",\"explanation\":\"Stack pointer is initialized before stack operation, it is a 16-bit register that stores data temporarily. It follows a LIFO operation. So, it contains the address of the top of the stack memory.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following points is/are not true about Linked List data structure when it is compared with an array?\",\"options\":[\"Random access is not allowed in a typical implementation of Linked Lists\",\"Access of elements in linked list takes less time than compared to arrays\",\"Arrays have better cache locality that can make them better in terms of performance\",\"It is easy to insert and delete elements in Linked List\"],\"correctAnswer\":\"B\",\"explanation\":\"To access an element in a linked list, we need to traverse every element until we reach the desired element. This will take more time than arrays as arrays provide random access to its elements.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is a value type in C#?\",\"options\":[\"int\",\"string\",\"class\",\"object\"],\"correctAnswer\":\"A\",\"explanation\":\"Explanation: The correct answer is A: int . Value Types vs. Reference Types: In C#, data types are categorized into two main groups: value types and reference types. Value Types: * Value types directly store the data within their own memory space. * When you copy a value type variable, you are creating a completely independent copy of the data. * Examples of value types include: int , float , bool , char , struct , and enum . Reference Types: * Reference types store a *reference* (or pointer) to the memory location where the actual data is stored. * When you copy a reference type variable, you are only copying the reference, not the data itself. Both variables will then point to the same location in memory. * Examples of reference types include: string , class , object , arrays , and interfaces . Why the other options are incorrect: * B: string - Strings are reference types in C#. * C: class - Classes are used to define objects, and they are reference types . * D: object - 'object' is the base class for all types in C#, and it is a reference type .\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"A/An . . . . . . . . contains programs that can be selected.\",\"options\":[\"pointer\",\"menu\",\"icon\",\"button\"],\"correctAnswer\":\"B\",\"explanation\":\"Option A: pointer This option suggests that a pointer contains programs that can be selected. This statement is incorrect. In computing, a pointer refers to a graphical symbol on the screen that indicates the position where the next action will take place, such as clicking or selecting items, but it does not contain programs that can be selected. Option B: menu This option suggests that a menu contains programs that can be selected. This statement is correct. In graphical user interfaces (GUIs) like Microsoft Windows, a menu is a list of commands or options displayed on the screen that users can select to perform actions. Menus typically contain various programs, commands, or settings that users can choose from to interact with applications and the operating system. Option C: icon This option suggests that an icon contains programs that can be selected. This statement is incorrect. Icons are graphical representations or symbols displayed on the screen that represent files, folders, applications, or functions. Clicking on an icon typically opens the associated file or starts the corresponding program, but icons themselves do not contain programs. Option D: button This option suggests that a button contains programs that can be selected. This statement is incorrect. Buttons in a graphical user interface (GUI) are interactive elements that users can click on to trigger specific actions or commands within applications or the operating system. However, buttons do not contain programs themselves; they execute predefined functions when clicked. Conclusion: The correct answer is Option B: menu because in computing and Microsoft Windows, a menu is a list of options or commands that users can select from to perform actions, such as opening programs, accessing settings, or executing commands. Menus are integral components of GUIs that provide users with a structured way to interact with software and operating systems.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"The data structure required for Breadth First Traversal on a graph is?\",\"options\":[\"Array\",\"Stack\",\"Tree\",\"Queue\"],\"correctAnswer\":\"D\",\"explanation\":\"In Breadth First Search Traversal, BFS, starting vertex is first taken and adjacent vertices which are unvisited are also taken. Again, the first vertex which was added as an unvisited adjacent vertex list will be considered to add further unvisited vertices of the graph. To get the first unvisited vertex we need to follows First In First Out principle. Queue uses FIFO principle.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following data structure can provide efficient searching of the elements?\",\"options\":[\"binary search tree\",\"unordered lists\",\"2-3 tree\",\"treap\"],\"correctAnswer\":\"C\",\"explanation\":\"The average case time for lookup in a binary search tree, treap and 2-3 tree is O(log n) and in unordered lists it is O(n). But in the worst case, only the 2-3 trees perform lookup efficiently as it takes O(log n), while others take O(n).\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the purpose of memory refresh register of Z80?\",\"options\":[\"To control on-chip SRAM\",\"To control on-chip DRAM\",\"To clear cache\",\"To control ROM\"],\"correctAnswer\":\"B\",\"explanation\":\"In addition to the general purpose registers, a stack pointer, program counter, and two index registers are included in Z80. It was also used in many embedded designs because of its high-quality performance and for its in-built refresh circuitry for DRAMs.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which graph represents relation between whole and its parts?\",\"options\":[\"Histogram\",\"Pie graph\",\"Line graph\",\"Stacked bar graph\"],\"correctAnswer\":\"B\",\"explanation\":\"The correct answer is pie graph as pie graph represents relationship between whole and its parts. Histogram is represented with bars of equal width with no gap between adjacent bars. The height of the bar represents the number of data items in the given data range called frequency. Line graph is a line joining all the data points. A stacked bar graph is a chart that uses bars to show comparisons between categories of data with ability to break down and compare parts of a whole.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which function can be used to move the pointer to the previous array position?\",\"options\":[\"last()\",\"before()\",\"prev()\",\"previous()\"],\"correctAnswer\":\"C\",\"explanation\":\"This question is mapped to Data Structures - Linked Lists. The correct answer is C based on the original source question.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"The optimal data structure used to solve Tower of Hanoi is _________\",\"options\":[\"Tree\",\"Heap\",\"Priority queue\",\"Stack\"],\"correctAnswer\":\"D\",\"explanation\":\"The Tower of Hanoi involves moving of disks ‘stacked’ at one peg to another peg with respect to the size constraint. It is conveniently done using stacks and priority queues. Stack approach is widely used to solve Tower of Hanoi.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"In a graphical system, an array of pixels in the picture are stored in which of the following locations?\",\"options\":[\"Frame buffer\",\"Processor\",\"Memory\",\"All of the mentioned\"],\"correctAnswer\":\"A\",\"explanation\":\"The main purpose of using a framer buffer is to store pixels.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is the average quarterly sales throughout the year?\",\"options\":[\"20682.5 units\",\"20826.5 units\",\"20862.5 units\",\"20628.5 units\"],\"correctAnswer\":\"C\",\"explanation\":\"The average quarterly sales = (12500 + 22500 + 25000 + 23450) / 4 = 83450 / 4 = 20862.5 units quarterly.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is the difference between the maximum sales of p and minimum sales of q?\",\"options\":[\"55 crores\",\"50 crores\",\"45 crores\",\"40 crores\"],\"correctAnswer\":\"B\",\"explanation\":\"The maximum sales of p = 85 crores The minimum sales of q = 35 crores The difference = 85 – 35 = 50 crores\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following tree data structures is not a balanced binary tree?\",\"options\":[\"Splay tree\",\"B-tree\",\"AVL tree\",\"Red-black tree\"],\"correctAnswer\":\"B\",\"explanation\":\"All the tree data structures given in options are balanced, but B-tree can have more than two children.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which algorithm is used in the top tree data structure?\",\"options\":[\"Backtracking\",\"Divide and Conquer\",\"Branch\",\"Greedy\"],\"correctAnswer\":\"B\",\"explanation\":\"Top tree is a type of data structure which is based on unrooted dynamic binary tree and is used to solve path related problems. It allows an algorithm called divide and conquer.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which process of water treatment is done to avoid floating debris, branches, trees, or other large particles suspended in water?\",\"options\":[\"Primary sedimentation\",\"Secondary sedimentation\",\"Screening\",\"Aeration\"],\"correctAnswer\":\"C\",\"explanation\":\"Screens are used as a pretreatment process for purification of water to avoid large size suspended materials from water.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"The value of area under a velocity-time graph is _________\",\"options\":[\"Force\",\"Momentum\",\"Displacement\",\"Acceleration\"],\"correctAnswer\":\"C\",\"explanation\":\"The value of the area under a velocity-time graph is displacement. The velocity is the ratio of displacement and time.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find which year has the highest growth of all the grains combined?\",\"options\":[\"2017\",\"2018\",\"2019\",\"2020 More Data Interpretation Questions and Answers on Bar Graphs: Bar Graphs Questions (Set 2) Bar Graphs Questions (Set 3) To practice all aptitude questions, please visit “Data Interpretation Questions” , “1000+ Quantitative Aptitude Questions” , and “1000+ Logical Reasoning Questions” . 👉 For weekly data interpretation practice, exam, and certification updates, join Sanfoundry’s official WhatsApp & Telegram channels « Prev - Tabulation Questions and Answers – Set 3 » Next - Bar Graphs Questions and Answers – Set 2\"],\"correctAnswer\":\"C\",\"explanation\":\"Year 2019 with a total production of 47.5 tonnes.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is the average monthly sales throughout the year?\",\"options\":[\"6945.19 units\",\"6954.19 units\",\"6954.16 units\",\"6945.16 units\"],\"correctAnswer\":\"C\",\"explanation\":\"The average monthly sales throughout the year = (12500 + 22500 + 23450 + 25000) / 12 = 83450 / 12 = 6954.16 units per month.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is the difference between maximum and minimum sales of p.\",\"options\":[\"40 crores\",\"45 crores\",\"50 crores\",\"55 crores\"],\"correctAnswer\":\"A\",\"explanation\":\"The difference between the maximum and minimum sales: The maximum sales = 85 crores The minimum sales = 45 crores The difference = 85 – 45 = 40 crores\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is the average consumption of coffee in the year 2019, 2020 and 2021?\",\"options\":[\"16.66 litres\",\"17.66 litres of coffee\",\"18.66 litres of coffee\",\"19.66 litres of coffee\"],\"correctAnswer\":\"B\",\"explanation\":\"The average consumption of coffee in the year 2019, 2020 and 2021 = (16 + 18 + 19) / 3 = 53 / 3 = 17.66 litres of coffee.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is the average monthly consumption of tea throughout the years?\",\"options\":[\"15.2 litres\",\"1.26 litres\",\"1.52 litres\",\"12.6 litres\"],\"correctAnswer\":\"B\",\"explanation\":\"The average monthly consumption of tea = (13 + 15 + 17 + 12 + 19) / (5 * 12) = 76 / 60 = 1.26 litres\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"If the total consumption of all the four beverages combined was 125 litres, study the graph and find the consumption of tea.\",\"options\":[\"26 litres\",\"26.25 litres\",\"26.5 litres\",\"27 litres\"],\"correctAnswer\":\"B\",\"explanation\":\"The consumption of tea = 21% of 125 litres = 21 * 125 / 100 = 26.25 litres.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find the consumption of milk if the total consumption of tea and milk combined was 1196 litres.\",\"options\":[\"600 litres\",\"650 litres\",\"690 litres\",\"750 litres\"],\"correctAnswer\":\"B\",\"explanation\":\"The total consumption of tea and milk combined = 21 + 25 = 46% of the total consumption. The consumption of milk = 1196 / 46 * 25 = 650 litres.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is the consumption of coffee in terms of milk?\",\"options\":[\"Consumption of coffee is 125% of the consumption of milk\",\"Consumption of coffee is 90% of the consumption of milk\",\"Consumption of coffee is 80% of the consumption of milk\",\"Consumption of coffee is 75% of the consumption of milk\"],\"correctAnswer\":\"C\",\"explanation\":\"The consumption of coffee in terms of milk = 20 / 25 * 100 = 80% Consumption of coffee is 80% of the consumption of milk.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is the consumption of tea in terms of juice?\",\"options\":[\"61.76%\",\"62.67%\",\"63.76%\",\"64.67% To practice all aptitude questions, please visit “Data Interpretation Questions” , “1000+ Quantitative Aptitude Questions” , and “1000+ Logical Reasoning Questions” . 👉 For weekly data interpretation practice, exam, and certification updates, join Sanfoundry’s official WhatsApp & Telegram channels « Prev - Pie Chart Questions and Answers – Set 2 » Next - Line Graphs Questions and Answers\"],\"correctAnswer\":\"A\",\"explanation\":\"The consumption of tea in terms of consumption of juice = 21 / 34 * 100 = 61.76%\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is wheat’s total production in terms of barley’s production in 2003?\",\"options\":[\"32.5%\",\"325%\",\"307%\",\"30.7%\"],\"correctAnswer\":\"B\",\"explanation\":\"Wheat’s total production = 10 + 12 + 14 + 16 = 52 tonnes Barley’s production in 2003 = 16 tonnes The required percentage = 52 / 16 * 100 = 325%\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is the average production of barley throughout the time?\",\"options\":[\"11 tonnes\",\"12 tonnes\",\"13 tonnes\",\"15 tonnes To practice all aptitude questions, please visit “Data Interpretation Questions” , “1000+ Quantitative Aptitude Questions” , and “1000+ Logical Reasoning Questions” . 👉 For weekly data interpretation practice, exam, and certification updates, join Sanfoundry’s official WhatsApp & Telegram channels « Prev - Line Graphs Questions and Answers – Set 2\"],\"correctAnswer\":\"D\",\"explanation\":\"The average production of barley throughout the time = (12 + 14 + 16 + 18) / 4 = 60 / 4 = 15 tonnes\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"2. Below is the pie graph showing sales of store in each quarter. Which quarter has the highest sales?\",\"options\":[\"1 st quarter\",\"2 nd quarter\",\"3 rd quarter\",\"4 th quarter\"],\"correctAnswer\":\"B\",\"explanation\":\"Pie graph shows relation between whole and its parts. Sales of 2 nd quarter is 40% of total sales of store. Sales of 2 nd quarter is higher than sales of other three quarters.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"3. Below is the pie graph showing sales of store in each quarter. Which quarter has the lowest sales?\",\"options\":[\"1 st quarter\",\"2 nd quarter\",\"3 rd quarter\",\"4 th quarter\"],\"correctAnswer\":\"C\",\"explanation\":\"Pie graph shows relation between whole and its parts. Sales of 3 rd quarter is 16% of total sales of store. Sales of 3 rd quarter is lower than sales of other three quarters.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"2. Below is the pie graph showing sales of different items in first quarter of the year. Which item has the highest sales?\",\"options\":[\"Food\",\"Clothing\",\"Electronics\",\"Jewellery\"],\"correctAnswer\":\"B\",\"explanation\":\"Pie graph shows relation between whole and its parts. Sales of clothing is 40% of total sales of store. Sales of clothing is higher than sales of other three items.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"3. Below is the pie graph showing sales of different items in first quarter of the year. Which item has the lowest sales?\",\"options\":[\"Food\",\"Clothing\",\"Electronics\",\"Jewellery\"],\"correctAnswer\":\"C\",\"explanation\":\"Pie graph shows relation between whole and its parts. Sales of electronics is 16% of total sales of store. Sales of electronics is lower than sales of other three items.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"6. Below is the pie graph showing colors picked by students of a class. 22% of students picked which color?\",\"options\":[\"Red\",\"Blue\",\"Green\",\"Yellow 🎓 Free Certifications on 300 subjects are live for March 2026. Register Now!\"],\"correctAnswer\":\"C\",\"explanation\":\"Pie graph shows relation between whole and its parts. According to the pie chart, 22% of students picked green color. 37% picked blue, 30% picked yellow and 11% picked red color.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"A tree trunk of height 12 meters is erected with the support of three metal chains. An angle of 60° is made by each metal chain with the tree trunk. Find the length of the metal chain.\",\"options\":[\"32 meters\",\"10meters\",\"24 meters\",\"18 meters\"],\"correctAnswer\":\"C\",\"explanation\":\"We have to find the length of the metal chain AC. cos 60° = \\\\(\\\\frac {BC}{AC}\\\\) \\\\( \\\\frac {1}{2} = \\\\frac {12}{AC}\\\\) AC = 24 meters\",\"estimatedTime\":75,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which function is shown in graph?\",\"options\":[\"Constant\",\"Modulus\",\"Identity\",\"Signum function 🎓 Free Certifications on 300 subjects are live for March 2026. Register Now!\"],\"correctAnswer\":\"C\",\"explanation\":\"{(1,1), (2,2), (3,3), .....}. This function involves relation {(x, y): y=x} which is involved in identity function. So, above function is identity function.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following will form the following graph?\",\"options\":[\"sinx + cosx\",\"2sin(x/2)\",\"sin 2 x\",\"cosec(x2)\"],\"correctAnswer\":\"C\",\"explanation\":\"This is the curve of sinx. It is given that the graph in the question does not lay in the –y axis. So, when we plot the graph of sin 2 x the part laying in the –y axis comes in the positive y axis.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"The given graph is for which equation?\",\"options\":[\"y = (x – 1)(x – 2)\",\"y = (x + 1)(x + 2)\",\"y = |(x – 1)(x – 2)|\",\"y = |(x + 1)(x + 2)|\"],\"correctAnswer\":\"C\",\"explanation\":\"As the critical points are 1and 2 so the graph will form in this range only. Clearly, as the equation is enclosed in modulus so, The graph will lie in the positive y direction and will approach infinity.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"A car is moving around a tree in a circular path. What can be said about the average velocity?\",\"options\":[\"It is non zero\",\"It is zero\",\"It is greater than zero\",\"It is less than zero\"],\"correctAnswer\":\"B\",\"explanation\":\"Take any point on the circular path. The car moves in a circle and hence will come back to the same point after a definite time interval. Therefore, the displacement is 0. Hence, the average velocity is zero.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the velocity for a body following the graph below at 10s?\",\"options\":[\"1 m/s\",\"2 m/s\",\"0.5 m/s\",\"0.1 m/s Sanfoundry Global Education & Learning Series – Physics – Class 11 . To practice all chapters and topics of class 11 Physics, here is complete set of 1000+ Multiple Choice Questions and Answers . 👉 For weekly school and board exam practice updates, join Sanfoundry’s official WhatsApp & Telegram channels « Prev - Class 11 Physics MCQ – Straight Line Motion – Average Velocity and Average Speed » Next - Class 11 Physics MCQ – Motion in a Straight Line – Acceleration Related Posts: Practice Class 12 - Physics MCQs Practice Class 11 - Biology MCQs Practice Class 11 - Mathematics MCQs Practice Class 11 - Chemistry MCQs Check Class 11 - Physics Books\"],\"correctAnswer\":\"C\",\"explanation\":\"At time = 10s, the distance covered is 5m. Velocity = distance/time. Hence, velocity v at 10s = 5/10 = 0.5 m/s.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"For the graph shown in the figure, what is the difference between x-coordinate of A and B called?\",\"options\":[\"Internal pressure\",\"External pressure\",\"Work\",\"Power\"],\"correctAnswer\":\"C\",\"explanation\":\"The difference between x-coordinate of A and B can be written as “K b – K a ”. This is the difference between kinetic energies at two positions. This gives us the “work done”.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"For the graph shown in the figure, what is the area under the curve AB called?\",\"options\":[\"Force applied\",\"Displacement\",\"Work\",\"Power\"],\"correctAnswer\":\"C\",\"explanation\":\"The area under the curve is a summation of the product of x-coordinate and y-coordinate at every point under the curve. That is; “F * x”. F * x = Work done.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the slope of line drawn for a graph between temperature in °C & °F?\",\"options\":[\"1.8\",\"5/9\",\"slope is variable\",\"2\"],\"correctAnswer\":\"A\",\"explanation\":\"°F = (9/5)°C + 32. Therefore from this we can say that slope of line drawn for graph between temperature in °C & °F is 9/5 = 1.8.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"The given graph corresponds to which equation?\",\"options\":[\"V = 0\",\"PV = constant\",\"V/T = constant\",\"PT = constant\"],\"correctAnswer\":\"B\",\"explanation\":\"In the given graph temperature remains constant with variation in volume. So the process is isothermal and PV=constant.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Linked Lists\",\"tags\":[\"data-structures\",\"technical\",\"linked list\",\"node\",\"pointer\"],\"codeSnippet\":null,\"language\":null}]}",
+  "parsed": {
+    "questions": [
+      {
+        "questionText": "In simple chaining, what data structure is appropriate? Data Structure MCQ on Abstract Data Types Multiple Choice Questions on Application of Stacks Data Structure MCQ on Arrays Types Data Structure MCQ on Types of Lists Multiple Choice Questions on Binary Trees Data Structure MCQs on B-Trees Data Structure MCQ on Trees MCQ on Heap Data Structure Multiple Choice Questions on Trie Data Structure MCQ on Hash Tables Data Structure MCQ on Graph",
+        "options": [
+          "Doubly linked list",
+          "Circular linked list",
+          "Singly linked list",
+          "Binary trees Chapterwise Multiple Choice Questions on Data Structure Our 1000+ multiple choice questions and answers (MCQs) on “Data Structure – I” (along with 1000+ MCQs on “Data Structure – II (Algorithms)”) focuses on all chapters of Data Structure covering 200+ topics. You can find MCQs on Data Structure – II (Algorithms) here . This Data Structure MCQ will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. Abstract Data Types Application of Stacks Arrays Types Types of Lists Binary Trees B-Trees Trees Heap Trie Hash Tables Graph The section contains Data Structure multiple choice questions and answers on arrays, stacks, queues, single linked lists, doubly and circular linked lists, stacks using arrays and linked lists, queues using arrays, stacks and linked lists, priority queues and double ended queues. Array and Array Operations Stack Operations – 1 Stack Operations – 2 Stack Operations – 3 Queue Operations Singly Linked Lists Operations – 1 Singly Linked Lists Operations – 2 Singly Linked Lists Operations – 3 Singly Linked Lists Doubly Linked Lists Circular Linked Lists Stack using Array Stack using Linked List Queue using Array Queue using Linked List Priority Queue Double Ended Queue (Deque) Queue using Stacks Stack using Queues The section contains Data Structure questions and answers on decimal to binary using stacks, towers of hanoi, expression evaluation of infix, prefix and postfix, conversions like infix to postfix, postfix to infix, prefix to infix and infix to prefix conversions, reversing the word using stack and balanced parenthesis. Decimal to Binary using Stacks Evaluation of an Infix Expression (Not Parenthesized) Evaluation of a Prefix Expression Evaluation of a Postfix Expression Infix to Prefix Conversion Infix to Postfix Conversion Prefix to Infix Conversion Postfix to Infix Conversion Towers of Hanoi Reverse a Word using Stack Balanced Parenthesis The section contains Data Structure MCQs on bit array, dynamic and parallel array, count inversion, rotation and reversal array operations, end array operations, sparse and suffix array, matrix and sparse matrix. Bit Array Dynamic Array Variable Length Array Parallel Array Sparse Array Suffix Array Matrix Sparse Matrix Count Inversion Rotation Array Operation Reversal Array Operation Number of Jumps to Reach End-array Operation The section contains Data Structure multiple choice questions and answers on skip list, self organizing list, xor linked list and free list. Skip List Self Organizing List Unrolled Linked List Xor Linked List Free List Triply Linked List The section contains Data Structure questions and answers on binary trees using arrays and linked lists, preorder, postorder and inorder traversal, avl tree, binary tree properties and operations, cartesian tree, weight balanced tree, red black and splay trees, threaded binary tree and binary search trees, aa tree, top tree, treap, tango tree and rope. Binary Trees using Array Binary Trees using Linked Lists Binary Tree Operations Preorder Traversal Postorder Traversal Inorder Traversal Binary Tree Properties Binary Search Tree Balanced Binary Tree Self Balancing Binary Search Tree Randomized Binary Search Tree AA Tree AVL Tree Cartesian Tree Weight Balanced Tree Red Black Tree Top Tree Splay Tree Treap Threaded Binary Tree Tango Tree Rope The section contains Data Structure MCQs on b tree, b+ tree and 2-3 tree. B-Tree B+ Tree 2-3 Tree The section contains Data Structure multiple choice questions and answers on trees like ternary tree, k-ary tree, kd tree, expression tree, bin, van emde boas tree and disjoint set data structure. Ternary Tree – 1 Ternary Tree – 2 K-ary Tree – 1 K-ary Tree – 2 Van Emde Boas Tree Disjoint-Set Data Structure Bin KD Tree Abstract Syntax Tree Parse Tree Expression Tree The section contains Data Structure questions and answers on heap, binary and weak heap, binomial and fibonacci heap, d ary heap, ternary heap, pairing and leftlist heap, skew heap, min and max heap. Heap Binary Heap Weak Heap Binomial and Fibonacci Heap D-ary Heap Ternary Heap – 1 Ternary Heap – 2 Pairing Heap Leftlist Heap Skew Heap Min/Max Heap The section contains Data Structure MCQs on trie and suffix tree. Trie Suffix Tree – 1 Suffix Tree – 2 The section contains Data Structure multiple choice questions and answers on hash tables, direct addressing tables, hash tables chaining using linked lists, doubly linked lists, binary trees and list heads, hash tables with linear and quadratic probing, hashing functions, hash tree, min hash and double hashing. Hash Tables Hash Tables Chaining using Linked Lists Hash Tables Chaining using Doubly Linked Lists Hash Tables Chaining with Binary Trees Hash Tables Chaining with List Heads Hash Tables with Linear Probing Hash Tables with Quadratic Probing Hashing Functions Double Hashing Hash Tree Min Hash Direct Addressing Tables The section contains Data Structure questions and answers on graph, adjacency matrix, incidence matrix, adjacency list, directed and undirected graph, directed acyclic graphs, multigraph and hypergraph, binary decision diagrams & and-inverter graph. Graph Adjacency Matrix Incidence Matrix and Graph Structured Stack Adjacency List Undirected Graph Directed Graph Directed Acyclic Graph Propositional and Directed Acyclic Word Graph Multigraph and Hypergraph Binary Decision Diagrams & and Inverter Graph To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. Important Links: Design & Analysis of Algorithms Multiple Choice Questions C Multiple Choice Questions C++ Multiple Choice Questions Java Multiple Choice Questions Python Multiple Choice Questions C# Multiple Choice Questions Computer Science Multiple Choice Questions Data Structure and Algorithms Books Data Structure Online Test"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Deletion becomes easier with doubly linked list, hence it is appropriate.",
+        "estimatedTime": 75,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following application makes use of a circular linked list?",
+        "options": [
+          "Recursive function calls",
+          "Undo operation in a text editor",
+          "Implement Hash Tables",
+          "Allocating CPU to resources"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Generally, round robin fashion is employed to allocate CPU time to resources which makes use of the circular linked list data structure. Recursive function calls use stack data structure. Undo Operation in text editor uses doubly linked lists. Hash tables uses singly linked lists.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Checked – Compile time) Checked exception can be handled using throws and try-catch public class CheckedExceptions { public static void main(String[] args) throws IOException { System.out.println(\"Program is started..\"); System.out.println(\"Program is progress..\"); // try { FileInputStream file=new FileInputStream(\"C:\\\\file.txt\"); } catch (FileNotFoundException e) { e.printStackTrace(); } // FileInputStream file=new FileInputStream(\"C:\\\\file.txt\"); System.out.println(file.read()); System.out.println(\"Program is completed..\"); try-catch throws Collections: The Collections Framework in Java provides a set of interfaces and classes to store and manage objects efficiently. Collection (Interface) List (I) Set (I) Map (I) Ordered, allows duplicates Unordered, no duplicates stored in the form of key, value pairs ArrayList (C)→ Dynamic array, fast access HashSet (C) → Uses HashMap internally, no order HashMap (C) LinkedList (C)→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {",
+        "options": [
+          "→ Dynamic array, fast access HashSet",
+          "→ Uses HashMap internally, no order HashMap",
+          "LinkedList",
+          "→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question is mapped to Data Structures - Linked Lists. The correct answer is A based on the original source question.",
+        "estimatedTime": 75,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is also known as Rope data structure?",
+        "options": [
+          "Linked List",
+          "Array",
+          "String",
+          "Cord"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Array is a linear data structure. Strings are a collection and sequence of codes, alphabets or characters. Linked List is a linear data structure having a node containing data input and the address of the next node. The cord is also known as the rope data structure.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What will be the output of the following PHP code? <?php $fruits = array ( \"apple\" , \"orange\" , \"banana\" ) ; echo (next( $fruits )) ; echo (next( $fruits )) ; ?>",
+        "options": [
+          "orangebanana",
+          "appleorange",
+          "orangeorange",
+          "appleapple"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The next() function returns the array value residing at the position immediately following that of the current array pointer.",
+        "estimatedTime": 75,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is not the application of stack?",
+        "options": [
+          "Data Transfer between two asynchronous process",
+          "Compiler Syntax Analyzer",
+          "Tracking of local variables at run time",
+          "A parentheses balancing program"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Data transfer between the two asynchronous process uses the queue data structure for synchronisation. The rest are all stack applications.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is the most widely used external memory data structure?",
+        "options": [
+          "B-tree",
+          "Red-black tree",
+          "AVL tree",
+          "Both AVL tree and Red-black tree"
+        ],
+        "correctAnswer": "A",
+        "explanation": "In external memory, the data is transferred in form of blocks. These blocks have data valued and pointers. And B-tree can hold both the data values and pointers. So B-tree is used as an external memory data structure.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is true about stack pointer?",
+        "options": [
+          "Stack pointer contains the address of the top of the stack memory",
+          "Stack pointer is an 8-bit register",
+          "Stack pointer stores data permanently",
+          "Stack pointer is initialized after stack operation"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Stack pointer is initialized before stack operation, it is a 16-bit register that stores data temporarily. It follows a LIFO operation. So, it contains the address of the top of the stack memory.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following points is/are not true about Linked List data structure when it is compared with an array?",
+        "options": [
+          "Random access is not allowed in a typical implementation of Linked Lists",
+          "Access of elements in linked list takes less time than compared to arrays",
+          "Arrays have better cache locality that can make them better in terms of performance",
+          "It is easy to insert and delete elements in Linked List"
+        ],
+        "correctAnswer": "B",
+        "explanation": "To access an element in a linked list, we need to traverse every element until we reach the desired element. This will take more time than arrays as arrays provide random access to its elements.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is a value type in C#?",
+        "options": [
+          "int",
+          "string",
+          "class",
+          "object"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Explanation: The correct answer is A: int . Value Types vs. Reference Types: In C#, data types are categorized into two main groups: value types and reference types. Value Types: * Value types directly store the data within their own memory space. * When you copy a value type variable, you are creating a completely independent copy of the data. * Examples of value types include: int , float , bool , char , struct , and enum . Reference Types: * Reference types store a *reference* (or pointer) to the memory location where the actual data is stored. * When you copy a reference type variable, you are only copying the reference, not the data itself. Both variables will then point to the same location in memory. * Examples of reference types include: string , class , object , arrays , and interfaces . Why the other options are incorrect: * B: string - Strings are reference types in C#. * C: class - Classes are used to define objects, and they are reference types . * D: object - 'object' is the base class for all types in C#, and it is a reference type .",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "A/An . . . . . . . . contains programs that can be selected.",
+        "options": [
+          "pointer",
+          "menu",
+          "icon",
+          "button"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Option A: pointer This option suggests that a pointer contains programs that can be selected. This statement is incorrect. In computing, a pointer refers to a graphical symbol on the screen that indicates the position where the next action will take place, such as clicking or selecting items, but it does not contain programs that can be selected. Option B: menu This option suggests that a menu contains programs that can be selected. This statement is correct. In graphical user interfaces (GUIs) like Microsoft Windows, a menu is a list of commands or options displayed on the screen that users can select to perform actions. Menus typically contain various programs, commands, or settings that users can choose from to interact with applications and the operating system. Option C: icon This option suggests that an icon contains programs that can be selected. This statement is incorrect. Icons are graphical representations or symbols displayed on the screen that represent files, folders, applications, or functions. Clicking on an icon typically opens the associated file or starts the corresponding program, but icons themselves do not contain programs. Option D: button This option suggests that a button contains programs that can be selected. This statement is incorrect. Buttons in a graphical user interface (GUI) are interactive elements that users can click on to trigger specific actions or commands within applications or the operating system. However, buttons do not contain programs themselves; they execute predefined functions when clicked. Conclusion: The correct answer is Option B: menu because in computing and Microsoft Windows, a menu is a list of options or commands that users can select from to perform actions, such as opening programs, accessing settings, or executing commands. Menus are integral components of GUIs that provide users with a structured way to interact with software and operating systems.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "The data structure required for Breadth First Traversal on a graph is?",
+        "options": [
+          "Array",
+          "Stack",
+          "Tree",
+          "Queue"
+        ],
+        "correctAnswer": "D",
+        "explanation": "In Breadth First Search Traversal, BFS, starting vertex is first taken and adjacent vertices which are unvisited are also taken. Again, the first vertex which was added as an unvisited adjacent vertex list will be considered to add further unvisited vertices of the graph. To get the first unvisited vertex we need to follows First In First Out principle. Queue uses FIFO principle.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following data structure can provide efficient searching of the elements?",
+        "options": [
+          "binary search tree",
+          "unordered lists",
+          "2-3 tree",
+          "treap"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The average case time for lookup in a binary search tree, treap and 2-3 tree is O(log n) and in unordered lists it is O(n). But in the worst case, only the 2-3 trees perform lookup efficiently as it takes O(log n), while others take O(n).",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the purpose of memory refresh register of Z80?",
+        "options": [
+          "To control on-chip SRAM",
+          "To control on-chip DRAM",
+          "To clear cache",
+          "To control ROM"
+        ],
+        "correctAnswer": "B",
+        "explanation": "In addition to the general purpose registers, a stack pointer, program counter, and two index registers are included in Z80. It was also used in many embedded designs because of its high-quality performance and for its in-built refresh circuitry for DRAMs.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which graph represents relation between whole and its parts?",
+        "options": [
+          "Histogram",
+          "Pie graph",
+          "Line graph",
+          "Stacked bar graph"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The correct answer is pie graph as pie graph represents relationship between whole and its parts. Histogram is represented with bars of equal width with no gap between adjacent bars. The height of the bar represents the number of data items in the given data range called frequency. Line graph is a line joining all the data points. A stacked bar graph is a chart that uses bars to show comparisons between categories of data with ability to break down and compare parts of a whole.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which function can be used to move the pointer to the previous array position?",
+        "options": [
+          "last()",
+          "before()",
+          "prev()",
+          "previous()"
+        ],
+        "correctAnswer": "C",
+        "explanation": "This question is mapped to Data Structures - Linked Lists. The correct answer is C based on the original source question.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "The optimal data structure used to solve Tower of Hanoi is _________",
+        "options": [
+          "Tree",
+          "Heap",
+          "Priority queue",
+          "Stack"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The Tower of Hanoi involves moving of disks ‘stacked’ at one peg to another peg with respect to the size constraint. It is conveniently done using stacks and priority queues. Stack approach is widely used to solve Tower of Hanoi.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "In a graphical system, an array of pixels in the picture are stored in which of the following locations?",
+        "options": [
+          "Frame buffer",
+          "Processor",
+          "Memory",
+          "All of the mentioned"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The main purpose of using a framer buffer is to store pixels.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is the average quarterly sales throughout the year?",
+        "options": [
+          "20682.5 units",
+          "20826.5 units",
+          "20862.5 units",
+          "20628.5 units"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The average quarterly sales = (12500 + 22500 + 25000 + 23450) / 4 = 83450 / 4 = 20862.5 units quarterly.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is the difference between the maximum sales of p and minimum sales of q?",
+        "options": [
+          "55 crores",
+          "50 crores",
+          "45 crores",
+          "40 crores"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The maximum sales of p = 85 crores The minimum sales of q = 35 crores The difference = 85 – 35 = 50 crores",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following tree data structures is not a balanced binary tree?",
+        "options": [
+          "Splay tree",
+          "B-tree",
+          "AVL tree",
+          "Red-black tree"
+        ],
+        "correctAnswer": "B",
+        "explanation": "All the tree data structures given in options are balanced, but B-tree can have more than two children.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which algorithm is used in the top tree data structure?",
+        "options": [
+          "Backtracking",
+          "Divide and Conquer",
+          "Branch",
+          "Greedy"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Top tree is a type of data structure which is based on unrooted dynamic binary tree and is used to solve path related problems. It allows an algorithm called divide and conquer.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which process of water treatment is done to avoid floating debris, branches, trees, or other large particles suspended in water?",
+        "options": [
+          "Primary sedimentation",
+          "Secondary sedimentation",
+          "Screening",
+          "Aeration"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Screens are used as a pretreatment process for purification of water to avoid large size suspended materials from water.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "The value of area under a velocity-time graph is _________",
+        "options": [
+          "Force",
+          "Momentum",
+          "Displacement",
+          "Acceleration"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The value of the area under a velocity-time graph is displacement. The velocity is the ratio of displacement and time.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find which year has the highest growth of all the grains combined?",
+        "options": [
+          "2017",
+          "2018",
+          "2019",
+          "2020 More Data Interpretation Questions and Answers on Bar Graphs: Bar Graphs Questions (Set 2) Bar Graphs Questions (Set 3) To practice all aptitude questions, please visit “Data Interpretation Questions” , “1000+ Quantitative Aptitude Questions” , and “1000+ Logical Reasoning Questions” . 👉 For weekly data interpretation practice, exam, and certification updates, join Sanfoundry’s official WhatsApp & Telegram channels « Prev - Tabulation Questions and Answers – Set 3 » Next - Bar Graphs Questions and Answers – Set 2"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Year 2019 with a total production of 47.5 tonnes.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is the average monthly sales throughout the year?",
+        "options": [
+          "6945.19 units",
+          "6954.19 units",
+          "6954.16 units",
+          "6945.16 units"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The average monthly sales throughout the year = (12500 + 22500 + 23450 + 25000) / 12 = 83450 / 12 = 6954.16 units per month.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is the difference between maximum and minimum sales of p.",
+        "options": [
+          "40 crores",
+          "45 crores",
+          "50 crores",
+          "55 crores"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The difference between the maximum and minimum sales: The maximum sales = 85 crores The minimum sales = 45 crores The difference = 85 – 45 = 40 crores",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is the average consumption of coffee in the year 2019, 2020 and 2021?",
+        "options": [
+          "16.66 litres",
+          "17.66 litres of coffee",
+          "18.66 litres of coffee",
+          "19.66 litres of coffee"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The average consumption of coffee in the year 2019, 2020 and 2021 = (16 + 18 + 19) / 3 = 53 / 3 = 17.66 litres of coffee.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is the average monthly consumption of tea throughout the years?",
+        "options": [
+          "15.2 litres",
+          "1.26 litres",
+          "1.52 litres",
+          "12.6 litres"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The average monthly consumption of tea = (13 + 15 + 17 + 12 + 19) / (5 * 12) = 76 / 60 = 1.26 litres",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "If the total consumption of all the four beverages combined was 125 litres, study the graph and find the consumption of tea.",
+        "options": [
+          "26 litres",
+          "26.25 litres",
+          "26.5 litres",
+          "27 litres"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The consumption of tea = 21% of 125 litres = 21 * 125 / 100 = 26.25 litres.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find the consumption of milk if the total consumption of tea and milk combined was 1196 litres.",
+        "options": [
+          "600 litres",
+          "650 litres",
+          "690 litres",
+          "750 litres"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The total consumption of tea and milk combined = 21 + 25 = 46% of the total consumption. The consumption of milk = 1196 / 46 * 25 = 650 litres.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is the consumption of coffee in terms of milk?",
+        "options": [
+          "Consumption of coffee is 125% of the consumption of milk",
+          "Consumption of coffee is 90% of the consumption of milk",
+          "Consumption of coffee is 80% of the consumption of milk",
+          "Consumption of coffee is 75% of the consumption of milk"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The consumption of coffee in terms of milk = 20 / 25 * 100 = 80% Consumption of coffee is 80% of the consumption of milk.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is the consumption of tea in terms of juice?",
+        "options": [
+          "61.76%",
+          "62.67%",
+          "63.76%",
+          "64.67% To practice all aptitude questions, please visit “Data Interpretation Questions” , “1000+ Quantitative Aptitude Questions” , and “1000+ Logical Reasoning Questions” . 👉 For weekly data interpretation practice, exam, and certification updates, join Sanfoundry’s official WhatsApp & Telegram channels « Prev - Pie Chart Questions and Answers – Set 2 » Next - Line Graphs Questions and Answers"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The consumption of tea in terms of consumption of juice = 21 / 34 * 100 = 61.76%",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is wheat’s total production in terms of barley’s production in 2003?",
+        "options": [
+          "32.5%",
+          "325%",
+          "307%",
+          "30.7%"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Wheat’s total production = 10 + 12 + 14 + 16 = 52 tonnes Barley’s production in 2003 = 16 tonnes The required percentage = 52 / 16 * 100 = 325%",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is the average production of barley throughout the time?",
+        "options": [
+          "11 tonnes",
+          "12 tonnes",
+          "13 tonnes",
+          "15 tonnes To practice all aptitude questions, please visit “Data Interpretation Questions” , “1000+ Quantitative Aptitude Questions” , and “1000+ Logical Reasoning Questions” . 👉 For weekly data interpretation practice, exam, and certification updates, join Sanfoundry’s official WhatsApp & Telegram channels « Prev - Line Graphs Questions and Answers – Set 2"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The average production of barley throughout the time = (12 + 14 + 16 + 18) / 4 = 60 / 4 = 15 tonnes",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "2. Below is the pie graph showing sales of store in each quarter. Which quarter has the highest sales?",
+        "options": [
+          "1 st quarter",
+          "2 nd quarter",
+          "3 rd quarter",
+          "4 th quarter"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Pie graph shows relation between whole and its parts. Sales of 2 nd quarter is 40% of total sales of store. Sales of 2 nd quarter is higher than sales of other three quarters.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "3. Below is the pie graph showing sales of store in each quarter. Which quarter has the lowest sales?",
+        "options": [
+          "1 st quarter",
+          "2 nd quarter",
+          "3 rd quarter",
+          "4 th quarter"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Pie graph shows relation between whole and its parts. Sales of 3 rd quarter is 16% of total sales of store. Sales of 3 rd quarter is lower than sales of other three quarters.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "2. Below is the pie graph showing sales of different items in first quarter of the year. Which item has the highest sales?",
+        "options": [
+          "Food",
+          "Clothing",
+          "Electronics",
+          "Jewellery"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Pie graph shows relation between whole and its parts. Sales of clothing is 40% of total sales of store. Sales of clothing is higher than sales of other three items.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "3. Below is the pie graph showing sales of different items in first quarter of the year. Which item has the lowest sales?",
+        "options": [
+          "Food",
+          "Clothing",
+          "Electronics",
+          "Jewellery"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Pie graph shows relation between whole and its parts. Sales of electronics is 16% of total sales of store. Sales of electronics is lower than sales of other three items.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "6. Below is the pie graph showing colors picked by students of a class. 22% of students picked which color?",
+        "options": [
+          "Red",
+          "Blue",
+          "Green",
+          "Yellow 🎓 Free Certifications on 300 subjects are live for March 2026. Register Now!"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Pie graph shows relation between whole and its parts. According to the pie chart, 22% of students picked green color. 37% picked blue, 30% picked yellow and 11% picked red color.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "A tree trunk of height 12 meters is erected with the support of three metal chains. An angle of 60° is made by each metal chain with the tree trunk. Find the length of the metal chain.",
+        "options": [
+          "32 meters",
+          "10meters",
+          "24 meters",
+          "18 meters"
+        ],
+        "correctAnswer": "C",
+        "explanation": "We have to find the length of the metal chain AC. cos 60° = \\(\\frac {BC}{AC}\\) \\( \\frac {1}{2} = \\frac {12}{AC}\\) AC = 24 meters",
+        "estimatedTime": 75,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which function is shown in graph?",
+        "options": [
+          "Constant",
+          "Modulus",
+          "Identity",
+          "Signum function 🎓 Free Certifications on 300 subjects are live for March 2026. Register Now!"
+        ],
+        "correctAnswer": "C",
+        "explanation": "{(1,1), (2,2), (3,3), .....}. This function involves relation {(x, y): y=x} which is involved in identity function. So, above function is identity function.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following will form the following graph?",
+        "options": [
+          "sinx + cosx",
+          "2sin(x/2)",
+          "sin 2 x",
+          "cosec(x2)"
+        ],
+        "correctAnswer": "C",
+        "explanation": "This is the curve of sinx. It is given that the graph in the question does not lay in the –y axis. So, when we plot the graph of sin 2 x the part laying in the –y axis comes in the positive y axis.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "The given graph is for which equation?",
+        "options": [
+          "y = (x – 1)(x – 2)",
+          "y = (x + 1)(x + 2)",
+          "y = |(x – 1)(x – 2)|",
+          "y = |(x + 1)(x + 2)|"
+        ],
+        "correctAnswer": "C",
+        "explanation": "As the critical points are 1and 2 so the graph will form in this range only. Clearly, as the equation is enclosed in modulus so, The graph will lie in the positive y direction and will approach infinity.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "A car is moving around a tree in a circular path. What can be said about the average velocity?",
+        "options": [
+          "It is non zero",
+          "It is zero",
+          "It is greater than zero",
+          "It is less than zero"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Take any point on the circular path. The car moves in a circle and hence will come back to the same point after a definite time interval. Therefore, the displacement is 0. Hence, the average velocity is zero.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the velocity for a body following the graph below at 10s?",
+        "options": [
+          "1 m/s",
+          "2 m/s",
+          "0.5 m/s",
+          "0.1 m/s Sanfoundry Global Education & Learning Series – Physics – Class 11 . To practice all chapters and topics of class 11 Physics, here is complete set of 1000+ Multiple Choice Questions and Answers . 👉 For weekly school and board exam practice updates, join Sanfoundry’s official WhatsApp & Telegram channels « Prev - Class 11 Physics MCQ – Straight Line Motion – Average Velocity and Average Speed » Next - Class 11 Physics MCQ – Motion in a Straight Line – Acceleration Related Posts: Practice Class 12 - Physics MCQs Practice Class 11 - Biology MCQs Practice Class 11 - Mathematics MCQs Practice Class 11 - Chemistry MCQs Check Class 11 - Physics Books"
+        ],
+        "correctAnswer": "C",
+        "explanation": "At time = 10s, the distance covered is 5m. Velocity = distance/time. Hence, velocity v at 10s = 5/10 = 0.5 m/s.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "For the graph shown in the figure, what is the difference between x-coordinate of A and B called?",
+        "options": [
+          "Internal pressure",
+          "External pressure",
+          "Work",
+          "Power"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The difference between x-coordinate of A and B can be written as “K b – K a ”. This is the difference between kinetic energies at two positions. This gives us the “work done”.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "For the graph shown in the figure, what is the area under the curve AB called?",
+        "options": [
+          "Force applied",
+          "Displacement",
+          "Work",
+          "Power"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The area under the curve is a summation of the product of x-coordinate and y-coordinate at every point under the curve. That is; “F * x”. F * x = Work done.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the slope of line drawn for a graph between temperature in °C & °F?",
+        "options": [
+          "1.8",
+          "5/9",
+          "slope is variable",
+          "2"
+        ],
+        "correctAnswer": "A",
+        "explanation": "°F = (9/5)°C + 32. Therefore from this we can say that slope of line drawn for graph between temperature in °C & °F is 9/5 = 1.8.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "The given graph corresponds to which equation?",
+        "options": [
+          "V = 0",
+          "PV = constant",
+          "V/T = constant",
+          "PT = constant"
+        ],
+        "correctAnswer": "B",
+        "explanation": "In the given graph temperature remains constant with variation in volume. So the process is isothermal and PV=constant.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Linked Lists",
+        "tags": [
+          "data-structures",
+          "technical",
+          "linked list",
+          "node",
+          "pointer"
+        ],
+        "codeSnippet": null,
+        "language": null
+      }
+    ]
+  },
+  "providerPayload": {
+    "mode": "offline",
+    "source": "existing_mock_tests",
+    "questionCount": 50
+  },
+  "offlineSource": true
+}

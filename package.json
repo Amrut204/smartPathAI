@@ -1,0 +1,29 @@
+{
+  "name": "campusdrive-ai-mern",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "build": "npm run build:server && npm run build:client",
+    "build:server": "cd server && npm run build",
+    "build:client": "cd client && npm run build",
+    "deploy:do:up": "docker compose -f docker-compose.digitalocean.yml up -d",
+    "deploy:do:build": "docker compose -f docker-compose.digitalocean.yml build",
+    "test:demo": "cd server && npm run test:demo",
+    "verify:demo": "npm run build && cd server && npm run seed:demo:reset && npm run test:demo",
+    "install:all": "cd server && npm install && cd ../client && npm install",
+    "onboarding:preview": "node ops/student-onboarding/preview.mjs",
+    "onboarding:apply": "node ops/student-onboarding/apply.mjs",
+    "onboarding:verify": "node ops/student-onboarding/verify.mjs",
+    "onboarding:send": "node ops/student-onboarding/send-credentials.mjs",
+    "onboarding:run": "node ops/student-onboarding/run.mjs",
+    "backup:mongo": "cd server && npm run backup:mongo",
+    "backup:material": "cd server && npm run backup:material",
+    "audit:delete-high-risk": "cd server && npm run audit:delete-high-risk",
+    "mocks:enforce:pilot-quality": "cd server && npm run mocks:enforce:pilot-quality"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

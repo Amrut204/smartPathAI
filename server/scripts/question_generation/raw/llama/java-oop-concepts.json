@@ -1,0 +1,1130 @@
+{
+  "provider": "llama",
+  "model": "meta-llama/Llama-3.1-70B-Instruct-Turbo-offline",
+  "topic": "Java OOP Concepts",
+  "subject": "technical",
+  "category": "programming",
+  "difficulty": "medium",
+  "promptStyle": "code_practical",
+  "generatedAt": "2026-03-12T18:08:19.342Z",
+  "elapsedMs": 0,
+  "count": 50,
+  "cost": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "usd": 0,
+    "inr": 0
+  },
+  "prompt": "Create 50 practical placement test questions for campus recruitment.\n\nTOPIC: Java OOP Concepts\nDIFFICULTY: medium\n\nOUTPUT FORMAT (JSON only):\n{\n  \"questions\": [\n    {\n      \"questionText\": \"Clear, concise question\",\n      \"codeSnippet\": \"// Code if question involves programming (optional)\",\n      \"options\": [\"Option 1\", \"Option 2\", \"Option 3\", \"Option 4\"],\n      \"correctAnswer\": \"A/B/C/D\",\n      \"explanation\": \"Practical explanation with examples\",\n      \"language\": \"C/Java/Python if code involved, otherwise null\",\n      \"estimatedTime\": 60,\n      \"tags\": [\"tag1\", \"tag2\"]\n    }\n  ]\n}\n\nGUIDELINES FOR PROGRAMMING QUESTIONS:\n- Use clean, readable code snippets (under 15 lines)\n- Follow standard conventions\n- For code output questions: show execution flow in explanation\n- For non-programming topics: focus on practical application\n- Include both theoretical and problem-solving questions\n- Cover edge cases and common pitfalls\n\nGenerate exactly 50 questions. Output ONLY valid JSON.",
+  "rawText": "{\"questions\":[{\"questionText\":\"Which feature can be implemented using encapsulation? MCQ on OOPs Concept & Features OOPs MCQ on Constructors and Destructors Object Oriented Programming MCQ on Access Specifiers OOP MCQ on Class Members & Types OOPs MCQ on Object Object Oriented Programming MCQ on Classes OOPs Multiple Choice Questions on Class Components (Using Java) OOPs Multiple Choice Questions on Types of Classes (Using Java) OOPs Multiple Choice Questions on Inheritance & its Types OOPs MCQ on Inheritance (Using Java) OOPs MCQ on Polymorphism (Using Java) OOP MCQ on Member Functions & its Types OOPs MCQ on Exception Handling & Static Class Members OOPs MCQ on Assigning Object, Pointer to Objects, Passing and Returning Object OOPs MCQ on Default Arguments vs Overloading, Upcasting and Downcasting OOPs MCQ on Memory Allocation & Scope of Variable Object Oriented Programming MCQ on Inbuilt Classes\",\"options\":[\"Polymorphism\",\"Overloading\",\"Inheritance\",\"Abstraction Chapterwise Multiple Choice Questions on Object Oriented Programming Our 1000+ MCQs focus on all topics of the Object Oriented Programming subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. OOPs Concept & Features Constructors and Destructors Access Specifiers Class Members & Types Object Classes Class Components (Using Java) Types of Classes (Using Java) Inheritance & its Types Inheritance (Using Java) Polymorphism (Using Java) Member Functions & its Types Exception Handling & Static Class Members Assigning Object, Pointer to Objects, Passing and Returning Object Default Arguments vs Overloading, Upcasting and Downcasting Memory Allocation & Scope of Variable Inbuilt Classes The section contains multiple choice questions and answers on oops basic concepts, objects, classes, oops features, polymorphism, encapsulation and abstraction. OOPs MCQ: Basics OOPs MCQ: Classes OOPs MCQ: Objects OOPs MCQ: Features OOPs MCQ: Polymorphism OOPs MCQ: Encapsulation OOPs MCQ: Abstraction The section contains questions and answers on constructors and its types, copy constructor, overloading constructors, destructors, execution of constructor or destructor. OOPs MCQ: Constructors OOPs MCQ: Types of Constructors OOPs MCQ: Copy Constructor OOPs MCQ: Overloading Constructors OOPs MCQ: Execution of Constructor or Destructor OOPs MCQ: Destructors The section contains MCQs on access specifiers, private, public and protected access Specifiers. OOPs MCQ: Access Specifiers OOPs MCQ: Private Access Specifier OOPs MCQ: Protected Access Specifier OOPs MCQ: Public Access Specifier The section contains multiple choice questions and answers on data members, member functions, local and nested class. Object Oriented Programming MCQ: Data Members Object Oriented Programming MCQ: Member Functions Object Oriented Programming MCQ: Local Class Object Oriented Programming MCQ: Nested Class The section contains questions and answers on passing and returning object with functions, object reference and memory allocation, object array and usage. OOPs MCQ: Passing and Returning Object with Functions OOPs MCQ: Object Reference OOPs MCQ: Memory Allocation of Object OOPs MCQ: Object Array OOPs MCQ: Object Use The section contains MCQs on abstract class, template class, base class, derived class and class usage. Object Oriented Programming MCQ: Abstract Class Object Oriented Programming MCQ: Template Class Object Oriented Programming MCQ: Base Class Object Oriented Programming MCQ: Derived Class Object Oriented Programming MCQ: Class Use The section contains multiple choice questions and answers on data members, member functions, constructors, types of constructors, constructor overloading, copy constructors, assigning objects, the ‘this’ keyword, and memory allocation in Java programming. Data Members Member Functions Constructors Types of Constructors Constructor Overloading Copy Constructors Assigning Objects this Keyword Memory Allocation The section contains questions and answers on object class, base class, derived class, inner class, static class, final class, generic class, nested class, wrapper class, and collection classes using Java programming. Object Class Base Class Derived Class Inner Class Static Class Final Class Generic Class Nested Class Wrapper Class Collection Classes The section contains multiple choice questions and answers on inheritance and its types, single and multilevel inheritance, multiple inheritance, hierarchical and hybrid inheritance. OOPs MCQ: Inheritance OOPs MCQ: Types of Inheritance OOPs MCQ: Single Level Inheritance OOPs MCQ: Multilevel Inheritance OOPs MCQ: Multiple Inheritance OOPs MCQ: Hierarchical Inheritance OOPs MCQ: Hybrid Inheritance The section contains OOPs MCQs using Java on inheritance types, including single-level inheritance, multilevel inheritance, hierarchical inheritance, and hybrid inheritance. Types of Inheritance Single Level Inheritance Multilevel Inheritance Hierarchical Inheritance Hybrid Inheritance The section contains multiple choice questions and answers on method overloading and method overriding. Method Overloading Method Overriding The section contains questions and answers on virtual and abstract functions, member function types, member operator function, overloading and overriding member functions, constant, private and public member functions. Object Oriented Programming MCQ: Virtual Functions Object Oriented Programming MCQ: Abstract Function Object Oriented Programming MCQ: Types of Member Functions Object Oriented Programming MCQ: Member Operator Function Object Oriented Programming MCQ: Overloading Member Functions Object Oriented Programming MCQ: Overriding Member Functions Object Oriented Programming MCQ: Constant Member Functions Object Oriented Programming MCQ: Private Member Functions Object Oriented Programming MCQ: Public Member Functions The section contains MCQs on exception handling, catching class types, static data members and static member functions. OOPs MCQ: Exception Handling OOPs MCQ: Catching Class Types OOPs MCQ: Static Data Members OOPs MCQ: Static Member Functions The section contains multiple choice questions and answers on passing objects to functions, returning and assigning objects, pointers to objects and this pointer. OOPs MCQ: Passing Object to Functions OOPs MCQ: Returning Objects OOPs MCQ: Assigning Objects OOPs MCQ: Pointer to Objects OOPs MCQ: This Pointer The section contains questions and answers on default arguments, constructors overloading, upcasting and downcasting. OOPs MCQ: Default Arguments OOPs MCQ: Constructors Overloading OOPs MCQ: Upcasting OOPs MCQ: Downcasting The section contains MCQs on new and delete operators, automatic and extern variables. OOPs MCQ: New Operator OOPs MCQ: Delete Operator OOPs MCQ: Automatic Variable OOPs MCQ: Extern Variable The section contains multiple choice questions and answers on inbuilt classes, io and string class. OOPs MCQ: Inbuilt Classes OOPs MCQ: IO Class OOPs MCQ: String Class To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews.\"],\"correctAnswer\":\"D\",\"explanation\":\"Data abstraction can be achieved by using encapsulation. We can hide the operation and structure of actual program from the user and can show only required information by the user.\",\"estimatedTime\":75,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the process of hiding the implementation details of a class and showing only the necessary features to the outside world called in C++?\",\"options\":[\"Abstraction\",\"Polymorphism\",\"Encapsulation\",\"Inheritance\"],\"correctAnswer\":\"A\",\"explanation\":\"Abstraction in C++ refers to the process of hiding the implementation details of a class and exposing only the essential features to the outside world. It allows the user to interact with an object without knowing the internal complexity, making the code cleaner, modular, and easier to maintain. Why other options are incorrect: Polymorphism deals with using the same function or operator in different ways. Encapsulation is about wrapping data and functions together into a single unit (class). Inheritance allows one class to acquire the properties of another. Therefore, the correct answer is Abstraction .\",\"estimatedTime\":60,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is correct about JavaScript?\",\"options\":[\"JavaScript is an Object-Based language\",\"JavaScript is Assembly-language\",\"JavaScript is an Object-Oriented language\",\"JavaScript is a High-level language\"],\"correctAnswer\":\"A\",\"explanation\":\"Although JavaScript is not an OOP (Object-Oriented Programming) language like Java or PHP, it is object based language. The standard threesome of polymorphism, encapsulation, and inheritance are the criteria for object orientation, and JavaScript fails to meet them.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is not an OOPS concept in Java?\",\"options\":[\"Polymorphism\",\"Inheritance\",\"Compilation\",\"Encapsulation\"],\"correctAnswer\":\"C\",\"explanation\":\"There are 4 OOPS concepts in Java. Inheritance, Encapsulation, Polymorphism and Abstraction.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"How is the super() function used in Python inheritance?\",\"options\":[\"To create new instances of a class\",\"To call the base class constructor\",\"To create subclass methods\",\"To override base class methods\"],\"correctAnswer\":\"B\",\"explanation\":\"The super() function is used to call the constructor of the base class in a subclass.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What will be the output of the following Java program? final class A { int i ; } class B extends A { int j ; System . out . println ( j + \\\" \\\" + i ) ; } class inheritance { public static void main ( String args [ ] ) { B obj = new B ( ) ; obj. display ( ) ; } }\",\"options\":[\"2 2\",\"3 3\",\"Runtime Error\",\"Compilation Error\"],\"correctAnswer\":\"D\",\"explanation\":\"class A has been declared final hence it cannot be inherited by any other class. Hence class B does not have member i, giving compilation error. output: $ javac inheritance. java Exception in thread \\\"main\\\" java. lang . Error : Unresolved compilation problem : i cannot be resolved or is not a field\",\"estimatedTime\":75,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What will be the output of the following Python code? def foo ( ) : try : return 1 finally : return 2 k = foo ( ) print ( k ) Python MCQ on Variable Names & Operators Python MCQ on Data Types & Numeric Types MCQ on Precedence and Associativity in Python Python MCQ on Bitwise & Boolean Multiple Choice Questions on Formatting & Decorators in Python Python MCQ on While and For Loops Python MCQ on Strings Python Multiple Choice Questions on Lists Python MCQ on List Comprehension MCQ on Python Tuples MCQ on Python Sets Multiple Choice Questions on Python Dictionary Python MCQ on Built-in Functions Multiple Choice Questions on Python Functions Python MCQ on Argument Passing, Variables and Recursion Python MCQ on Mapping Functions Python MCQ on Modules Python MCQ on Regular Expressions Python Multiple Choice Questions on Files Python MCQ on Classes and Objects Python MCQ on OOPs Python MCQ on Exception Handling\",\"options\":[\"error, there is more than one return statement in a single try-finally block\",\"3\",\"2\",\"1 Chapterwise Multiple Choice Questions on Python Our 1000+ MCQs focus on all topics of the Python Programming subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. Python Variable Names & Operators Python Data Types & Numeric Types Python Precedence and Associativity Python Bitwise & Boolean Python Formatting & Decorators Python While and For Loops Python Strings Python Lists Python List Comprehension Python Tuples Python Sets Python Dictionary Python Built-in Functions Python Functions Python Argument Passing, Variables and Recursion Python Mapping Functions Python Modules Python Regular Expressions Python Files Python Classes and Objects Python OOPs Python Exception Handling The section contains multiple choice questions and answers on python variables and basic operators. Python Variable Names Python Basic Operators The section contains questions and answers on python core data types and numeric types. Python Core Data Types Python Numeric Types The section contains Python MCQ on precedence and associativity. Python Precedence and Associativity-1 Python Precedence and Associativity-2 The section contains multiple choice questions and answers on python bitwise and boolean. Python Bitwise – 1 Python Bitwise – 2 Python Boolean The section contains questions and answers on python formatting, advanced formatting and decorators. Python Formatting – 1 Python Formatting – 2 Python Advanced Formatting Python Decorators The section contains Python MCQ on different types of loops (while and for loops). Python While & For Loops – 1 Python While & For Loops – 2 Python While & For Loops – 3 Python While & For Loops – 4 Python While & For Loops – 5 Python While & For Loops – 6 The section contains multiple choice questions and answers on different types of python strings. Python Strings – 1 Python Strings – 2 Python Strings – 3 Python Strings – 4 Python Strings – 5 Python Strings – 6 Python Strings – 7 Python Strings – 8 Python Strings – 9 Python Strings – 10 Python Strings – 11 Python Strings – 12 Python Strings – 13 The section contains questions and answers on different types of lists. Python Lists – 1 Python Lists – 2 Python Lists – 3 Python Lists – 4 Python Lists – 5 Python Lists – 6 Python Lists – 7 The section contains MCQ on different types of list comprehension. Python List Comprehension Python List Comprehension – 1 Python List Comprehension – 2 Python Matrix List Comprehension The section contains multiple choice questions and answers on various types of tuples. Python Tuples – 1 Python Tuples – 2 Python Tuples – 3 The section contains questions and answers on various types of python sets. Python Sets – 1 Python Sets – 2 Python Sets – 3 Python Sets – 4 Python Sets – 5 The section contains multiple choice questions and answers on python dictionary. Python Dictionary – 1 Python Dictionary – 2 Python Dictionary – 3 Python Dictionary – 4 The section contains multiple choice questions and answers on different types of python built in functions. Python Built-in Functions – 1 Python Built-in Functions – 2 Python Built-in Functions – 3 The section contains questions and answers on different types of python functions. Python Function – 1 Python Function – 2 Python Function – 3 Python Function – 4 The section contains Python MCQ on argument parsing, global and local variables, recursion, differences between shallow and deep copy. Python Argument Passing – 1 Python Argument Passing – 2 Python Global vs Local Variables – 1 Python Global vs Local Variables – 2 Python Recursion Python Shallow Copy vs Deep Copy The section contains Python multiple choice questions and answers on functional programming tools and mapping functions. Python Functional Programming Tools Python Mapping Functions – 1 Python Mapping Functions – 2 Python Mapping Functions – 3 The section contains questions and answers on Python modules like math module, random module, sys module, datetime module, pickle and tutrle modules. Python Modules Python Math – 1 Python Math – 2 Python Math – 3 Python Datetime Module – 1 Python Datetime Module – 2 Python Random Module – 1 Python Random Module – 2 Python Sys Module Python Operating System Python Turtle Module – 1 Python Turtle Module – 2 Python Turtle Module – 3 Python Pickle Module The section contains Python MCQ on different types of regular expressions (regex). Python Regular Expressions Python Regular Expressions – 1 Python Regular Expressions – 2 Python Regular Expressions – 3 Python Regular Expressions – 4 Python Regular Expressions – 5 The section contains multiple choice questions and answers on python files. Python Files – 1 Python Files – 2 Python Files – 3 Python Files – 4 Python Files – 5 The section contains questions and answers on operator overloading, classes and objects. Python Operator Overloading Python Classes and Objects – 1 Python Classes and Objects – 2 The section contains MCQ on oops concepts like inheritance, polymorphism and encapsulation. Python Inheritance – 1 Python Inheritance – 2 Python Polymorphism Python Encapsulation The section contains multiple choice questions and answers on exception handling. Python Exception Handling – 1 Python Exception Handling – 2 Python Exception Handling – 3 Revise Python concepts and theory in detail through our complete Python Tutorial . To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. Recommended Python Books Best Reference Books for Python Language Python Tests & Certification Python Online Tests Python Certification Explore Other MCQ Collections Java Multiple Choice Questions C++ Multiple Choice Questions C Multiple Choice Questions C# Multiple Choice Questions Data Structures Multiple Choice Questions Computer Science Multiple Choice Questions\"],\"correctAnswer\":\"C\",\"explanation\":\"In Python, if both the try block and the finally block contain return statements, the return in the finally block overrides the one in the try block. So, even though return 1 is in the try, the function ends up returning 2 because of the finally block.\",\"estimatedTime\":75,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"How is a generator object iterated in a for loop?\",\"options\":[\"Using the yield keyword\",\"By using the next() function\",\"By using the for keyword\",\"By using the get() method\"],\"correctAnswer\":\"C\",\"explanation\":\"The correct answer is Option C: By using the for keyword. A generator object is iterated in a for loop by using the for keyword. When you use a for loop to iterate over a generator object, Python automatically calls the next() function on the generator object to retrieve each value yielded by the generator function. This process continues until the generator function is exhausted, at which point the loop terminates. This convenient syntax allows you to easily iterate over the values produced by a generator without explicitly calling next() or managing the loop termination condition.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is NOT a benefit of using generators?\",\"options\":[\"Improved memory efficiency\",\"Faster execution than loops\",\"Easier debugging\",\"Lazy evaluation\"],\"correctAnswer\":\"C\",\"explanation\":\"Option A: Improved memory efficiency. This option is a well-known benefit of using generators. Generators produce values lazily, meaning they only generate values when requested, rather than storing all values in memory at once. This lazy evaluation mechanism results in improved memory efficiency, especially when dealing with large datasets or infinite sequences. Option B: Faster execution than loops . This option is not correct because generators do not inherently execute faster than loops. In fact, due to the additional functionality they provide, such as suspending and resuming execution with each yield statement, generators might introduce a slight overhead. While generators offer other benefits like improved memory efficiency and lazy evaluation, faster execution compared to loops is not one of them. Option C: Easier debugging. This option is incorrect. Debugging generator functions can be more challenging compared to debugging regular functions or loops. The flow of execution in generator functions involves suspending and resuming with the yield statement, which can make it harder to track. Additionally, debugging generator functions might require specialized techniques or tools to inspect the state of the generator object and the values yielded during iteration. Option D: Lazy evaluation. This option is actually a benefit of using generators. Generators support lazy evaluation, meaning they produce values on-demand as they are requested, rather than eagerly generating all values upfront. Lazy evaluation allows for efficient memory usage and can be particularly useful when working with large datasets or infinite sequences. So, the correct answer is indeed Option C: Easier debugging, as it does not align with the typical benefits associated with using generators.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which programming paradigm is supported by Python?\",\"options\":[\"Only imperative\",\"Only functional\",\"Only logical\",\"Multiple paradigms\"],\"correctAnswer\":\"D\",\"explanation\":\"Python supports multiple paradigms . Python is a versatile language that accommodates different programming styles and paradigms, including imperative, functional, and object-oriented programming. This flexibility allows programmers to choose the most suitable approach for solving a particular problem. While Python is primarily an imperative language, it also incorporates features from other paradigms, such as support for higher-order functions and lambda expressions, making it suitable for functional programming. Additionally, Python's object-oriented features enable the creation of classes and objects, facilitating object-oriented programming. Overall, Python's support for multiple paradigms contributes to its widespread adoption and popularity among developers.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the purpose of the built-in function dir()?\",\"options\":[\"Returns a list of attributes and methods of an object\",\"Converts a string to lowercase\",\"Returns the square of a number\",\"Returns the absolute value of a number\"],\"correctAnswer\":\"A\",\"explanation\":\"The correct answer is Option A: Returns a list of attributes and methods of an object . The dir() function in Python is used to return a list of attributes and methods of an object. When called without an argument, it returns the list of names in the current local scope. For example: my_list = [1, 2, 3] print(dir(my_list)) # Output: ['__add__', '__class__', '__contains__', ...]\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Single level inheritance supports _____________ inheritance.\",\"options\":[\"Language independency\",\"Multiple inheritance\",\"Compile time\",\"Runtime\"],\"correctAnswer\":\"D\",\"explanation\":\"The runtime inheritance is done when object of a class is created to call a method. At runtime the function is searched if it is in class of object. If not, it will search in its parent classes and hierarchy for that method.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which one of the following is not a Java feature?\",\"options\":[\"Object-oriented\",\"Use of pointers\",\"Portable\",\"Dynamic and Extensible\"],\"correctAnswer\":\"B\",\"explanation\":\"Pointers is not a Java feature. Java provides an efficient abstraction layer for developing without using a pointer in Java. Features of Java Programming are Portable, Architectural Neutral, Object-Oriented, Robust, Secure, Dynamic and Extensible, etc.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the basic difference between JavaScript and Java?\",\"options\":[\"Functions are considered as fields\",\"Functions are values, and there is no hard distinction between methods and fields\",\"Variables are specific\",\"There is no difference\"],\"correctAnswer\":\"B\",\"explanation\":\"Java is an object-oriented programming language, while JS is an object-oriented scripting language. The main difference between JavaScript and Java is that functions are values, while methods and fields are not clearly defined.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is a type of polymorphism in Java Programming?\",\"options\":[\"Multiple polymorphism\",\"Compile time polymorphism\",\"Multilevel polymorphism\",\"Execution time polymorphism\"],\"correctAnswer\":\"B\",\"explanation\":\"There are two types of polymorphism in Java. Compile time polymorphism (overloading) and runtime polymorphism (overriding).\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which is correct syntax for declaring pointer to object?\",\"options\":[\"*className objectName;\",\"className* objectName;\",\"className objectName();\",\"className objectName;\"],\"correctAnswer\":\"B\",\"explanation\":\"The syntax must contain * symbol after the className as the type of object. This declares an object pointer. This can store address of any object of the specified class.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the difference between a class-based decorator and a function-based decorator?\",\"options\":[\"Class-based decorators use fewer resources\",\"Class-based decorators can't accept arguments\",\"Function-based decorators are more flexible\",\"Function-based decorators are slower\"],\"correctAnswer\":\"C\",\"explanation\":\"Function-based decorators are generally more flexible and can accept arguments more easily than class-based decorators.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which function is called when the following Python program is executed? f = foo ( ) format ( f )\",\"options\":[\"str()\",\"format()\",\"__str__()\",\"__format__()\"],\"correctAnswer\":\"D\",\"explanation\":\"When format(f) is executed, Python internally invokes the special method f.__format__(). This method controls how the object is formatted. The __str__() method is used by str(f), not format(f).\",\"estimatedTime\":60,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Checked – Compile time) Checked exception can be handled using throws and try-catch public class CheckedExceptions { public static void main(String[] args) throws IOException { System.out.println(\\\"Program is started..\\\"); System.out.println(\\\"Program is progress..\\\"); // try { FileInputStream file=new FileInputStream(\\\"C:\\\\\\\\file.txt\\\"); } catch (FileNotFoundException e) { e.printStackTrace(); } // FileInputStream file=new FileInputStream(\\\"C:\\\\\\\\file.txt\\\"); System.out.println(file.read()); System.out.println(\\\"Program is completed..\\\"); try-catch throws Collections: The Collections Framework in Java provides a set of interfaces and classes to store and manage objects efficiently. Collection (Interface) List (I) Set (I) Map (I) Ordered, allows duplicates Unordered, no duplicates stored in the form of key, value pairs ArrayList (C)→ Dynamic array, fast access HashSet (C) → Uses HashMap internally, no order HashMap (C) LinkedList (C)→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {\",\"options\":[\"→ Dynamic array, fast access HashSet\",\"→ Uses HashMap internally, no order HashMap\",\"LinkedList\",\"→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {\"],\"correctAnswer\":\"A\",\"explanation\":\"This question is mapped to Java OOP Concepts. The correct answer is A based on the original source question.\",\"estimatedTime\":75,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which feature of OOP is indicated by the following code? class student { int marks ; } ; class topper : public student { int age ; topper ( int age ) { this . age = age ; } } ;\",\"options\":[\"Encapsulation and Inheritance\",\"Inheritance and polymorphism\",\"Polymorphism\",\"Inheritance\"],\"correctAnswer\":\"A\",\"explanation\":\"Encapsulation is indicated by use of classes. Inheritance is shown by inheriting the student class into topper class. Polymorphism is not shown here because we have defined the constructor in the topper class but that doesn’t mean that default constructor is overloaded.\",\"estimatedTime\":75,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"In which access should a constructor be defined, so that object of the class can be created in any function?\",\"options\":[\"Any access specifier will work\",\"Private\",\"Public\",\"Protected\"],\"correctAnswer\":\"C\",\"explanation\":\"Constructor function should be available to all the parts of program where the object is to be created. Hence it is advised to define it in public access, so that any other function is able to create objects.\",\"estimatedTime\":60,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which constructor will be called from the object obj2 in the following C++ program? class A { int i ; A ( ) { i = 0 ; } A ( int x ) { i = x + 1 ; } A ( int y, int x ) { i = x + y ; } } ; A obj1 ( 10 ) ; A obj2 ( 10 , 20 ) ; A obj3 ;\",\"options\":[\"A(int y, int x)\",\"A(int y; int x)\",\"A(int y)\",\"A(int x)\"],\"correctAnswer\":\"A\",\"explanation\":\"The two argument constructor will be called as we are passing 2 arguments to the object while creation. The arguments will be passed together and hence compiler resolves that two argument constructor have to be called.\",\"estimatedTime\":75,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which class/set of classes can illustrate polymorphism in the following C++ code? abstract class student { public : int marks ; calc_grade ( ) ; } class topper : public student { public : calc_grade ( ) { return 10 ; } } ; class average : public student { public : calc_grade ( ) { return 20 ; } } ; class failed { int marks ; } ;\",\"options\":[\"Only class student and topper together can show polymorphism\",\"Only class student can show polymorphism\",\"Class failed should also inherit class student for this code to work for polymorphism\",\"All class student, topper and average together can show polymorphism\"],\"correctAnswer\":\"D\",\"explanation\":\"Since Student class is abstract class and class topper and average are inheriting student, class topper and average must define the function named calc_grade(); in abstract class. Since both the definition are different in those classes, calc_grade() will work in different way for same input from different objects. Hence it shows polymorphism.\",\"estimatedTime\":75,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What does the StopIteration exception indicate in generators?\",\"options\":[\"Generator reached its end\",\"Generator is paused\",\"Generator encountered an error\",\"Generator is still producing values\"],\"correctAnswer\":\"A\",\"explanation\":\"The correct answer is Option A: Generator reached its end. The StopIteration exception indicates that a generator has reached its end. In Python, when a generator function exhausts all the values it can yield, it automatically raises a StopIteration exception to signal the end of iteration. This exception is commonly used internally by Python to manage iteration over generator objects. When you iterate over a generator using a for loop or manually using the next() function, Python handles this exception behind the scenes, terminating the iteration gracefully. This mechanism allows for seamless handling of generator exhaustion without the need for explicit termination conditions.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which programming language is commonly used for Data Science tasks?\",\"options\":[\"Java\",\"Python\",\"C++\",\"JavaScript\"],\"correctAnswer\":\"B\",\"explanation\":\"Let's look at why Python is the correct answer and why the others are not as commonly used for these specific tasks. Option B: Python (Correct Answer) Python is by far the most popular and widely used programming language for Data Science. Here's why it's the top choice: 1. Easy to Learn: Python has a simple and readable structure (syntax), which makes it easy for beginners to understand and write code. 2. Rich Libraries: Python has an amazing collection of specialized tools, called \\\"libraries,\\\" that are specifically designed for Data Science tasks. Some very important ones include: - NumPy: Great for working with numbers and large datasets efficiently. - Pandas: Used for cleaning, analyzing, and manipulating data, similar to working with advanced spreadsheets. - Scikit-learn: Essential for building machine learning models (like algorithms that learn from data to make predictions). - Matplotlib and Seaborn: Used for creating clear and beautiful charts and graphs to visualize data. 3. Versatility: Besides Data Science, Python is also used for web development, automation, and many other areas, making it a very powerful and useful language to know. Option A: Java Java is a powerful and robust language, often used in large enterprise systems and for building big data processing frameworks (like Apache Hadoop or Apache Spark). However, for the everyday tasks of data analysis, writing scripts for quick insights, or directly building machine learning models, Python is generally preferred because of its simpler code and specialized Data Science libraries. Option C: C++ C++ is known for its speed and efficiency. While some very performance-critical parts of Data Science libraries (especially those in Python) might be written in C++ \\\"behind the scenes\\\" to make them run faster, C++ itself is rarely used directly by Data Scientists for their daily coding tasks. It's much more complex and takes more time to write code in C++ compared to Python for data analysis. Option D: JavaScript JavaScript is mainly the language of the internet. It's used to make websites interactive and for developing web applications (both front-end and back-end with Node.js). While you can use JavaScript libraries (like D3.js) for some interactive data visualizations on the web, it is not the primary language for general data cleaning, statistical analysis, or building machine learning models in Data Science. In summary, when you start learning Data Science, Python is the first language you should focus on because of its ease of use, powerful libraries, and a large supportive community.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is correct about this pointer in C++?\",\"options\":[\"this pointer is passed as a hidden argument in all static variables of a class\",\"this pointer is passed as a hidden argument in all the functions of a class\",\"this pointer is passed as a hidden argument in all non-static functions of a class\",\"this pointer is passed as a hidden argument in all static functions of a class\"],\"correctAnswer\":\"C\",\"explanation\":\"As static functions are a type of global function for a class so all the object shares the common instance of that static function whereas all the objects have there own instance for non-static functions and hence they are passed as a hidden argument in all the non-static members but not in static members.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is a superclass of every class in Java?\",\"options\":[\"ArrayList\",\"Abstract class\",\"Object class\",\"String\"],\"correctAnswer\":\"C\",\"explanation\":\"Object class is superclass of every class in Java.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the java extension file in IoT?\",\"options\":[\".jar\",\".c\",\".exe\",\".py\"],\"correctAnswer\":\"A\",\"explanation\":\"The Java extension file commonly used in the context of IoT (Internet of Things) is .jar . A .jar file, which stands for Java Archive, is a compressed file format that contains Java class files, resources, and metadata. It is used to package and distribute Java applications and libraries. In IoT, Java is a popular programming language for developing applications that run on various IoT devices and platforms. Options B (.c), C (.exe), and D (.py) represent file extensions for programming languages other than Java. .c is for C programming language, .exe is for executable files in Windows, and .py is for Python programming language. Hence, the correct answer is Option A: .jar. It is the extension commonly associated with Java files used in IoT development.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the return type of a constructor in Java?\",\"options\":[\"void\",\"int\",\"The same as the class name\",\"String\"],\"correctAnswer\":\"C\",\"explanation\":\"Constructors are special methods in Java used to create objects of a class. They have the same name as the class itself. Unlike other methods, constructors don't have an explicit return type. Their job is to initialize the object's member variables (fields) with values. Therefore, they implicitly return a reference to the newly created object. The correct answer is option C, because it correctly states the return type is implicitly the same as the class name .\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is a primitive data type in Java?\",\"options\":[\"String\",\"Integer\",\"Boolean\",\"Char\"],\"correctAnswer\":\"D\",\"explanation\":\"The correct answer is Option D: char . In Java, a primitive data type is a basic data type that is not an object. char is one of the primitive data types in Java, used to store a single character, such as 'A' or '5'. Here's the breakdown: Option A: String - String is not a primitive data type in Java. It is a class for representing sequences of characters. Option B: Integer - Integer is not a primitive data type, but int (lowercase) is a primitive data type used to store whole numbers. Option C: Boolean - Boolean is not a primitive data type, but boolean (lowercase) is a primitive data type used to represent true or false values. Option D: Char - This is the correct answer. char is a primitive data type in Java used to store a single character. So, the primitive data type in Java among the given options is char .\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"In Java, can a subclass inherit constructors from its superclass?\",\"options\":[\"Only if the subclass is marked as \\\"final\\\"\",\"Yes, a subclass inherits constructors from its superclass\",\"Only if the superclass is marked as \\\"static\\\"\",\"None of the above\"],\"correctAnswer\":\"D\",\"explanation\":\"Option A: Only if the subclass is marked as \\\"final\\\" This option is incorrect. Marking a subclass as \\\"final\\\" means that it cannot be subclassed further, and it has no impact on the inheritance of constructors. Option B: Yes, a subclass inherits constructors from its superclass This option is incorrect. In Java, a subclass does not inherit constructors from its superclass. However, a subclass can call the constructors of its superclass using the super keyword. Option C: Only if the superclass is marked as \\\"static\\\" This option is incorrect. The \\\"static\\\" keyword cannot be applied to classes or constructors in a way that would affect inheritance. Option D: None of the above This option is correct. In Java, constructors are not inherited by subclasses. Subclasses must explicitly define their own constructors, although they can call their superclass's constructors using the super keyword. Conclusion: In Java, a subclass does not inherit constructors from its superclass, making Option D: None of the above the correct answer.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is true about Java strings?\",\"options\":[\"Strings are mutable.\",\"Strings can contain only letters.\",\"Strings can have a null value.\",\"Strings are implemented as arrays of characters.\"],\"correctAnswer\":\"C\",\"explanation\":\"Java strings are sequences of characters used to store and manipulate text data. Option A: Strings are mutable. → False. Java strings are immutable , meaning once a string is created, its value cannot be changed. If modifications are needed, a new string is created instead. Option B: Strings can contain only letters. → False. Java strings can contain letters, numbers, symbols, spaces, or any other character. For example, \\\"Hello123!\\\" and \\\"Java@2024\\\" are valid strings. Option C: Strings can have a null value. → True. A string variable can be assigned null, which means it does not reference any object in memory. Option D: Strings are implemented as arrays of characters. → True, but incomplete. Java internally represents strings as character arrays (char[]), but they are encapsulated in the String class, and we generally use methods rather than directly accessing the array. Thus, the correct answer is Option C: Strings can have a null value. .\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What will be the output of the following Java code? class box { int width ; int height ; int length ; } class main { public static void main ( String args [ ] ) { box obj = new box ( ) ; obj. width = 10 ; obj. height = 2 ; obj. length = 10 ; int y = obj. width * obj. height * obj. length ; System . out . print ( y ) ; } }\",\"options\":[\"100\",\"400\",\"200\",\"12\"],\"correctAnswer\":\"C\",\"explanation\":\"The variables length, breadth, and height are default (friendly) instance variables of the Box class. Therefore, they can be accessed directly by the object. The variable y stores the product of these three variables, resulting in an output of 200. output: $ javac main. java $ java main 200\",\"estimatedTime\":75,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What will be the output of the following Java code snippet? import java.util.* ; class Arraylists { public static void main ( String args [ ] ) { ArrayList obj = new ArrayList ( ) ; obj. add ( \\\"A\\\" ) ; obj. add ( \\\"B\\\" ) ; obj. add ( \\\"C\\\" ) ; obj. add ( 1 , \\\"D\\\" ) ; System . out . println ( obj ) ; } }\",\"options\":[\"[A, D, C]\",\"[A, B, C]\",\"[A, B, C, D]\",\"[A, D, B, C]\"],\"correctAnswer\":\"D\",\"explanation\":\"obj is an object of class ArrayLists hence it is an dynamic array which can increase and decrease its size. obj.add(“X”) adds to the array element X and obj.add(1,”X”) adds element x at index position 1 in the list, Hence obj.add(1,”D”) stores D at index position 1 of obj and shifts the previous value stored at that position by 1. Output: $ javac Arraylist. java $ java Arraylist [ A, D, B, C ] .\",\"estimatedTime\":75,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What will be the output of the following Java program? class overload { int x ; double y ; void add ( int a , int b ) { x = a + b ; } void add ( double c , double d ) { y = c + d ; } overload ( ) { this . x = 0 ; this . y = 0 ; } } class Overload_methods { public static void main ( String args [ ] ) { overload obj = new overload ( ) ; int a = 2 ; double b = 3.2 ; obj. add ( a, a ) ; obj. add ( b, b ) ; System . out . println ( obj. x + \\\" \\\" + obj. y ) ; } }\",\"options\":[\"4 6.4\",\"6.4 6\",\"6.4 6.4\",\"6 6\"],\"correctAnswer\":\"A\",\"explanation\":\"For the method call obj.add(a, a), since a is of type int, the method defined at line 5 is executed. Similarly, for the call obj.add(b, b), since b is of type double, the method defined at line 9 is invoked. As a result, the values of x and y are set to 4 and 6.4, respectively. Note: This behavior demonstrates polymorphism in Java, where method overloading allows different methods to be invoked based on parameter types. output: $ javac Overload_methods. java $ java Overload_methods 4 6.4\",\"estimatedTime\":75,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which keyword is used to inherit a class in C++?\",\"options\":[\"public\",\"private\",\"protected\",\"extends\"],\"correctAnswer\":\"A\",\"explanation\":\"In C++, the keyword public is used to specify public inheritance when inheriting a class. When a class inherits another class publicly, all public members of the base class become public members of the derived class, and protected members of the base class become protected members of the derived class. The keywords private and protected can also be used for inheritance, but they specify different levels of access control: private inheritance : All public and protected members of the base class become private members of the derived class. protected inheritance : All public and protected members of the base class become protected members of the derived class. The keyword extends is used in languages like Java for inheritance, but not in C++. Therefore, the correct answer is public .\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which keyword among the following can be used to declare an array of objects in java?\",\"options\":[\"allocate\",\"arr\",\"new\",\"create\"],\"correctAnswer\":\"C\",\"explanation\":\"The keyword new can be used to declare an array of objects in java. The syntax must be specified with an object pointer which is assigned with a memory space containing the required number of object space. Even initialization can be done directly.\",\"estimatedTime\":60,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is an abstract class in OOP?\",\"options\":[\"A class that cannot be instantiated\",\"A class with no attributes\",\"A class with only attributes\",\"A class that cannot have methods\"],\"correctAnswer\":\"A\",\"explanation\":\"An abstract class cannot be instantiated and often serves as a blueprint for other classes.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which type of Programming does Python support?\",\"options\":[\"object-oriented programming\",\"structured programming\",\"functional programming\",\"all of the mentioned\"],\"correctAnswer\":\"D\",\"explanation\":\"Python is an interpreted programming language, which supports object-oriented, structured, and functional programming.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is a generator in Python?\",\"options\":[\"A function that generates random numbers\",\"A special type of list\",\"A way to define classes\",\"A function that yields values one at a time\"],\"correctAnswer\":\"D\",\"explanation\":\"The correct answer is Option D: A function that yields values one at a time. Generators in Python are functions defined using the yield statement. They generate values lazily, one at a time, allowing for efficient memory usage, especially with large datasets. When called, a generator function returns an iterator object but does not start execution immediately. Instead, it suspends its state and resumes execution when the next() method is called on the iterator object. This makes generators a powerful tool for handling large datasets or infinite sequences efficiently.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What happens when you call a generator function?\",\"options\":[\"It immediately produces all values\",\"It returns a list of values\",\"It sets up a generator object\",\"It creates a tuple of values\"],\"correctAnswer\":\"C\",\"explanation\":\"The correct answer is Option C: It sets up a generator object. When you call a generator function in Python, it doesn't immediately produce all values or return a list of values. Instead, it sets up and returns a generator object. This generator object can then be used to iterate over the values produced by the generator function. The generator object maintains the state of the generator function, allowing it to yield values lazily, one at a time, as needed. This lazy evaluation mechanism enables efficient handling of large datasets or infinite sequences without loading all values into memory at once.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What does the built-in function enumerate() do in Python?\",\"options\":[\"Returns an enumerate object that produces pairs of index and value\",\"Converts a string to lowercase\",\"Returns the square of a number\",\"Returns the absolute value of a number\"],\"correctAnswer\":\"A\",\"explanation\":\"The correct answer is Option A: Returns an enumerate object that produces pairs of index and value . The enumerate() function in Python is used to iterate over a sequence while keeping track of the index of each item. It takes an iterable as an argument and returns an enumerate object that produces tuples containing the index and value of each item in the iterable. For example: my_list = ['a', 'b', 'c'] for index, value in enumerate(my_list): print(index, value) # Output: # 0 a # 1 b # 2 c\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following are the Access Modifiers types in Python-OpenCV?\",\"options\":[\"Protected Access Modifier, Private Access Modifier, Non-Public Access Modifier.\",\"Public Access Modifier, Protected Access Modifier, Private Access Modifier.\",\"Public Access Modifier, Semi-Protected Access Modifier, Private Access Modifier.\",\"Public Access Modifier, Protected Access Modifier, Semi-private Access Modifier. 🔥 Enroll Now for Free Python Certification - March 2026\"],\"correctAnswer\":\"B\",\"explanation\":\"There are 3 types of access modifiers types in Python-OpenCV, they are Public Access Modifiers—by default all data members and functions of class are Public, Protected Access Modifier–declared using single underscore (_) symbol, and Private Access Modifier—declared using double underscore(__) symbol.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following functions can help us to find the version of python that we are currently working on?\",\"options\":[\"sys.version(1)\",\"sys.version(0)\",\"sys.version()\",\"sys.version\"],\"correctAnswer\":\"D\",\"explanation\":\"The function sys.version can help us to find the version of python that we are currently working on. It also contains information on the build number and compiler used. For example, 3.5.2, 2.7.3 etc. this function also returns the current date, time, bits etc along with the version.\",\"estimatedTime\":60,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is the use of id() function in python?\",\"options\":[\"Every object doesn’t have a unique id\",\"Id returns the identity of the object\",\"All of the mentioned\",\"None of the mentioned\"],\"correctAnswer\":\"B\",\"explanation\":\"The id() function in Python returns the identity of an object. This identity is a unique integer (or memory address) that remains constant for the object during its lifetime. Every object in Python has a unique id, which helps in comparing object references.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What will be the output of the following Python program? def foo ( x ) : x [ 0 ] = [ 'def' ] x [ 1 ] = [ 'abc' ] return id ( x ) q = [ 'abc' , 'def' ] print ( id ( q ) == foo ( q ) )\",\"options\":[\"Error\",\"None\",\"False\",\"True\"],\"correctAnswer\":\"D\",\"explanation\":\"The list q is passed by reference to the function foo, so both x and q refer to the same object in memory. The id() function returns the memory address of the object, which remains unchanged. Therefore, id(q) == foo(q) evaluates to True.\",\"estimatedTime\":75,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What will be the value of ‘result’ in following Python program? list1 = [ 1 , 2 , 3 , 4 ] list2 = [ 2 , 4 , 5 , 6 ] list3 = [ 2 , 6 , 7 , 8 ] result = list ( ) result. extend ( i for i in list1 if i not in ( list2+list3 ) and i not in result ) result. extend ( i for i in list2 if i not in ( list1+list3 ) and i not in result ) result. extend ( i for i in list3 if i not in ( list1+list2 ) and i not in result ) print ( result )\",\"options\":[\"[1, 3, 5, 7, 8]\",\"[1, 7, 8]\",\"[1, 2, 4, 7, 8]\",\"error\"],\"correctAnswer\":\"A\",\"explanation\":\"Here, ‘result’ is a list which is extending three times. When first time ‘extend’ function is called for ‘result’, the inner code generates a generator object, which is further used in ‘extend’ function. This generator object contains the values which are in ‘list1’ only (not in ‘list2’ and ‘list3’). Same is happening in second and third call of ‘extend’ function in these generator object contains values only in ‘list2’ and ‘list3’ respectively. So, ‘result’ variable will contain elements which are only in one list (not more than 1 list).\",\"estimatedTime\":75,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the purpose of the `hashCode()` method in Java's Object class?\",\"options\":[\"To execute SQL queries\",\"To return a unique identifier for an object\",\"To create JavaBeans\",\"None of These\"],\"correctAnswer\":\"B\",\"explanation\":\"This question is mapped to Java OOP Concepts. The correct answer is B based on the original source question.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"A programming structure that contains data and a pointer to the next object is a\",\"options\":[\"template\",\"class\",\"pointer class\",\"linked list\"],\"correctAnswer\":\"D\",\"explanation\":\"This question is mapped to Java OOP Concepts. The correct answer is D based on the original source question.\",\"estimatedTime\":60,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"In Java, which keyword is used to implement inheritance between classes?\",\"options\":[\"inheritsFrom\",\"inherits\",\"implements\",\"extends\"],\"correctAnswer\":\"D\",\"explanation\":\"This question is mapped to Java OOP Concepts. The correct answer is D based on the original source question.\",\"estimatedTime\":45,\"subtopic\":\"Java OOP Concepts\",\"tags\":[\"programming\",\"technical\",\"java\",\"class\",\"object\"],\"codeSnippet\":null,\"language\":null}]}",
+  "parsed": {
+    "questions": [
+      {
+        "questionText": "Which feature can be implemented using encapsulation? MCQ on OOPs Concept & Features OOPs MCQ on Constructors and Destructors Object Oriented Programming MCQ on Access Specifiers OOP MCQ on Class Members & Types OOPs MCQ on Object Object Oriented Programming MCQ on Classes OOPs Multiple Choice Questions on Class Components (Using Java) OOPs Multiple Choice Questions on Types of Classes (Using Java) OOPs Multiple Choice Questions on Inheritance & its Types OOPs MCQ on Inheritance (Using Java) OOPs MCQ on Polymorphism (Using Java) OOP MCQ on Member Functions & its Types OOPs MCQ on Exception Handling & Static Class Members OOPs MCQ on Assigning Object, Pointer to Objects, Passing and Returning Object OOPs MCQ on Default Arguments vs Overloading, Upcasting and Downcasting OOPs MCQ on Memory Allocation & Scope of Variable Object Oriented Programming MCQ on Inbuilt Classes",
+        "options": [
+          "Polymorphism",
+          "Overloading",
+          "Inheritance",
+          "Abstraction Chapterwise Multiple Choice Questions on Object Oriented Programming Our 1000+ MCQs focus on all topics of the Object Oriented Programming subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. OOPs Concept & Features Constructors and Destructors Access Specifiers Class Members & Types Object Classes Class Components (Using Java) Types of Classes (Using Java) Inheritance & its Types Inheritance (Using Java) Polymorphism (Using Java) Member Functions & its Types Exception Handling & Static Class Members Assigning Object, Pointer to Objects, Passing and Returning Object Default Arguments vs Overloading, Upcasting and Downcasting Memory Allocation & Scope of Variable Inbuilt Classes The section contains multiple choice questions and answers on oops basic concepts, objects, classes, oops features, polymorphism, encapsulation and abstraction. OOPs MCQ: Basics OOPs MCQ: Classes OOPs MCQ: Objects OOPs MCQ: Features OOPs MCQ: Polymorphism OOPs MCQ: Encapsulation OOPs MCQ: Abstraction The section contains questions and answers on constructors and its types, copy constructor, overloading constructors, destructors, execution of constructor or destructor. OOPs MCQ: Constructors OOPs MCQ: Types of Constructors OOPs MCQ: Copy Constructor OOPs MCQ: Overloading Constructors OOPs MCQ: Execution of Constructor or Destructor OOPs MCQ: Destructors The section contains MCQs on access specifiers, private, public and protected access Specifiers. OOPs MCQ: Access Specifiers OOPs MCQ: Private Access Specifier OOPs MCQ: Protected Access Specifier OOPs MCQ: Public Access Specifier The section contains multiple choice questions and answers on data members, member functions, local and nested class. Object Oriented Programming MCQ: Data Members Object Oriented Programming MCQ: Member Functions Object Oriented Programming MCQ: Local Class Object Oriented Programming MCQ: Nested Class The section contains questions and answers on passing and returning object with functions, object reference and memory allocation, object array and usage. OOPs MCQ: Passing and Returning Object with Functions OOPs MCQ: Object Reference OOPs MCQ: Memory Allocation of Object OOPs MCQ: Object Array OOPs MCQ: Object Use The section contains MCQs on abstract class, template class, base class, derived class and class usage. Object Oriented Programming MCQ: Abstract Class Object Oriented Programming MCQ: Template Class Object Oriented Programming MCQ: Base Class Object Oriented Programming MCQ: Derived Class Object Oriented Programming MCQ: Class Use The section contains multiple choice questions and answers on data members, member functions, constructors, types of constructors, constructor overloading, copy constructors, assigning objects, the ‘this’ keyword, and memory allocation in Java programming. Data Members Member Functions Constructors Types of Constructors Constructor Overloading Copy Constructors Assigning Objects this Keyword Memory Allocation The section contains questions and answers on object class, base class, derived class, inner class, static class, final class, generic class, nested class, wrapper class, and collection classes using Java programming. Object Class Base Class Derived Class Inner Class Static Class Final Class Generic Class Nested Class Wrapper Class Collection Classes The section contains multiple choice questions and answers on inheritance and its types, single and multilevel inheritance, multiple inheritance, hierarchical and hybrid inheritance. OOPs MCQ: Inheritance OOPs MCQ: Types of Inheritance OOPs MCQ: Single Level Inheritance OOPs MCQ: Multilevel Inheritance OOPs MCQ: Multiple Inheritance OOPs MCQ: Hierarchical Inheritance OOPs MCQ: Hybrid Inheritance The section contains OOPs MCQs using Java on inheritance types, including single-level inheritance, multilevel inheritance, hierarchical inheritance, and hybrid inheritance. Types of Inheritance Single Level Inheritance Multilevel Inheritance Hierarchical Inheritance Hybrid Inheritance The section contains multiple choice questions and answers on method overloading and method overriding. Method Overloading Method Overriding The section contains questions and answers on virtual and abstract functions, member function types, member operator function, overloading and overriding member functions, constant, private and public member functions. Object Oriented Programming MCQ: Virtual Functions Object Oriented Programming MCQ: Abstract Function Object Oriented Programming MCQ: Types of Member Functions Object Oriented Programming MCQ: Member Operator Function Object Oriented Programming MCQ: Overloading Member Functions Object Oriented Programming MCQ: Overriding Member Functions Object Oriented Programming MCQ: Constant Member Functions Object Oriented Programming MCQ: Private Member Functions Object Oriented Programming MCQ: Public Member Functions The section contains MCQs on exception handling, catching class types, static data members and static member functions. OOPs MCQ: Exception Handling OOPs MCQ: Catching Class Types OOPs MCQ: Static Data Members OOPs MCQ: Static Member Functions The section contains multiple choice questions and answers on passing objects to functions, returning and assigning objects, pointers to objects and this pointer. OOPs MCQ: Passing Object to Functions OOPs MCQ: Returning Objects OOPs MCQ: Assigning Objects OOPs MCQ: Pointer to Objects OOPs MCQ: This Pointer The section contains questions and answers on default arguments, constructors overloading, upcasting and downcasting. OOPs MCQ: Default Arguments OOPs MCQ: Constructors Overloading OOPs MCQ: Upcasting OOPs MCQ: Downcasting The section contains MCQs on new and delete operators, automatic and extern variables. OOPs MCQ: New Operator OOPs MCQ: Delete Operator OOPs MCQ: Automatic Variable OOPs MCQ: Extern Variable The section contains multiple choice questions and answers on inbuilt classes, io and string class. OOPs MCQ: Inbuilt Classes OOPs MCQ: IO Class OOPs MCQ: String Class To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews."
+        ],
+        "correctAnswer": "D",
+        "explanation": "Data abstraction can be achieved by using encapsulation. We can hide the operation and structure of actual program from the user and can show only required information by the user.",
+        "estimatedTime": 75,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the process of hiding the implementation details of a class and showing only the necessary features to the outside world called in C++?",
+        "options": [
+          "Abstraction",
+          "Polymorphism",
+          "Encapsulation",
+          "Inheritance"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Abstraction in C++ refers to the process of hiding the implementation details of a class and exposing only the essential features to the outside world. It allows the user to interact with an object without knowing the internal complexity, making the code cleaner, modular, and easier to maintain. Why other options are incorrect: Polymorphism deals with using the same function or operator in different ways. Encapsulation is about wrapping data and functions together into a single unit (class). Inheritance allows one class to acquire the properties of another. Therefore, the correct answer is Abstraction .",
+        "estimatedTime": 60,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is correct about JavaScript?",
+        "options": [
+          "JavaScript is an Object-Based language",
+          "JavaScript is Assembly-language",
+          "JavaScript is an Object-Oriented language",
+          "JavaScript is a High-level language"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Although JavaScript is not an OOP (Object-Oriented Programming) language like Java or PHP, it is object based language. The standard threesome of polymorphism, encapsulation, and inheritance are the criteria for object orientation, and JavaScript fails to meet them.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is not an OOPS concept in Java?",
+        "options": [
+          "Polymorphism",
+          "Inheritance",
+          "Compilation",
+          "Encapsulation"
+        ],
+        "correctAnswer": "C",
+        "explanation": "There are 4 OOPS concepts in Java. Inheritance, Encapsulation, Polymorphism and Abstraction.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "How is the super() function used in Python inheritance?",
+        "options": [
+          "To create new instances of a class",
+          "To call the base class constructor",
+          "To create subclass methods",
+          "To override base class methods"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The super() function is used to call the constructor of the base class in a subclass.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What will be the output of the following Java program? final class A { int i ; } class B extends A { int j ; System . out . println ( j + \" \" + i ) ; } class inheritance { public static void main ( String args [ ] ) { B obj = new B ( ) ; obj. display ( ) ; } }",
+        "options": [
+          "2 2",
+          "3 3",
+          "Runtime Error",
+          "Compilation Error"
+        ],
+        "correctAnswer": "D",
+        "explanation": "class A has been declared final hence it cannot be inherited by any other class. Hence class B does not have member i, giving compilation error. output: $ javac inheritance. java Exception in thread \"main\" java. lang . Error : Unresolved compilation problem : i cannot be resolved or is not a field",
+        "estimatedTime": 75,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What will be the output of the following Python code? def foo ( ) : try : return 1 finally : return 2 k = foo ( ) print ( k ) Python MCQ on Variable Names & Operators Python MCQ on Data Types & Numeric Types MCQ on Precedence and Associativity in Python Python MCQ on Bitwise & Boolean Multiple Choice Questions on Formatting & Decorators in Python Python MCQ on While and For Loops Python MCQ on Strings Python Multiple Choice Questions on Lists Python MCQ on List Comprehension MCQ on Python Tuples MCQ on Python Sets Multiple Choice Questions on Python Dictionary Python MCQ on Built-in Functions Multiple Choice Questions on Python Functions Python MCQ on Argument Passing, Variables and Recursion Python MCQ on Mapping Functions Python MCQ on Modules Python MCQ on Regular Expressions Python Multiple Choice Questions on Files Python MCQ on Classes and Objects Python MCQ on OOPs Python MCQ on Exception Handling",
+        "options": [
+          "error, there is more than one return statement in a single try-finally block",
+          "3",
+          "2",
+          "1 Chapterwise Multiple Choice Questions on Python Our 1000+ MCQs focus on all topics of the Python Programming subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. Python Variable Names & Operators Python Data Types & Numeric Types Python Precedence and Associativity Python Bitwise & Boolean Python Formatting & Decorators Python While and For Loops Python Strings Python Lists Python List Comprehension Python Tuples Python Sets Python Dictionary Python Built-in Functions Python Functions Python Argument Passing, Variables and Recursion Python Mapping Functions Python Modules Python Regular Expressions Python Files Python Classes and Objects Python OOPs Python Exception Handling The section contains multiple choice questions and answers on python variables and basic operators. Python Variable Names Python Basic Operators The section contains questions and answers on python core data types and numeric types. Python Core Data Types Python Numeric Types The section contains Python MCQ on precedence and associativity. Python Precedence and Associativity-1 Python Precedence and Associativity-2 The section contains multiple choice questions and answers on python bitwise and boolean. Python Bitwise – 1 Python Bitwise – 2 Python Boolean The section contains questions and answers on python formatting, advanced formatting and decorators. Python Formatting – 1 Python Formatting – 2 Python Advanced Formatting Python Decorators The section contains Python MCQ on different types of loops (while and for loops). Python While & For Loops – 1 Python While & For Loops – 2 Python While & For Loops – 3 Python While & For Loops – 4 Python While & For Loops – 5 Python While & For Loops – 6 The section contains multiple choice questions and answers on different types of python strings. Python Strings – 1 Python Strings – 2 Python Strings – 3 Python Strings – 4 Python Strings – 5 Python Strings – 6 Python Strings – 7 Python Strings – 8 Python Strings – 9 Python Strings – 10 Python Strings – 11 Python Strings – 12 Python Strings – 13 The section contains questions and answers on different types of lists. Python Lists – 1 Python Lists – 2 Python Lists – 3 Python Lists – 4 Python Lists – 5 Python Lists – 6 Python Lists – 7 The section contains MCQ on different types of list comprehension. Python List Comprehension Python List Comprehension – 1 Python List Comprehension – 2 Python Matrix List Comprehension The section contains multiple choice questions and answers on various types of tuples. Python Tuples – 1 Python Tuples – 2 Python Tuples – 3 The section contains questions and answers on various types of python sets. Python Sets – 1 Python Sets – 2 Python Sets – 3 Python Sets – 4 Python Sets – 5 The section contains multiple choice questions and answers on python dictionary. Python Dictionary – 1 Python Dictionary – 2 Python Dictionary – 3 Python Dictionary – 4 The section contains multiple choice questions and answers on different types of python built in functions. Python Built-in Functions – 1 Python Built-in Functions – 2 Python Built-in Functions – 3 The section contains questions and answers on different types of python functions. Python Function – 1 Python Function – 2 Python Function – 3 Python Function – 4 The section contains Python MCQ on argument parsing, global and local variables, recursion, differences between shallow and deep copy. Python Argument Passing – 1 Python Argument Passing – 2 Python Global vs Local Variables – 1 Python Global vs Local Variables – 2 Python Recursion Python Shallow Copy vs Deep Copy The section contains Python multiple choice questions and answers on functional programming tools and mapping functions. Python Functional Programming Tools Python Mapping Functions – 1 Python Mapping Functions – 2 Python Mapping Functions – 3 The section contains questions and answers on Python modules like math module, random module, sys module, datetime module, pickle and tutrle modules. Python Modules Python Math – 1 Python Math – 2 Python Math – 3 Python Datetime Module – 1 Python Datetime Module – 2 Python Random Module – 1 Python Random Module – 2 Python Sys Module Python Operating System Python Turtle Module – 1 Python Turtle Module – 2 Python Turtle Module – 3 Python Pickle Module The section contains Python MCQ on different types of regular expressions (regex). Python Regular Expressions Python Regular Expressions – 1 Python Regular Expressions – 2 Python Regular Expressions – 3 Python Regular Expressions – 4 Python Regular Expressions – 5 The section contains multiple choice questions and answers on python files. Python Files – 1 Python Files – 2 Python Files – 3 Python Files – 4 Python Files – 5 The section contains questions and answers on operator overloading, classes and objects. Python Operator Overloading Python Classes and Objects – 1 Python Classes and Objects – 2 The section contains MCQ on oops concepts like inheritance, polymorphism and encapsulation. Python Inheritance – 1 Python Inheritance – 2 Python Polymorphism Python Encapsulation The section contains multiple choice questions and answers on exception handling. Python Exception Handling – 1 Python Exception Handling – 2 Python Exception Handling – 3 Revise Python concepts and theory in detail through our complete Python Tutorial . To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. Recommended Python Books Best Reference Books for Python Language Python Tests & Certification Python Online Tests Python Certification Explore Other MCQ Collections Java Multiple Choice Questions C++ Multiple Choice Questions C Multiple Choice Questions C# Multiple Choice Questions Data Structures Multiple Choice Questions Computer Science Multiple Choice Questions"
+        ],
+        "correctAnswer": "C",
+        "explanation": "In Python, if both the try block and the finally block contain return statements, the return in the finally block overrides the one in the try block. So, even though return 1 is in the try, the function ends up returning 2 because of the finally block.",
+        "estimatedTime": 75,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "How is a generator object iterated in a for loop?",
+        "options": [
+          "Using the yield keyword",
+          "By using the next() function",
+          "By using the for keyword",
+          "By using the get() method"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The correct answer is Option C: By using the for keyword. A generator object is iterated in a for loop by using the for keyword. When you use a for loop to iterate over a generator object, Python automatically calls the next() function on the generator object to retrieve each value yielded by the generator function. This process continues until the generator function is exhausted, at which point the loop terminates. This convenient syntax allows you to easily iterate over the values produced by a generator without explicitly calling next() or managing the loop termination condition.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is NOT a benefit of using generators?",
+        "options": [
+          "Improved memory efficiency",
+          "Faster execution than loops",
+          "Easier debugging",
+          "Lazy evaluation"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Option A: Improved memory efficiency. This option is a well-known benefit of using generators. Generators produce values lazily, meaning they only generate values when requested, rather than storing all values in memory at once. This lazy evaluation mechanism results in improved memory efficiency, especially when dealing with large datasets or infinite sequences. Option B: Faster execution than loops . This option is not correct because generators do not inherently execute faster than loops. In fact, due to the additional functionality they provide, such as suspending and resuming execution with each yield statement, generators might introduce a slight overhead. While generators offer other benefits like improved memory efficiency and lazy evaluation, faster execution compared to loops is not one of them. Option C: Easier debugging. This option is incorrect. Debugging generator functions can be more challenging compared to debugging regular functions or loops. The flow of execution in generator functions involves suspending and resuming with the yield statement, which can make it harder to track. Additionally, debugging generator functions might require specialized techniques or tools to inspect the state of the generator object and the values yielded during iteration. Option D: Lazy evaluation. This option is actually a benefit of using generators. Generators support lazy evaluation, meaning they produce values on-demand as they are requested, rather than eagerly generating all values upfront. Lazy evaluation allows for efficient memory usage and can be particularly useful when working with large datasets or infinite sequences. So, the correct answer is indeed Option C: Easier debugging, as it does not align with the typical benefits associated with using generators.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which programming paradigm is supported by Python?",
+        "options": [
+          "Only imperative",
+          "Only functional",
+          "Only logical",
+          "Multiple paradigms"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Python supports multiple paradigms . Python is a versatile language that accommodates different programming styles and paradigms, including imperative, functional, and object-oriented programming. This flexibility allows programmers to choose the most suitable approach for solving a particular problem. While Python is primarily an imperative language, it also incorporates features from other paradigms, such as support for higher-order functions and lambda expressions, making it suitable for functional programming. Additionally, Python's object-oriented features enable the creation of classes and objects, facilitating object-oriented programming. Overall, Python's support for multiple paradigms contributes to its widespread adoption and popularity among developers.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the purpose of the built-in function dir()?",
+        "options": [
+          "Returns a list of attributes and methods of an object",
+          "Converts a string to lowercase",
+          "Returns the square of a number",
+          "Returns the absolute value of a number"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The correct answer is Option A: Returns a list of attributes and methods of an object . The dir() function in Python is used to return a list of attributes and methods of an object. When called without an argument, it returns the list of names in the current local scope. For example: my_list = [1, 2, 3] print(dir(my_list)) # Output: ['__add__', '__class__', '__contains__', ...]",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Single level inheritance supports _____________ inheritance.",
+        "options": [
+          "Language independency",
+          "Multiple inheritance",
+          "Compile time",
+          "Runtime"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The runtime inheritance is done when object of a class is created to call a method. At runtime the function is searched if it is in class of object. If not, it will search in its parent classes and hierarchy for that method.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which one of the following is not a Java feature?",
+        "options": [
+          "Object-oriented",
+          "Use of pointers",
+          "Portable",
+          "Dynamic and Extensible"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Pointers is not a Java feature. Java provides an efficient abstraction layer for developing without using a pointer in Java. Features of Java Programming are Portable, Architectural Neutral, Object-Oriented, Robust, Secure, Dynamic and Extensible, etc.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the basic difference between JavaScript and Java?",
+        "options": [
+          "Functions are considered as fields",
+          "Functions are values, and there is no hard distinction between methods and fields",
+          "Variables are specific",
+          "There is no difference"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Java is an object-oriented programming language, while JS is an object-oriented scripting language. The main difference between JavaScript and Java is that functions are values, while methods and fields are not clearly defined.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is a type of polymorphism in Java Programming?",
+        "options": [
+          "Multiple polymorphism",
+          "Compile time polymorphism",
+          "Multilevel polymorphism",
+          "Execution time polymorphism"
+        ],
+        "correctAnswer": "B",
+        "explanation": "There are two types of polymorphism in Java. Compile time polymorphism (overloading) and runtime polymorphism (overriding).",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which is correct syntax for declaring pointer to object?",
+        "options": [
+          "*className objectName;",
+          "className* objectName;",
+          "className objectName();",
+          "className objectName;"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The syntax must contain * symbol after the className as the type of object. This declares an object pointer. This can store address of any object of the specified class.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the difference between a class-based decorator and a function-based decorator?",
+        "options": [
+          "Class-based decorators use fewer resources",
+          "Class-based decorators can't accept arguments",
+          "Function-based decorators are more flexible",
+          "Function-based decorators are slower"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Function-based decorators are generally more flexible and can accept arguments more easily than class-based decorators.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which function is called when the following Python program is executed? f = foo ( ) format ( f )",
+        "options": [
+          "str()",
+          "format()",
+          "__str__()",
+          "__format__()"
+        ],
+        "correctAnswer": "D",
+        "explanation": "When format(f) is executed, Python internally invokes the special method f.__format__(). This method controls how the object is formatted. The __str__() method is used by str(f), not format(f).",
+        "estimatedTime": 60,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Checked – Compile time) Checked exception can be handled using throws and try-catch public class CheckedExceptions { public static void main(String[] args) throws IOException { System.out.println(\"Program is started..\"); System.out.println(\"Program is progress..\"); // try { FileInputStream file=new FileInputStream(\"C:\\\\file.txt\"); } catch (FileNotFoundException e) { e.printStackTrace(); } // FileInputStream file=new FileInputStream(\"C:\\\\file.txt\"); System.out.println(file.read()); System.out.println(\"Program is completed..\"); try-catch throws Collections: The Collections Framework in Java provides a set of interfaces and classes to store and manage objects efficiently. Collection (Interface) List (I) Set (I) Map (I) Ordered, allows duplicates Unordered, no duplicates stored in the form of key, value pairs ArrayList (C)→ Dynamic array, fast access HashSet (C) → Uses HashMap internally, no order HashMap (C) LinkedList (C)→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {",
+        "options": [
+          "→ Dynamic array, fast access HashSet",
+          "→ Uses HashMap internally, no order HashMap",
+          "LinkedList",
+          "→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question is mapped to Java OOP Concepts. The correct answer is A based on the original source question.",
+        "estimatedTime": 75,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which feature of OOP is indicated by the following code? class student { int marks ; } ; class topper : public student { int age ; topper ( int age ) { this . age = age ; } } ;",
+        "options": [
+          "Encapsulation and Inheritance",
+          "Inheritance and polymorphism",
+          "Polymorphism",
+          "Inheritance"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Encapsulation is indicated by use of classes. Inheritance is shown by inheriting the student class into topper class. Polymorphism is not shown here because we have defined the constructor in the topper class but that doesn’t mean that default constructor is overloaded.",
+        "estimatedTime": 75,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "In which access should a constructor be defined, so that object of the class can be created in any function?",
+        "options": [
+          "Any access specifier will work",
+          "Private",
+          "Public",
+          "Protected"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Constructor function should be available to all the parts of program where the object is to be created. Hence it is advised to define it in public access, so that any other function is able to create objects.",
+        "estimatedTime": 60,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which constructor will be called from the object obj2 in the following C++ program? class A { int i ; A ( ) { i = 0 ; } A ( int x ) { i = x + 1 ; } A ( int y, int x ) { i = x + y ; } } ; A obj1 ( 10 ) ; A obj2 ( 10 , 20 ) ; A obj3 ;",
+        "options": [
+          "A(int y, int x)",
+          "A(int y; int x)",
+          "A(int y)",
+          "A(int x)"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The two argument constructor will be called as we are passing 2 arguments to the object while creation. The arguments will be passed together and hence compiler resolves that two argument constructor have to be called.",
+        "estimatedTime": 75,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which class/set of classes can illustrate polymorphism in the following C++ code? abstract class student { public : int marks ; calc_grade ( ) ; } class topper : public student { public : calc_grade ( ) { return 10 ; } } ; class average : public student { public : calc_grade ( ) { return 20 ; } } ; class failed { int marks ; } ;",
+        "options": [
+          "Only class student and topper together can show polymorphism",
+          "Only class student can show polymorphism",
+          "Class failed should also inherit class student for this code to work for polymorphism",
+          "All class student, topper and average together can show polymorphism"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Since Student class is abstract class and class topper and average are inheriting student, class topper and average must define the function named calc_grade(); in abstract class. Since both the definition are different in those classes, calc_grade() will work in different way for same input from different objects. Hence it shows polymorphism.",
+        "estimatedTime": 75,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What does the StopIteration exception indicate in generators?",
+        "options": [
+          "Generator reached its end",
+          "Generator is paused",
+          "Generator encountered an error",
+          "Generator is still producing values"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The correct answer is Option A: Generator reached its end. The StopIteration exception indicates that a generator has reached its end. In Python, when a generator function exhausts all the values it can yield, it automatically raises a StopIteration exception to signal the end of iteration. This exception is commonly used internally by Python to manage iteration over generator objects. When you iterate over a generator using a for loop or manually using the next() function, Python handles this exception behind the scenes, terminating the iteration gracefully. This mechanism allows for seamless handling of generator exhaustion without the need for explicit termination conditions.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which programming language is commonly used for Data Science tasks?",
+        "options": [
+          "Java",
+          "Python",
+          "C++",
+          "JavaScript"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Let's look at why Python is the correct answer and why the others are not as commonly used for these specific tasks. Option B: Python (Correct Answer) Python is by far the most popular and widely used programming language for Data Science. Here's why it's the top choice: 1. Easy to Learn: Python has a simple and readable structure (syntax), which makes it easy for beginners to understand and write code. 2. Rich Libraries: Python has an amazing collection of specialized tools, called \"libraries,\" that are specifically designed for Data Science tasks. Some very important ones include: - NumPy: Great for working with numbers and large datasets efficiently. - Pandas: Used for cleaning, analyzing, and manipulating data, similar to working with advanced spreadsheets. - Scikit-learn: Essential for building machine learning models (like algorithms that learn from data to make predictions). - Matplotlib and Seaborn: Used for creating clear and beautiful charts and graphs to visualize data. 3. Versatility: Besides Data Science, Python is also used for web development, automation, and many other areas, making it a very powerful and useful language to know. Option A: Java Java is a powerful and robust language, often used in large enterprise systems and for building big data processing frameworks (like Apache Hadoop or Apache Spark). However, for the everyday tasks of data analysis, writing scripts for quick insights, or directly building machine learning models, Python is generally preferred because of its simpler code and specialized Data Science libraries. Option C: C++ C++ is known for its speed and efficiency. While some very performance-critical parts of Data Science libraries (especially those in Python) might be written in C++ \"behind the scenes\" to make them run faster, C++ itself is rarely used directly by Data Scientists for their daily coding tasks. It's much more complex and takes more time to write code in C++ compared to Python for data analysis. Option D: JavaScript JavaScript is mainly the language of the internet. It's used to make websites interactive and for developing web applications (both front-end and back-end with Node.js). While you can use JavaScript libraries (like D3.js) for some interactive data visualizations on the web, it is not the primary language for general data cleaning, statistical analysis, or building machine learning models in Data Science. In summary, when you start learning Data Science, Python is the first language you should focus on because of its ease of use, powerful libraries, and a large supportive community.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is correct about this pointer in C++?",
+        "options": [
+          "this pointer is passed as a hidden argument in all static variables of a class",
+          "this pointer is passed as a hidden argument in all the functions of a class",
+          "this pointer is passed as a hidden argument in all non-static functions of a class",
+          "this pointer is passed as a hidden argument in all static functions of a class"
+        ],
+        "correctAnswer": "C",
+        "explanation": "As static functions are a type of global function for a class so all the object shares the common instance of that static function whereas all the objects have there own instance for non-static functions and hence they are passed as a hidden argument in all the non-static members but not in static members.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is a superclass of every class in Java?",
+        "options": [
+          "ArrayList",
+          "Abstract class",
+          "Object class",
+          "String"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Object class is superclass of every class in Java.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the java extension file in IoT?",
+        "options": [
+          ".jar",
+          ".c",
+          ".exe",
+          ".py"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The Java extension file commonly used in the context of IoT (Internet of Things) is .jar . A .jar file, which stands for Java Archive, is a compressed file format that contains Java class files, resources, and metadata. It is used to package and distribute Java applications and libraries. In IoT, Java is a popular programming language for developing applications that run on various IoT devices and platforms. Options B (.c), C (.exe), and D (.py) represent file extensions for programming languages other than Java. .c is for C programming language, .exe is for executable files in Windows, and .py is for Python programming language. Hence, the correct answer is Option A: .jar. It is the extension commonly associated with Java files used in IoT development.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the return type of a constructor in Java?",
+        "options": [
+          "void",
+          "int",
+          "The same as the class name",
+          "String"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Constructors are special methods in Java used to create objects of a class. They have the same name as the class itself. Unlike other methods, constructors don't have an explicit return type. Their job is to initialize the object's member variables (fields) with values. Therefore, they implicitly return a reference to the newly created object. The correct answer is option C, because it correctly states the return type is implicitly the same as the class name .",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is a primitive data type in Java?",
+        "options": [
+          "String",
+          "Integer",
+          "Boolean",
+          "Char"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The correct answer is Option D: char . In Java, a primitive data type is a basic data type that is not an object. char is one of the primitive data types in Java, used to store a single character, such as 'A' or '5'. Here's the breakdown: Option A: String - String is not a primitive data type in Java. It is a class for representing sequences of characters. Option B: Integer - Integer is not a primitive data type, but int (lowercase) is a primitive data type used to store whole numbers. Option C: Boolean - Boolean is not a primitive data type, but boolean (lowercase) is a primitive data type used to represent true or false values. Option D: Char - This is the correct answer. char is a primitive data type in Java used to store a single character. So, the primitive data type in Java among the given options is char .",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "In Java, can a subclass inherit constructors from its superclass?",
+        "options": [
+          "Only if the subclass is marked as \"final\"",
+          "Yes, a subclass inherits constructors from its superclass",
+          "Only if the superclass is marked as \"static\"",
+          "None of the above"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Option A: Only if the subclass is marked as \"final\" This option is incorrect. Marking a subclass as \"final\" means that it cannot be subclassed further, and it has no impact on the inheritance of constructors. Option B: Yes, a subclass inherits constructors from its superclass This option is incorrect. In Java, a subclass does not inherit constructors from its superclass. However, a subclass can call the constructors of its superclass using the super keyword. Option C: Only if the superclass is marked as \"static\" This option is incorrect. The \"static\" keyword cannot be applied to classes or constructors in a way that would affect inheritance. Option D: None of the above This option is correct. In Java, constructors are not inherited by subclasses. Subclasses must explicitly define their own constructors, although they can call their superclass's constructors using the super keyword. Conclusion: In Java, a subclass does not inherit constructors from its superclass, making Option D: None of the above the correct answer.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is true about Java strings?",
+        "options": [
+          "Strings are mutable.",
+          "Strings can contain only letters.",
+          "Strings can have a null value.",
+          "Strings are implemented as arrays of characters."
+        ],
+        "correctAnswer": "C",
+        "explanation": "Java strings are sequences of characters used to store and manipulate text data. Option A: Strings are mutable. → False. Java strings are immutable , meaning once a string is created, its value cannot be changed. If modifications are needed, a new string is created instead. Option B: Strings can contain only letters. → False. Java strings can contain letters, numbers, symbols, spaces, or any other character. For example, \"Hello123!\" and \"Java@2024\" are valid strings. Option C: Strings can have a null value. → True. A string variable can be assigned null, which means it does not reference any object in memory. Option D: Strings are implemented as arrays of characters. → True, but incomplete. Java internally represents strings as character arrays (char[]), but they are encapsulated in the String class, and we generally use methods rather than directly accessing the array. Thus, the correct answer is Option C: Strings can have a null value. .",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What will be the output of the following Java code? class box { int width ; int height ; int length ; } class main { public static void main ( String args [ ] ) { box obj = new box ( ) ; obj. width = 10 ; obj. height = 2 ; obj. length = 10 ; int y = obj. width * obj. height * obj. length ; System . out . print ( y ) ; } }",
+        "options": [
+          "100",
+          "400",
+          "200",
+          "12"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The variables length, breadth, and height are default (friendly) instance variables of the Box class. Therefore, they can be accessed directly by the object. The variable y stores the product of these three variables, resulting in an output of 200. output: $ javac main. java $ java main 200",
+        "estimatedTime": 75,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What will be the output of the following Java code snippet? import java.util.* ; class Arraylists { public static void main ( String args [ ] ) { ArrayList obj = new ArrayList ( ) ; obj. add ( \"A\" ) ; obj. add ( \"B\" ) ; obj. add ( \"C\" ) ; obj. add ( 1 , \"D\" ) ; System . out . println ( obj ) ; } }",
+        "options": [
+          "[A, D, C]",
+          "[A, B, C]",
+          "[A, B, C, D]",
+          "[A, D, B, C]"
+        ],
+        "correctAnswer": "D",
+        "explanation": "obj is an object of class ArrayLists hence it is an dynamic array which can increase and decrease its size. obj.add(“X”) adds to the array element X and obj.add(1,”X”) adds element x at index position 1 in the list, Hence obj.add(1,”D”) stores D at index position 1 of obj and shifts the previous value stored at that position by 1. Output: $ javac Arraylist. java $ java Arraylist [ A, D, B, C ] .",
+        "estimatedTime": 75,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What will be the output of the following Java program? class overload { int x ; double y ; void add ( int a , int b ) { x = a + b ; } void add ( double c , double d ) { y = c + d ; } overload ( ) { this . x = 0 ; this . y = 0 ; } } class Overload_methods { public static void main ( String args [ ] ) { overload obj = new overload ( ) ; int a = 2 ; double b = 3.2 ; obj. add ( a, a ) ; obj. add ( b, b ) ; System . out . println ( obj. x + \" \" + obj. y ) ; } }",
+        "options": [
+          "4 6.4",
+          "6.4 6",
+          "6.4 6.4",
+          "6 6"
+        ],
+        "correctAnswer": "A",
+        "explanation": "For the method call obj.add(a, a), since a is of type int, the method defined at line 5 is executed. Similarly, for the call obj.add(b, b), since b is of type double, the method defined at line 9 is invoked. As a result, the values of x and y are set to 4 and 6.4, respectively. Note: This behavior demonstrates polymorphism in Java, where method overloading allows different methods to be invoked based on parameter types. output: $ javac Overload_methods. java $ java Overload_methods 4 6.4",
+        "estimatedTime": 75,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which keyword is used to inherit a class in C++?",
+        "options": [
+          "public",
+          "private",
+          "protected",
+          "extends"
+        ],
+        "correctAnswer": "A",
+        "explanation": "In C++, the keyword public is used to specify public inheritance when inheriting a class. When a class inherits another class publicly, all public members of the base class become public members of the derived class, and protected members of the base class become protected members of the derived class. The keywords private and protected can also be used for inheritance, but they specify different levels of access control: private inheritance : All public and protected members of the base class become private members of the derived class. protected inheritance : All public and protected members of the base class become protected members of the derived class. The keyword extends is used in languages like Java for inheritance, but not in C++. Therefore, the correct answer is public .",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which keyword among the following can be used to declare an array of objects in java?",
+        "options": [
+          "allocate",
+          "arr",
+          "new",
+          "create"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The keyword new can be used to declare an array of objects in java. The syntax must be specified with an object pointer which is assigned with a memory space containing the required number of object space. Even initialization can be done directly.",
+        "estimatedTime": 60,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is an abstract class in OOP?",
+        "options": [
+          "A class that cannot be instantiated",
+          "A class with no attributes",
+          "A class with only attributes",
+          "A class that cannot have methods"
+        ],
+        "correctAnswer": "A",
+        "explanation": "An abstract class cannot be instantiated and often serves as a blueprint for other classes.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which type of Programming does Python support?",
+        "options": [
+          "object-oriented programming",
+          "structured programming",
+          "functional programming",
+          "all of the mentioned"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Python is an interpreted programming language, which supports object-oriented, structured, and functional programming.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is a generator in Python?",
+        "options": [
+          "A function that generates random numbers",
+          "A special type of list",
+          "A way to define classes",
+          "A function that yields values one at a time"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The correct answer is Option D: A function that yields values one at a time. Generators in Python are functions defined using the yield statement. They generate values lazily, one at a time, allowing for efficient memory usage, especially with large datasets. When called, a generator function returns an iterator object but does not start execution immediately. Instead, it suspends its state and resumes execution when the next() method is called on the iterator object. This makes generators a powerful tool for handling large datasets or infinite sequences efficiently.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What happens when you call a generator function?",
+        "options": [
+          "It immediately produces all values",
+          "It returns a list of values",
+          "It sets up a generator object",
+          "It creates a tuple of values"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The correct answer is Option C: It sets up a generator object. When you call a generator function in Python, it doesn't immediately produce all values or return a list of values. Instead, it sets up and returns a generator object. This generator object can then be used to iterate over the values produced by the generator function. The generator object maintains the state of the generator function, allowing it to yield values lazily, one at a time, as needed. This lazy evaluation mechanism enables efficient handling of large datasets or infinite sequences without loading all values into memory at once.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What does the built-in function enumerate() do in Python?",
+        "options": [
+          "Returns an enumerate object that produces pairs of index and value",
+          "Converts a string to lowercase",
+          "Returns the square of a number",
+          "Returns the absolute value of a number"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The correct answer is Option A: Returns an enumerate object that produces pairs of index and value . The enumerate() function in Python is used to iterate over a sequence while keeping track of the index of each item. It takes an iterable as an argument and returns an enumerate object that produces tuples containing the index and value of each item in the iterable. For example: my_list = ['a', 'b', 'c'] for index, value in enumerate(my_list): print(index, value) # Output: # 0 a # 1 b # 2 c",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following are the Access Modifiers types in Python-OpenCV?",
+        "options": [
+          "Protected Access Modifier, Private Access Modifier, Non-Public Access Modifier.",
+          "Public Access Modifier, Protected Access Modifier, Private Access Modifier.",
+          "Public Access Modifier, Semi-Protected Access Modifier, Private Access Modifier.",
+          "Public Access Modifier, Protected Access Modifier, Semi-private Access Modifier. 🔥 Enroll Now for Free Python Certification - March 2026"
+        ],
+        "correctAnswer": "B",
+        "explanation": "There are 3 types of access modifiers types in Python-OpenCV, they are Public Access Modifiers—by default all data members and functions of class are Public, Protected Access Modifier–declared using single underscore (_) symbol, and Private Access Modifier—declared using double underscore(__) symbol.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following functions can help us to find the version of python that we are currently working on?",
+        "options": [
+          "sys.version(1)",
+          "sys.version(0)",
+          "sys.version()",
+          "sys.version"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The function sys.version can help us to find the version of python that we are currently working on. It also contains information on the build number and compiler used. For example, 3.5.2, 2.7.3 etc. this function also returns the current date, time, bits etc along with the version.",
+        "estimatedTime": 60,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is the use of id() function in python?",
+        "options": [
+          "Every object doesn’t have a unique id",
+          "Id returns the identity of the object",
+          "All of the mentioned",
+          "None of the mentioned"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The id() function in Python returns the identity of an object. This identity is a unique integer (or memory address) that remains constant for the object during its lifetime. Every object in Python has a unique id, which helps in comparing object references.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What will be the output of the following Python program? def foo ( x ) : x [ 0 ] = [ 'def' ] x [ 1 ] = [ 'abc' ] return id ( x ) q = [ 'abc' , 'def' ] print ( id ( q ) == foo ( q ) )",
+        "options": [
+          "Error",
+          "None",
+          "False",
+          "True"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The list q is passed by reference to the function foo, so both x and q refer to the same object in memory. The id() function returns the memory address of the object, which remains unchanged. Therefore, id(q) == foo(q) evaluates to True.",
+        "estimatedTime": 75,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What will be the value of ‘result’ in following Python program? list1 = [ 1 , 2 , 3 , 4 ] list2 = [ 2 , 4 , 5 , 6 ] list3 = [ 2 , 6 , 7 , 8 ] result = list ( ) result. extend ( i for i in list1 if i not in ( list2+list3 ) and i not in result ) result. extend ( i for i in list2 if i not in ( list1+list3 ) and i not in result ) result. extend ( i for i in list3 if i not in ( list1+list2 ) and i not in result ) print ( result )",
+        "options": [
+          "[1, 3, 5, 7, 8]",
+          "[1, 7, 8]",
+          "[1, 2, 4, 7, 8]",
+          "error"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Here, ‘result’ is a list which is extending three times. When first time ‘extend’ function is called for ‘result’, the inner code generates a generator object, which is further used in ‘extend’ function. This generator object contains the values which are in ‘list1’ only (not in ‘list2’ and ‘list3’). Same is happening in second and third call of ‘extend’ function in these generator object contains values only in ‘list2’ and ‘list3’ respectively. So, ‘result’ variable will contain elements which are only in one list (not more than 1 list).",
+        "estimatedTime": 75,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the purpose of the `hashCode()` method in Java's Object class?",
+        "options": [
+          "To execute SQL queries",
+          "To return a unique identifier for an object",
+          "To create JavaBeans",
+          "None of These"
+        ],
+        "correctAnswer": "B",
+        "explanation": "This question is mapped to Java OOP Concepts. The correct answer is B based on the original source question.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "A programming structure that contains data and a pointer to the next object is a",
+        "options": [
+          "template",
+          "class",
+          "pointer class",
+          "linked list"
+        ],
+        "correctAnswer": "D",
+        "explanation": "This question is mapped to Java OOP Concepts. The correct answer is D based on the original source question.",
+        "estimatedTime": 60,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "In Java, which keyword is used to implement inheritance between classes?",
+        "options": [
+          "inheritsFrom",
+          "inherits",
+          "implements",
+          "extends"
+        ],
+        "correctAnswer": "D",
+        "explanation": "This question is mapped to Java OOP Concepts. The correct answer is D based on the original source question.",
+        "estimatedTime": 45,
+        "subtopic": "Java OOP Concepts",
+        "tags": [
+          "programming",
+          "technical",
+          "java",
+          "class",
+          "object"
+        ],
+        "codeSnippet": null,
+        "language": null
+      }
+    ]
+  },
+  "providerPayload": {
+    "mode": "offline",
+    "source": "existing_mock_tests",
+    "questionCount": 50
+  },
+  "offlineSource": true
+}

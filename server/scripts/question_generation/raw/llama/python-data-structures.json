@@ -1,0 +1,1130 @@
+{
+  "provider": "llama",
+  "model": "meta-llama/Llama-3.1-70B-Instruct-Turbo-offline",
+  "topic": "Python Data Structures",
+  "subject": "technical",
+  "category": "programming",
+  "difficulty": "medium",
+  "promptStyle": "code_practical",
+  "generatedAt": "2026-03-12T18:08:21.659Z",
+  "elapsedMs": 0,
+  "count": 50,
+  "cost": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "usd": 0,
+    "inr": 0
+  },
+  "prompt": "Create 50 practical placement test questions for campus recruitment.\n\nTOPIC: Python Data Structures\nDIFFICULTY: medium\n\nOUTPUT FORMAT (JSON only):\n{\n  \"questions\": [\n    {\n      \"questionText\": \"Clear, concise question\",\n      \"codeSnippet\": \"// Code if question involves programming (optional)\",\n      \"options\": [\"Option 1\", \"Option 2\", \"Option 3\", \"Option 4\"],\n      \"correctAnswer\": \"A/B/C/D\",\n      \"explanation\": \"Practical explanation with examples\",\n      \"language\": \"C/Java/Python if code involved, otherwise null\",\n      \"estimatedTime\": 60,\n      \"tags\": [\"tag1\", \"tag2\"]\n    }\n  ]\n}\n\nGUIDELINES FOR PROGRAMMING QUESTIONS:\n- Use clean, readable code snippets (under 15 lines)\n- Follow standard conventions\n- For code output questions: show execution flow in explanation\n- For non-programming topics: focus on practical application\n- Include both theoretical and problem-solving questions\n- Cover edge cases and common pitfalls\n\nGenerate exactly 50 questions. Output ONLY valid JSON.",
+  "rawText": "{\"questions\":[{\"questionText\":\"What will be the output of the following Python code? def foo ( ) : try : return 1 finally : return 2 k = foo ( ) print ( k ) Python MCQ on Variable Names & Operators Python MCQ on Data Types & Numeric Types MCQ on Precedence and Associativity in Python Python MCQ on Bitwise & Boolean Multiple Choice Questions on Formatting & Decorators in Python Python MCQ on While and For Loops Python MCQ on Strings Python Multiple Choice Questions on Lists Python MCQ on List Comprehension MCQ on Python Tuples MCQ on Python Sets Multiple Choice Questions on Python Dictionary Python MCQ on Built-in Functions Multiple Choice Questions on Python Functions Python MCQ on Argument Passing, Variables and Recursion Python MCQ on Mapping Functions Python MCQ on Modules Python MCQ on Regular Expressions Python Multiple Choice Questions on Files Python MCQ on Classes and Objects Python MCQ on OOPs Python MCQ on Exception Handling\",\"options\":[\"error, there is more than one return statement in a single try-finally block\",\"3\",\"2\",\"1 Chapterwise Multiple Choice Questions on Python Our 1000+ MCQs focus on all topics of the Python Programming subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. Python Variable Names & Operators Python Data Types & Numeric Types Python Precedence and Associativity Python Bitwise & Boolean Python Formatting & Decorators Python While and For Loops Python Strings Python Lists Python List Comprehension Python Tuples Python Sets Python Dictionary Python Built-in Functions Python Functions Python Argument Passing, Variables and Recursion Python Mapping Functions Python Modules Python Regular Expressions Python Files Python Classes and Objects Python OOPs Python Exception Handling The section contains multiple choice questions and answers on python variables and basic operators. Python Variable Names Python Basic Operators The section contains questions and answers on python core data types and numeric types. Python Core Data Types Python Numeric Types The section contains Python MCQ on precedence and associativity. Python Precedence and Associativity-1 Python Precedence and Associativity-2 The section contains multiple choice questions and answers on python bitwise and boolean. Python Bitwise – 1 Python Bitwise – 2 Python Boolean The section contains questions and answers on python formatting, advanced formatting and decorators. Python Formatting – 1 Python Formatting – 2 Python Advanced Formatting Python Decorators The section contains Python MCQ on different types of loops (while and for loops). Python While & For Loops – 1 Python While & For Loops – 2 Python While & For Loops – 3 Python While & For Loops – 4 Python While & For Loops – 5 Python While & For Loops – 6 The section contains multiple choice questions and answers on different types of python strings. Python Strings – 1 Python Strings – 2 Python Strings – 3 Python Strings – 4 Python Strings – 5 Python Strings – 6 Python Strings – 7 Python Strings – 8 Python Strings – 9 Python Strings – 10 Python Strings – 11 Python Strings – 12 Python Strings – 13 The section contains questions and answers on different types of lists. Python Lists – 1 Python Lists – 2 Python Lists – 3 Python Lists – 4 Python Lists – 5 Python Lists – 6 Python Lists – 7 The section contains MCQ on different types of list comprehension. Python List Comprehension Python List Comprehension – 1 Python List Comprehension – 2 Python Matrix List Comprehension The section contains multiple choice questions and answers on various types of tuples. Python Tuples – 1 Python Tuples – 2 Python Tuples – 3 The section contains questions and answers on various types of python sets. Python Sets – 1 Python Sets – 2 Python Sets – 3 Python Sets – 4 Python Sets – 5 The section contains multiple choice questions and answers on python dictionary. Python Dictionary – 1 Python Dictionary – 2 Python Dictionary – 3 Python Dictionary – 4 The section contains multiple choice questions and answers on different types of python built in functions. Python Built-in Functions – 1 Python Built-in Functions – 2 Python Built-in Functions – 3 The section contains questions and answers on different types of python functions. Python Function – 1 Python Function – 2 Python Function – 3 Python Function – 4 The section contains Python MCQ on argument parsing, global and local variables, recursion, differences between shallow and deep copy. Python Argument Passing – 1 Python Argument Passing – 2 Python Global vs Local Variables – 1 Python Global vs Local Variables – 2 Python Recursion Python Shallow Copy vs Deep Copy The section contains Python multiple choice questions and answers on functional programming tools and mapping functions. Python Functional Programming Tools Python Mapping Functions – 1 Python Mapping Functions – 2 Python Mapping Functions – 3 The section contains questions and answers on Python modules like math module, random module, sys module, datetime module, pickle and tutrle modules. Python Modules Python Math – 1 Python Math – 2 Python Math – 3 Python Datetime Module – 1 Python Datetime Module – 2 Python Random Module – 1 Python Random Module – 2 Python Sys Module Python Operating System Python Turtle Module – 1 Python Turtle Module – 2 Python Turtle Module – 3 Python Pickle Module The section contains Python MCQ on different types of regular expressions (regex). Python Regular Expressions Python Regular Expressions – 1 Python Regular Expressions – 2 Python Regular Expressions – 3 Python Regular Expressions – 4 Python Regular Expressions – 5 The section contains multiple choice questions and answers on python files. Python Files – 1 Python Files – 2 Python Files – 3 Python Files – 4 Python Files – 5 The section contains questions and answers on operator overloading, classes and objects. Python Operator Overloading Python Classes and Objects – 1 Python Classes and Objects – 2 The section contains MCQ on oops concepts like inheritance, polymorphism and encapsulation. Python Inheritance – 1 Python Inheritance – 2 Python Polymorphism Python Encapsulation The section contains multiple choice questions and answers on exception handling. Python Exception Handling – 1 Python Exception Handling – 2 Python Exception Handling – 3 Revise Python concepts and theory in detail through our complete Python Tutorial . To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. Recommended Python Books Best Reference Books for Python Language Python Tests & Certification Python Online Tests Python Certification Explore Other MCQ Collections Java Multiple Choice Questions C++ Multiple Choice Questions C Multiple Choice Questions C# Multiple Choice Questions Data Structures Multiple Choice Questions Computer Science Multiple Choice Questions\"],\"correctAnswer\":\"C\",\"explanation\":\"In Python, if both the try block and the finally block contain return statements, the return in the finally block overrides the one in the try block. So, even though return 1 is in the try, the function ends up returning 2 because of the finally block.\",\"estimatedTime\":75,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"A/An . . . . . . . . contains programs that can be selected.\",\"options\":[\"pointer\",\"menu\",\"icon\",\"button\"],\"correctAnswer\":\"B\",\"explanation\":\"Option A: pointer This option suggests that a pointer contains programs that can be selected. This statement is incorrect. In computing, a pointer refers to a graphical symbol on the screen that indicates the position where the next action will take place, such as clicking or selecting items, but it does not contain programs that can be selected. Option B: menu This option suggests that a menu contains programs that can be selected. This statement is correct. In graphical user interfaces (GUIs) like Microsoft Windows, a menu is a list of commands or options displayed on the screen that users can select to perform actions. Menus typically contain various programs, commands, or settings that users can choose from to interact with applications and the operating system. Option C: icon This option suggests that an icon contains programs that can be selected. This statement is incorrect. Icons are graphical representations or symbols displayed on the screen that represent files, folders, applications, or functions. Clicking on an icon typically opens the associated file or starts the corresponding program, but icons themselves do not contain programs. Option D: button This option suggests that a button contains programs that can be selected. This statement is incorrect. Buttons in a graphical user interface (GUI) are interactive elements that users can click on to trigger specific actions or commands within applications or the operating system. However, buttons do not contain programs themselves; they execute predefined functions when clicked. Conclusion: The correct answer is Option B: menu because in computing and Microsoft Windows, a menu is a list of options or commands that users can select from to perform actions, such as opening programs, accessing settings, or executing commands. Menus are integral components of GUIs that provide users with a structured way to interact with software and operating systems.\",\"estimatedTime\":60,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which feature can be implemented using encapsulation? MCQ on OOPs Concept & Features OOPs MCQ on Constructors and Destructors Object Oriented Programming MCQ on Access Specifiers OOP MCQ on Class Members & Types OOPs MCQ on Object Object Oriented Programming MCQ on Classes OOPs Multiple Choice Questions on Class Components (Using Java) OOPs Multiple Choice Questions on Types of Classes (Using Java) OOPs Multiple Choice Questions on Inheritance & its Types OOPs MCQ on Inheritance (Using Java) OOPs MCQ on Polymorphism (Using Java) OOP MCQ on Member Functions & its Types OOPs MCQ on Exception Handling & Static Class Members OOPs MCQ on Assigning Object, Pointer to Objects, Passing and Returning Object OOPs MCQ on Default Arguments vs Overloading, Upcasting and Downcasting OOPs MCQ on Memory Allocation & Scope of Variable Object Oriented Programming MCQ on Inbuilt Classes\",\"options\":[\"Polymorphism\",\"Overloading\",\"Inheritance\",\"Abstraction Chapterwise Multiple Choice Questions on Object Oriented Programming Our 1000+ MCQs focus on all topics of the Object Oriented Programming subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. OOPs Concept & Features Constructors and Destructors Access Specifiers Class Members & Types Object Classes Class Components (Using Java) Types of Classes (Using Java) Inheritance & its Types Inheritance (Using Java) Polymorphism (Using Java) Member Functions & its Types Exception Handling & Static Class Members Assigning Object, Pointer to Objects, Passing and Returning Object Default Arguments vs Overloading, Upcasting and Downcasting Memory Allocation & Scope of Variable Inbuilt Classes The section contains multiple choice questions and answers on oops basic concepts, objects, classes, oops features, polymorphism, encapsulation and abstraction. OOPs MCQ: Basics OOPs MCQ: Classes OOPs MCQ: Objects OOPs MCQ: Features OOPs MCQ: Polymorphism OOPs MCQ: Encapsulation OOPs MCQ: Abstraction The section contains questions and answers on constructors and its types, copy constructor, overloading constructors, destructors, execution of constructor or destructor. OOPs MCQ: Constructors OOPs MCQ: Types of Constructors OOPs MCQ: Copy Constructor OOPs MCQ: Overloading Constructors OOPs MCQ: Execution of Constructor or Destructor OOPs MCQ: Destructors The section contains MCQs on access specifiers, private, public and protected access Specifiers. OOPs MCQ: Access Specifiers OOPs MCQ: Private Access Specifier OOPs MCQ: Protected Access Specifier OOPs MCQ: Public Access Specifier The section contains multiple choice questions and answers on data members, member functions, local and nested class. Object Oriented Programming MCQ: Data Members Object Oriented Programming MCQ: Member Functions Object Oriented Programming MCQ: Local Class Object Oriented Programming MCQ: Nested Class The section contains questions and answers on passing and returning object with functions, object reference and memory allocation, object array and usage. OOPs MCQ: Passing and Returning Object with Functions OOPs MCQ: Object Reference OOPs MCQ: Memory Allocation of Object OOPs MCQ: Object Array OOPs MCQ: Object Use The section contains MCQs on abstract class, template class, base class, derived class and class usage. Object Oriented Programming MCQ: Abstract Class Object Oriented Programming MCQ: Template Class Object Oriented Programming MCQ: Base Class Object Oriented Programming MCQ: Derived Class Object Oriented Programming MCQ: Class Use The section contains multiple choice questions and answers on data members, member functions, constructors, types of constructors, constructor overloading, copy constructors, assigning objects, the ‘this’ keyword, and memory allocation in Java programming. Data Members Member Functions Constructors Types of Constructors Constructor Overloading Copy Constructors Assigning Objects this Keyword Memory Allocation The section contains questions and answers on object class, base class, derived class, inner class, static class, final class, generic class, nested class, wrapper class, and collection classes using Java programming. Object Class Base Class Derived Class Inner Class Static Class Final Class Generic Class Nested Class Wrapper Class Collection Classes The section contains multiple choice questions and answers on inheritance and its types, single and multilevel inheritance, multiple inheritance, hierarchical and hybrid inheritance. OOPs MCQ: Inheritance OOPs MCQ: Types of Inheritance OOPs MCQ: Single Level Inheritance OOPs MCQ: Multilevel Inheritance OOPs MCQ: Multiple Inheritance OOPs MCQ: Hierarchical Inheritance OOPs MCQ: Hybrid Inheritance The section contains OOPs MCQs using Java on inheritance types, including single-level inheritance, multilevel inheritance, hierarchical inheritance, and hybrid inheritance. Types of Inheritance Single Level Inheritance Multilevel Inheritance Hierarchical Inheritance Hybrid Inheritance The section contains multiple choice questions and answers on method overloading and method overriding. Method Overloading Method Overriding The section contains questions and answers on virtual and abstract functions, member function types, member operator function, overloading and overriding member functions, constant, private and public member functions. Object Oriented Programming MCQ: Virtual Functions Object Oriented Programming MCQ: Abstract Function Object Oriented Programming MCQ: Types of Member Functions Object Oriented Programming MCQ: Member Operator Function Object Oriented Programming MCQ: Overloading Member Functions Object Oriented Programming MCQ: Overriding Member Functions Object Oriented Programming MCQ: Constant Member Functions Object Oriented Programming MCQ: Private Member Functions Object Oriented Programming MCQ: Public Member Functions The section contains MCQs on exception handling, catching class types, static data members and static member functions. OOPs MCQ: Exception Handling OOPs MCQ: Catching Class Types OOPs MCQ: Static Data Members OOPs MCQ: Static Member Functions The section contains multiple choice questions and answers on passing objects to functions, returning and assigning objects, pointers to objects and this pointer. OOPs MCQ: Passing Object to Functions OOPs MCQ: Returning Objects OOPs MCQ: Assigning Objects OOPs MCQ: Pointer to Objects OOPs MCQ: This Pointer The section contains questions and answers on default arguments, constructors overloading, upcasting and downcasting. OOPs MCQ: Default Arguments OOPs MCQ: Constructors Overloading OOPs MCQ: Upcasting OOPs MCQ: Downcasting The section contains MCQs on new and delete operators, automatic and extern variables. OOPs MCQ: New Operator OOPs MCQ: Delete Operator OOPs MCQ: Automatic Variable OOPs MCQ: Extern Variable The section contains multiple choice questions and answers on inbuilt classes, io and string class. OOPs MCQ: Inbuilt Classes OOPs MCQ: IO Class OOPs MCQ: String Class To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews.\"],\"correctAnswer\":\"D\",\"explanation\":\"Data abstraction can be achieved by using encapsulation. We can hide the operation and structure of actual program from the user and can show only required information by the user.\",\"estimatedTime\":75,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Checked – Compile time) Checked exception can be handled using throws and try-catch public class CheckedExceptions { public static void main(String[] args) throws IOException { System.out.println(\\\"Program is started..\\\"); System.out.println(\\\"Program is progress..\\\"); // try { FileInputStream file=new FileInputStream(\\\"C:\\\\\\\\file.txt\\\"); } catch (FileNotFoundException e) { e.printStackTrace(); } // FileInputStream file=new FileInputStream(\\\"C:\\\\\\\\file.txt\\\"); System.out.println(file.read()); System.out.println(\\\"Program is completed..\\\"); try-catch throws Collections: The Collections Framework in Java provides a set of interfaces and classes to store and manage objects efficiently. Collection (Interface) List (I) Set (I) Map (I) Ordered, allows duplicates Unordered, no duplicates stored in the form of key, value pairs ArrayList (C)→ Dynamic array, fast access HashSet (C) → Uses HashMap internally, no order HashMap (C) LinkedList (C)→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {\",\"options\":[\"→ Dynamic array, fast access HashSet\",\"→ Uses HashMap internally, no order HashMap\",\"LinkedList\",\"→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {\"],\"correctAnswer\":\"A\",\"explanation\":\"This question is mapped to Python Data Structures. The correct answer is A based on the original source question.\",\"estimatedTime\":75,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which programming language is commonly used for Data Science tasks?\",\"options\":[\"Java\",\"Python\",\"C++\",\"JavaScript\"],\"correctAnswer\":\"B\",\"explanation\":\"Let's look at why Python is the correct answer and why the others are not as commonly used for these specific tasks. Option B: Python (Correct Answer) Python is by far the most popular and widely used programming language for Data Science. Here's why it's the top choice: 1. Easy to Learn: Python has a simple and readable structure (syntax), which makes it easy for beginners to understand and write code. 2. Rich Libraries: Python has an amazing collection of specialized tools, called \\\"libraries,\\\" that are specifically designed for Data Science tasks. Some very important ones include: - NumPy: Great for working with numbers and large datasets efficiently. - Pandas: Used for cleaning, analyzing, and manipulating data, similar to working with advanced spreadsheets. - Scikit-learn: Essential for building machine learning models (like algorithms that learn from data to make predictions). - Matplotlib and Seaborn: Used for creating clear and beautiful charts and graphs to visualize data. 3. Versatility: Besides Data Science, Python is also used for web development, automation, and many other areas, making it a very powerful and useful language to know. Option A: Java Java is a powerful and robust language, often used in large enterprise systems and for building big data processing frameworks (like Apache Hadoop or Apache Spark). However, for the everyday tasks of data analysis, writing scripts for quick insights, or directly building machine learning models, Python is generally preferred because of its simpler code and specialized Data Science libraries. Option C: C++ C++ is known for its speed and efficiency. While some very performance-critical parts of Data Science libraries (especially those in Python) might be written in C++ \\\"behind the scenes\\\" to make them run faster, C++ itself is rarely used directly by Data Scientists for their daily coding tasks. It's much more complex and takes more time to write code in C++ compared to Python for data analysis. Option D: JavaScript JavaScript is mainly the language of the internet. It's used to make websites interactive and for developing web applications (both front-end and back-end with Node.js). While you can use JavaScript libraries (like D3.js) for some interactive data visualizations on the web, it is not the primary language for general data cleaning, statistical analysis, or building machine learning models in Data Science. In summary, when you start learning Data Science, Python is the first language you should focus on because of its ease of use, powerful libraries, and a large supportive community.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"In C, how are function arguments passed by default?\",\"options\":[\"By value\",\"By reference\",\"By pointer\",\"By address\"],\"correctAnswer\":\"A\",\"explanation\":\"In the C programming language, function arguments are passed by value by default. This means that when you call a function and pass arguments to it, the function receives copies of the values of those arguments, rather than direct access to the original variables. Here's a brief explanation of the other options: Option B: By reference : In C, there is no direct reference concept as in languages like C++ or C#. Pass-by-reference is not the default behavior in C. Option C: By pointer : While you can pass pointers as function arguments in C, it is not the default behavior. By default, the values themselves are passed. Option D: By address : Passing by address is essentially the same as passing by pointer, and it is not the default behavior in C. So, the correct answer is Option A: By value , as it describes the default behavior for passing function arguments in the C programming language.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"How can you pass a variable number of keyword arguments to a function in Python?\",\"options\":[\"By using the **kwargs syntax\",\"By using the *args syntax\",\"By using the * symbol\",\"By using the ... symbol\"],\"correctAnswer\":\"A\",\"explanation\":\"Correct Answer: A) By using the **kwargs syntax Keyword Arguments: In Python, keyword arguments are arguments passed to a function along with a name (the keyword) and a value. Example: my_function(name=\\\"Alice\\\", age=30) Variable Number of Keyword Arguments: Sometimes, you don't know in advance how many keyword arguments a function might receive. That's where **kwargs comes in. kwargs Explained: * The **kwargs syntax allows a function to accept any number of keyword arguments. * kwargs is just a name (you could technically use another name), but ** is what's important. It tells Python to collect all the keyword arguments into a dictionary. * Inside the function, kwargs acts like a regular dictionary where the keys are the argument names (like \\\"name\\\" and \\\"age\\\") and the values are the corresponding argument values (like \\\"Alice\\\" and 30). Why the other options are incorrect: * Option B ( *args ): Used to pass a variable number of positional arguments. It collects them into a tuple, not a dictionary. * Option C ( * symbol): Used for other purposes such as unpacking iterables or enforcing keyword-only arguments, but not for passing keyword arguments. * Option D ( ... symbol): The ellipsis has special meanings like use in type hints or as a placeholder, but is not related to passing arguments to functions. Therefore, the correct answer is Option A: By using the **kwargs syntax .\",\"estimatedTime\":60,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What happens when you call a generator function?\",\"options\":[\"It immediately produces all values\",\"It returns a list of values\",\"It sets up a generator object\",\"It creates a tuple of values\"],\"correctAnswer\":\"C\",\"explanation\":\"The correct answer is Option C: It sets up a generator object. When you call a generator function in Python, it doesn't immediately produce all values or return a list of values. Instead, it sets up and returns a generator object. This generator object can then be used to iterate over the values produced by the generator function. The generator object maintains the state of the generator function, allowing it to yield values lazily, one at a time, as needed. This lazy evaluation mechanism enables efficient handling of large datasets or infinite sequences without loading all values into memory at once.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is NOT a benefit of using generators?\",\"options\":[\"Improved memory efficiency\",\"Faster execution than loops\",\"Easier debugging\",\"Lazy evaluation\"],\"correctAnswer\":\"C\",\"explanation\":\"Option A: Improved memory efficiency. This option is a well-known benefit of using generators. Generators produce values lazily, meaning they only generate values when requested, rather than storing all values in memory at once. This lazy evaluation mechanism results in improved memory efficiency, especially when dealing with large datasets or infinite sequences. Option B: Faster execution than loops . This option is not correct because generators do not inherently execute faster than loops. In fact, due to the additional functionality they provide, such as suspending and resuming execution with each yield statement, generators might introduce a slight overhead. While generators offer other benefits like improved memory efficiency and lazy evaluation, faster execution compared to loops is not one of them. Option C: Easier debugging. This option is incorrect. Debugging generator functions can be more challenging compared to debugging regular functions or loops. The flow of execution in generator functions involves suspending and resuming with the yield statement, which can make it harder to track. Additionally, debugging generator functions might require specialized techniques or tools to inspect the state of the generator object and the values yielded during iteration. Option D: Lazy evaluation. This option is actually a benefit of using generators. Generators support lazy evaluation, meaning they produce values on-demand as they are requested, rather than eagerly generating all values upfront. Lazy evaluation allows for efficient memory usage and can be particularly useful when working with large datasets or infinite sequences. So, the correct answer is indeed Option C: Easier debugging, as it does not align with the typical benefits associated with using generators.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which built-in function is used to find the smallest item in an iterable?\",\"options\":[\"min()\",\"smallest()\",\"minimum()\",\"small()\"],\"correctAnswer\":\"A\",\"explanation\":\"The correct answer is Option A: min() . The min() function is used to find the smallest item in an iterable, such as a list, tuple, or set. It takes an iterable as an argument and returns the smallest item. For example: numbers = [5, 2, 8, 1, 6] smallest_number = min(numbers) print(smallest_number) # Output: 1\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What does the built-in function max() do in Python?\",\"options\":[\"Returns the largest item in an iterable\",\"Converts a number to a string\",\"Returns the square of a number\",\"Returns the absolute value of a number\"],\"correctAnswer\":\"A\",\"explanation\":\"The correct answer is Option A: Returns the largest item in an iterable . The max() function in Python is used to find the largest item in an iterable, such as a list, tuple, or set. It takes one or more arguments and returns the largest item. For example: numbers = [5, 2, 8, 1, 6] largest_number = max(numbers) print(largest_number) # Output: 8\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What does the built-in function enumerate() do in Python?\",\"options\":[\"Returns an enumerate object that produces pairs of index and value\",\"Converts a string to lowercase\",\"Returns the square of a number\",\"Returns the absolute value of a number\"],\"correctAnswer\":\"A\",\"explanation\":\"The correct answer is Option A: Returns an enumerate object that produces pairs of index and value . The enumerate() function in Python is used to iterate over a sequence while keeping track of the index of each item. It takes an iterable as an argument and returns an enumerate object that produces tuples containing the index and value of each item in the iterable. For example: my_list = ['a', 'b', 'c'] for index, value in enumerate(my_list): print(index, value) # Output: # 0 a # 1 b # 2 c\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which function returns an array of row values?\",\"options\":[\"fetchrow_array()\",\"fetchrow_arrayref()\",\"fetch()\",\"fetchrow_hashref()\"],\"correctAnswer\":\"A\",\"explanation\":\"This question asks about a function in MySQL that gives you a list of values from a row in your database. Imagine you have a table called \\\"students\\\" with columns like \\\"name\\\", \\\"age\\\", and \\\"grade\\\". When you ask for information from this table, you want a way to get all the details of a single student, like their name, age, and grade, as a set of values. Here's where these functions come in: * Option A: fetchrow_array() - This function is designed to return an array of values from a row, representing the data in that row. It's like a neat list of information about one student. * Option B: fetchrow_arrayref() - This function is similar to \\\"fetchrow_array()\\\", but it provides a reference to the array rather than the array itself. Think of it as a pointer to the list of student details. * Option C: fetch() - This function retrieves the next row from the result set, and you can use it to access the data in different formats. It's a more general way to get information, while \\\"fetchrow_array()\\\" focuses specifically on returning an array of values. * Option D: fetchrow_hashref() - This function returns a hash (dictionary) of row values, where the keys are the column names and the values are the corresponding data for that row. It's like a structured list that uses the column names as labels, making it easy to access specific information. The correct answer is Option A: fetchrow_array() because it directly returns an array of row values, providing the data you need in a simple list format.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What will be the output of the following PHP code? <?php $fruits = array ( \\\"apple\\\" , \\\"orange\\\" , \\\"banana\\\" ) ; echo (next( $fruits )) ; echo (next( $fruits )) ; ?>\",\"options\":[\"orangebanana\",\"appleorange\",\"orangeorange\",\"appleapple\"],\"correctAnswer\":\"A\",\"explanation\":\"The next() function returns the array value residing at the position immediately following that of the current array pointer.\",\"estimatedTime\":75,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What will be the output of the following Python code? l = [ 1 , 0 , 2 , 0 , 'hello' , '' , [ ] ] print ( list ( filter ( bool , l ) ) )\",\"options\":[\"[1, 0, 2, ‘hello’, ”, []]\",\"Error\",\"[1, 2, ‘hello’]\",\"[1, 0, 2, 0, ‘hello’, ”, []]\"],\"correctAnswer\":\"C\",\"explanation\":\"The function filter(bool, l) removes all false elements from the list l, such as 0, ”, and []. The remaining true elements — 1, 2, and ‘hello’ — are returned as a new list.\",\"estimatedTime\":75,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What will be the output of the following Python function? print ( len ( [ \\\"hello\\\" , 2 , 4 , 6 ] ) )\",\"options\":[\"Error\",\"6\",\"4\",\"3\"],\"correctAnswer\":\"C\",\"explanation\":\"The len() function returns the number of elements in the list, regardless of their types. In this case, the list [“hello”, 2, 4, 6] contains four elements, so len() returns 4.\",\"estimatedTime\":60,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What will be the output of the following Python code? x = [ [ 0 ] , [ 1 ] ] print ( ( ' ' . join ( list ( map ( str , x ) ) ) , ) )\",\"options\":[\"01\",\"[0] [1]\",\"(’01’)\",\"(‘[0] [1]’,)\"],\"correctAnswer\":\"D\",\"explanation\":\"In this code, map(str, x) converts each inner list [0] and [1] into strings: “[0]” and “[1]”. Then ‘ ‘.join(...) creates the string “[0] [1]”. Finally, it is wrapped in a tuple using the comma syntax, resulting in (‘[0] [1]’,).\",\"estimatedTime\":75,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the primary purpose of a function prototype in C?\",\"options\":[\"Declare a variable\",\"Declare a function\",\"Define a function\",\"Assign a value\"],\"correctAnswer\":\"B\",\"explanation\":\"The primary purpose of a function prototype in C is to declare a function . It serves as a forward declaration of the function, providing information about the function's name, return type, and the types of its parameters. This declaration allows the compiler to understand how the function should be called and used in the program before the actual function definition is encountered. So, the correct answer is: Option B: Declare a function In C, a function prototype typically looks like this: return_type function_name(parameter_type1, parameter_type2, ...); Here's an example: int add(int a, int b); This prototype informs the compiler that there's a function named \\\"add\\\" that returns an integer and takes two integer parameters. It doesn't define the function's implementation; it simply declares its existence and signature.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following CSS3 property can be used to allow line breaks within words? CSS MCQ on Fundamentals, Colors and Styling CSS MCQ on Text, Borders and Images CSS Multiple Choice Questions on Selectors & Files CSS MCQ on Properties, Elements, Functions & Tables CSS3 MCQ on Fundamentals, Transitions & Animations CSS MCQ on Lists, Tables and Forms CSS MCQ on Layout & Images CSS MCQ on CGI Programming & Miscellaneous\",\"options\":[\"line-break\",\"line-wrap\",\"word-wrap\",\"word-break Chapterwise Multiple Choice Questions on CSS Our 1000+ MCQs focus on all topics of the CSS subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. CSS Fundamentals, Colors and Styling CSS Text, Borders and Images CSS Selectors & Files CSS Properties, Elements, Functions & Tables CSS3 Fundamentals, Transitions & Animations CSS Lists, Tables and Forms CSS Layout & Images CGI Programming & Miscellaneous The section contains CSS multiple choice questions and answers on css basics, functions, fonts, versions, specification and color values, style inclusion methods, specifying sizes, colors and files. Introduction to CSS CSS Functions CSS Fonts CSS Versions Specification of CSS Style Inclusion Methods CSS Color Values Specifying Sizes, Colors and Files The section contains CSS questions and answers on borders, text, voice, outlines and box model, media types, border elements, cross browser layout techniques, styling texts, lists and navigation menus, embedding web fonts, gradients, background borders and targeting styles. CSS border CSS Text CSS Voice CSS Outline CSS Media Types CSS Border Elements Cross Browser Layout Techniques CSS Styling Texts Embedding Web Fonts CSS Box Model CSS Backgrounds, Borders and Drop Shadow CSS Styling Lists and Navigation Menus Gradients without Images Targeting Styles with Media Queries The section contains CSS MCQs with answers on document styles, specificity and importance, selectors and advanced selectors. Applying Style to a Document Using Advanced Selectors CSS Selectors CSS Specificity and Importance The section contains CSS multiple choice questions and answers on xhtml fundamentals, css inheritance and miscellaneous property, major themes, strings and keywords, css measurements, css properties, styling tables, generated content, layout floating elements, css keyframes, elements precise positioning, transforms and transitions, inheritance and cascade. CSS and (X)HTML Elements Fundamentals CSS Miscellaneous Property Document Structure and CSS Inheritance CSS Major Themes CSS Strings and Keywords Measurements in CSS Miscellaneous CSS Constructs CSS 1 and CSS 2.1 Properties Implemented CSS3 and Browser-Specific Features CSS Styling Tables Generated Content CSS Floating Elements for Layout CSS Transforms and Transitions CSS Keyframes Precise Positioning of Elements CSS Inheritance and Cascade The section contains CSS3 questions and answers on css3 images, ui elements transitions, css3 animations, css3 user interface properties, fundamentals and multi column layout. CSS3 Transitions for Images CSS3 Transitions for UI Elements CSS3 Animations with SVG and Filters CSS3 Animation with Responsive Web Design CSS3 3D Transforms, Transitions, and Animations CSS3 User Interface Properties CSS3 Fundamentals Using CSS3 Multi Column Layout The section contains CSS MCQs on form elements appearance. Appearance of Form Elements The section contains CSS MCQ questions with answers on bullet point styles, css image alignment, id & class, image replacement, print styles and their development, server specific css, shadowy styles, multiple backgrounds, css popups and menus, sliding doors, clipped sliding doors, table graphs, 2d transforms and constrained images. Specifying Bullet Point Styles, CSS Image Alignment, ID and Class Suppressing Element Display & Visibility, Image Replacement Print Styles and their Development Server Specific CSS Shadowy Styles, Multiple Backgrounds, CSS Pop-Ups & Menus Sliding Doors & Clipped Sliding Doors Table Graphs, 2D Transforms, Boxing of Images & Constrained Images The section contains CSS questions and answers on css transition and perl cgi programming. CSS Transition & Perl CGI Programming Miscellaneous To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. Important Links: Best Books on CSS HTML Multiple Choice Questions Python Multiple Choice Questions PHP Multiple Choice Questions Javascript Multiple Choice Questions Computer Science Multiple Choice Questions Information Technology Multiple Choice Questions Information Science Multiple Choice Questions CSS Books:\"],\"correctAnswer\":\"D\",\"explanation\":\"word-break property can be used to allow line breaks within the words. Syntax: word-break : break-all | keep-all | normal\",\"estimatedTime\":75,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the primary function of the Control Unit (CU) in a CPU?\",\"options\":[\"Executes program instructions\",\"Directs operations of the entire computer system\",\"Stores data temporarily\",\"None of the above\"],\"correctAnswer\":\"B\",\"explanation\":\"Option B: Directs operations of the entire computer system The primary function of the Control Unit (CU) in a CPU is to direct and coordinate the operations of the entire computer system. It manages the execution of instructions by fetching them from memory, decoding them, and controlling the data flow between the CPU and other parts of the computer system, including RAM, I/O devices, and the ALU (Arithmetic Logic Unit). The CU also manages the timing and control signals necessary for communication between these components. Option A: Executes program instructions While the CPU as a whole executes program instructions, specifically, it is the combination of the Control Unit (CU) and the Arithmetic Logic Unit (ALU) that executes the instructions. The CU directs this process. Option C: Stores data temporarily This role is typically associated with memory units such as RAM (Random Access Memory) rather than the Control Unit (CU), which primarily handles control and coordination tasks. Conclusion: The correct answer, Option B: Directs operations of the entire computer system , best describes the primary role of the Control Unit (CU) in a CPU, emphasizing its critical function in managing and coordinating the operation of the entire computer system.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"How do you read a character from a file in C?\",\"options\":[\"getc()\",\"readchar()\",\"read()\",\"getchar()\"],\"correctAnswer\":\"A\",\"explanation\":\"The correct answer is A: getc() Let's break down why: getc() is a standard C library function specifically designed to read a single character from a file stream. It takes a file pointer (FILE*) as an argument and returns the character read (as an integer) or EOF if the end of the file is reached or an error occurs. readchar() is not a standard C function for file input. read() is a lower-level function (usually from the POSIX standard) used for reading a block of data from a file descriptor, not a single character. getchar() reads a character from standard input (stdin), which is usually the keyboard, not from a file. So, getc() is the correct function to use when you want to read a single character from a file in C.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Dynamic content presented in Google . . . . . . . . crawling isn't normally indexed.\",\"options\":[\"ajax\",\"java\",\"javascript\",\"all of the mentioned\"],\"correctAnswer\":\"C\",\"explanation\":\"Option A: Ajax (Asynchronous JavaScript and XML) is used to create dynamic web pages where content can be updated without reloading the entire page. However, dynamic content loaded via Ajax isn't always indexed by Google’s crawling systems because it requires additional execution beyond static HTML, making it less likely to be indexed by default. Option B: Java is a programming language primarily used for back-end development and web applications. While Java is powerful for various applications, it is not typically related to dynamic content in the context of Google crawling and indexing processes. It does not directly impact how content is rendered for crawling in most cases. Option C: JavaScript is heavily used for dynamic web content. Content generated dynamically by JavaScript often poses a challenge for Google’s crawlers. Unless specific techniques are used, such as server-side rendering, this dynamic content might not be fully indexed because the crawler may not execute the JavaScript needed to display it. Option D: All of the mentioned is partially correct, but it is a generalization. While Ajax and JavaScript directly relate to how dynamic content might not be indexed, Java is not directly linked to Google’s indexing challenges with dynamic content. Conclusion: The correct answer is Option C: JavaScript , as it is the most significant factor in dynamic content that may not be indexed by Google’s crawlers without proper handling.\",\"estimatedTime\":60,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which OpenCV function or method Closes video file or capturing device?\",\"options\":[\"cv.VideoCapture.release()\",\"cv.VideoCapture.closed()\",\"cv.VideoCapture.re()\",\"cv.VideoCapture.close()\"],\"correctAnswer\":\"A\",\"explanation\":\"cv.VideoCapture.release() is a function or method that Closes video file or capturing device. The method is automatically called by subsequent VideoCapture::open and by VideoCapture destructor. The C function also deallocates memory and clears *capture pointer.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the purpose of memory refresh register of Z80?\",\"options\":[\"To control on-chip SRAM\",\"To control on-chip DRAM\",\"To clear cache\",\"To control ROM\"],\"correctAnswer\":\"B\",\"explanation\":\"In addition to the general purpose registers, a stack pointer, program counter, and two index registers are included in Z80. It was also used in many embedded designs because of its high-quality performance and for its in-built refresh circuitry for DRAMs.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"The initial alignments used to produce the guide tree may be obtained by various methods. Which of the following is not one of them?\",\"options\":[\"pattern-finding approach similar\",\"FASTA\",\"Faster, full dynamic programming method\",\"Fast k-tuple\"],\"correctAnswer\":\"C\",\"explanation\":\"The methods used, might be fast k-tuple or pattern-finding approach similar to FASTA that is useful for many sequences and the full dynamic programming method as well. But the option d becomes incorrect as full dynamic programming method is slower as compared to rest of the methods in options.\",\"estimatedTime\":60,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the java extension file in IoT?\",\"options\":[\".jar\",\".c\",\".exe\",\".py\"],\"correctAnswer\":\"A\",\"explanation\":\"The Java extension file commonly used in the context of IoT (Internet of Things) is .jar . A .jar file, which stands for Java Archive, is a compressed file format that contains Java class files, resources, and metadata. It is used to package and distribute Java applications and libraries. In IoT, Java is a popular programming language for developing applications that run on various IoT devices and platforms. Options B (.c), C (.exe), and D (.py) represent file extensions for programming languages other than Java. .c is for C programming language, .exe is for executable files in Windows, and .py is for Python programming language. Hence, the correct answer is Option A: .jar. It is the extension commonly associated with Java files used in IoT development.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the result of type(3.14) ?\",\"options\":[\"float\",\"int\",\"double\",\"numeric\"],\"correctAnswer\":\"A\",\"explanation\":\"The type() function returns the data type of the argument.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the purpose of the str() function in Python?\",\"options\":[\"To convert a string to a number\",\"To format strings\",\"To concatenate strings\",\"To convert a number to a string\"],\"correctAnswer\":\"D\",\"explanation\":\"The str() function converts a number or other data type to a string.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the purpose of the functools.wraps() function in decorators?\",\"options\":[\"To create a new function\",\"To modify the decorator's behavior\",\"To preserve the original function's metadata\",\"To remove a decorator\"],\"correctAnswer\":\"C\",\"explanation\":\"functools.wraps() preserves the original function's metadata when using decorators.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"To add a new element to a list we use which Python command?\",\"options\":[\"list1.addEnd(5)\",\"list1.addLast(5)\",\"list1.append(5)\",\"list1.add(5)\"],\"correctAnswer\":\"C\",\"explanation\":\"We use the function append to add an element to the list.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is a generator in Python?\",\"options\":[\"A function that generates random numbers\",\"A special type of list\",\"A way to define classes\",\"A function that yields values one at a time\"],\"correctAnswer\":\"D\",\"explanation\":\"The correct answer is Option D: A function that yields values one at a time. Generators in Python are functions defined using the yield statement. They generate values lazily, one at a time, allowing for efficient memory usage, especially with large datasets. When called, a generator function returns an iterator object but does not start execution immediately. Instead, it suspends its state and resumes execution when the next() method is called on the iterator object. This makes generators a powerful tool for handling large datasets or infinite sequences efficiently.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"How is a generator different from a regular function?\",\"options\":[\"A generator uses the return keyword\",\"A generator can yield multiple values\",\"A generator uses the break statement\",\"A generator uses the continue statement\"],\"correctAnswer\":\"B\",\"explanation\":\"The correct answer is Option B: A generator can yield multiple values. Generators and regular functions in Python are different in how they operate. Regular functions use the return keyword to return a single result and terminate execution. In contrast, generators use the yield keyword to produce a sequence of values lazily. Generators can yield multiple values over successive calls to the next() function or through iteration, whereas regular functions return only once. This feature of generators enables them to efficiently handle large datasets or infinite sequences without consuming excessive memory.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"How are values produced in a generator function?\",\"options\":[\"Using the yield keyword\",\"Using the return keyword\",\"Using the print() function\",\"Using the generate keyword\"],\"correctAnswer\":\"A\",\"explanation\":\"The correct answer is Option A: Using the yield keyword. Values are produced in a generator function using the yield keyword. When a generator function encounters a yield statement, it temporarily suspends its execution and returns the yielded value. Subsequent calls to the generator function continue execution from where it was previously suspended, allowing it to generate values lazily, one at a time, as needed. This mechanism enables generators to efficiently handle large datasets or infinite sequences without loading all values into memory at once.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"How is a generator object iterated in a for loop?\",\"options\":[\"Using the yield keyword\",\"By using the next() function\",\"By using the for keyword\",\"By using the get() method\"],\"correctAnswer\":\"C\",\"explanation\":\"The correct answer is Option C: By using the for keyword. A generator object is iterated in a for loop by using the for keyword. When you use a for loop to iterate over a generator object, Python automatically calls the next() function on the generator object to retrieve each value yielded by the generator function. This process continues until the generator function is exhausted, at which point the loop terminates. This convenient syntax allows you to easily iterate over the values produced by a generator without explicitly calling next() or managing the loop termination condition.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the main purpose of a generator expression in Python?\",\"options\":[\"To create new generators\",\"To generate random numbers\",\"To produce sequences of values lazily\",\"To define classes\"],\"correctAnswer\":\"C\",\"explanation\":\"The correct answer is Option C: To produce sequences of values lazily. Generator expressions in Python are used to produce sequences of values lazily, meaning they generate values on-demand as they are requested, rather than eagerly generating all values upfront. This lazy evaluation mechanism allows for efficient memory usage, especially when dealing with large datasets or infinite sequences. Generator expressions are concise and readable, making them a convenient way to define generators without the need for writing a separate generator function. They are often used in scenarios where a one-time sequence of values needs to be generated for processing or iteration.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is an advantage of Python?\",\"options\":[\"It compiles to machine code\",\"It enforces strict typing\",\"It has a large standard library\",\"It requires extensive memory management\"],\"correctAnswer\":\"C\",\"explanation\":\"One of the advantages of Python is that it has a large standard library . Python's standard library contains a wide range of modules and packages that provide ready-to-use functionality for various tasks, including file I/O, networking, database access, web development, and much more. This extensive collection of modules simplifies development and allows programmers to accomplish many tasks without having to write code from scratch.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the output of the following code: my_list = [1, 2, 3] print(my_list[1])\",\"options\":[\"1\",\"2\",\"3\",\"Error\"],\"correctAnswer\":\"B\",\"explanation\":\"Code: my_list = [1, 2, 3] print(my_list[1]) Step-by-Step Explanation: 1. List Creation: The code creates a list named my_list with elements [1, 2, 3] . A list in Python is an ordered collection of elements, where each element has an index . The list my_list is indexed as follows: Index 0: 1 Index 1: 2 Index 2: 3 2. Accessing an Element: The code my_list[1] is used to access the element at index 1 in the list. Since Python uses zero-based indexing , the element at index 1 is 2 . 3. Printing the Element: The print() function outputs the value of my_list[1] , which is 2 , to the console. 4. Correct Output: The result of executing the code is the number 2 . Output: The correct output of the code is 2 . Key Points to Remember: 1. Python lists are zero-indexed . The first element is at index 0, the second at index 1, and so on. 2. Using an index out of range (e.g., my_list[3] for the given list) would result in an IndexError . 3. The code is syntactically correct and does not produce any errors.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which built-in function is used to check if all elements in an iterable are true?\",\"options\":[\"all()\",\"every()\",\"true()\",\"check()\"],\"correctAnswer\":\"A\",\"explanation\":\"The correct answer is Option A: all() . The all() function in Python is used to check if all elements in an iterable are true. It takes an iterable as an argument and returns True if all elements in the iterable are true, otherwise False . For example: my_list = [True, True, True] result = all(my_list) print(result) # Output: True\",\"estimatedTime\":60,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which built-in function is used to convert a value to an integer?\",\"options\":[\"int()\",\"integer()\",\"to_int()\",\"convert_int()\"],\"correctAnswer\":\"A\",\"explanation\":\"The correct answer is Option A: int() . The int() function in Python is used to convert a value to an integer. It can convert a string representing a number, a float, or even another integer to an integer data type. For example: num_str = \\\"10\\\" num_float = 3.14 converted_str = int(num_str) converted_float = int(num_float) print(converted_str) # Output: 10 print(converted_float) # Output: 3\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the purpose of the built-in function dir()?\",\"options\":[\"Returns a list of attributes and methods of an object\",\"Converts a string to lowercase\",\"Returns the square of a number\",\"Returns the absolute value of a number\"],\"correctAnswer\":\"A\",\"explanation\":\"The correct answer is Option A: Returns a list of attributes and methods of an object . The dir() function in Python is used to return a list of attributes and methods of an object. When called without an argument, it returns the list of names in the current local scope. For example: my_list = [1, 2, 3] print(dir(my_list)) # Output: ['__add__', '__class__', '__contains__', ...]\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following are the Access Modifiers types in Python-OpenCV?\",\"options\":[\"Protected Access Modifier, Private Access Modifier, Non-Public Access Modifier.\",\"Public Access Modifier, Protected Access Modifier, Private Access Modifier.\",\"Public Access Modifier, Semi-Protected Access Modifier, Private Access Modifier.\",\"Public Access Modifier, Protected Access Modifier, Semi-private Access Modifier. 🔥 Enroll Now for Free Python Certification - March 2026\"],\"correctAnswer\":\"B\",\"explanation\":\"There are 3 types of access modifiers types in Python-OpenCV, they are Public Access Modifiers—by default all data members and functions of class are Public, Protected Access Modifier–declared using single underscore (_) symbol, and Private Access Modifier—declared using double underscore(__) symbol.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following functions can help us to find the version of python that we are currently working on?\",\"options\":[\"sys.version(1)\",\"sys.version(0)\",\"sys.version()\",\"sys.version\"],\"correctAnswer\":\"D\",\"explanation\":\"The function sys.version can help us to find the version of python that we are currently working on. It also contains information on the build number and compiler used. For example, 3.5.2, 2.7.3 etc. this function also returns the current date, time, bits etc along with the version.\",\"estimatedTime\":60,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What will be the output of the following Python code snippet? for i in [ 1 , 2 , 3 , 4 ] [ ::- 1 ] : print ( i , end = ' ' )\",\"options\":[\"4 3 2 1\",\"error\",\"1 2 3 4\",\"none of the mentioned\"],\"correctAnswer\":\"A\",\"explanation\":\"The expression [1, 2, 3, 4][::-1] uses slicing with a step of -1 to reverse the list. So the list becomes [4, 3, 2, 1]. The for loop iterates over this reversed list and prints each element, with end=’ ‘ ensuring the output is on one line with spaces in between.\",\"estimatedTime\":75,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What will be the output of the following Python program? def foo ( x ) : x [ 0 ] = [ 'def' ] x [ 1 ] = [ 'abc' ] return id ( x ) q = [ 'abc' , 'def' ] print ( id ( q ) == foo ( q ) )\",\"options\":[\"Error\",\"None\",\"False\",\"True\"],\"correctAnswer\":\"D\",\"explanation\":\"The list q is passed by reference to the function foo, so both x and q refer to the same object in memory. The id() function returns the memory address of the object, which remains unchanged. Therefore, id(q) == foo(q) evaluates to True.\",\"estimatedTime\":75,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What will be the value of ‘result’ in following Python program? list1 = [ 1 , 2 , 3 , 4 ] list2 = [ 2 , 4 , 5 , 6 ] list3 = [ 2 , 6 , 7 , 8 ] result = list ( ) result. extend ( i for i in list1 if i not in ( list2+list3 ) and i not in result ) result. extend ( i for i in list2 if i not in ( list1+list3 ) and i not in result ) result. extend ( i for i in list3 if i not in ( list1+list2 ) and i not in result ) print ( result )\",\"options\":[\"[1, 3, 5, 7, 8]\",\"[1, 7, 8]\",\"[1, 2, 4, 7, 8]\",\"error\"],\"correctAnswer\":\"A\",\"explanation\":\"Here, ‘result’ is a list which is extending three times. When first time ‘extend’ function is called for ‘result’, the inner code generates a generator object, which is further used in ‘extend’ function. This generator object contains the values which are in ‘list1’ only (not in ‘list2’ and ‘list3’). Same is happening in second and third call of ‘extend’ function in these generator object contains values only in ‘list2’ and ‘list3’ respectively. So, ‘result’ variable will contain elements which are only in one list (not more than 1 list).\",\"estimatedTime\":75,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What will be the output of the following Python program? def addItem ( listParam ) : listParam + = [ 1 ] mylist = [ 1 , 2 , 3 , 4 ] addItem ( mylist ) print ( len ( mylist ) )\",\"options\":[\"5\",\"8\",\"2\",\"1\"],\"correctAnswer\":\"A\",\"explanation\":\"The function addItem uses += [1] to modify the list passed to it. Since lists are mutable and passed by reference, mylist is modified directly. After appending 1, it becomes [1, 2, 3, 4, 1], so its length is 5.\",\"estimatedTime\":75,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"The CGI.pm module for website development is a part of . . . . . . . .\",\"options\":[\"Perl\",\"Java\",\"Python\",\"C++\"],\"correctAnswer\":\"A\",\"explanation\":\"This question is about understanding which programming language the CGI.pm module is associated with. CGI.pm is a powerful module for web development, it's designed to make creating dynamic web pages easier. Let's break down the options: Option A: Perl - This is the correct answer! CGI.pm is specifically designed to work with the Perl programming language. Option B: Java - Java is another popular programming language, but it has its own set of web development tools and frameworks, not directly related to CGI.pm. Option C: Python - Python is another excellent language for web development, but CGI.pm is not a part of its standard library. Option D: C++ - While C++ is a powerful language, it's generally used for lower-level tasks and system programming, not commonly used for web development in the same way as Perl, Java, or Python. Therefore, the correct answer is Option A: Perl.\",\"estimatedTime\":60,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"How do you declare a pointer to a function that takes two integers and returns an integer in C?\",\"options\":[\"int (*ptr)(int, int);\",\"ptr(int, int) int;\",\"function int (*ptr)(int, int);\",\"ptr function(int, int) int;\"],\"correctAnswer\":\"A\",\"explanation\":\"This question is mapped to Python Data Structures. The correct answer is A based on the original source question.\",\"estimatedTime\":60,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which function can be used to move the pointer to the previous array position?\",\"options\":[\"last()\",\"before()\",\"prev()\",\"previous()\"],\"correctAnswer\":\"C\",\"explanation\":\"This question is mapped to Python Data Structures. The correct answer is C based on the original source question.\",\"estimatedTime\":45,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"A programming structure that contains data and a pointer to the next object is a\",\"options\":[\"template\",\"class\",\"pointer class\",\"linked list\"],\"correctAnswer\":\"D\",\"explanation\":\"This question is mapped to Python Data Structures. The correct answer is D based on the original source question.\",\"estimatedTime\":60,\"subtopic\":\"Python Data Structures\",\"tags\":[\"programming\",\"technical\",\"python\",\"list\",\"tuple\"],\"codeSnippet\":null,\"language\":null}]}",
+  "parsed": {
+    "questions": [
+      {
+        "questionText": "What will be the output of the following Python code? def foo ( ) : try : return 1 finally : return 2 k = foo ( ) print ( k ) Python MCQ on Variable Names & Operators Python MCQ on Data Types & Numeric Types MCQ on Precedence and Associativity in Python Python MCQ on Bitwise & Boolean Multiple Choice Questions on Formatting & Decorators in Python Python MCQ on While and For Loops Python MCQ on Strings Python Multiple Choice Questions on Lists Python MCQ on List Comprehension MCQ on Python Tuples MCQ on Python Sets Multiple Choice Questions on Python Dictionary Python MCQ on Built-in Functions Multiple Choice Questions on Python Functions Python MCQ on Argument Passing, Variables and Recursion Python MCQ on Mapping Functions Python MCQ on Modules Python MCQ on Regular Expressions Python Multiple Choice Questions on Files Python MCQ on Classes and Objects Python MCQ on OOPs Python MCQ on Exception Handling",
+        "options": [
+          "error, there is more than one return statement in a single try-finally block",
+          "3",
+          "2",
+          "1 Chapterwise Multiple Choice Questions on Python Our 1000+ MCQs focus on all topics of the Python Programming subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. Python Variable Names & Operators Python Data Types & Numeric Types Python Precedence and Associativity Python Bitwise & Boolean Python Formatting & Decorators Python While and For Loops Python Strings Python Lists Python List Comprehension Python Tuples Python Sets Python Dictionary Python Built-in Functions Python Functions Python Argument Passing, Variables and Recursion Python Mapping Functions Python Modules Python Regular Expressions Python Files Python Classes and Objects Python OOPs Python Exception Handling The section contains multiple choice questions and answers on python variables and basic operators. Python Variable Names Python Basic Operators The section contains questions and answers on python core data types and numeric types. Python Core Data Types Python Numeric Types The section contains Python MCQ on precedence and associativity. Python Precedence and Associativity-1 Python Precedence and Associativity-2 The section contains multiple choice questions and answers on python bitwise and boolean. Python Bitwise – 1 Python Bitwise – 2 Python Boolean The section contains questions and answers on python formatting, advanced formatting and decorators. Python Formatting – 1 Python Formatting – 2 Python Advanced Formatting Python Decorators The section contains Python MCQ on different types of loops (while and for loops). Python While & For Loops – 1 Python While & For Loops – 2 Python While & For Loops – 3 Python While & For Loops – 4 Python While & For Loops – 5 Python While & For Loops – 6 The section contains multiple choice questions and answers on different types of python strings. Python Strings – 1 Python Strings – 2 Python Strings – 3 Python Strings – 4 Python Strings – 5 Python Strings – 6 Python Strings – 7 Python Strings – 8 Python Strings – 9 Python Strings – 10 Python Strings – 11 Python Strings – 12 Python Strings – 13 The section contains questions and answers on different types of lists. Python Lists – 1 Python Lists – 2 Python Lists – 3 Python Lists – 4 Python Lists – 5 Python Lists – 6 Python Lists – 7 The section contains MCQ on different types of list comprehension. Python List Comprehension Python List Comprehension – 1 Python List Comprehension – 2 Python Matrix List Comprehension The section contains multiple choice questions and answers on various types of tuples. Python Tuples – 1 Python Tuples – 2 Python Tuples – 3 The section contains questions and answers on various types of python sets. Python Sets – 1 Python Sets – 2 Python Sets – 3 Python Sets – 4 Python Sets – 5 The section contains multiple choice questions and answers on python dictionary. Python Dictionary – 1 Python Dictionary – 2 Python Dictionary – 3 Python Dictionary – 4 The section contains multiple choice questions and answers on different types of python built in functions. Python Built-in Functions – 1 Python Built-in Functions – 2 Python Built-in Functions – 3 The section contains questions and answers on different types of python functions. Python Function – 1 Python Function – 2 Python Function – 3 Python Function – 4 The section contains Python MCQ on argument parsing, global and local variables, recursion, differences between shallow and deep copy. Python Argument Passing – 1 Python Argument Passing – 2 Python Global vs Local Variables – 1 Python Global vs Local Variables – 2 Python Recursion Python Shallow Copy vs Deep Copy The section contains Python multiple choice questions and answers on functional programming tools and mapping functions. Python Functional Programming Tools Python Mapping Functions – 1 Python Mapping Functions – 2 Python Mapping Functions – 3 The section contains questions and answers on Python modules like math module, random module, sys module, datetime module, pickle and tutrle modules. Python Modules Python Math – 1 Python Math – 2 Python Math – 3 Python Datetime Module – 1 Python Datetime Module – 2 Python Random Module – 1 Python Random Module – 2 Python Sys Module Python Operating System Python Turtle Module – 1 Python Turtle Module – 2 Python Turtle Module – 3 Python Pickle Module The section contains Python MCQ on different types of regular expressions (regex). Python Regular Expressions Python Regular Expressions – 1 Python Regular Expressions – 2 Python Regular Expressions – 3 Python Regular Expressions – 4 Python Regular Expressions – 5 The section contains multiple choice questions and answers on python files. Python Files – 1 Python Files – 2 Python Files – 3 Python Files – 4 Python Files – 5 The section contains questions and answers on operator overloading, classes and objects. Python Operator Overloading Python Classes and Objects – 1 Python Classes and Objects – 2 The section contains MCQ on oops concepts like inheritance, polymorphism and encapsulation. Python Inheritance – 1 Python Inheritance – 2 Python Polymorphism Python Encapsulation The section contains multiple choice questions and answers on exception handling. Python Exception Handling – 1 Python Exception Handling – 2 Python Exception Handling – 3 Revise Python concepts and theory in detail through our complete Python Tutorial . To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. Recommended Python Books Best Reference Books for Python Language Python Tests & Certification Python Online Tests Python Certification Explore Other MCQ Collections Java Multiple Choice Questions C++ Multiple Choice Questions C Multiple Choice Questions C# Multiple Choice Questions Data Structures Multiple Choice Questions Computer Science Multiple Choice Questions"
+        ],
+        "correctAnswer": "C",
+        "explanation": "In Python, if both the try block and the finally block contain return statements, the return in the finally block overrides the one in the try block. So, even though return 1 is in the try, the function ends up returning 2 because of the finally block.",
+        "estimatedTime": 75,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "A/An . . . . . . . . contains programs that can be selected.",
+        "options": [
+          "pointer",
+          "menu",
+          "icon",
+          "button"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Option A: pointer This option suggests that a pointer contains programs that can be selected. This statement is incorrect. In computing, a pointer refers to a graphical symbol on the screen that indicates the position where the next action will take place, such as clicking or selecting items, but it does not contain programs that can be selected. Option B: menu This option suggests that a menu contains programs that can be selected. This statement is correct. In graphical user interfaces (GUIs) like Microsoft Windows, a menu is a list of commands or options displayed on the screen that users can select to perform actions. Menus typically contain various programs, commands, or settings that users can choose from to interact with applications and the operating system. Option C: icon This option suggests that an icon contains programs that can be selected. This statement is incorrect. Icons are graphical representations or symbols displayed on the screen that represent files, folders, applications, or functions. Clicking on an icon typically opens the associated file or starts the corresponding program, but icons themselves do not contain programs. Option D: button This option suggests that a button contains programs that can be selected. This statement is incorrect. Buttons in a graphical user interface (GUI) are interactive elements that users can click on to trigger specific actions or commands within applications or the operating system. However, buttons do not contain programs themselves; they execute predefined functions when clicked. Conclusion: The correct answer is Option B: menu because in computing and Microsoft Windows, a menu is a list of options or commands that users can select from to perform actions, such as opening programs, accessing settings, or executing commands. Menus are integral components of GUIs that provide users with a structured way to interact with software and operating systems.",
+        "estimatedTime": 60,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which feature can be implemented using encapsulation? MCQ on OOPs Concept & Features OOPs MCQ on Constructors and Destructors Object Oriented Programming MCQ on Access Specifiers OOP MCQ on Class Members & Types OOPs MCQ on Object Object Oriented Programming MCQ on Classes OOPs Multiple Choice Questions on Class Components (Using Java) OOPs Multiple Choice Questions on Types of Classes (Using Java) OOPs Multiple Choice Questions on Inheritance & its Types OOPs MCQ on Inheritance (Using Java) OOPs MCQ on Polymorphism (Using Java) OOP MCQ on Member Functions & its Types OOPs MCQ on Exception Handling & Static Class Members OOPs MCQ on Assigning Object, Pointer to Objects, Passing and Returning Object OOPs MCQ on Default Arguments vs Overloading, Upcasting and Downcasting OOPs MCQ on Memory Allocation & Scope of Variable Object Oriented Programming MCQ on Inbuilt Classes",
+        "options": [
+          "Polymorphism",
+          "Overloading",
+          "Inheritance",
+          "Abstraction Chapterwise Multiple Choice Questions on Object Oriented Programming Our 1000+ MCQs focus on all topics of the Object Oriented Programming subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. OOPs Concept & Features Constructors and Destructors Access Specifiers Class Members & Types Object Classes Class Components (Using Java) Types of Classes (Using Java) Inheritance & its Types Inheritance (Using Java) Polymorphism (Using Java) Member Functions & its Types Exception Handling & Static Class Members Assigning Object, Pointer to Objects, Passing and Returning Object Default Arguments vs Overloading, Upcasting and Downcasting Memory Allocation & Scope of Variable Inbuilt Classes The section contains multiple choice questions and answers on oops basic concepts, objects, classes, oops features, polymorphism, encapsulation and abstraction. OOPs MCQ: Basics OOPs MCQ: Classes OOPs MCQ: Objects OOPs MCQ: Features OOPs MCQ: Polymorphism OOPs MCQ: Encapsulation OOPs MCQ: Abstraction The section contains questions and answers on constructors and its types, copy constructor, overloading constructors, destructors, execution of constructor or destructor. OOPs MCQ: Constructors OOPs MCQ: Types of Constructors OOPs MCQ: Copy Constructor OOPs MCQ: Overloading Constructors OOPs MCQ: Execution of Constructor or Destructor OOPs MCQ: Destructors The section contains MCQs on access specifiers, private, public and protected access Specifiers. OOPs MCQ: Access Specifiers OOPs MCQ: Private Access Specifier OOPs MCQ: Protected Access Specifier OOPs MCQ: Public Access Specifier The section contains multiple choice questions and answers on data members, member functions, local and nested class. Object Oriented Programming MCQ: Data Members Object Oriented Programming MCQ: Member Functions Object Oriented Programming MCQ: Local Class Object Oriented Programming MCQ: Nested Class The section contains questions and answers on passing and returning object with functions, object reference and memory allocation, object array and usage. OOPs MCQ: Passing and Returning Object with Functions OOPs MCQ: Object Reference OOPs MCQ: Memory Allocation of Object OOPs MCQ: Object Array OOPs MCQ: Object Use The section contains MCQs on abstract class, template class, base class, derived class and class usage. Object Oriented Programming MCQ: Abstract Class Object Oriented Programming MCQ: Template Class Object Oriented Programming MCQ: Base Class Object Oriented Programming MCQ: Derived Class Object Oriented Programming MCQ: Class Use The section contains multiple choice questions and answers on data members, member functions, constructors, types of constructors, constructor overloading, copy constructors, assigning objects, the ‘this’ keyword, and memory allocation in Java programming. Data Members Member Functions Constructors Types of Constructors Constructor Overloading Copy Constructors Assigning Objects this Keyword Memory Allocation The section contains questions and answers on object class, base class, derived class, inner class, static class, final class, generic class, nested class, wrapper class, and collection classes using Java programming. Object Class Base Class Derived Class Inner Class Static Class Final Class Generic Class Nested Class Wrapper Class Collection Classes The section contains multiple choice questions and answers on inheritance and its types, single and multilevel inheritance, multiple inheritance, hierarchical and hybrid inheritance. OOPs MCQ: Inheritance OOPs MCQ: Types of Inheritance OOPs MCQ: Single Level Inheritance OOPs MCQ: Multilevel Inheritance OOPs MCQ: Multiple Inheritance OOPs MCQ: Hierarchical Inheritance OOPs MCQ: Hybrid Inheritance The section contains OOPs MCQs using Java on inheritance types, including single-level inheritance, multilevel inheritance, hierarchical inheritance, and hybrid inheritance. Types of Inheritance Single Level Inheritance Multilevel Inheritance Hierarchical Inheritance Hybrid Inheritance The section contains multiple choice questions and answers on method overloading and method overriding. Method Overloading Method Overriding The section contains questions and answers on virtual and abstract functions, member function types, member operator function, overloading and overriding member functions, constant, private and public member functions. Object Oriented Programming MCQ: Virtual Functions Object Oriented Programming MCQ: Abstract Function Object Oriented Programming MCQ: Types of Member Functions Object Oriented Programming MCQ: Member Operator Function Object Oriented Programming MCQ: Overloading Member Functions Object Oriented Programming MCQ: Overriding Member Functions Object Oriented Programming MCQ: Constant Member Functions Object Oriented Programming MCQ: Private Member Functions Object Oriented Programming MCQ: Public Member Functions The section contains MCQs on exception handling, catching class types, static data members and static member functions. OOPs MCQ: Exception Handling OOPs MCQ: Catching Class Types OOPs MCQ: Static Data Members OOPs MCQ: Static Member Functions The section contains multiple choice questions and answers on passing objects to functions, returning and assigning objects, pointers to objects and this pointer. OOPs MCQ: Passing Object to Functions OOPs MCQ: Returning Objects OOPs MCQ: Assigning Objects OOPs MCQ: Pointer to Objects OOPs MCQ: This Pointer The section contains questions and answers on default arguments, constructors overloading, upcasting and downcasting. OOPs MCQ: Default Arguments OOPs MCQ: Constructors Overloading OOPs MCQ: Upcasting OOPs MCQ: Downcasting The section contains MCQs on new and delete operators, automatic and extern variables. OOPs MCQ: New Operator OOPs MCQ: Delete Operator OOPs MCQ: Automatic Variable OOPs MCQ: Extern Variable The section contains multiple choice questions and answers on inbuilt classes, io and string class. OOPs MCQ: Inbuilt Classes OOPs MCQ: IO Class OOPs MCQ: String Class To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews."
+        ],
+        "correctAnswer": "D",
+        "explanation": "Data abstraction can be achieved by using encapsulation. We can hide the operation and structure of actual program from the user and can show only required information by the user.",
+        "estimatedTime": 75,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Checked – Compile time) Checked exception can be handled using throws and try-catch public class CheckedExceptions { public static void main(String[] args) throws IOException { System.out.println(\"Program is started..\"); System.out.println(\"Program is progress..\"); // try { FileInputStream file=new FileInputStream(\"C:\\\\file.txt\"); } catch (FileNotFoundException e) { e.printStackTrace(); } // FileInputStream file=new FileInputStream(\"C:\\\\file.txt\"); System.out.println(file.read()); System.out.println(\"Program is completed..\"); try-catch throws Collections: The Collections Framework in Java provides a set of interfaces and classes to store and manage objects efficiently. Collection (Interface) List (I) Set (I) Map (I) Ordered, allows duplicates Unordered, no duplicates stored in the form of key, value pairs ArrayList (C)→ Dynamic array, fast access HashSet (C) → Uses HashMap internally, no order HashMap (C) LinkedList (C)→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {",
+        "options": [
+          "→ Dynamic array, fast access HashSet",
+          "→ Uses HashMap internally, no order HashMap",
+          "LinkedList",
+          "→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question is mapped to Python Data Structures. The correct answer is A based on the original source question.",
+        "estimatedTime": 75,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which programming language is commonly used for Data Science tasks?",
+        "options": [
+          "Java",
+          "Python",
+          "C++",
+          "JavaScript"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Let's look at why Python is the correct answer and why the others are not as commonly used for these specific tasks. Option B: Python (Correct Answer) Python is by far the most popular and widely used programming language for Data Science. Here's why it's the top choice: 1. Easy to Learn: Python has a simple and readable structure (syntax), which makes it easy for beginners to understand and write code. 2. Rich Libraries: Python has an amazing collection of specialized tools, called \"libraries,\" that are specifically designed for Data Science tasks. Some very important ones include: - NumPy: Great for working with numbers and large datasets efficiently. - Pandas: Used for cleaning, analyzing, and manipulating data, similar to working with advanced spreadsheets. - Scikit-learn: Essential for building machine learning models (like algorithms that learn from data to make predictions). - Matplotlib and Seaborn: Used for creating clear and beautiful charts and graphs to visualize data. 3. Versatility: Besides Data Science, Python is also used for web development, automation, and many other areas, making it a very powerful and useful language to know. Option A: Java Java is a powerful and robust language, often used in large enterprise systems and for building big data processing frameworks (like Apache Hadoop or Apache Spark). However, for the everyday tasks of data analysis, writing scripts for quick insights, or directly building machine learning models, Python is generally preferred because of its simpler code and specialized Data Science libraries. Option C: C++ C++ is known for its speed and efficiency. While some very performance-critical parts of Data Science libraries (especially those in Python) might be written in C++ \"behind the scenes\" to make them run faster, C++ itself is rarely used directly by Data Scientists for their daily coding tasks. It's much more complex and takes more time to write code in C++ compared to Python for data analysis. Option D: JavaScript JavaScript is mainly the language of the internet. It's used to make websites interactive and for developing web applications (both front-end and back-end with Node.js). While you can use JavaScript libraries (like D3.js) for some interactive data visualizations on the web, it is not the primary language for general data cleaning, statistical analysis, or building machine learning models in Data Science. In summary, when you start learning Data Science, Python is the first language you should focus on because of its ease of use, powerful libraries, and a large supportive community.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "In C, how are function arguments passed by default?",
+        "options": [
+          "By value",
+          "By reference",
+          "By pointer",
+          "By address"
+        ],
+        "correctAnswer": "A",
+        "explanation": "In the C programming language, function arguments are passed by value by default. This means that when you call a function and pass arguments to it, the function receives copies of the values of those arguments, rather than direct access to the original variables. Here's a brief explanation of the other options: Option B: By reference : In C, there is no direct reference concept as in languages like C++ or C#. Pass-by-reference is not the default behavior in C. Option C: By pointer : While you can pass pointers as function arguments in C, it is not the default behavior. By default, the values themselves are passed. Option D: By address : Passing by address is essentially the same as passing by pointer, and it is not the default behavior in C. So, the correct answer is Option A: By value , as it describes the default behavior for passing function arguments in the C programming language.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "How can you pass a variable number of keyword arguments to a function in Python?",
+        "options": [
+          "By using the **kwargs syntax",
+          "By using the *args syntax",
+          "By using the * symbol",
+          "By using the ... symbol"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Correct Answer: A) By using the **kwargs syntax Keyword Arguments: In Python, keyword arguments are arguments passed to a function along with a name (the keyword) and a value. Example: my_function(name=\"Alice\", age=30) Variable Number of Keyword Arguments: Sometimes, you don't know in advance how many keyword arguments a function might receive. That's where **kwargs comes in. kwargs Explained: * The **kwargs syntax allows a function to accept any number of keyword arguments. * kwargs is just a name (you could technically use another name), but ** is what's important. It tells Python to collect all the keyword arguments into a dictionary. * Inside the function, kwargs acts like a regular dictionary where the keys are the argument names (like \"name\" and \"age\") and the values are the corresponding argument values (like \"Alice\" and 30). Why the other options are incorrect: * Option B ( *args ): Used to pass a variable number of positional arguments. It collects them into a tuple, not a dictionary. * Option C ( * symbol): Used for other purposes such as unpacking iterables or enforcing keyword-only arguments, but not for passing keyword arguments. * Option D ( ... symbol): The ellipsis has special meanings like use in type hints or as a placeholder, but is not related to passing arguments to functions. Therefore, the correct answer is Option A: By using the **kwargs syntax .",
+        "estimatedTime": 60,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What happens when you call a generator function?",
+        "options": [
+          "It immediately produces all values",
+          "It returns a list of values",
+          "It sets up a generator object",
+          "It creates a tuple of values"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The correct answer is Option C: It sets up a generator object. When you call a generator function in Python, it doesn't immediately produce all values or return a list of values. Instead, it sets up and returns a generator object. This generator object can then be used to iterate over the values produced by the generator function. The generator object maintains the state of the generator function, allowing it to yield values lazily, one at a time, as needed. This lazy evaluation mechanism enables efficient handling of large datasets or infinite sequences without loading all values into memory at once.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is NOT a benefit of using generators?",
+        "options": [
+          "Improved memory efficiency",
+          "Faster execution than loops",
+          "Easier debugging",
+          "Lazy evaluation"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Option A: Improved memory efficiency. This option is a well-known benefit of using generators. Generators produce values lazily, meaning they only generate values when requested, rather than storing all values in memory at once. This lazy evaluation mechanism results in improved memory efficiency, especially when dealing with large datasets or infinite sequences. Option B: Faster execution than loops . This option is not correct because generators do not inherently execute faster than loops. In fact, due to the additional functionality they provide, such as suspending and resuming execution with each yield statement, generators might introduce a slight overhead. While generators offer other benefits like improved memory efficiency and lazy evaluation, faster execution compared to loops is not one of them. Option C: Easier debugging. This option is incorrect. Debugging generator functions can be more challenging compared to debugging regular functions or loops. The flow of execution in generator functions involves suspending and resuming with the yield statement, which can make it harder to track. Additionally, debugging generator functions might require specialized techniques or tools to inspect the state of the generator object and the values yielded during iteration. Option D: Lazy evaluation. This option is actually a benefit of using generators. Generators support lazy evaluation, meaning they produce values on-demand as they are requested, rather than eagerly generating all values upfront. Lazy evaluation allows for efficient memory usage and can be particularly useful when working with large datasets or infinite sequences. So, the correct answer is indeed Option C: Easier debugging, as it does not align with the typical benefits associated with using generators.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which built-in function is used to find the smallest item in an iterable?",
+        "options": [
+          "min()",
+          "smallest()",
+          "minimum()",
+          "small()"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The correct answer is Option A: min() . The min() function is used to find the smallest item in an iterable, such as a list, tuple, or set. It takes an iterable as an argument and returns the smallest item. For example: numbers = [5, 2, 8, 1, 6] smallest_number = min(numbers) print(smallest_number) # Output: 1",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What does the built-in function max() do in Python?",
+        "options": [
+          "Returns the largest item in an iterable",
+          "Converts a number to a string",
+          "Returns the square of a number",
+          "Returns the absolute value of a number"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The correct answer is Option A: Returns the largest item in an iterable . The max() function in Python is used to find the largest item in an iterable, such as a list, tuple, or set. It takes one or more arguments and returns the largest item. For example: numbers = [5, 2, 8, 1, 6] largest_number = max(numbers) print(largest_number) # Output: 8",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What does the built-in function enumerate() do in Python?",
+        "options": [
+          "Returns an enumerate object that produces pairs of index and value",
+          "Converts a string to lowercase",
+          "Returns the square of a number",
+          "Returns the absolute value of a number"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The correct answer is Option A: Returns an enumerate object that produces pairs of index and value . The enumerate() function in Python is used to iterate over a sequence while keeping track of the index of each item. It takes an iterable as an argument and returns an enumerate object that produces tuples containing the index and value of each item in the iterable. For example: my_list = ['a', 'b', 'c'] for index, value in enumerate(my_list): print(index, value) # Output: # 0 a # 1 b # 2 c",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which function returns an array of row values?",
+        "options": [
+          "fetchrow_array()",
+          "fetchrow_arrayref()",
+          "fetch()",
+          "fetchrow_hashref()"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question asks about a function in MySQL that gives you a list of values from a row in your database. Imagine you have a table called \"students\" with columns like \"name\", \"age\", and \"grade\". When you ask for information from this table, you want a way to get all the details of a single student, like their name, age, and grade, as a set of values. Here's where these functions come in: * Option A: fetchrow_array() - This function is designed to return an array of values from a row, representing the data in that row. It's like a neat list of information about one student. * Option B: fetchrow_arrayref() - This function is similar to \"fetchrow_array()\", but it provides a reference to the array rather than the array itself. Think of it as a pointer to the list of student details. * Option C: fetch() - This function retrieves the next row from the result set, and you can use it to access the data in different formats. It's a more general way to get information, while \"fetchrow_array()\" focuses specifically on returning an array of values. * Option D: fetchrow_hashref() - This function returns a hash (dictionary) of row values, where the keys are the column names and the values are the corresponding data for that row. It's like a structured list that uses the column names as labels, making it easy to access specific information. The correct answer is Option A: fetchrow_array() because it directly returns an array of row values, providing the data you need in a simple list format.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What will be the output of the following PHP code? <?php $fruits = array ( \"apple\" , \"orange\" , \"banana\" ) ; echo (next( $fruits )) ; echo (next( $fruits )) ; ?>",
+        "options": [
+          "orangebanana",
+          "appleorange",
+          "orangeorange",
+          "appleapple"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The next() function returns the array value residing at the position immediately following that of the current array pointer.",
+        "estimatedTime": 75,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What will be the output of the following Python code? l = [ 1 , 0 , 2 , 0 , 'hello' , '' , [ ] ] print ( list ( filter ( bool , l ) ) )",
+        "options": [
+          "[1, 0, 2, ‘hello’, ”, []]",
+          "Error",
+          "[1, 2, ‘hello’]",
+          "[1, 0, 2, 0, ‘hello’, ”, []]"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The function filter(bool, l) removes all false elements from the list l, such as 0, ”, and []. The remaining true elements — 1, 2, and ‘hello’ — are returned as a new list.",
+        "estimatedTime": 75,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What will be the output of the following Python function? print ( len ( [ \"hello\" , 2 , 4 , 6 ] ) )",
+        "options": [
+          "Error",
+          "6",
+          "4",
+          "3"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The len() function returns the number of elements in the list, regardless of their types. In this case, the list [“hello”, 2, 4, 6] contains four elements, so len() returns 4.",
+        "estimatedTime": 60,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What will be the output of the following Python code? x = [ [ 0 ] , [ 1 ] ] print ( ( ' ' . join ( list ( map ( str , x ) ) ) , ) )",
+        "options": [
+          "01",
+          "[0] [1]",
+          "(’01’)",
+          "(‘[0] [1]’,)"
+        ],
+        "correctAnswer": "D",
+        "explanation": "In this code, map(str, x) converts each inner list [0] and [1] into strings: “[0]” and “[1]”. Then ‘ ‘.join(...) creates the string “[0] [1]”. Finally, it is wrapped in a tuple using the comma syntax, resulting in (‘[0] [1]’,).",
+        "estimatedTime": 75,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the primary purpose of a function prototype in C?",
+        "options": [
+          "Declare a variable",
+          "Declare a function",
+          "Define a function",
+          "Assign a value"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The primary purpose of a function prototype in C is to declare a function . It serves as a forward declaration of the function, providing information about the function's name, return type, and the types of its parameters. This declaration allows the compiler to understand how the function should be called and used in the program before the actual function definition is encountered. So, the correct answer is: Option B: Declare a function In C, a function prototype typically looks like this: return_type function_name(parameter_type1, parameter_type2, ...); Here's an example: int add(int a, int b); This prototype informs the compiler that there's a function named \"add\" that returns an integer and takes two integer parameters. It doesn't define the function's implementation; it simply declares its existence and signature.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following CSS3 property can be used to allow line breaks within words? CSS MCQ on Fundamentals, Colors and Styling CSS MCQ on Text, Borders and Images CSS Multiple Choice Questions on Selectors & Files CSS MCQ on Properties, Elements, Functions & Tables CSS3 MCQ on Fundamentals, Transitions & Animations CSS MCQ on Lists, Tables and Forms CSS MCQ on Layout & Images CSS MCQ on CGI Programming & Miscellaneous",
+        "options": [
+          "line-break",
+          "line-wrap",
+          "word-wrap",
+          "word-break Chapterwise Multiple Choice Questions on CSS Our 1000+ MCQs focus on all topics of the CSS subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. CSS Fundamentals, Colors and Styling CSS Text, Borders and Images CSS Selectors & Files CSS Properties, Elements, Functions & Tables CSS3 Fundamentals, Transitions & Animations CSS Lists, Tables and Forms CSS Layout & Images CGI Programming & Miscellaneous The section contains CSS multiple choice questions and answers on css basics, functions, fonts, versions, specification and color values, style inclusion methods, specifying sizes, colors and files. Introduction to CSS CSS Functions CSS Fonts CSS Versions Specification of CSS Style Inclusion Methods CSS Color Values Specifying Sizes, Colors and Files The section contains CSS questions and answers on borders, text, voice, outlines and box model, media types, border elements, cross browser layout techniques, styling texts, lists and navigation menus, embedding web fonts, gradients, background borders and targeting styles. CSS border CSS Text CSS Voice CSS Outline CSS Media Types CSS Border Elements Cross Browser Layout Techniques CSS Styling Texts Embedding Web Fonts CSS Box Model CSS Backgrounds, Borders and Drop Shadow CSS Styling Lists and Navigation Menus Gradients without Images Targeting Styles with Media Queries The section contains CSS MCQs with answers on document styles, specificity and importance, selectors and advanced selectors. Applying Style to a Document Using Advanced Selectors CSS Selectors CSS Specificity and Importance The section contains CSS multiple choice questions and answers on xhtml fundamentals, css inheritance and miscellaneous property, major themes, strings and keywords, css measurements, css properties, styling tables, generated content, layout floating elements, css keyframes, elements precise positioning, transforms and transitions, inheritance and cascade. CSS and (X)HTML Elements Fundamentals CSS Miscellaneous Property Document Structure and CSS Inheritance CSS Major Themes CSS Strings and Keywords Measurements in CSS Miscellaneous CSS Constructs CSS 1 and CSS 2.1 Properties Implemented CSS3 and Browser-Specific Features CSS Styling Tables Generated Content CSS Floating Elements for Layout CSS Transforms and Transitions CSS Keyframes Precise Positioning of Elements CSS Inheritance and Cascade The section contains CSS3 questions and answers on css3 images, ui elements transitions, css3 animations, css3 user interface properties, fundamentals and multi column layout. CSS3 Transitions for Images CSS3 Transitions for UI Elements CSS3 Animations with SVG and Filters CSS3 Animation with Responsive Web Design CSS3 3D Transforms, Transitions, and Animations CSS3 User Interface Properties CSS3 Fundamentals Using CSS3 Multi Column Layout The section contains CSS MCQs on form elements appearance. Appearance of Form Elements The section contains CSS MCQ questions with answers on bullet point styles, css image alignment, id & class, image replacement, print styles and their development, server specific css, shadowy styles, multiple backgrounds, css popups and menus, sliding doors, clipped sliding doors, table graphs, 2d transforms and constrained images. Specifying Bullet Point Styles, CSS Image Alignment, ID and Class Suppressing Element Display & Visibility, Image Replacement Print Styles and their Development Server Specific CSS Shadowy Styles, Multiple Backgrounds, CSS Pop-Ups & Menus Sliding Doors & Clipped Sliding Doors Table Graphs, 2D Transforms, Boxing of Images & Constrained Images The section contains CSS questions and answers on css transition and perl cgi programming. CSS Transition & Perl CGI Programming Miscellaneous To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. Important Links: Best Books on CSS HTML Multiple Choice Questions Python Multiple Choice Questions PHP Multiple Choice Questions Javascript Multiple Choice Questions Computer Science Multiple Choice Questions Information Technology Multiple Choice Questions Information Science Multiple Choice Questions CSS Books:"
+        ],
+        "correctAnswer": "D",
+        "explanation": "word-break property can be used to allow line breaks within the words. Syntax: word-break : break-all | keep-all | normal",
+        "estimatedTime": 75,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the primary function of the Control Unit (CU) in a CPU?",
+        "options": [
+          "Executes program instructions",
+          "Directs operations of the entire computer system",
+          "Stores data temporarily",
+          "None of the above"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Option B: Directs operations of the entire computer system The primary function of the Control Unit (CU) in a CPU is to direct and coordinate the operations of the entire computer system. It manages the execution of instructions by fetching them from memory, decoding them, and controlling the data flow between the CPU and other parts of the computer system, including RAM, I/O devices, and the ALU (Arithmetic Logic Unit). The CU also manages the timing and control signals necessary for communication between these components. Option A: Executes program instructions While the CPU as a whole executes program instructions, specifically, it is the combination of the Control Unit (CU) and the Arithmetic Logic Unit (ALU) that executes the instructions. The CU directs this process. Option C: Stores data temporarily This role is typically associated with memory units such as RAM (Random Access Memory) rather than the Control Unit (CU), which primarily handles control and coordination tasks. Conclusion: The correct answer, Option B: Directs operations of the entire computer system , best describes the primary role of the Control Unit (CU) in a CPU, emphasizing its critical function in managing and coordinating the operation of the entire computer system.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "How do you read a character from a file in C?",
+        "options": [
+          "getc()",
+          "readchar()",
+          "read()",
+          "getchar()"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The correct answer is A: getc() Let's break down why: getc() is a standard C library function specifically designed to read a single character from a file stream. It takes a file pointer (FILE*) as an argument and returns the character read (as an integer) or EOF if the end of the file is reached or an error occurs. readchar() is not a standard C function for file input. read() is a lower-level function (usually from the POSIX standard) used for reading a block of data from a file descriptor, not a single character. getchar() reads a character from standard input (stdin), which is usually the keyboard, not from a file. So, getc() is the correct function to use when you want to read a single character from a file in C.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Dynamic content presented in Google . . . . . . . . crawling isn't normally indexed.",
+        "options": [
+          "ajax",
+          "java",
+          "javascript",
+          "all of the mentioned"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Option A: Ajax (Asynchronous JavaScript and XML) is used to create dynamic web pages where content can be updated without reloading the entire page. However, dynamic content loaded via Ajax isn't always indexed by Google’s crawling systems because it requires additional execution beyond static HTML, making it less likely to be indexed by default. Option B: Java is a programming language primarily used for back-end development and web applications. While Java is powerful for various applications, it is not typically related to dynamic content in the context of Google crawling and indexing processes. It does not directly impact how content is rendered for crawling in most cases. Option C: JavaScript is heavily used for dynamic web content. Content generated dynamically by JavaScript often poses a challenge for Google’s crawlers. Unless specific techniques are used, such as server-side rendering, this dynamic content might not be fully indexed because the crawler may not execute the JavaScript needed to display it. Option D: All of the mentioned is partially correct, but it is a generalization. While Ajax and JavaScript directly relate to how dynamic content might not be indexed, Java is not directly linked to Google’s indexing challenges with dynamic content. Conclusion: The correct answer is Option C: JavaScript , as it is the most significant factor in dynamic content that may not be indexed by Google’s crawlers without proper handling.",
+        "estimatedTime": 60,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which OpenCV function or method Closes video file or capturing device?",
+        "options": [
+          "cv.VideoCapture.release()",
+          "cv.VideoCapture.closed()",
+          "cv.VideoCapture.re()",
+          "cv.VideoCapture.close()"
+        ],
+        "correctAnswer": "A",
+        "explanation": "cv.VideoCapture.release() is a function or method that Closes video file or capturing device. The method is automatically called by subsequent VideoCapture::open and by VideoCapture destructor. The C function also deallocates memory and clears *capture pointer.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the purpose of memory refresh register of Z80?",
+        "options": [
+          "To control on-chip SRAM",
+          "To control on-chip DRAM",
+          "To clear cache",
+          "To control ROM"
+        ],
+        "correctAnswer": "B",
+        "explanation": "In addition to the general purpose registers, a stack pointer, program counter, and two index registers are included in Z80. It was also used in many embedded designs because of its high-quality performance and for its in-built refresh circuitry for DRAMs.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "The initial alignments used to produce the guide tree may be obtained by various methods. Which of the following is not one of them?",
+        "options": [
+          "pattern-finding approach similar",
+          "FASTA",
+          "Faster, full dynamic programming method",
+          "Fast k-tuple"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The methods used, might be fast k-tuple or pattern-finding approach similar to FASTA that is useful for many sequences and the full dynamic programming method as well. But the option d becomes incorrect as full dynamic programming method is slower as compared to rest of the methods in options.",
+        "estimatedTime": 60,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the java extension file in IoT?",
+        "options": [
+          ".jar",
+          ".c",
+          ".exe",
+          ".py"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The Java extension file commonly used in the context of IoT (Internet of Things) is .jar . A .jar file, which stands for Java Archive, is a compressed file format that contains Java class files, resources, and metadata. It is used to package and distribute Java applications and libraries. In IoT, Java is a popular programming language for developing applications that run on various IoT devices and platforms. Options B (.c), C (.exe), and D (.py) represent file extensions for programming languages other than Java. .c is for C programming language, .exe is for executable files in Windows, and .py is for Python programming language. Hence, the correct answer is Option A: .jar. It is the extension commonly associated with Java files used in IoT development.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the result of type(3.14) ?",
+        "options": [
+          "float",
+          "int",
+          "double",
+          "numeric"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The type() function returns the data type of the argument.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the purpose of the str() function in Python?",
+        "options": [
+          "To convert a string to a number",
+          "To format strings",
+          "To concatenate strings",
+          "To convert a number to a string"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The str() function converts a number or other data type to a string.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the purpose of the functools.wraps() function in decorators?",
+        "options": [
+          "To create a new function",
+          "To modify the decorator's behavior",
+          "To preserve the original function's metadata",
+          "To remove a decorator"
+        ],
+        "correctAnswer": "C",
+        "explanation": "functools.wraps() preserves the original function's metadata when using decorators.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "To add a new element to a list we use which Python command?",
+        "options": [
+          "list1.addEnd(5)",
+          "list1.addLast(5)",
+          "list1.append(5)",
+          "list1.add(5)"
+        ],
+        "correctAnswer": "C",
+        "explanation": "We use the function append to add an element to the list.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is a generator in Python?",
+        "options": [
+          "A function that generates random numbers",
+          "A special type of list",
+          "A way to define classes",
+          "A function that yields values one at a time"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The correct answer is Option D: A function that yields values one at a time. Generators in Python are functions defined using the yield statement. They generate values lazily, one at a time, allowing for efficient memory usage, especially with large datasets. When called, a generator function returns an iterator object but does not start execution immediately. Instead, it suspends its state and resumes execution when the next() method is called on the iterator object. This makes generators a powerful tool for handling large datasets or infinite sequences efficiently.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "How is a generator different from a regular function?",
+        "options": [
+          "A generator uses the return keyword",
+          "A generator can yield multiple values",
+          "A generator uses the break statement",
+          "A generator uses the continue statement"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The correct answer is Option B: A generator can yield multiple values. Generators and regular functions in Python are different in how they operate. Regular functions use the return keyword to return a single result and terminate execution. In contrast, generators use the yield keyword to produce a sequence of values lazily. Generators can yield multiple values over successive calls to the next() function or through iteration, whereas regular functions return only once. This feature of generators enables them to efficiently handle large datasets or infinite sequences without consuming excessive memory.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "How are values produced in a generator function?",
+        "options": [
+          "Using the yield keyword",
+          "Using the return keyword",
+          "Using the print() function",
+          "Using the generate keyword"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The correct answer is Option A: Using the yield keyword. Values are produced in a generator function using the yield keyword. When a generator function encounters a yield statement, it temporarily suspends its execution and returns the yielded value. Subsequent calls to the generator function continue execution from where it was previously suspended, allowing it to generate values lazily, one at a time, as needed. This mechanism enables generators to efficiently handle large datasets or infinite sequences without loading all values into memory at once.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "How is a generator object iterated in a for loop?",
+        "options": [
+          "Using the yield keyword",
+          "By using the next() function",
+          "By using the for keyword",
+          "By using the get() method"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The correct answer is Option C: By using the for keyword. A generator object is iterated in a for loop by using the for keyword. When you use a for loop to iterate over a generator object, Python automatically calls the next() function on the generator object to retrieve each value yielded by the generator function. This process continues until the generator function is exhausted, at which point the loop terminates. This convenient syntax allows you to easily iterate over the values produced by a generator without explicitly calling next() or managing the loop termination condition.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the main purpose of a generator expression in Python?",
+        "options": [
+          "To create new generators",
+          "To generate random numbers",
+          "To produce sequences of values lazily",
+          "To define classes"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The correct answer is Option C: To produce sequences of values lazily. Generator expressions in Python are used to produce sequences of values lazily, meaning they generate values on-demand as they are requested, rather than eagerly generating all values upfront. This lazy evaluation mechanism allows for efficient memory usage, especially when dealing with large datasets or infinite sequences. Generator expressions are concise and readable, making them a convenient way to define generators without the need for writing a separate generator function. They are often used in scenarios where a one-time sequence of values needs to be generated for processing or iteration.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is an advantage of Python?",
+        "options": [
+          "It compiles to machine code",
+          "It enforces strict typing",
+          "It has a large standard library",
+          "It requires extensive memory management"
+        ],
+        "correctAnswer": "C",
+        "explanation": "One of the advantages of Python is that it has a large standard library . Python's standard library contains a wide range of modules and packages that provide ready-to-use functionality for various tasks, including file I/O, networking, database access, web development, and much more. This extensive collection of modules simplifies development and allows programmers to accomplish many tasks without having to write code from scratch.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the output of the following code: my_list = [1, 2, 3] print(my_list[1])",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "Error"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Code: my_list = [1, 2, 3] print(my_list[1]) Step-by-Step Explanation: 1. List Creation: The code creates a list named my_list with elements [1, 2, 3] . A list in Python is an ordered collection of elements, where each element has an index . The list my_list is indexed as follows: Index 0: 1 Index 1: 2 Index 2: 3 2. Accessing an Element: The code my_list[1] is used to access the element at index 1 in the list. Since Python uses zero-based indexing , the element at index 1 is 2 . 3. Printing the Element: The print() function outputs the value of my_list[1] , which is 2 , to the console. 4. Correct Output: The result of executing the code is the number 2 . Output: The correct output of the code is 2 . Key Points to Remember: 1. Python lists are zero-indexed . The first element is at index 0, the second at index 1, and so on. 2. Using an index out of range (e.g., my_list[3] for the given list) would result in an IndexError . 3. The code is syntactically correct and does not produce any errors.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which built-in function is used to check if all elements in an iterable are true?",
+        "options": [
+          "all()",
+          "every()",
+          "true()",
+          "check()"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The correct answer is Option A: all() . The all() function in Python is used to check if all elements in an iterable are true. It takes an iterable as an argument and returns True if all elements in the iterable are true, otherwise False . For example: my_list = [True, True, True] result = all(my_list) print(result) # Output: True",
+        "estimatedTime": 60,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which built-in function is used to convert a value to an integer?",
+        "options": [
+          "int()",
+          "integer()",
+          "to_int()",
+          "convert_int()"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The correct answer is Option A: int() . The int() function in Python is used to convert a value to an integer. It can convert a string representing a number, a float, or even another integer to an integer data type. For example: num_str = \"10\" num_float = 3.14 converted_str = int(num_str) converted_float = int(num_float) print(converted_str) # Output: 10 print(converted_float) # Output: 3",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the purpose of the built-in function dir()?",
+        "options": [
+          "Returns a list of attributes and methods of an object",
+          "Converts a string to lowercase",
+          "Returns the square of a number",
+          "Returns the absolute value of a number"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The correct answer is Option A: Returns a list of attributes and methods of an object . The dir() function in Python is used to return a list of attributes and methods of an object. When called without an argument, it returns the list of names in the current local scope. For example: my_list = [1, 2, 3] print(dir(my_list)) # Output: ['__add__', '__class__', '__contains__', ...]",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following are the Access Modifiers types in Python-OpenCV?",
+        "options": [
+          "Protected Access Modifier, Private Access Modifier, Non-Public Access Modifier.",
+          "Public Access Modifier, Protected Access Modifier, Private Access Modifier.",
+          "Public Access Modifier, Semi-Protected Access Modifier, Private Access Modifier.",
+          "Public Access Modifier, Protected Access Modifier, Semi-private Access Modifier. 🔥 Enroll Now for Free Python Certification - March 2026"
+        ],
+        "correctAnswer": "B",
+        "explanation": "There are 3 types of access modifiers types in Python-OpenCV, they are Public Access Modifiers—by default all data members and functions of class are Public, Protected Access Modifier–declared using single underscore (_) symbol, and Private Access Modifier—declared using double underscore(__) symbol.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following functions can help us to find the version of python that we are currently working on?",
+        "options": [
+          "sys.version(1)",
+          "sys.version(0)",
+          "sys.version()",
+          "sys.version"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The function sys.version can help us to find the version of python that we are currently working on. It also contains information on the build number and compiler used. For example, 3.5.2, 2.7.3 etc. this function also returns the current date, time, bits etc along with the version.",
+        "estimatedTime": 60,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What will be the output of the following Python code snippet? for i in [ 1 , 2 , 3 , 4 ] [ ::- 1 ] : print ( i , end = ' ' )",
+        "options": [
+          "4 3 2 1",
+          "error",
+          "1 2 3 4",
+          "none of the mentioned"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The expression [1, 2, 3, 4][::-1] uses slicing with a step of -1 to reverse the list. So the list becomes [4, 3, 2, 1]. The for loop iterates over this reversed list and prints each element, with end=’ ‘ ensuring the output is on one line with spaces in between.",
+        "estimatedTime": 75,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What will be the output of the following Python program? def foo ( x ) : x [ 0 ] = [ 'def' ] x [ 1 ] = [ 'abc' ] return id ( x ) q = [ 'abc' , 'def' ] print ( id ( q ) == foo ( q ) )",
+        "options": [
+          "Error",
+          "None",
+          "False",
+          "True"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The list q is passed by reference to the function foo, so both x and q refer to the same object in memory. The id() function returns the memory address of the object, which remains unchanged. Therefore, id(q) == foo(q) evaluates to True.",
+        "estimatedTime": 75,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What will be the value of ‘result’ in following Python program? list1 = [ 1 , 2 , 3 , 4 ] list2 = [ 2 , 4 , 5 , 6 ] list3 = [ 2 , 6 , 7 , 8 ] result = list ( ) result. extend ( i for i in list1 if i not in ( list2+list3 ) and i not in result ) result. extend ( i for i in list2 if i not in ( list1+list3 ) and i not in result ) result. extend ( i for i in list3 if i not in ( list1+list2 ) and i not in result ) print ( result )",
+        "options": [
+          "[1, 3, 5, 7, 8]",
+          "[1, 7, 8]",
+          "[1, 2, 4, 7, 8]",
+          "error"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Here, ‘result’ is a list which is extending three times. When first time ‘extend’ function is called for ‘result’, the inner code generates a generator object, which is further used in ‘extend’ function. This generator object contains the values which are in ‘list1’ only (not in ‘list2’ and ‘list3’). Same is happening in second and third call of ‘extend’ function in these generator object contains values only in ‘list2’ and ‘list3’ respectively. So, ‘result’ variable will contain elements which are only in one list (not more than 1 list).",
+        "estimatedTime": 75,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What will be the output of the following Python program? def addItem ( listParam ) : listParam + = [ 1 ] mylist = [ 1 , 2 , 3 , 4 ] addItem ( mylist ) print ( len ( mylist ) )",
+        "options": [
+          "5",
+          "8",
+          "2",
+          "1"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The function addItem uses += [1] to modify the list passed to it. Since lists are mutable and passed by reference, mylist is modified directly. After appending 1, it becomes [1, 2, 3, 4, 1], so its length is 5.",
+        "estimatedTime": 75,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "The CGI.pm module for website development is a part of . . . . . . . .",
+        "options": [
+          "Perl",
+          "Java",
+          "Python",
+          "C++"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question is about understanding which programming language the CGI.pm module is associated with. CGI.pm is a powerful module for web development, it's designed to make creating dynamic web pages easier. Let's break down the options: Option A: Perl - This is the correct answer! CGI.pm is specifically designed to work with the Perl programming language. Option B: Java - Java is another popular programming language, but it has its own set of web development tools and frameworks, not directly related to CGI.pm. Option C: Python - Python is another excellent language for web development, but CGI.pm is not a part of its standard library. Option D: C++ - While C++ is a powerful language, it's generally used for lower-level tasks and system programming, not commonly used for web development in the same way as Perl, Java, or Python. Therefore, the correct answer is Option A: Perl.",
+        "estimatedTime": 60,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "How do you declare a pointer to a function that takes two integers and returns an integer in C?",
+        "options": [
+          "int (*ptr)(int, int);",
+          "ptr(int, int) int;",
+          "function int (*ptr)(int, int);",
+          "ptr function(int, int) int;"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question is mapped to Python Data Structures. The correct answer is A based on the original source question.",
+        "estimatedTime": 60,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which function can be used to move the pointer to the previous array position?",
+        "options": [
+          "last()",
+          "before()",
+          "prev()",
+          "previous()"
+        ],
+        "correctAnswer": "C",
+        "explanation": "This question is mapped to Python Data Structures. The correct answer is C based on the original source question.",
+        "estimatedTime": 45,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "A programming structure that contains data and a pointer to the next object is a",
+        "options": [
+          "template",
+          "class",
+          "pointer class",
+          "linked list"
+        ],
+        "correctAnswer": "D",
+        "explanation": "This question is mapped to Python Data Structures. The correct answer is D based on the original source question.",
+        "estimatedTime": 60,
+        "subtopic": "Python Data Structures",
+        "tags": [
+          "programming",
+          "technical",
+          "python",
+          "list",
+          "tuple"
+        ],
+        "codeSnippet": null,
+        "language": null
+      }
+    ]
+  },
+  "providerPayload": {
+    "mode": "offline",
+    "source": "existing_mock_tests",
+    "questionCount": 50
+  },
+  "offlineSource": true
+}

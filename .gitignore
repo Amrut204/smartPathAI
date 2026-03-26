@@ -1,0 +1,69 @@
+﻿# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build outputs
+client/dist/
+server/dist/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Test artifacts
+test-results/
+playwright-report/
+smoke-report*.json
+
+# Runtime logs and temp files
+*.log
+*.err.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.pid
+*.tmp
+tmp*
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+server/.env
+client/.env
+
+# Local assets/data not meant for git
+material/
+analysis_output/
+placement_scraper/
+placement_scraper_output/
+placement_scraper_output_probe/
+placement_scraper_output_test/
+open_resource_scraper/
+repo_resource_harvester/
+standalone_sanfoundry_scraper/
+resource_audit/
+server/backups/
+server/storage_reports/
+server/aws/
+server/scripts/pilot-backup/
+server/s3-backfill-report.json
+server/s3-public-access-audit.json
+server/student_declaration_system.html
+server/pre-demo-output.txt
+server/tmp*
+client/tmp*
+ops/student-onboarding/output/*
+!ops/student-onboarding/output/.gitkeep
+ops/digitalocean/server.env
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Misc local files
+tmp.cookies.txt
+home-shot.png

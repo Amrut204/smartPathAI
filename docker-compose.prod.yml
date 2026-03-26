@@ -1,0 +1,65 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.runCommand({ ping: 1 })"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+
+  server:
+    build:
+      context: ./server
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      TRUST_PROXY: "true"
+      PORT: 5000
+      MONGODB_URI: mongodb://mongo:27017
+      MONGODB_DB_NAME: campusdrive_ai
+      APP_URL: ${APP_URL:-http://localhost}
+      APP_JWT_SECRET: ${APP_JWT_SECRET}
+      COMM_UNSUB_SECRET: ${COMM_UNSUB_SECRET}
+      EMAIL_MODE: sendgrid
+      SENDGRID_API_KEY: ${SENDGRID_API_KEY}
+      SENDGRID_FROM_EMAIL: ${SENDGRID_FROM_EMAIL}
+      SENDGRID_WEBHOOK_SECRET: ${SENDGRID_WEBHOOK_SECRET:-}
+      COMM_QUEUE_BACKEND: bullmq
+      REDIS_URL: redis://redis:6379
+      COMM_QUEUE_CONCURRENCY: 5
+      COMM_RATE_MAX_SENDS_10M: ${COMM_RATE_MAX_SENDS_10M:-3}
+      COMM_RATE_MAX_RECIPIENTS_24H: ${COMM_RATE_MAX_RECIPIENTS_24H:-2000}
+      STORAGE_MODE: ${STORAGE_MODE:-local}
+    depends_on:
+      - mongo
+      - redis
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:5000/api/v1/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  client:
+    build:
+      context: ./client
+    restart: unless-stopped
+    depends_on:
+      - server
+    ports:
+      - "80:80"
+
+volumes:
+  mongo_data:
+  redis_data:

@@ -1,0 +1,9 @@
+C:\vscode\smartPathAI-mern\retry_transform.js:293
+        console.log(\`[${i + 1}/${toProcess.length}] Retrying \${relativePathStr}\`);
+                    ^
+
+SyntaxError: Invalid or unexpected token
+    at wrapSafe (node:internal/modules/cjs/loader:1515:18)
+    at checkSyntax (node:internal/main/check_syntax:78:3)
+
+Node.js v22.12.0

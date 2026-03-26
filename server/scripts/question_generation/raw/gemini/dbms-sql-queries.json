@@ -1,0 +1,1130 @@
+{
+  "provider": "gemini",
+  "model": "gemini-1.5-flash-offline",
+  "topic": "DBMS - SQL Queries",
+  "subject": "technical",
+  "category": "dbms",
+  "difficulty": "medium",
+  "promptStyle": "comprehensive_detailed",
+  "generatedAt": "2026-03-12T18:08:05.248Z",
+  "elapsedMs": 0,
+  "count": 50,
+  "cost": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "usd": 0,
+    "inr": 0
+  },
+  "prompt": "Generate 50 comprehensive placement test questions for Indian engineering students.\n\nTOPIC: DBMS - SQL Queries\nDIFFICULTY: medium\n\nOUTPUT FORMAT (JSON only):\n{\n  \"questions\": [\n    {\n      \"questionText\": \"...\",\n      \"options\": [\"A\", \"B\", \"C\", \"D\"],\n      \"correctAnswer\": \"Letter\",\n      \"explanation\": \"Detailed solution\",\n      \"alternativeMethods\": \"Other solving approaches if applicable\",\n      \"commonMistakes\": \"Why wrong answers are tempting\",\n      \"estimatedTime\": 60,\n      \"subtopic\": \"Specific area\",\n      \"tags\": [\"concept1\", \"concept2\"]\n    }\n  ]\n}\n\nREQUIREMENTS:\n- Comprehensive coverage of DBMS - SQL Queries\n- Educational explanations that teach concepts\n- Include formula derivations where helpful\n- For numerical answers, include common calculation errors as distractors\n- For conceptual answers, include common misconceptions\n- Verify all mathematical calculations\n- Ensure technical accuracy\n\nGenerate exactly 50 questions. Output ONLY valid JSON.",
+  "rawText": "{\"questions\":[{\"questionText\":\"The SQL LIKE operator is used in which of the following clause? SQL Questions and Answers on Basics SQL MCQs on Select Statement SQL Clause, Operators and Keywords SQL Multiple Choice Questions on Statements SQL Numeric Functions SQL Operators and Wildcards SQL Joins SQL Questions on Data Retrieval Techniques SQL Subqueries SQL Database SQL Constraints SQL Data Types, Views and Injection SQL Hosting, Operators and Data Types PL/SQL Basics PL/SQL Data Types and Variables PL/SQL Constants and Operators PL/SQL Loops, Strings and Arrays PL/SQL Procedures, Functions and Cursors PL/SQL Records, Exceptions and Triggers PL/SQL Packages, Collections and Transactions PL/SQL Data Types and DBMS Output\",\"options\":[\"Having\",\"Select\",\"Where\",\"Group by Chapterwise Multiple Choice Questions on SQL Our 1000+ MCQs focus on all topics of the SQL subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. SQL Basics Select Statement SQL Clause, Operators and Keywords SQL Statements SQL Numeric Functions SQL Operators and Wildcards SQL Joins Data Retrieval Techniques SQL Subqueries SQL Database SQL Constraints SQL Data Types, Views and Injection SQL Hosting, Operators and Data Types PL/SQL Basics PL/SQL Data Types and Variables PL/SQL Constants and Operators PL/SQL Loops, Strings and Arrays PL/SQL Procedures, Functions and Cursors PL/SQL Records, Exceptions and Triggers PL/SQL Packages, Collections and Transactions PL/SQL Data Types and DBMS Output The section contains multiple choice questions and answers on sql basics and sql syntax. SQL Basics SQL Syntax The section contains questions and answers on sql select statement and select distinct statements. SQL Select Statement SQL Select Distinct The section contains MCQs on SQL clauses such as WHERE and SELECT TOP, SQL keywords like ORDER BY, and SQL operators such as AND, OR, and NOT. It also covers topics related to SQL null values. SQL Where Clause SQL And, Or, Not SQL Order By Clause SQL Select Top Clause SQL Null Values The section contains multiple choice questions and answers on sql statements like insert, update and delete. SQL Insert Into Statement SQL Update Statement SQL Delete Statement The section contains questions and answers on sql numeric functions like min, max, count, avg and sum. SQL Min and Max Functions SQL Count Function SQL Avg & Sum Functions The section contains MCQs on sql like operator, wildcard characters, aliases, and the IN and BETWEEN SQL operators. SQL Like Operator SQL Wildcards SQL In Operator SQL Between Operator SQL Aliases The section contains multiple choice questions and answers on sql union operator, as well as various joins like inner join, left join, right join, full and self joins. SQL Joins SQL Inner Join SQL Left Join SQL Right Join SQL Full Join SQL Self Join SQL Union The section contains questions and answers on sql group by statement, sql having clause, sql exists operator, sql any and all operators. SQL Group By SQL Having Clause SQL Exists SQL Any & All The section contains MCQs on sql subqueries, sql statements like select into and insert into, sql null functions and sql comments. SQL Subqueries SQL Insert Into Select SQL Null Functions SQL Comments The section contains multiple choice questions and answers on sql database and table creation, sql drop database, sql drop and alter tables. SQL Database SQL Drop DB SQL Create Table SQL Drop Table SQL Alter Table The section contains questions and answers on sql constraints like not null constraint, unique constraint, primary and foreign key constraints, sql check and default constraint, sql create index statement and sql auto-increment field. SQL Constraints SQL Not Null SQL Unique Constraint SQL Primary Key SQL Foreign Key SQL Check Constraint SQL Default Constraint SQL Index SQL Auto Increment The section contains MCQs on sql dates data types, sql view statements and sql injection. SQL Dates SQL Views SQL Injection The section contains multiple choice questions and answers on sql hosting, sql operators and sql data types. SQL Hosting SQL Operators SQL Data Types The section contains questions and answers on pl/sql basics and syntax. PL/SQL Basics PL/SQL Syntax The section contains MCQs on pl/sql data types and variables. PL/SQL Data Types PL/SQL Variables The section contains multiple choice questions and answers on pl/sql constants and literals, pl/sql operators and conditions. PL/SQL Constants and Literals PL/SQL Operators PL/SQL Conditions The section contains questions and answers on pl/sql loops, pl/sql strings and arrays. PL/SQL Loops PL/SQL Strings PL/SQL Arrays The section contains MCQs on pl/sql procedures, functions and cursors. PL/SQL Procedure PL/SQL Function PL/SQL Cursors The section contains multiple choice questions and answers on pl/sql records, pl/sql exceptions and triggers. PL/SQL Records PL/SQL Exceptions PL/SQL Triggers The section contains questions and answers on pl/sql packages, collections and transactions. PL/SQL Packages PL/SQL Collections PL/SQL Transactions The section contains MCQs on pl/sql dbms output, pl/sql date and time data types. PL/SQL Date and Time PL/SQL DBMS Output To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. 👉 For weekly sql practice, exam, and certification updates, join Sanfoundry’s official WhatsApp & Telegram channels » Next - SQL Questions and Answers – SQL Basics\"],\"correctAnswer\":\"C\",\"explanation\":\"The SQL LIKE operator is used in a WHERE clause to search for a specified pattern in a column.\",\"estimatedTime\":75,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following is the correct option for the given query? SELECT DISTINCT name FROM RDBMS WHERE ID IS NOT NULL ;\",\"options\":[\"The query gives all the possible RDBMS names where a finite value exists for ID\",\"The query gives the RDBMS names where a finite value exists for ID and it excludes identical names\",\"The query gives the names of the RDBMS that have a null ID and it also excludes identical names\",\"The query is syntactically wrong\"],\"correctAnswer\":\"B\",\"explanation\":\"The distinct keyword is used to remove tuples that have identical values. The is not null clause checks only for ID’s that are not null values.\",\"estimatedTime\":60,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What is the result of the following query? SELECT studentdatabasename FROM RDBMS WHERE marks > SOME ( SELECT marks FROM student WHERE SECTION = 'c' ) ;\",\"options\":[\"The query gives all the studentdatabasename for which marks are greater than all the students in section c\",\"The query gives all the studentdatabasename for which the marks are greater than at least on student in section c\",\"The query gives all the studentdatabasename for which the marks are less than all the students in section c\",\"The query is syntactically incorrect\"],\"correctAnswer\":\"B\",\"explanation\":\"The “some” comparison is used to check for at least one condition. The > symbol is used to test whether the marks are greater than the right-hand side or not.\",\"estimatedTime\":60,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Fact tables are which of the following?\",\"options\":[\"Completely denoralized\",\"Partially denoralized\",\"Completely normalized\",\"Partially normalized\"],\"correctAnswer\":\"A\",\"explanation\":\"In the context of data warehousing and database design, fact tables are typically structured to be completely denormalized . Denormalization is a process where data is intentionally organized in a way that reduces or eliminates the need for joins between tables, often at the expense of redundancy. This is done to improve query performance in data warehousing environments, where analytical queries are common. Here's an explanation of the other options: Option B: Partially denormalized doesn't accurately describe fact tables. While some degree of denormalization may occur, the term \\\"completely denormalized\\\" is a more appropriate characterization. Option C: Completely normalized is not typically the case for fact tables in data warehousing. Normalization involves minimizing data redundancy by organizing data into separate tables based on relationships, which is the opposite of what is done in a fact table. Option D: Partially normalized also doesn't accurately describe fact tables. Fact tables are intentionally denormalized for performance reasons, so \\\"completely denormalized\\\" is the more suitable term. So, the correct answer is Option A: Completely denormalized . Fact tables in data warehousing are often structured in a way that optimizes query performance, even if it means duplicating data to reduce the need for complex joins.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"The DBMS acts as an interface between what two components of an enterprise-class database system?\",\"options\":[\"Database application and the database\",\"Data and the database\",\"The user and the database application\",\"Database application and SQL\"],\"correctAnswer\":\"A\",\"explanation\":\"Option A: Database application and the database This option is correct. The DBMS (Database Management System) acts as an interface between the database application and the database. It manages the interaction between end-users or applications and the data stored in the database, ensuring that data is consistently and efficiently accessed and managed. Option B: Data and the database This option is incorrect. The DBMS does not act as an interface between data and the database; rather, it manages the data within the database. Option C: The user and the database application This option is incorrect. The DBMS does not directly interface between the user and the database application. Users interact with the database application, which in turn interacts with the DBMS. Option D: Database application and SQL This option is incorrect. SQL is a language used to query and manage the database. The DBMS processes SQL queries from the database application but does not serve as an interface between the application and SQL itself. Conclusion: The DBMS acts as an interface between the database application and the database , making Option A: Database application and the database the correct answer.\",\"estimatedTime\":60,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What allows nesting one select statement into another?\",\"options\":[\"nesting\",\"binding\",\"subquerying\",\"encapsulating\"],\"correctAnswer\":\"C\",\"explanation\":\"Imagine you have a box of toys, and you want to find a specific toy inside. You can't just look at the whole box at once, so you need to open it and check each toy individually. This is similar to how subquerying works in MySQL. It lets you perform a query within another query, like looking inside a box to find a specific toy. Here's an example: you want to find the names of employees who work in the department with the highest average salary. You can use a subquery to first find the department with the highest average salary, and then use that information to find the employee names. So, the answer to the question is Option C: subquerying . Let's break down the other options: Option A: nesting - While nesting is related to putting things inside each other, it's a general term and doesn't specifically describe this concept. Option B: binding - Binding refers to associating values with variables in SQL statements, not to nested queries. Option D: encapsulating - This is also a general term and doesn't directly relate to how nested queries work. Therefore, subquerying is the correct answer. It's like opening a smaller box inside a bigger box to find what you're looking for.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following is the correct output for the given query? ( SELECT databaseid FROM RDBMS WHERE SECTION = 'c' ) EXCEPT ( SELECT databaseid FROM RDBMS WHERE id < 10 ) ;\",\"options\":[\"All the values of the databaseid for which section is c and id > 10\",\"All the values of the databaseid for which section not c and id > 10\",\"All the values of the databaseid for which section is c and id < 10\",\"All the values of the databaseid for which section not c and id < 10\"],\"correctAnswer\":\"A\",\"explanation\":\"The except operation excludes all the tuples that are present in the result of the second query from the result of the first query. It also excludes all duplicates from the relation.\",\"estimatedTime\":75,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which processes is an instance made of Oracle? Multiple Choice Questions on Oracle Database 11g Architecture Options MCQ on Planning Oracle Applications Oracle Database Multiple Choice Questions on SQL Basics Oracle Database MCQ on Accessing Remote Data Multiple Choice Questions on Using Oracle Text for Text Searches Oracle Database MCQ on SQL Functions Oracle Database Multiple Choice Questions on Subquery and Joins Oracle Database MCQ on Changing Data Oracle Database MCQ on Creating and Managing Tables, Views, Indexes and Sequences Oracle Database Multiple Choice Questions on Procedures, Functions and Packages Oracle Database MCQ on Using Native Dynamic SQL and DBMS_SQL Oracle Database Multiple Choice Questions on Triggers Oracle Database MCQ on Implementing Object Types, Object Views, and Methods Oracle Database Multiple Choice Questions on JDBC Programming\",\"options\":[\"Data processes\",\"Oracle background processes\",\"Memory processes\",\"All of the Mentioned Chapterwise Multiple Choice Questions on Oracle Database Our 1000+ MCQs focus on all topics of the Oracle Database subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. Oracle Database 11g Architecture Options Planning Oracle Applications SQL Basics Accessing Remote Data Using Oracle Text for Text Searches SQL Functions Subquery and Joins Changing Data Creating and Managing Tables, Views, Indexes and Sequences Procedures, Functions and Packages Using Native Dynamic SQL and DBMS_SQL Triggers Implementing Object Types, Object Views, and Methods JDBC Programming The section contains multiple choice questions and answers on oracle db 11g architecture, databases and instances, programmatic oracle structures, storing and guarding the data, installing the oracle database and creating a database. Oracle Database 11g Architecture Databases and Instances Storing and Guarding the Data Programmatic Oracle Structures Installing Oracle Database 11g and Creating a Database The section contains Oracle questions and answers on approaches, risks and standards, atomic data and business models, data entry, query and reporting, normalization, foreign key, primary and unique keys. Approaches, Risks and Standards The Atomic Data Models and Business Models Data Entry, Query and Reporting Normalization (1NF, 2NF, 3NF) Foreign, Candidate, Primary, Composite, Unique Keys Attribute, Tuple and Entity The section contains Oracle MCQs on structured query language, ddl, dml, dcl and tcl commands, select statements, arithmetic operators, alias, writing sql statements and literal characters. Structured Query Language DDL command DML command DCL and TCL command Basic Select Statements Writing SQL Statements Arithmetic Operators Defining a Column Alias Literal Character Strings The section contains Oracle Database multiple choice questions and answers on sql development environment, database connection and sql worksheet. Development Environmnets for SQL Database Connection SQL Worksheet The section contains Oracle Database questions and answers on sql wildcards, comparison and logical conditions, sorting and variables. Limiting Rows Using a Selection SQL Wildcards Comparison Conditions Logical Conditions Sorting Substitution Variables The section contains Oracle MCQs on sql functions. SQL Functions – 1 SQL Functions – 2 SQL Functions – 3 SQL Functions – 4 The section contains Oracle Database multiple choice questions and answers on groups of data, joins, non equijoins, sql clauses, subqueries and its types. Creating Groups of Data Joins Non-Equijoins Subquery Syntex Types of Subqueries SQL Clauses (AND, OR, LIKE, TOP) The section contains Oracle questions and answers on set operators, script creation, updating rows, delete statement, database transactions, read consistency, database objects and data types. Set Operators Creating a Script Updating Rows Delete Statement Database Transcations – 1 Database Transcations – 2 Read Consistency Database Objects Data Types – 1 Data Types – 2 The section contains Oracle Database MCQs on constraints, views, sequences, indexes, data dictionary structure, constraint and view information. Constraints – 1 Constraints – 2 View – 1 View – 2 Sequences Indexes Data Dictionary Structure Constraint Information View Information The section contains Oracle multiple choice questions and answers on pl/sql introduction, procedures, parameters, functions, packages and records, persistent state of packages, oracle supplied packages, job creation, dynamic sql, sql execution flow, pl/sql block and dbms_sql package. PL/SQL Introduction Procedures in PL/SQL PL/SQL Parameters Functions in PL/SQL PL/SQL Packages – 1 PL/SQL Packages – 2 PL/SQL Records Package Functions in SQL Persistent State of Packages Oracle Supplied Packages Creating a Job Data Dictionary Views Execution Flow of SQL Dynamic SQL Dynamically Executing of PL/SQL Block DBMS_SQL Package The section contains Oracle Database questions and answers on pl/sql wrapper, cursor, synonym and collections, autonomous transactions, bulk binding and dependencies. PL/SQL Wrapper PL/SQL Cursor PL/SQL Synonym PL/SQL Collections Standardizing Constants and Exceptions Autonomous Transactions Bulk Binding Dependencies – 1 Dependencies – 2 The section contains Oracle MCQs on lob datatypes, bfiles, triggers, database triggers, native compilation and pl/sql warnings. LOB Data Types BFILEs Triggers – 1 Triggers – 2 Database Triggers Native Compilation PL/SQL Warnings The section contains Oracle Database multiple choice questions and answers on oracle sequences, tablespace, security, replication and backup. Oracle Sequences Oracle Tablespace Oracle Security Oracle Replication Oracle Backup The section contains Oracle questions and answers on jdbc programming. JDBC Programming – 1 JDBC Programming – 2 JDBC Programming – 3 JDBC Programming – 4 To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews.\"],\"correctAnswer\":\"B\",\"explanation\":\"Oracle creates a set of background processes for an instance to manage memory structure, asynchronously perform I/O to write data to disk, and do general maintenance tasks.\",\"estimatedTime\":75,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"To check how MySQL would execute a SELECT query, which statement is used?\",\"options\":[\"EXPLAIN\",\"SHOW\",\"DISPLAY\",\"TELL\"],\"correctAnswer\":\"A\",\"explanation\":\"In MySQL, by issuing an EXPLAIN statement, MySQL displays some information about how it would execute a SELECT query without actually executing it. It is prefixed with the query.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What will be the order of sorting in the following MySQL statement? SELECT emp_id , emp_name FROM person ORDER BY emp_id , emp_name;\",\"options\":[\"Sorting {emp_name, emp_id}\",\"None of the mentioned\",\"Sorting {emp_id, emp_name}\",\"Sorting {emp_id} but not emp_name\"],\"correctAnswer\":\"C\",\"explanation\":\"In the query, first “emp_id” will be sorted, then “emp_name” with respect to “emp_id.”\",\"estimatedTime\":60,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What is the purpose of the SQL keyword “DISTINCT” in a SELECT statement?\",\"options\":[\"To retrieve unique values from a column\",\"To filter NULL values\",\"To delete duplicate records\",\"To sort the result set 👉 Apply Now for Free C Certification - March 2026\"],\"correctAnswer\":\"A\",\"explanation\":\"The DISTINCT keyword is used to retrieve unique values from a specified column in a SELECT query.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following is a default join type?\",\"options\":[\"Right join\",\"Left join\",\"Inner join\",\"Outer join\"],\"correctAnswer\":\"C\",\"explanation\":\"Inner join Selects records that have matching values in both the tables. It’s the default join type, so if we just type JOIN without specifying any other conditions, an INNER JOIN will be used.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which SQL keyword is used to sort the data returned by a SELECT statement?\",\"options\":[\"Group\",\"Order\",\"Group By\",\"Order By\"],\"correctAnswer\":\"D\",\"explanation\":\"Order By clause is used to sort the retrieved data in ascending or descending order. Group By clause is used to group the result-set by one or more columns. Order and Group are not valid SQL commands.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which privileges are required on the source server to use mysqldbcopy? General MySQL Use Using SQL to Manage Data Data Types Stored Programs Query Optimization MySQL Programming MySQL Programs Using C MySQL Programs Using Perl DBI and PHP MySQL Administration MySQL Data Directory General MySQL Administration Access Control and Security Database Maintenance, Backups and Replication Data Type Reference, Operators and Functions System, Status and User Variables SQL Syntax Select Statement Nulls and Conditions and Miscellaneous\",\"options\":[\"UPDATE\",\"CREATE\",\"SELECT\",\"INSERT Chapterwise Multiple Choice Questions on MySQL Our 1000+ MCQs focus on all topics of the MySQL subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. General MySQL Use Using SQL to Manage Data Data Types Stored Programs Query Optimization MySQL Programming MySQL Programs Using C MySQL Programs Using Perl DBI and PHP MySQL Administration MySQL Data Directory General MySQL Administration Access Control and Security Database Maintenance, Backups and Replication Data Type Reference, Operators and Functions System, Status and User Variables SQL Syntax Select Statement Nulls and Conditions and Miscellaneous The section contains multiple choice questions and answers on database terminology, mysql setup and interactions. Basic Database Terminology MySQL Setup – 1 MySQL Setup – 2 Interacting with MySQL The section contains questions and answers on server sql mode, mysql identifiers and rules, sql statements case sensitivity, selecting, creating, dropping and altering databases, table retrievals with joins, union and subqueries, views, transactions, foreign key, table creation, populating and modifying tables. Server SQL Mode MySQL Identifier Syntax and Naming Rules Case Sensitivity in SQL Statements Character Set Support Selecting, Creating, Dropping and Altering Databases Creating, Dropping, Indexing and Altering Tables Obtaining Database Metadata Performing Multiple – Table Retrievals with Joins Performing Multiple – Table Retrievals with Subqueries Performing Multiple – Table Retrievals with Union Using Views Multiple – Table Deletes and Updates Performing Transactions Foreign Keys and Referential Integrity Using Full Text Searches Using MySQL Command Line Tool Table Creation Populating and Modifying Tables – 1 Populating and Modifying Tables – 2 Populating and Modifying Tables – 3 The section contains MCQs on data value categories, datatypes, sequences and type conversions. Data Value Categories – 1 Data Value Categories – 2 MySQL Datatypes – 1 MySQL Datatypes – 2 MySQL Datatypes – 3 MySQL Datatypes – 4 MySQL Datatypes – 5 How MySQL Handles Invalid Data Values Working with Sequences Expression Evaluation and Type Conversion Choosing Data Types The section contains multiple choice questions and answers on compound statements, stored functions, triggers, events and security. Compound Statements and Statement Delimiters Stored Functions and Procedures Triggers Events Security for Stored Programs and Views The section contains questions and answers on indexing, query optimizer, choosing and loading data types, scheduling and locking issues, administrative level optimizations, query mechanics and clauses. Using Indexing MySQL Query Optimizer Choosing Data Types for Efficient Queries Loading Data Efficiently Scheduling and Locking Issues Administrative-Level Optimizations When Good Statements Go Bad Query Mechanics Query Clauses The section contains MCQs on mysql programs and apis. MySQL Programs APIs Available for MySQL Choosing an API The section contains multiple choice questions and answers on compiling and linking client programs, server connection, error handling, processing sql statements, embedded server library, multiple statement execution. Compiling and Linking Client Programs Connecting to the Server Handling Errors and Processing Command Options Processing SQL Statements Writing Clients That Include SSL Support Using the Embedded Server Library Using Multiple-Statement Execution Using Server-Side Prepared Statements The section contains questions and answers on perl script characteristics, perl dbi and php overviews. Perl Script Characteristics Perl DBI Overview – 1 Perl DBI Overview – 2 Putting Perl DBI to Work Using Perl DBI in Web Applications PHP Overview Putting PHP to Work The section contains MCQs on mysql components and administration, access control and security, database maintenance, backups and replication. MySQL Components General MySQL Administration Access Control and Security Database Maintenance, Backups and Replication The section contains multiple choice questions and answers on location, structure and relocating data directory’s. Location of the Data Directory Structure of the Data Directory Relocating Data Directory Contents The section contains questions and answers on mysql installation and server startup, managing mysql user accounts, maintaining logs, server tuning, storage engine configuration, running multiple servers, internationalization and localization issues. Securing a New MySQL Installation Arranging for MySQL Server Startup and Shutdown Controlling How the Server Listens for Connections Managing MySQL User Accounts Maintaining Logs Tuning the Server Storage Engine Configuration Enabling or Disabling Local Capability for Load Data Internationalization and Localization Issues Running Multiple Servers Updating MySQL The section contains MCQs on secure connections, internal and external security. Internal Security: Preventing Unauthorized Filesystem Access External Security: Preventing Unauthorized Network Access Setting Up Secure Connections The section contains multiple choice questions and answers on preventive maintenance principles, database backups, checking and repairing database tables, backups for data recovery and replication servers setting. Principles of Preventive Maintenance Performing Database Maintenance with the Server Running General Preventative Maintenance Making Database Backups Copying Databases to Another Server Checking and Rpairing Database Tables Using Backups for Data Recovery Setting Up Replication Servers The section contains questions and answers on numeric, string and spatial data types, operators and functions. Numeric Data Types String Data Types Date and Time Data Types Spatial Data Types Operators Functions The section contains MCQs on system and session only system variables, status and user defined variables. System Variables Session-Only System Variables Status Variables User-Defined Variables The section contains multiple choice questions and answers on sql statement syntax, compound statement and comment syntax. SQL Statement Syntax (Non-Compound Statements) Compound Statement Syntax Comment Syntax The section contains questions and answers on select clauses, from clauses, order by clauses, where clauses, group by and having clause. The Select Clauses – 1 The Select Clauses – 2 The From Clauses – 1 The From Clauses – 2 The Where Clauses The group by and having Clause The Order by Clauses – 1 The Order by Clauses – 2 The section contains MCQs on database copies, secure connections, conditional evaluation, null and condition types. Conditional Evaluation Condition Types – 1 Condition Types – 2 Condition Types – 3 Condition Types – 4 Null: The Four Letter Word Database Copies Secure Connections To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews.\"],\"correctAnswer\":\"C\",\"explanation\":\"To use the utility program ‘mysqldbcopy’, the user must have SELECT privileges for the database(s) on the source server and have CREATE, INSERT, and UPDATE on the destination server.\",\"estimatedTime\":75,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which technology is commonly used for real-time stream processing of big data and is part of the Apache ecosystem?\",\"options\":[\"Apache Kafka\",\"Apache HBase\",\"Apache Spark\",\"Apache Hive\"],\"correctAnswer\":\"A\",\"explanation\":\"The correct answer is A: Apache Kafka. Let's break down why: Apache Kafka: This is specifically designed for handling real-time data streams. Think of it like a super-fast messaging system that can process huge amounts of data instantly. It's perfect for things like tracking website activity, processing sensor data, or monitoring financial transactions. Apache HBase: This is a NoSQL database that's really good at storing and retrieving large datasets. However, it's not primarily used for *real-time* processing. It's more for storing data after it's been processed or analyzing it in batches. Apache Spark: Spark *can* do stream processing, but it's more generally used for large-scale data processing and analytics. While Spark Streaming exists, Kafka is often used *with* Spark to get the data in real-time first. So, Kafka is more directly associated with real-time stream processing. Apache Hive: Hive is like a SQL interface for Hadoop. It lets you query large datasets stored in Hadoop using SQL-like queries. It's not designed for real-time processing; it's more for batch processing and data warehousing. In Summary: For real-time data *streams*, think Apache Kafka .\",\"estimatedTime\":60,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Microsoft Access is a\",\"options\":[\"RDBMS\",\"OODBMS\",\"ORDBMS\",\"Network database model\"],\"correctAnswer\":\"A\",\"explanation\":\"Microsoft Access is classified as a Relational Database Management System (RDBMS) . An RDBMS is a type of database management system that stores and organizes data in a structured manner using tables with predefined relationships between them. In Microsoft Access, data is stored in tables, and you can create relationships between these tables using keys. Access follows the principles of a relational database by allowing you to establish connections between tables, ensuring data integrity, and supporting SQL (Structured Query Language) for querying and managing data. Option B: Object-Oriented Database Management System (OODBMS) refers to a type of database system that stores data in the form of objects, which are instances of classes. Microsoft Access does not primarily fall under this category. Option C: Object-Relational Database Management System (ORDBMS) combines features of both relational and object-oriented databases. While Microsoft Access has some object-oriented features, it is primarily categorized as an RDBMS. Option D: The Network Database Model is a type of database model that represents data in a network-like structure of records and sets. Microsoft Access doesn't primarily adhere to the network database model. Therefore, the correct option is Option A: RDBMS .\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following joins are SQL server default?\",\"options\":[\"Inner\",\"Equi\",\"Outer\",\"None of the Mentioned\"],\"correctAnswer\":\"A\",\"explanation\":\"SQL inner joins are the default joins in SQL Server. Inner query joins only the rows that are matching.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What is the full form of SQL ?\",\"options\":[\"Structured Query Language\",\"Structured Query List\",\"Simple Query Language\",\"None of these\"],\"correctAnswer\":\"A\",\"explanation\":\"SQL (Structured Query Language) is a special-purpose programming language designed for managing data held in a relational database management system (RDBMS). Originally based upon relational algebra and tuple relational calculus, SQL consists of a data definition language and a data manipulation language. The scope of SQL includes data insert, query, update and delete, schema creation and modification, and data access control.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"The FROM SQL clause is used to...\",\"options\":[\"specify what table we are selecting or deleting data FROM\",\"specify range for search condition\",\"specify search condition\",\"None of these\"],\"correctAnswer\":\"A\",\"explanation\":\"The FROM SQL clause is used to specify from which table we are selecting or deleting data. It defines the source table from which data will be retrieved or modified in a SQL query. Here's the breakdown: Option A: specify what table we are selecting or deleting data FROM This option correctly describes the purpose of the FROM clause, which is to specify the table from which data operations will be performed. Option B: specify range for search condition This is not the primary purpose of the FROM clause. It is used for table specification, not defining search ranges. Option C: specify search condition The FROM clause is not used to specify search conditions. Search conditions are typically defined in the WHERE clause. Option D: None of these Option A is a valid description of the FROM clause's purpose. So, the correct answer is Option A: specify what table we are selecting or deleting data FROM .\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"SQL stands for ________ .\",\"options\":[\"Structured Query Language\",\"Sequential Query Language\",\"Structured Question Language\",\"Sequential Question Language\"],\"correctAnswer\":\"A\",\"explanation\":\"Option A: Structured Query Language This option is correct. SQL stands for Structured Query Language . It is a standard language for managing and manipulating relational databases. SQL allows users to perform tasks such as querying data, updating data, and defining and modifying the structure of databases. Option B: Sequential Query Language This option is incorrect. There is no language known as Sequential Query Language. SQL is the standard language used for querying and managing databases. Option C: Structured Question Language This option is incorrect. SQL does not stand for Structured Question Language. It specifically deals with queries and operations related to databases, not questions in a general sense. Option D: Sequential Question Language This option is incorrect. Sequential Question Language is not a recognized term. SQL is specifically designed for interacting with relational databases through structured queries. Conclusion: SQL stands for Structured Query Language , making Option A: Structured Query Language the correct answer.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"The following are functions of a DBMS except ________ .\",\"options\":[\"creating and processing forms\",\"creating databases\",\"processing data\",\"administrating databases\"],\"correctAnswer\":\"A\",\"explanation\":\"Option A: creating and processing forms This option is correct. Creating and processing forms is not typically a direct function of a DBMS (Database Management System). Forms are usually created and processed within application software that interacts with the DBMS to manage data. Option B: creating databases This option is incorrect. Creating databases is a fundamental function of a DBMS. It allows users to define the structure, tables, relationships, and constraints within a database. Option C: processing data This option is incorrect. Processing data is a primary function of a DBMS. It involves operations such as querying data, inserting, updating, deleting, and manipulating data stored in databases. Option D: administrating databases This option is incorrect. Administering databases is another critical function of a DBMS. It includes tasks such as managing user access, ensuring data security, optimizing performance, and maintaining database integrity. Conclusion: The functions of a DBMS include creating databases , processing data , and administering databases . Creating and processing forms is not typically a function directly performed by a DBMS, making Option A: creating and processing forms the correct answer.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"A view is which of the following?\",\"options\":[\"A virtual table that can be accessed via SQL commands\",\"A virtual table that cannot be accessed via SQL commands\",\"A base table that can be accessed via SQL commands\",\"A base table that cannot be accessed via SQL commands\"],\"correctAnswer\":\"A\",\"explanation\":\"Option A: A virtual table that can be accessed via SQL commands - This option correctly describes a view in SQL. A view is a virtual table based on the result-set of an SQL statement. It can be queried and manipulated using SQL commands, but it does not store data like a physical table. Option B: A virtual table that cannot be accessed via SQL commands - This option is incorrect because views are specifically designed to be accessed via SQL commands. Option C: A base table that can be accessed via SQL commands - This option describes a physical or base table, not a view. Option D: A base table that cannot be accessed via SQL commands - This option is incorrect because base tables are accessed and manipulated using SQL commands. Conclusion: In SQL, a view is a virtual table that is created based on a SQL SELECT query. It can be queried like a regular table using SQL commands. Therefore, the correct answer is Option A: A virtual table that can be accessed via SQL commands .\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"ON UPDATE CASCADE ensures which of the following?\",\"options\":[\"Normalization\",\"Data Integrity\",\"Materialized Views\",\"All of the above\"],\"correctAnswer\":\"B\",\"explanation\":\"Option A: Normalization - ON UPDATE CASCADE in SQL is not directly related to normalization, which is a process of organizing data to minimize redundancy and dependency. Option B: Data Integrity - This is the correct option. ON UPDATE CASCADE is a referential integrity constraint that ensures data integrity by automatically updating related records in child tables when the parent record is updated. Option C: Materialized Views - ON UPDATE CASCADE does not relate to materialized views, which are views that store the results of a query physically for faster access. Option D: All of the above - This option suggests that ON UPDATE CASCADE ensures all the benefits mentioned in Options A, B, and C. However, only Option B correctly describes the purpose of ON UPDATE CASCADE. Conclusion: In SQL, ON UPDATE CASCADE ensures data integrity by automatically updating related records in child tables when the parent record is updated. Therefore, the correct answer is Option B: Data Integrity .\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which statement is used to check how MySQL would execute a SELECT query?\",\"options\":[\"TELL\",\"SHOW\",\"DISPLAY\",\"EXPLAIN\"],\"correctAnswer\":\"D\",\"explanation\":\"This question is asking about a command in MySQL that lets you see how the database plans to run a SELECT query . Think of it like a roadmap for your query! Here's why the answer is D: EXPLAIN : * EXPLAIN is specifically designed to give you a breakdown of how MySQL will approach your query. * TELL , SHOW , and DISPLAY have different uses in MySQL. They don't deal with analyzing query execution plans. So, if you want to understand how your SELECT query will be processed, use the EXPLAIN statement!\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"The following MySQL statement belongs to which condition types? SELECT fname FROM person WHERE dept_id= (SELECT dept_id FROM department WHERE names=’s’);\",\"options\":[\"Equality condition\",\"Inequality condition\",\"Range condition\",\"All of the mentioned\"],\"correctAnswer\":\"A\",\"explanation\":\"This MySQL statement uses a subquery to find the department ID of a department named 's' and then selects all the first names (fname) from the person table where the department ID matches the result of the subquery. Subquery is a query nested inside another query. Let's break down the statement: 1. SELECT fname FROM person: This part of the statement selects the first names (fname) from the person table. 2. WHERE dept_id = (SELECT dept_id FROM department WHERE names = 's'): This part of the statement specifies the condition for selecting the first names. It says to select only those first names where the department ID (dept_id) matches the department ID retrieved from the subquery . 3. (SELECT dept_id FROM department WHERE names = 's'): This is the subquery that retrieves the department ID (dept_id) from the department table where the department name (names) is equal to 's'. Therefore, this statement uses an equality condition to match the department ID retrieved from the subquery. So the answer is Option A: Equality condition\",\"estimatedTime\":60,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What is the log in which data changes received from a replication master server are written?\",\"options\":[\"error log\",\"general query log\",\"binary log\",\"relay log\"],\"correctAnswer\":\"D\",\"explanation\":\"This question is about how MySQL manages data replication. Replication is like copying information from one database server (the master ) to another (the slave ). Think of it like making a copy of a file on your computer. When you change the original file, you have to update the copy. In MySQL, the slave server needs to know about any changes made on the master server. So, the question is asking: where does the slave server store the information about the changes it needs to apply? Here's the breakdown of the options: Option A: error log: This log records any errors that happen in MySQL, but not changes in the data. Option B: general query log: This log tracks all the queries executed by the server, but it doesn't focus specifically on replication changes. Option C: binary log: This log is where the master server records all the changes to the database. The slave server reads this log to learn about the updates. This is a crucial part of replication. Option D: relay log: This log is where the slave server stores the information it reads from the master's binary log. The slave uses this information to apply the changes to its own database. Therefore, the answer is Option D: relay log.\",\"estimatedTime\":60,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"SELECT select_list FROM table_list WHERE row_constraint GROUP BY grouping_columns; Which of these is not optional?\",\"options\":[\"select_list\",\"table_list\",\"row_constraint\",\"grouping_columns\"],\"correctAnswer\":\"A\",\"explanation\":\"This question is about the basic structure of a SELECT statement in MySQL. A SELECT statement is used to retrieve data from a database. Here's a breakdown of the parts: SELECT select_list - This part tells the database what data to retrieve. The select_list is a list of columns or expressions you want to display. FROM table_list - This part specifies the table(s) from which the data will be retrieved. WHERE row_constraint - This part filters the data based on specific conditions. This helps you narrow down the rows you want to see. GROUP BY grouping_columns - This part groups rows together based on the values in one or more columns. You might use this to count how many times something appears or calculate averages for each group. Now, let's look at the options: Option A: select_list - This is not optional. You always need to tell MySQL what data to retrieve. Option B: table_list - This is not optional. You need to tell MySQL where to get the data from. Option C: row_constraint - This is optional . You can choose to filter your data or not. Option D: grouping_columns - This is optional . You can use the GROUP BY clause or not. So, the answer is Option A: select_list and Option B: table_list . You must have a select_list (what to retrieve) and a table_list (where to get it from) in a SELECT statement.\",\"estimatedTime\":60,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Is the following MySQL statement belongs to the \\\"Equality condition\\\"? SELECT product_type.name, product.name FROM product_type INNER JOIN Product ON product_type.dept=Product.dept WHERE product_type.name=’customers_accounts’;\",\"options\":[\"Yes\",\"No\",\"Depends\",\"None of the mentioned\"],\"correctAnswer\":\"A\",\"explanation\":\"This question is asking if the given SQL statement uses an Equality condition . An Equality condition is a comparison that checks if two values are equal using the = operator. Let's analyze the SQL statement: ```sql SELECT product_type.name, product.name FROM product_type INNER JOIN Product ON product_type.dept=Product.dept WHERE product_type.name=’customers_accounts’; ``` The statement uses the WHERE clause with the condition product_type.name=’customers_accounts’ . This condition compares the value of the product_type.name column with the string 'customers_accounts'. Therefore, the given SQL statement uses an Equality condition. The correct answer is Option A: Yes.\",\"estimatedTime\":60,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"The default value in seconds in the system variable 'long_query_time' is . . . . . . . .\",\"options\":[\"5\",\"10\",\"20\",\"60\"],\"correctAnswer\":\"B\",\"explanation\":\"This question asks about the 'long_query_time' system variable in MySQL. This variable is used to determine which queries are considered \\\"long\\\" and should be logged. The 'long_query_time' variable is measured in seconds . The question wants to know the default value set for this variable. Think about it this way: If a query takes longer than this default time, it's flagged as a long query and recorded in the slow query log. Now, let's look at the options: Option A: 5 Option B: 10 Option C: 20 Option D: 60 The correct answer is Option D: 60 . By default, a query is considered long if it takes more than 60 seconds to complete.\",\"estimatedTime\":60,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What is SQL Server?\",\"options\":[\"SQL Server is a relational database management system\",\"SQL Server is a software whose main purpose is to store and retrieve data\",\"SQL Server is a highly secure server and does not allow any database file manipulation during execution\",\"All of the mentioned\"],\"correctAnswer\":\"A\",\"explanation\":\"Microsoft’s SQL Server is a relational database management system (RDBMS). It was created largely to compete with the MySQL and Oracle databases. The standard SQL (Structured Query Language) language, ANSI SQL is supported by SQL Server. SQL Server is a highly secure server and does not allow any database file manipulation during the execution process.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"The following SQL is which type of join: SELECT CUSTOMER_T. CUSTOMER_ID, ORDER_T. CUSTOMER_ID, NAME, ORDER_ID FROM CUSTOMER_T,ORDER_T WHERE CUSTOMER_T. CUSTOMER_ID = ORDER_T. CUSTOMER_ID\",\"options\":[\"Equi-join\",\"Natural join\",\"Outer join\",\"Cartesian join\"],\"correctAnswer\":\"A\",\"explanation\":\"This question is mapped to DBMS - SQL Queries. The correct answer is A based on the original source question.\",\"estimatedTime\":60,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Using the SQL GROUP BY phrase with a SELECT statement can help detect which of the following problems?\",\"options\":[\"The multivalue, multicolumn problem\",\"The inconsistent values problem\",\"The missing values problem\",\"The general-purpose remarks column problem\"],\"correctAnswer\":\"B\",\"explanation\":\"This question is mapped to DBMS - SQL Queries. The correct answer is B based on the original source question.\",\"estimatedTime\":60,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What operator tests column for the absence of data?\",\"options\":[\"EXISTS operator\",\"NOT operator\",\"IS NULL operator\",\"None of these\"],\"correctAnswer\":\"C\",\"explanation\":\"Always use IS NULL to look for NULL values. Syntax: SELECT \\\"column_name\\\" FROM \\\"table_name\\\" WHERE \\\"column_name\\\" IS NULL\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the SQL statements is correct?\",\"options\":[\"SELECT Username AND Password FROM Users\",\"SELECT Username, Password FROM Users\",\"SELECT Username, Password WHERE Username = 'user1'\",\"None of these\"],\"correctAnswer\":\"B\",\"explanation\":\"Correct order of SELECT, FROM and WHERE clause is as follow: SELECT column_name1, column_name2, .... FROM table_name WHERE condition So, only SELECT Username, Password FROM Users follows the above syntax.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following is the full form of RDBMS?\",\"options\":[\"Relational Data Management System\",\"Relational Database Management System\",\"Relative Database Management System\",\"Regional Data Management System\"],\"correctAnswer\":\"B\",\"explanation\":\"A relational database management system (RDBMS) is a set of applications and features that allow IT professionals and others to develop, edit, administer, and interact with relational databases.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What is an RDBMS?\",\"options\":[\"Database that stores data elements that are not linked\",\"Database that accesses data elements that are not linked\",\"Database that stores and allows access to data elements that are linked\",\"None of the mentioned\"],\"correctAnswer\":\"C\",\"explanation\":\"A relational database is a form of database that stores and allows access to data elements that are linked. The relational model, a simple and obvious means of representing data in tables, is the foundation of relational databases.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What is a relation in RDBMS?\",\"options\":[\"Key\",\"Table\",\"Row\",\"Data Types\"],\"correctAnswer\":\"B\",\"explanation\":\"In a relational database, each table, also known as a relation, includes one or more data types in the form of columns or attributes. Each row, also known as a record or tuple, includes a single instance of data — or key — for each of the columns categories.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following systems use RDMS?\",\"options\":[\"Oracle\",\"Microsoft SQLServer\",\"IBM\",\"All of the mentioned\"],\"correctAnswer\":\"D\",\"explanation\":\"Manufacturing, human resources, and banking are all industries that use relational database management systems. IBM, Oracle, MySQL, Microsoft SQLServer, and PostgreSQL are some examples of RDBMS-based systems.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following constraints RDBS doesn’t check before creating the tables?\",\"options\":[\"Not null\",\"Primary keys\",\"Data Structure\",\"Data integrity\"],\"correctAnswer\":\"C\",\"explanation\":\"Before creating the tables, the RDBMS will check the following constraints: Primary keys Foreign keys Not null Check Data integrity\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following commands do we use to delete a relation (RDBMS) from a database?\",\"options\":[\"delete table RDBMS\",\"drop table RDBMS\",\"delete from RDBMS\",\"drop relation RDBMS\"],\"correctAnswer\":\"B\",\"explanation\":\"The drop table command is used to delete a relation from a database whereas the delete table removes all the tuples from a relation\",\"estimatedTime\":60,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"________ deletes a data item from a database.\",\"options\":[\"Insert(RDBMS)\",\"Drop(RDBMS)\",\"Delete(RDBMS)\",\"None of the mentioned\"],\"correctAnswer\":\"C\",\"explanation\":\"Delete(RDBMS) deletes a data item from a database. Insert(RDBMS) inserts a new data item RDBMS into the database and assigns RDBMS an initial value.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What does the following query do? UPDATE student SET marks = marks * 1.10 ;\",\"options\":[\"It decreases the marks of all the students by 90%\",\"It increases the marks of all the students by 10%\",\"It is syntactically wrong\",\"It increases the marks of all the students by 110%\"],\"correctAnswer\":\"B\",\"explanation\":\"The updated clause is used to edit a specific value in the tuple. The set command is used to set the value of an attribute in a tuple.\",\"estimatedTime\":60,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following is referred to as the language used application programs to request data from the DBMS?\",\"options\":[\"DDL\",\"Query language\",\"DML\",\"All of the Mentioned\"],\"correctAnswer\":\"C\",\"explanation\":\"The effect of a DML statement is not permanent until you commit the transaction that includes it. A transaction is a sequence of SQL statements that Oracle Database treats as a unit.\",\"estimatedTime\":60,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which is the MySQL instance responsible for data processing?\",\"options\":[\"MySQL server\",\"SQL\",\"MySQL client\",\"Server daemon program\"],\"correctAnswer\":\"A\",\"explanation\":\"MySQL uses client-server architecture. The MySQL server program runs on the machine where databases are stored. SQL is a query language used for querying the tables and information retrieval.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What is ‘xyz’ in the following SQL statement? SELECT abc FROM xyz;\",\"options\":[\"database name\",\"row name\",\"table name\",\"column name\"],\"correctAnswer\":\"C\",\"explanation\":\"The SELECT clause is used to retrieve information from some specified tables. It follows a specified format for information retrieval. Here, ‘abc’ can be a column name. It must be present in the table ‘xyz’.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What is x in the following MySQL statement? DELETE FROM x USING x LEFT JOIN y ON x . col = y . col;\",\"options\":[\"column name\",\"server name\",\"database name\",\"table name\"],\"correctAnswer\":\"D\",\"explanation\":\"The ‘DELETE’ operation is being performed in the statement. The table names are ‘x’ and ‘y’. The column name is ‘col’. The rows from the left join of x and y get deleted according to the condition given.\",\"estimatedTime\":60,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What is the meaning of “EMPTY SET” in the following MySQL command? SELECT fname , lname , person_id FROM person WHERE lname = ’s’; /* after Execution*/ Mysql tool RETURNS EMPTY SET 0 :00sec\",\"options\":[\"Access denied\",\"No values\",\"Error\",\"None of the mentioned\"],\"correctAnswer\":\"B\",\"explanation\":\"“EMPTY SET” means there were no values stored in the structure that belongs to lname.\",\"estimatedTime\":75,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which mode prevents MySQL from performing a full check of date parts?\",\"options\":[\"ALLOW_DATES_INVALID\",\"STOP_DATES_CHECK\",\"PREVENT_DATE_CHECK\",\"ALLOW_INVALID_DATES\"],\"correctAnswer\":\"D\",\"explanation\":\"In MySQL, it is also possible to selectively weaken the strict mode in some places. If the ALLOW_INVALID_DATES SQL mode is enabled, MySQL doesn’t perform full checking of the date parts.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What will be the result of the following MySQL command? SELECT emp_id , ‘ACTIVE’ AS STATUS , emp_id * 3.14 AS emp_pi , UPPER ( lname ) AS last_name FROM employee;\",\"options\":[\"emp_id, ACTIVE, emp_id * 314, UPPER(lname)\",\"emp_id, Status, emp_pi, last_name\",\"Error\",\"None of the mentioned\"],\"correctAnswer\":\"B\",\"explanation\":\"Status, emp_pi, last_name are “column aliases” and Keyword “AS” is optional.\",\"estimatedTime\":75,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following is basis for SQL?\",\"options\":[\"SQL Server\",\"DBMS\",\"RDBMS\",\"Oracle\"],\"correctAnswer\":\"C\",\"explanation\":\"RDBMS is the basis for SQL, and for all modern database systems such as MS SQL Server, IBM DB2, Oracle, MySQL and Microsoft Access.\",\"estimatedTime\":45,\"subtopic\":\"DBMS - SQL Queries\",\"tags\":[\"dbms\",\"technical\",\"sql\",\"select\",\"join\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"}]}",
+  "parsed": {
+    "questions": [
+      {
+        "questionText": "The SQL LIKE operator is used in which of the following clause? SQL Questions and Answers on Basics SQL MCQs on Select Statement SQL Clause, Operators and Keywords SQL Multiple Choice Questions on Statements SQL Numeric Functions SQL Operators and Wildcards SQL Joins SQL Questions on Data Retrieval Techniques SQL Subqueries SQL Database SQL Constraints SQL Data Types, Views and Injection SQL Hosting, Operators and Data Types PL/SQL Basics PL/SQL Data Types and Variables PL/SQL Constants and Operators PL/SQL Loops, Strings and Arrays PL/SQL Procedures, Functions and Cursors PL/SQL Records, Exceptions and Triggers PL/SQL Packages, Collections and Transactions PL/SQL Data Types and DBMS Output",
+        "options": [
+          "Having",
+          "Select",
+          "Where",
+          "Group by Chapterwise Multiple Choice Questions on SQL Our 1000+ MCQs focus on all topics of the SQL subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. SQL Basics Select Statement SQL Clause, Operators and Keywords SQL Statements SQL Numeric Functions SQL Operators and Wildcards SQL Joins Data Retrieval Techniques SQL Subqueries SQL Database SQL Constraints SQL Data Types, Views and Injection SQL Hosting, Operators and Data Types PL/SQL Basics PL/SQL Data Types and Variables PL/SQL Constants and Operators PL/SQL Loops, Strings and Arrays PL/SQL Procedures, Functions and Cursors PL/SQL Records, Exceptions and Triggers PL/SQL Packages, Collections and Transactions PL/SQL Data Types and DBMS Output The section contains multiple choice questions and answers on sql basics and sql syntax. SQL Basics SQL Syntax The section contains questions and answers on sql select statement and select distinct statements. SQL Select Statement SQL Select Distinct The section contains MCQs on SQL clauses such as WHERE and SELECT TOP, SQL keywords like ORDER BY, and SQL operators such as AND, OR, and NOT. It also covers topics related to SQL null values. SQL Where Clause SQL And, Or, Not SQL Order By Clause SQL Select Top Clause SQL Null Values The section contains multiple choice questions and answers on sql statements like insert, update and delete. SQL Insert Into Statement SQL Update Statement SQL Delete Statement The section contains questions and answers on sql numeric functions like min, max, count, avg and sum. SQL Min and Max Functions SQL Count Function SQL Avg & Sum Functions The section contains MCQs on sql like operator, wildcard characters, aliases, and the IN and BETWEEN SQL operators. SQL Like Operator SQL Wildcards SQL In Operator SQL Between Operator SQL Aliases The section contains multiple choice questions and answers on sql union operator, as well as various joins like inner join, left join, right join, full and self joins. SQL Joins SQL Inner Join SQL Left Join SQL Right Join SQL Full Join SQL Self Join SQL Union The section contains questions and answers on sql group by statement, sql having clause, sql exists operator, sql any and all operators. SQL Group By SQL Having Clause SQL Exists SQL Any & All The section contains MCQs on sql subqueries, sql statements like select into and insert into, sql null functions and sql comments. SQL Subqueries SQL Insert Into Select SQL Null Functions SQL Comments The section contains multiple choice questions and answers on sql database and table creation, sql drop database, sql drop and alter tables. SQL Database SQL Drop DB SQL Create Table SQL Drop Table SQL Alter Table The section contains questions and answers on sql constraints like not null constraint, unique constraint, primary and foreign key constraints, sql check and default constraint, sql create index statement and sql auto-increment field. SQL Constraints SQL Not Null SQL Unique Constraint SQL Primary Key SQL Foreign Key SQL Check Constraint SQL Default Constraint SQL Index SQL Auto Increment The section contains MCQs on sql dates data types, sql view statements and sql injection. SQL Dates SQL Views SQL Injection The section contains multiple choice questions and answers on sql hosting, sql operators and sql data types. SQL Hosting SQL Operators SQL Data Types The section contains questions and answers on pl/sql basics and syntax. PL/SQL Basics PL/SQL Syntax The section contains MCQs on pl/sql data types and variables. PL/SQL Data Types PL/SQL Variables The section contains multiple choice questions and answers on pl/sql constants and literals, pl/sql operators and conditions. PL/SQL Constants and Literals PL/SQL Operators PL/SQL Conditions The section contains questions and answers on pl/sql loops, pl/sql strings and arrays. PL/SQL Loops PL/SQL Strings PL/SQL Arrays The section contains MCQs on pl/sql procedures, functions and cursors. PL/SQL Procedure PL/SQL Function PL/SQL Cursors The section contains multiple choice questions and answers on pl/sql records, pl/sql exceptions and triggers. PL/SQL Records PL/SQL Exceptions PL/SQL Triggers The section contains questions and answers on pl/sql packages, collections and transactions. PL/SQL Packages PL/SQL Collections PL/SQL Transactions The section contains MCQs on pl/sql dbms output, pl/sql date and time data types. PL/SQL Date and Time PL/SQL DBMS Output To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. 👉 For weekly sql practice, exam, and certification updates, join Sanfoundry’s official WhatsApp & Telegram channels » Next - SQL Questions and Answers – SQL Basics"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The SQL LIKE operator is used in a WHERE clause to search for a specified pattern in a column.",
+        "estimatedTime": 75,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following is the correct option for the given query? SELECT DISTINCT name FROM RDBMS WHERE ID IS NOT NULL ;",
+        "options": [
+          "The query gives all the possible RDBMS names where a finite value exists for ID",
+          "The query gives the RDBMS names where a finite value exists for ID and it excludes identical names",
+          "The query gives the names of the RDBMS that have a null ID and it also excludes identical names",
+          "The query is syntactically wrong"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The distinct keyword is used to remove tuples that have identical values. The is not null clause checks only for ID’s that are not null values.",
+        "estimatedTime": 60,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What is the result of the following query? SELECT studentdatabasename FROM RDBMS WHERE marks > SOME ( SELECT marks FROM student WHERE SECTION = 'c' ) ;",
+        "options": [
+          "The query gives all the studentdatabasename for which marks are greater than all the students in section c",
+          "The query gives all the studentdatabasename for which the marks are greater than at least on student in section c",
+          "The query gives all the studentdatabasename for which the marks are less than all the students in section c",
+          "The query is syntactically incorrect"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The “some” comparison is used to check for at least one condition. The > symbol is used to test whether the marks are greater than the right-hand side or not.",
+        "estimatedTime": 60,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Fact tables are which of the following?",
+        "options": [
+          "Completely denoralized",
+          "Partially denoralized",
+          "Completely normalized",
+          "Partially normalized"
+        ],
+        "correctAnswer": "A",
+        "explanation": "In the context of data warehousing and database design, fact tables are typically structured to be completely denormalized . Denormalization is a process where data is intentionally organized in a way that reduces or eliminates the need for joins between tables, often at the expense of redundancy. This is done to improve query performance in data warehousing environments, where analytical queries are common. Here's an explanation of the other options: Option B: Partially denormalized doesn't accurately describe fact tables. While some degree of denormalization may occur, the term \"completely denormalized\" is a more appropriate characterization. Option C: Completely normalized is not typically the case for fact tables in data warehousing. Normalization involves minimizing data redundancy by organizing data into separate tables based on relationships, which is the opposite of what is done in a fact table. Option D: Partially normalized also doesn't accurately describe fact tables. Fact tables are intentionally denormalized for performance reasons, so \"completely denormalized\" is the more suitable term. So, the correct answer is Option A: Completely denormalized . Fact tables in data warehousing are often structured in a way that optimizes query performance, even if it means duplicating data to reduce the need for complex joins.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "The DBMS acts as an interface between what two components of an enterprise-class database system?",
+        "options": [
+          "Database application and the database",
+          "Data and the database",
+          "The user and the database application",
+          "Database application and SQL"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Option A: Database application and the database This option is correct. The DBMS (Database Management System) acts as an interface between the database application and the database. It manages the interaction between end-users or applications and the data stored in the database, ensuring that data is consistently and efficiently accessed and managed. Option B: Data and the database This option is incorrect. The DBMS does not act as an interface between data and the database; rather, it manages the data within the database. Option C: The user and the database application This option is incorrect. The DBMS does not directly interface between the user and the database application. Users interact with the database application, which in turn interacts with the DBMS. Option D: Database application and SQL This option is incorrect. SQL is a language used to query and manage the database. The DBMS processes SQL queries from the database application but does not serve as an interface between the application and SQL itself. Conclusion: The DBMS acts as an interface between the database application and the database , making Option A: Database application and the database the correct answer.",
+        "estimatedTime": 60,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What allows nesting one select statement into another?",
+        "options": [
+          "nesting",
+          "binding",
+          "subquerying",
+          "encapsulating"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Imagine you have a box of toys, and you want to find a specific toy inside. You can't just look at the whole box at once, so you need to open it and check each toy individually. This is similar to how subquerying works in MySQL. It lets you perform a query within another query, like looking inside a box to find a specific toy. Here's an example: you want to find the names of employees who work in the department with the highest average salary. You can use a subquery to first find the department with the highest average salary, and then use that information to find the employee names. So, the answer to the question is Option C: subquerying . Let's break down the other options: Option A: nesting - While nesting is related to putting things inside each other, it's a general term and doesn't specifically describe this concept. Option B: binding - Binding refers to associating values with variables in SQL statements, not to nested queries. Option D: encapsulating - This is also a general term and doesn't directly relate to how nested queries work. Therefore, subquerying is the correct answer. It's like opening a smaller box inside a bigger box to find what you're looking for.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following is the correct output for the given query? ( SELECT databaseid FROM RDBMS WHERE SECTION = 'c' ) EXCEPT ( SELECT databaseid FROM RDBMS WHERE id < 10 ) ;",
+        "options": [
+          "All the values of the databaseid for which section is c and id > 10",
+          "All the values of the databaseid for which section not c and id > 10",
+          "All the values of the databaseid for which section is c and id < 10",
+          "All the values of the databaseid for which section not c and id < 10"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The except operation excludes all the tuples that are present in the result of the second query from the result of the first query. It also excludes all duplicates from the relation.",
+        "estimatedTime": 75,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which processes is an instance made of Oracle? Multiple Choice Questions on Oracle Database 11g Architecture Options MCQ on Planning Oracle Applications Oracle Database Multiple Choice Questions on SQL Basics Oracle Database MCQ on Accessing Remote Data Multiple Choice Questions on Using Oracle Text for Text Searches Oracle Database MCQ on SQL Functions Oracle Database Multiple Choice Questions on Subquery and Joins Oracle Database MCQ on Changing Data Oracle Database MCQ on Creating and Managing Tables, Views, Indexes and Sequences Oracle Database Multiple Choice Questions on Procedures, Functions and Packages Oracle Database MCQ on Using Native Dynamic SQL and DBMS_SQL Oracle Database Multiple Choice Questions on Triggers Oracle Database MCQ on Implementing Object Types, Object Views, and Methods Oracle Database Multiple Choice Questions on JDBC Programming",
+        "options": [
+          "Data processes",
+          "Oracle background processes",
+          "Memory processes",
+          "All of the Mentioned Chapterwise Multiple Choice Questions on Oracle Database Our 1000+ MCQs focus on all topics of the Oracle Database subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. Oracle Database 11g Architecture Options Planning Oracle Applications SQL Basics Accessing Remote Data Using Oracle Text for Text Searches SQL Functions Subquery and Joins Changing Data Creating and Managing Tables, Views, Indexes and Sequences Procedures, Functions and Packages Using Native Dynamic SQL and DBMS_SQL Triggers Implementing Object Types, Object Views, and Methods JDBC Programming The section contains multiple choice questions and answers on oracle db 11g architecture, databases and instances, programmatic oracle structures, storing and guarding the data, installing the oracle database and creating a database. Oracle Database 11g Architecture Databases and Instances Storing and Guarding the Data Programmatic Oracle Structures Installing Oracle Database 11g and Creating a Database The section contains Oracle questions and answers on approaches, risks and standards, atomic data and business models, data entry, query and reporting, normalization, foreign key, primary and unique keys. Approaches, Risks and Standards The Atomic Data Models and Business Models Data Entry, Query and Reporting Normalization (1NF, 2NF, 3NF) Foreign, Candidate, Primary, Composite, Unique Keys Attribute, Tuple and Entity The section contains Oracle MCQs on structured query language, ddl, dml, dcl and tcl commands, select statements, arithmetic operators, alias, writing sql statements and literal characters. Structured Query Language DDL command DML command DCL and TCL command Basic Select Statements Writing SQL Statements Arithmetic Operators Defining a Column Alias Literal Character Strings The section contains Oracle Database multiple choice questions and answers on sql development environment, database connection and sql worksheet. Development Environmnets for SQL Database Connection SQL Worksheet The section contains Oracle Database questions and answers on sql wildcards, comparison and logical conditions, sorting and variables. Limiting Rows Using a Selection SQL Wildcards Comparison Conditions Logical Conditions Sorting Substitution Variables The section contains Oracle MCQs on sql functions. SQL Functions – 1 SQL Functions – 2 SQL Functions – 3 SQL Functions – 4 The section contains Oracle Database multiple choice questions and answers on groups of data, joins, non equijoins, sql clauses, subqueries and its types. Creating Groups of Data Joins Non-Equijoins Subquery Syntex Types of Subqueries SQL Clauses (AND, OR, LIKE, TOP) The section contains Oracle questions and answers on set operators, script creation, updating rows, delete statement, database transactions, read consistency, database objects and data types. Set Operators Creating a Script Updating Rows Delete Statement Database Transcations – 1 Database Transcations – 2 Read Consistency Database Objects Data Types – 1 Data Types – 2 The section contains Oracle Database MCQs on constraints, views, sequences, indexes, data dictionary structure, constraint and view information. Constraints – 1 Constraints – 2 View – 1 View – 2 Sequences Indexes Data Dictionary Structure Constraint Information View Information The section contains Oracle multiple choice questions and answers on pl/sql introduction, procedures, parameters, functions, packages and records, persistent state of packages, oracle supplied packages, job creation, dynamic sql, sql execution flow, pl/sql block and dbms_sql package. PL/SQL Introduction Procedures in PL/SQL PL/SQL Parameters Functions in PL/SQL PL/SQL Packages – 1 PL/SQL Packages – 2 PL/SQL Records Package Functions in SQL Persistent State of Packages Oracle Supplied Packages Creating a Job Data Dictionary Views Execution Flow of SQL Dynamic SQL Dynamically Executing of PL/SQL Block DBMS_SQL Package The section contains Oracle Database questions and answers on pl/sql wrapper, cursor, synonym and collections, autonomous transactions, bulk binding and dependencies. PL/SQL Wrapper PL/SQL Cursor PL/SQL Synonym PL/SQL Collections Standardizing Constants and Exceptions Autonomous Transactions Bulk Binding Dependencies – 1 Dependencies – 2 The section contains Oracle MCQs on lob datatypes, bfiles, triggers, database triggers, native compilation and pl/sql warnings. LOB Data Types BFILEs Triggers – 1 Triggers – 2 Database Triggers Native Compilation PL/SQL Warnings The section contains Oracle Database multiple choice questions and answers on oracle sequences, tablespace, security, replication and backup. Oracle Sequences Oracle Tablespace Oracle Security Oracle Replication Oracle Backup The section contains Oracle questions and answers on jdbc programming. JDBC Programming – 1 JDBC Programming – 2 JDBC Programming – 3 JDBC Programming – 4 To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews."
+        ],
+        "correctAnswer": "B",
+        "explanation": "Oracle creates a set of background processes for an instance to manage memory structure, asynchronously perform I/O to write data to disk, and do general maintenance tasks.",
+        "estimatedTime": 75,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "To check how MySQL would execute a SELECT query, which statement is used?",
+        "options": [
+          "EXPLAIN",
+          "SHOW",
+          "DISPLAY",
+          "TELL"
+        ],
+        "correctAnswer": "A",
+        "explanation": "In MySQL, by issuing an EXPLAIN statement, MySQL displays some information about how it would execute a SELECT query without actually executing it. It is prefixed with the query.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What will be the order of sorting in the following MySQL statement? SELECT emp_id , emp_name FROM person ORDER BY emp_id , emp_name;",
+        "options": [
+          "Sorting {emp_name, emp_id}",
+          "None of the mentioned",
+          "Sorting {emp_id, emp_name}",
+          "Sorting {emp_id} but not emp_name"
+        ],
+        "correctAnswer": "C",
+        "explanation": "In the query, first “emp_id” will be sorted, then “emp_name” with respect to “emp_id.”",
+        "estimatedTime": 60,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What is the purpose of the SQL keyword “DISTINCT” in a SELECT statement?",
+        "options": [
+          "To retrieve unique values from a column",
+          "To filter NULL values",
+          "To delete duplicate records",
+          "To sort the result set 👉 Apply Now for Free C Certification - March 2026"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The DISTINCT keyword is used to retrieve unique values from a specified column in a SELECT query.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following is a default join type?",
+        "options": [
+          "Right join",
+          "Left join",
+          "Inner join",
+          "Outer join"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Inner join Selects records that have matching values in both the tables. It’s the default join type, so if we just type JOIN without specifying any other conditions, an INNER JOIN will be used.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which SQL keyword is used to sort the data returned by a SELECT statement?",
+        "options": [
+          "Group",
+          "Order",
+          "Group By",
+          "Order By"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Order By clause is used to sort the retrieved data in ascending or descending order. Group By clause is used to group the result-set by one or more columns. Order and Group are not valid SQL commands.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which privileges are required on the source server to use mysqldbcopy? General MySQL Use Using SQL to Manage Data Data Types Stored Programs Query Optimization MySQL Programming MySQL Programs Using C MySQL Programs Using Perl DBI and PHP MySQL Administration MySQL Data Directory General MySQL Administration Access Control and Security Database Maintenance, Backups and Replication Data Type Reference, Operators and Functions System, Status and User Variables SQL Syntax Select Statement Nulls and Conditions and Miscellaneous",
+        "options": [
+          "UPDATE",
+          "CREATE",
+          "SELECT",
+          "INSERT Chapterwise Multiple Choice Questions on MySQL Our 1000+ MCQs focus on all topics of the MySQL subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. General MySQL Use Using SQL to Manage Data Data Types Stored Programs Query Optimization MySQL Programming MySQL Programs Using C MySQL Programs Using Perl DBI and PHP MySQL Administration MySQL Data Directory General MySQL Administration Access Control and Security Database Maintenance, Backups and Replication Data Type Reference, Operators and Functions System, Status and User Variables SQL Syntax Select Statement Nulls and Conditions and Miscellaneous The section contains multiple choice questions and answers on database terminology, mysql setup and interactions. Basic Database Terminology MySQL Setup – 1 MySQL Setup – 2 Interacting with MySQL The section contains questions and answers on server sql mode, mysql identifiers and rules, sql statements case sensitivity, selecting, creating, dropping and altering databases, table retrievals with joins, union and subqueries, views, transactions, foreign key, table creation, populating and modifying tables. Server SQL Mode MySQL Identifier Syntax and Naming Rules Case Sensitivity in SQL Statements Character Set Support Selecting, Creating, Dropping and Altering Databases Creating, Dropping, Indexing and Altering Tables Obtaining Database Metadata Performing Multiple – Table Retrievals with Joins Performing Multiple – Table Retrievals with Subqueries Performing Multiple – Table Retrievals with Union Using Views Multiple – Table Deletes and Updates Performing Transactions Foreign Keys and Referential Integrity Using Full Text Searches Using MySQL Command Line Tool Table Creation Populating and Modifying Tables – 1 Populating and Modifying Tables – 2 Populating and Modifying Tables – 3 The section contains MCQs on data value categories, datatypes, sequences and type conversions. Data Value Categories – 1 Data Value Categories – 2 MySQL Datatypes – 1 MySQL Datatypes – 2 MySQL Datatypes – 3 MySQL Datatypes – 4 MySQL Datatypes – 5 How MySQL Handles Invalid Data Values Working with Sequences Expression Evaluation and Type Conversion Choosing Data Types The section contains multiple choice questions and answers on compound statements, stored functions, triggers, events and security. Compound Statements and Statement Delimiters Stored Functions and Procedures Triggers Events Security for Stored Programs and Views The section contains questions and answers on indexing, query optimizer, choosing and loading data types, scheduling and locking issues, administrative level optimizations, query mechanics and clauses. Using Indexing MySQL Query Optimizer Choosing Data Types for Efficient Queries Loading Data Efficiently Scheduling and Locking Issues Administrative-Level Optimizations When Good Statements Go Bad Query Mechanics Query Clauses The section contains MCQs on mysql programs and apis. MySQL Programs APIs Available for MySQL Choosing an API The section contains multiple choice questions and answers on compiling and linking client programs, server connection, error handling, processing sql statements, embedded server library, multiple statement execution. Compiling and Linking Client Programs Connecting to the Server Handling Errors and Processing Command Options Processing SQL Statements Writing Clients That Include SSL Support Using the Embedded Server Library Using Multiple-Statement Execution Using Server-Side Prepared Statements The section contains questions and answers on perl script characteristics, perl dbi and php overviews. Perl Script Characteristics Perl DBI Overview – 1 Perl DBI Overview – 2 Putting Perl DBI to Work Using Perl DBI in Web Applications PHP Overview Putting PHP to Work The section contains MCQs on mysql components and administration, access control and security, database maintenance, backups and replication. MySQL Components General MySQL Administration Access Control and Security Database Maintenance, Backups and Replication The section contains multiple choice questions and answers on location, structure and relocating data directory’s. Location of the Data Directory Structure of the Data Directory Relocating Data Directory Contents The section contains questions and answers on mysql installation and server startup, managing mysql user accounts, maintaining logs, server tuning, storage engine configuration, running multiple servers, internationalization and localization issues. Securing a New MySQL Installation Arranging for MySQL Server Startup and Shutdown Controlling How the Server Listens for Connections Managing MySQL User Accounts Maintaining Logs Tuning the Server Storage Engine Configuration Enabling or Disabling Local Capability for Load Data Internationalization and Localization Issues Running Multiple Servers Updating MySQL The section contains MCQs on secure connections, internal and external security. Internal Security: Preventing Unauthorized Filesystem Access External Security: Preventing Unauthorized Network Access Setting Up Secure Connections The section contains multiple choice questions and answers on preventive maintenance principles, database backups, checking and repairing database tables, backups for data recovery and replication servers setting. Principles of Preventive Maintenance Performing Database Maintenance with the Server Running General Preventative Maintenance Making Database Backups Copying Databases to Another Server Checking and Rpairing Database Tables Using Backups for Data Recovery Setting Up Replication Servers The section contains questions and answers on numeric, string and spatial data types, operators and functions. Numeric Data Types String Data Types Date and Time Data Types Spatial Data Types Operators Functions The section contains MCQs on system and session only system variables, status and user defined variables. System Variables Session-Only System Variables Status Variables User-Defined Variables The section contains multiple choice questions and answers on sql statement syntax, compound statement and comment syntax. SQL Statement Syntax (Non-Compound Statements) Compound Statement Syntax Comment Syntax The section contains questions and answers on select clauses, from clauses, order by clauses, where clauses, group by and having clause. The Select Clauses – 1 The Select Clauses – 2 The From Clauses – 1 The From Clauses – 2 The Where Clauses The group by and having Clause The Order by Clauses – 1 The Order by Clauses – 2 The section contains MCQs on database copies, secure connections, conditional evaluation, null and condition types. Conditional Evaluation Condition Types – 1 Condition Types – 2 Condition Types – 3 Condition Types – 4 Null: The Four Letter Word Database Copies Secure Connections To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews."
+        ],
+        "correctAnswer": "C",
+        "explanation": "To use the utility program ‘mysqldbcopy’, the user must have SELECT privileges for the database(s) on the source server and have CREATE, INSERT, and UPDATE on the destination server.",
+        "estimatedTime": 75,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which technology is commonly used for real-time stream processing of big data and is part of the Apache ecosystem?",
+        "options": [
+          "Apache Kafka",
+          "Apache HBase",
+          "Apache Spark",
+          "Apache Hive"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The correct answer is A: Apache Kafka. Let's break down why: Apache Kafka: This is specifically designed for handling real-time data streams. Think of it like a super-fast messaging system that can process huge amounts of data instantly. It's perfect for things like tracking website activity, processing sensor data, or monitoring financial transactions. Apache HBase: This is a NoSQL database that's really good at storing and retrieving large datasets. However, it's not primarily used for *real-time* processing. It's more for storing data after it's been processed or analyzing it in batches. Apache Spark: Spark *can* do stream processing, but it's more generally used for large-scale data processing and analytics. While Spark Streaming exists, Kafka is often used *with* Spark to get the data in real-time first. So, Kafka is more directly associated with real-time stream processing. Apache Hive: Hive is like a SQL interface for Hadoop. It lets you query large datasets stored in Hadoop using SQL-like queries. It's not designed for real-time processing; it's more for batch processing and data warehousing. In Summary: For real-time data *streams*, think Apache Kafka .",
+        "estimatedTime": 60,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Microsoft Access is a",
+        "options": [
+          "RDBMS",
+          "OODBMS",
+          "ORDBMS",
+          "Network database model"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Microsoft Access is classified as a Relational Database Management System (RDBMS) . An RDBMS is a type of database management system that stores and organizes data in a structured manner using tables with predefined relationships between them. In Microsoft Access, data is stored in tables, and you can create relationships between these tables using keys. Access follows the principles of a relational database by allowing you to establish connections between tables, ensuring data integrity, and supporting SQL (Structured Query Language) for querying and managing data. Option B: Object-Oriented Database Management System (OODBMS) refers to a type of database system that stores data in the form of objects, which are instances of classes. Microsoft Access does not primarily fall under this category. Option C: Object-Relational Database Management System (ORDBMS) combines features of both relational and object-oriented databases. While Microsoft Access has some object-oriented features, it is primarily categorized as an RDBMS. Option D: The Network Database Model is a type of database model that represents data in a network-like structure of records and sets. Microsoft Access doesn't primarily adhere to the network database model. Therefore, the correct option is Option A: RDBMS .",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following joins are SQL server default?",
+        "options": [
+          "Inner",
+          "Equi",
+          "Outer",
+          "None of the Mentioned"
+        ],
+        "correctAnswer": "A",
+        "explanation": "SQL inner joins are the default joins in SQL Server. Inner query joins only the rows that are matching.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What is the full form of SQL ?",
+        "options": [
+          "Structured Query Language",
+          "Structured Query List",
+          "Simple Query Language",
+          "None of these"
+        ],
+        "correctAnswer": "A",
+        "explanation": "SQL (Structured Query Language) is a special-purpose programming language designed for managing data held in a relational database management system (RDBMS). Originally based upon relational algebra and tuple relational calculus, SQL consists of a data definition language and a data manipulation language. The scope of SQL includes data insert, query, update and delete, schema creation and modification, and data access control.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "The FROM SQL clause is used to...",
+        "options": [
+          "specify what table we are selecting or deleting data FROM",
+          "specify range for search condition",
+          "specify search condition",
+          "None of these"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The FROM SQL clause is used to specify from which table we are selecting or deleting data. It defines the source table from which data will be retrieved or modified in a SQL query. Here's the breakdown: Option A: specify what table we are selecting or deleting data FROM This option correctly describes the purpose of the FROM clause, which is to specify the table from which data operations will be performed. Option B: specify range for search condition This is not the primary purpose of the FROM clause. It is used for table specification, not defining search ranges. Option C: specify search condition The FROM clause is not used to specify search conditions. Search conditions are typically defined in the WHERE clause. Option D: None of these Option A is a valid description of the FROM clause's purpose. So, the correct answer is Option A: specify what table we are selecting or deleting data FROM .",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "SQL stands for ________ .",
+        "options": [
+          "Structured Query Language",
+          "Sequential Query Language",
+          "Structured Question Language",
+          "Sequential Question Language"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Option A: Structured Query Language This option is correct. SQL stands for Structured Query Language . It is a standard language for managing and manipulating relational databases. SQL allows users to perform tasks such as querying data, updating data, and defining and modifying the structure of databases. Option B: Sequential Query Language This option is incorrect. There is no language known as Sequential Query Language. SQL is the standard language used for querying and managing databases. Option C: Structured Question Language This option is incorrect. SQL does not stand for Structured Question Language. It specifically deals with queries and operations related to databases, not questions in a general sense. Option D: Sequential Question Language This option is incorrect. Sequential Question Language is not a recognized term. SQL is specifically designed for interacting with relational databases through structured queries. Conclusion: SQL stands for Structured Query Language , making Option A: Structured Query Language the correct answer.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "The following are functions of a DBMS except ________ .",
+        "options": [
+          "creating and processing forms",
+          "creating databases",
+          "processing data",
+          "administrating databases"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Option A: creating and processing forms This option is correct. Creating and processing forms is not typically a direct function of a DBMS (Database Management System). Forms are usually created and processed within application software that interacts with the DBMS to manage data. Option B: creating databases This option is incorrect. Creating databases is a fundamental function of a DBMS. It allows users to define the structure, tables, relationships, and constraints within a database. Option C: processing data This option is incorrect. Processing data is a primary function of a DBMS. It involves operations such as querying data, inserting, updating, deleting, and manipulating data stored in databases. Option D: administrating databases This option is incorrect. Administering databases is another critical function of a DBMS. It includes tasks such as managing user access, ensuring data security, optimizing performance, and maintaining database integrity. Conclusion: The functions of a DBMS include creating databases , processing data , and administering databases . Creating and processing forms is not typically a function directly performed by a DBMS, making Option A: creating and processing forms the correct answer.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "A view is which of the following?",
+        "options": [
+          "A virtual table that can be accessed via SQL commands",
+          "A virtual table that cannot be accessed via SQL commands",
+          "A base table that can be accessed via SQL commands",
+          "A base table that cannot be accessed via SQL commands"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Option A: A virtual table that can be accessed via SQL commands - This option correctly describes a view in SQL. A view is a virtual table based on the result-set of an SQL statement. It can be queried and manipulated using SQL commands, but it does not store data like a physical table. Option B: A virtual table that cannot be accessed via SQL commands - This option is incorrect because views are specifically designed to be accessed via SQL commands. Option C: A base table that can be accessed via SQL commands - This option describes a physical or base table, not a view. Option D: A base table that cannot be accessed via SQL commands - This option is incorrect because base tables are accessed and manipulated using SQL commands. Conclusion: In SQL, a view is a virtual table that is created based on a SQL SELECT query. It can be queried like a regular table using SQL commands. Therefore, the correct answer is Option A: A virtual table that can be accessed via SQL commands .",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "ON UPDATE CASCADE ensures which of the following?",
+        "options": [
+          "Normalization",
+          "Data Integrity",
+          "Materialized Views",
+          "All of the above"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Option A: Normalization - ON UPDATE CASCADE in SQL is not directly related to normalization, which is a process of organizing data to minimize redundancy and dependency. Option B: Data Integrity - This is the correct option. ON UPDATE CASCADE is a referential integrity constraint that ensures data integrity by automatically updating related records in child tables when the parent record is updated. Option C: Materialized Views - ON UPDATE CASCADE does not relate to materialized views, which are views that store the results of a query physically for faster access. Option D: All of the above - This option suggests that ON UPDATE CASCADE ensures all the benefits mentioned in Options A, B, and C. However, only Option B correctly describes the purpose of ON UPDATE CASCADE. Conclusion: In SQL, ON UPDATE CASCADE ensures data integrity by automatically updating related records in child tables when the parent record is updated. Therefore, the correct answer is Option B: Data Integrity .",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which statement is used to check how MySQL would execute a SELECT query?",
+        "options": [
+          "TELL",
+          "SHOW",
+          "DISPLAY",
+          "EXPLAIN"
+        ],
+        "correctAnswer": "D",
+        "explanation": "This question is asking about a command in MySQL that lets you see how the database plans to run a SELECT query . Think of it like a roadmap for your query! Here's why the answer is D: EXPLAIN : * EXPLAIN is specifically designed to give you a breakdown of how MySQL will approach your query. * TELL , SHOW , and DISPLAY have different uses in MySQL. They don't deal with analyzing query execution plans. So, if you want to understand how your SELECT query will be processed, use the EXPLAIN statement!",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "The following MySQL statement belongs to which condition types? SELECT fname FROM person WHERE dept_id= (SELECT dept_id FROM department WHERE names=’s’);",
+        "options": [
+          "Equality condition",
+          "Inequality condition",
+          "Range condition",
+          "All of the mentioned"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This MySQL statement uses a subquery to find the department ID of a department named 's' and then selects all the first names (fname) from the person table where the department ID matches the result of the subquery. Subquery is a query nested inside another query. Let's break down the statement: 1. SELECT fname FROM person: This part of the statement selects the first names (fname) from the person table. 2. WHERE dept_id = (SELECT dept_id FROM department WHERE names = 's'): This part of the statement specifies the condition for selecting the first names. It says to select only those first names where the department ID (dept_id) matches the department ID retrieved from the subquery . 3. (SELECT dept_id FROM department WHERE names = 's'): This is the subquery that retrieves the department ID (dept_id) from the department table where the department name (names) is equal to 's'. Therefore, this statement uses an equality condition to match the department ID retrieved from the subquery. So the answer is Option A: Equality condition",
+        "estimatedTime": 60,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What is the log in which data changes received from a replication master server are written?",
+        "options": [
+          "error log",
+          "general query log",
+          "binary log",
+          "relay log"
+        ],
+        "correctAnswer": "D",
+        "explanation": "This question is about how MySQL manages data replication. Replication is like copying information from one database server (the master ) to another (the slave ). Think of it like making a copy of a file on your computer. When you change the original file, you have to update the copy. In MySQL, the slave server needs to know about any changes made on the master server. So, the question is asking: where does the slave server store the information about the changes it needs to apply? Here's the breakdown of the options: Option A: error log: This log records any errors that happen in MySQL, but not changes in the data. Option B: general query log: This log tracks all the queries executed by the server, but it doesn't focus specifically on replication changes. Option C: binary log: This log is where the master server records all the changes to the database. The slave server reads this log to learn about the updates. This is a crucial part of replication. Option D: relay log: This log is where the slave server stores the information it reads from the master's binary log. The slave uses this information to apply the changes to its own database. Therefore, the answer is Option D: relay log.",
+        "estimatedTime": 60,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "SELECT select_list FROM table_list WHERE row_constraint GROUP BY grouping_columns; Which of these is not optional?",
+        "options": [
+          "select_list",
+          "table_list",
+          "row_constraint",
+          "grouping_columns"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question is about the basic structure of a SELECT statement in MySQL. A SELECT statement is used to retrieve data from a database. Here's a breakdown of the parts: SELECT select_list - This part tells the database what data to retrieve. The select_list is a list of columns or expressions you want to display. FROM table_list - This part specifies the table(s) from which the data will be retrieved. WHERE row_constraint - This part filters the data based on specific conditions. This helps you narrow down the rows you want to see. GROUP BY grouping_columns - This part groups rows together based on the values in one or more columns. You might use this to count how many times something appears or calculate averages for each group. Now, let's look at the options: Option A: select_list - This is not optional. You always need to tell MySQL what data to retrieve. Option B: table_list - This is not optional. You need to tell MySQL where to get the data from. Option C: row_constraint - This is optional . You can choose to filter your data or not. Option D: grouping_columns - This is optional . You can use the GROUP BY clause or not. So, the answer is Option A: select_list and Option B: table_list . You must have a select_list (what to retrieve) and a table_list (where to get it from) in a SELECT statement.",
+        "estimatedTime": 60,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Is the following MySQL statement belongs to the \"Equality condition\"? SELECT product_type.name, product.name FROM product_type INNER JOIN Product ON product_type.dept=Product.dept WHERE product_type.name=’customers_accounts’;",
+        "options": [
+          "Yes",
+          "No",
+          "Depends",
+          "None of the mentioned"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question is asking if the given SQL statement uses an Equality condition . An Equality condition is a comparison that checks if two values are equal using the = operator. Let's analyze the SQL statement: ```sql SELECT product_type.name, product.name FROM product_type INNER JOIN Product ON product_type.dept=Product.dept WHERE product_type.name=’customers_accounts’; ``` The statement uses the WHERE clause with the condition product_type.name=’customers_accounts’ . This condition compares the value of the product_type.name column with the string 'customers_accounts'. Therefore, the given SQL statement uses an Equality condition. The correct answer is Option A: Yes.",
+        "estimatedTime": 60,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "The default value in seconds in the system variable 'long_query_time' is . . . . . . . .",
+        "options": [
+          "5",
+          "10",
+          "20",
+          "60"
+        ],
+        "correctAnswer": "B",
+        "explanation": "This question asks about the 'long_query_time' system variable in MySQL. This variable is used to determine which queries are considered \"long\" and should be logged. The 'long_query_time' variable is measured in seconds . The question wants to know the default value set for this variable. Think about it this way: If a query takes longer than this default time, it's flagged as a long query and recorded in the slow query log. Now, let's look at the options: Option A: 5 Option B: 10 Option C: 20 Option D: 60 The correct answer is Option D: 60 . By default, a query is considered long if it takes more than 60 seconds to complete.",
+        "estimatedTime": 60,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What is SQL Server?",
+        "options": [
+          "SQL Server is a relational database management system",
+          "SQL Server is a software whose main purpose is to store and retrieve data",
+          "SQL Server is a highly secure server and does not allow any database file manipulation during execution",
+          "All of the mentioned"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Microsoft’s SQL Server is a relational database management system (RDBMS). It was created largely to compete with the MySQL and Oracle databases. The standard SQL (Structured Query Language) language, ANSI SQL is supported by SQL Server. SQL Server is a highly secure server and does not allow any database file manipulation during the execution process.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "The following SQL is which type of join: SELECT CUSTOMER_T. CUSTOMER_ID, ORDER_T. CUSTOMER_ID, NAME, ORDER_ID FROM CUSTOMER_T,ORDER_T WHERE CUSTOMER_T. CUSTOMER_ID = ORDER_T. CUSTOMER_ID",
+        "options": [
+          "Equi-join",
+          "Natural join",
+          "Outer join",
+          "Cartesian join"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question is mapped to DBMS - SQL Queries. The correct answer is A based on the original source question.",
+        "estimatedTime": 60,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Using the SQL GROUP BY phrase with a SELECT statement can help detect which of the following problems?",
+        "options": [
+          "The multivalue, multicolumn problem",
+          "The inconsistent values problem",
+          "The missing values problem",
+          "The general-purpose remarks column problem"
+        ],
+        "correctAnswer": "B",
+        "explanation": "This question is mapped to DBMS - SQL Queries. The correct answer is B based on the original source question.",
+        "estimatedTime": 60,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What operator tests column for the absence of data?",
+        "options": [
+          "EXISTS operator",
+          "NOT operator",
+          "IS NULL operator",
+          "None of these"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Always use IS NULL to look for NULL values. Syntax: SELECT \"column_name\" FROM \"table_name\" WHERE \"column_name\" IS NULL",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the SQL statements is correct?",
+        "options": [
+          "SELECT Username AND Password FROM Users",
+          "SELECT Username, Password FROM Users",
+          "SELECT Username, Password WHERE Username = 'user1'",
+          "None of these"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Correct order of SELECT, FROM and WHERE clause is as follow: SELECT column_name1, column_name2, .... FROM table_name WHERE condition So, only SELECT Username, Password FROM Users follows the above syntax.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following is the full form of RDBMS?",
+        "options": [
+          "Relational Data Management System",
+          "Relational Database Management System",
+          "Relative Database Management System",
+          "Regional Data Management System"
+        ],
+        "correctAnswer": "B",
+        "explanation": "A relational database management system (RDBMS) is a set of applications and features that allow IT professionals and others to develop, edit, administer, and interact with relational databases.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What is an RDBMS?",
+        "options": [
+          "Database that stores data elements that are not linked",
+          "Database that accesses data elements that are not linked",
+          "Database that stores and allows access to data elements that are linked",
+          "None of the mentioned"
+        ],
+        "correctAnswer": "C",
+        "explanation": "A relational database is a form of database that stores and allows access to data elements that are linked. The relational model, a simple and obvious means of representing data in tables, is the foundation of relational databases.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What is a relation in RDBMS?",
+        "options": [
+          "Key",
+          "Table",
+          "Row",
+          "Data Types"
+        ],
+        "correctAnswer": "B",
+        "explanation": "In a relational database, each table, also known as a relation, includes one or more data types in the form of columns or attributes. Each row, also known as a record or tuple, includes a single instance of data — or key — for each of the columns categories.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following systems use RDMS?",
+        "options": [
+          "Oracle",
+          "Microsoft SQLServer",
+          "IBM",
+          "All of the mentioned"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Manufacturing, human resources, and banking are all industries that use relational database management systems. IBM, Oracle, MySQL, Microsoft SQLServer, and PostgreSQL are some examples of RDBMS-based systems.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following constraints RDBS doesn’t check before creating the tables?",
+        "options": [
+          "Not null",
+          "Primary keys",
+          "Data Structure",
+          "Data integrity"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Before creating the tables, the RDBMS will check the following constraints: Primary keys Foreign keys Not null Check Data integrity",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following commands do we use to delete a relation (RDBMS) from a database?",
+        "options": [
+          "delete table RDBMS",
+          "drop table RDBMS",
+          "delete from RDBMS",
+          "drop relation RDBMS"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The drop table command is used to delete a relation from a database whereas the delete table removes all the tuples from a relation",
+        "estimatedTime": 60,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "________ deletes a data item from a database.",
+        "options": [
+          "Insert(RDBMS)",
+          "Drop(RDBMS)",
+          "Delete(RDBMS)",
+          "None of the mentioned"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Delete(RDBMS) deletes a data item from a database. Insert(RDBMS) inserts a new data item RDBMS into the database and assigns RDBMS an initial value.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What does the following query do? UPDATE student SET marks = marks * 1.10 ;",
+        "options": [
+          "It decreases the marks of all the students by 90%",
+          "It increases the marks of all the students by 10%",
+          "It is syntactically wrong",
+          "It increases the marks of all the students by 110%"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The updated clause is used to edit a specific value in the tuple. The set command is used to set the value of an attribute in a tuple.",
+        "estimatedTime": 60,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following is referred to as the language used application programs to request data from the DBMS?",
+        "options": [
+          "DDL",
+          "Query language",
+          "DML",
+          "All of the Mentioned"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The effect of a DML statement is not permanent until you commit the transaction that includes it. A transaction is a sequence of SQL statements that Oracle Database treats as a unit.",
+        "estimatedTime": 60,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which is the MySQL instance responsible for data processing?",
+        "options": [
+          "MySQL server",
+          "SQL",
+          "MySQL client",
+          "Server daemon program"
+        ],
+        "correctAnswer": "A",
+        "explanation": "MySQL uses client-server architecture. The MySQL server program runs on the machine where databases are stored. SQL is a query language used for querying the tables and information retrieval.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What is ‘xyz’ in the following SQL statement? SELECT abc FROM xyz;",
+        "options": [
+          "database name",
+          "row name",
+          "table name",
+          "column name"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The SELECT clause is used to retrieve information from some specified tables. It follows a specified format for information retrieval. Here, ‘abc’ can be a column name. It must be present in the table ‘xyz’.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What is x in the following MySQL statement? DELETE FROM x USING x LEFT JOIN y ON x . col = y . col;",
+        "options": [
+          "column name",
+          "server name",
+          "database name",
+          "table name"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The ‘DELETE’ operation is being performed in the statement. The table names are ‘x’ and ‘y’. The column name is ‘col’. The rows from the left join of x and y get deleted according to the condition given.",
+        "estimatedTime": 60,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What is the meaning of “EMPTY SET” in the following MySQL command? SELECT fname , lname , person_id FROM person WHERE lname = ’s’; /* after Execution*/ Mysql tool RETURNS EMPTY SET 0 :00sec",
+        "options": [
+          "Access denied",
+          "No values",
+          "Error",
+          "None of the mentioned"
+        ],
+        "correctAnswer": "B",
+        "explanation": "“EMPTY SET” means there were no values stored in the structure that belongs to lname.",
+        "estimatedTime": 75,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which mode prevents MySQL from performing a full check of date parts?",
+        "options": [
+          "ALLOW_DATES_INVALID",
+          "STOP_DATES_CHECK",
+          "PREVENT_DATE_CHECK",
+          "ALLOW_INVALID_DATES"
+        ],
+        "correctAnswer": "D",
+        "explanation": "In MySQL, it is also possible to selectively weaken the strict mode in some places. If the ALLOW_INVALID_DATES SQL mode is enabled, MySQL doesn’t perform full checking of the date parts.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What will be the result of the following MySQL command? SELECT emp_id , ‘ACTIVE’ AS STATUS , emp_id * 3.14 AS emp_pi , UPPER ( lname ) AS last_name FROM employee;",
+        "options": [
+          "emp_id, ACTIVE, emp_id * 314, UPPER(lname)",
+          "emp_id, Status, emp_pi, last_name",
+          "Error",
+          "None of the mentioned"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Status, emp_pi, last_name are “column aliases” and Keyword “AS” is optional.",
+        "estimatedTime": 75,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following is basis for SQL?",
+        "options": [
+          "SQL Server",
+          "DBMS",
+          "RDBMS",
+          "Oracle"
+        ],
+        "correctAnswer": "C",
+        "explanation": "RDBMS is the basis for SQL, and for all modern database systems such as MS SQL Server, IBM DB2, Oracle, MySQL and Microsoft Access.",
+        "estimatedTime": 45,
+        "subtopic": "DBMS - SQL Queries",
+        "tags": [
+          "dbms",
+          "technical",
+          "sql",
+          "select",
+          "join"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      }
+    ]
+  },
+  "providerPayload": {
+    "mode": "offline",
+    "source": "existing_mock_tests",
+    "questionCount": 50
+  },
+  "offlineSource": true
+}

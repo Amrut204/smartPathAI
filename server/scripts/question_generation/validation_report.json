@@ -1,0 +1,49 @@
+{
+  "generatedFiles": 25,
+  "totalGenerated": 1250,
+  "validCount": 1250,
+  "rejectedCount": 0,
+  "duplicateCount": 9,
+  "importedCount": 0,
+  "errors": [],
+  "byProvider": {
+    "claude": 250,
+    "gemini": 250,
+    "gpt4": 250,
+    "llama": 250,
+    "mistral": 250
+  },
+  "byTopic": {
+    "Algorithms - Dynamic Programming": 50,
+    "Data Structures - Trees": 50,
+    "Permutations & Combinations": 50,
+    "Probability": 50,
+    "Time & Distance": 50,
+    "Computer Networks - TCP/IP": 50,
+    "Data Structures - Graphs": 50,
+    "DBMS - SQL Queries": 50,
+    "Number Series": 50,
+    "Operating Systems - Process Management": 50,
+    "Blood Relations": 50,
+    "Profit & Loss": 50,
+    "Puzzles": 50,
+    "Seating Arrangement": 50,
+    "Simple Interest & Compound Interest": 50,
+    "C Pointers": 50,
+    "Data Structures - Arrays": 50,
+    "Data Structures - Linked Lists": 50,
+    "Java OOP Concepts": 50,
+    "Python Data Structures": 50,
+    "Averages": 50,
+    "Coding-Decoding": 50,
+    "Percentage": 50,
+    "Ratio & Proportion": 50,
+    "Syllogisms": 50
+  },
+  "byDifficulty": {
+    "hard": 350,
+    "medium": 750,
+    "easy": 150
+  },
+  "costSummaryINR": 0
+}

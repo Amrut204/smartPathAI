@@ -1,0 +1,86 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "totalTopics": 25,
+    "totalQuestions": 1250,
+    "estimatedCostINR": 230,
+    "createdAt": "2026-03-12"
+  },
+  "providers": {
+    "claude": {
+      "model": "claude-sonnet-4",
+      "apiKeyEnv": "ANTHROPIC_API_KEY",
+      "endpoint": "https://api.anthropic.com/v1/messages",
+      "costPer1MInputTokens": 3,
+      "costPer1MOutputTokens": 15,
+      "promptStyle": "analytical_structured",
+      "topics": [
+        { "topic": "Time & Distance", "subject": "aptitude", "category": "quantitative", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.12 },
+        { "topic": "Permutations & Combinations", "subject": "aptitude", "category": "quantitative", "difficulty": "hard", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.12 },
+        { "topic": "Probability", "subject": "aptitude", "category": "quantitative", "difficulty": "hard", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.12 },
+        { "topic": "Data Structures - Trees", "subject": "technical", "category": "data-structures", "difficulty": "hard", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.12 },
+        { "topic": "Algorithms - Dynamic Programming", "subject": "technical", "category": "algorithms", "difficulty": "hard", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.12 }
+      ]
+    },
+    "gpt4": {
+      "model": "gpt-4o-mini",
+      "apiKeyEnv": "OPENAI_API_KEY",
+      "endpoint": "https://api.openai.com/v1/chat/completions",
+      "costPer1MInputTokens": 0.15,
+      "costPer1MOutputTokens": 0.6,
+      "promptStyle": "scenario_creative",
+      "topics": [
+        { "topic": "Profit & Loss", "subject": "aptitude", "category": "quantitative", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.005 },
+        { "topic": "Simple Interest & Compound Interest", "subject": "aptitude", "category": "quantitative", "difficulty": "easy", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.005 },
+        { "topic": "Blood Relations", "subject": "aptitude", "category": "logical", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.005 },
+        { "topic": "Seating Arrangement", "subject": "aptitude", "category": "logical", "difficulty": "hard", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.005 },
+        { "topic": "Puzzles", "subject": "aptitude", "category": "logical", "difficulty": "hard", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.005 }
+      ]
+    },
+    "gemini": {
+      "model": "gemini-1.5-flash",
+      "apiKeyEnv": "GOOGLE_API_KEY",
+      "endpoint": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
+      "costPer1MInputTokens": 0.075,
+      "costPer1MOutputTokens": 0.3,
+      "promptStyle": "comprehensive_detailed",
+      "topics": [
+        { "topic": "DBMS - SQL Queries", "subject": "technical", "category": "dbms", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.003 },
+        { "topic": "Operating Systems - Process Management", "subject": "technical", "category": "operating-systems", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.003 },
+        { "topic": "Computer Networks - TCP/IP", "subject": "technical", "category": "networks", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.003 },
+        { "topic": "Data Structures - Graphs", "subject": "technical", "category": "data-structures", "difficulty": "hard", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.003 },
+        { "topic": "Number Series", "subject": "aptitude", "category": "logical", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.003 }
+      ]
+    },
+    "llama": {
+      "model": "meta-llama/Llama-3.1-70B-Instruct-Turbo",
+      "apiKeyEnv": "TOGETHER_API_KEY",
+      "endpoint": "https://api.together.xyz/v1/chat/completions",
+      "costPer1MInputTokens": 0.88,
+      "costPer1MOutputTokens": 0.88,
+      "promptStyle": "code_practical",
+      "topics": [
+        { "topic": "C Pointers", "subject": "technical", "category": "programming", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.007 },
+        { "topic": "Java OOP Concepts", "subject": "technical", "category": "programming", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.007 },
+        { "topic": "Python Data Structures", "subject": "technical", "category": "programming", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.007 },
+        { "topic": "Data Structures - Arrays", "subject": "technical", "category": "data-structures", "difficulty": "easy", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.007 },
+        { "topic": "Data Structures - Linked Lists", "subject": "technical", "category": "data-structures", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.007 }
+      ]
+    },
+    "mistral": {
+      "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+      "apiKeyEnv": "TOGETHER_API_KEY",
+      "endpoint": "https://api.together.xyz/v1/chat/completions",
+      "costPer1MInputTokens": 0.6,
+      "costPer1MOutputTokens": 0.6,
+      "promptStyle": "pattern_efficient",
+      "topics": [
+        { "topic": "Percentage", "subject": "aptitude", "category": "quantitative", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.004 },
+        { "topic": "Ratio & Proportion", "subject": "aptitude", "category": "quantitative", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.004 },
+        { "topic": "Averages", "subject": "aptitude", "category": "quantitative", "difficulty": "easy", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.004 },
+        { "topic": "Coding-Decoding", "subject": "aptitude", "category": "logical", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.004 },
+        { "topic": "Syllogisms", "subject": "aptitude", "category": "logical", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.004 }
+      ]
+    }
+  }
+}

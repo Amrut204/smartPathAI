@@ -1,0 +1,1130 @@
+{
+  "provider": "gemini",
+  "model": "gemini-1.5-flash-offline",
+  "topic": "Computer Networks - TCP/IP",
+  "subject": "technical",
+  "category": "networks",
+  "difficulty": "medium",
+  "promptStyle": "comprehensive_detailed",
+  "generatedAt": "2026-03-12T18:08:09.904Z",
+  "elapsedMs": 0,
+  "count": 50,
+  "cost": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "usd": 0,
+    "inr": 0
+  },
+  "prompt": "Generate 50 comprehensive placement test questions for Indian engineering students.\n\nTOPIC: Computer Networks - TCP/IP\nDIFFICULTY: medium\n\nOUTPUT FORMAT (JSON only):\n{\n  \"questions\": [\n    {\n      \"questionText\": \"...\",\n      \"options\": [\"A\", \"B\", \"C\", \"D\"],\n      \"correctAnswer\": \"Letter\",\n      \"explanation\": \"Detailed solution\",\n      \"alternativeMethods\": \"Other solving approaches if applicable\",\n      \"commonMistakes\": \"Why wrong answers are tempting\",\n      \"estimatedTime\": 60,\n      \"subtopic\": \"Specific area\",\n      \"tags\": [\"concept1\", \"concept2\"]\n    }\n  ]\n}\n\nREQUIREMENTS:\n- Comprehensive coverage of Computer Networks - TCP/IP\n- Educational explanations that teach concepts\n- Include formula derivations where helpful\n- For numerical answers, include common calculation errors as distractors\n- For conceptual answers, include common misconceptions\n- Verify all mathematical calculations\n- Ensure technical accuracy\n\nGenerate exactly 50 questions. Output ONLY valid JSON.",
+  "rawText": "{\"questions\":[{\"questionText\":\"What was the name of the first network?\",\"options\":[\"ASAPNET\",\"ARPANET\",\"CNNET\",\"NSFNET\"],\"correctAnswer\":\"B\",\"explanation\":\"ARPANET stands for Advanced Research Projects Agency Networks. It was the first network to be implemented which used the TCP/IP protocol in the year 1969.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following devices forwards packets between networks by processing the routing information included in the packet?\",\"options\":[\"firewall\",\"bridge\",\"hub\",\"router\"],\"correctAnswer\":\"D\",\"explanation\":\"A router is a networking device that forwards data packets between computer networks. Routers perform the traffic directing functions on the Internet. They make use of routing protocols like RIP to find the cheapest path to the destination.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"You have the following routing table. Which of the following networks will not be placed in the neighbor routing table? R 192.168.30.0/24 [120/1] via 192.168.40.1, 00:00:12, Serial0 C 192.168.40.0/24 is directly connected, Serial0 172.16.0.0/24 is subnetted, 1 subnets C 172.16.30.0 is directly connected, Loopback0 R 192.168.20.0/24 [120/1] via 192.168.40.1, 00:00:12, Serial0 R 10.0.0.0/8 [120/15] via 192.168.40.1, 00:00:07, Serial0 C 192.168.50.0/24 is directly connected, Ethernet0\",\"options\":[\"172.16.30.0\",\"192.168.30.0\",\"10.0.0.0\",\"All of them will be placed in the neighbor routing table\"],\"correctAnswer\":\"C\",\"explanation\":\"The network 10.0.0.0 cannot be placed in the next router's routing table because it already is at 15 hops. One more hop would make the route 16 hops, and that is not valid in RIP networking.\",\"estimatedTime\":75,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"If an Ethernet port on a router were assigned an IP address of 172.16.112.1/25, what would be the valid subnet address of this host?\",\"options\":[\"172.16.112.0\",\"172.16.0.0\",\"172.16.96.0\",\"172.16.255.0\"],\"correctAnswer\":\"A\",\"explanation\":\"A /25 mask is 255.255.255.128. Used with a Class B network, the third and fourth octets are used for subnetting with a total of 9 subnet bits, 8 bits in the third octet and 1 bit in the fourth octet. Since there is only 1 bit in the fourth octet, the bit is either off or on-which is a value of 0 or 128. The host in the question is in the 0 subnet, which has a broadcast address of 127 since 128 is the next subnet.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following is a stateless protocol?\",\"options\":[\"HTML\",\"XHTML\",\"HTTP\",\"All of the mentioned\"],\"correctAnswer\":\"C\",\"explanation\":\"HTTP is a stateless protocol. A stateless protocol does not require the server to retain information or status about each user for the duration of multiple requests.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which command displays RIP routing updates?\",\"options\":[\"show ip route\",\"debug ip rip\",\"show protocols\",\"debug ip route\"],\"correctAnswer\":\"B\",\"explanation\":\"The debug ip rip command is used to show the Internet Protocol (IP) Routing Information Protocol (RIP) updates being sent and received on the router.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following protocol is used to link all the devices in the IoT?\",\"options\":[\"HTTP\",\"UDP\",\"Network\",\"TCP/IP\"],\"correctAnswer\":\"D\",\"explanation\":\"The internet of Thing is the global system of interconnected computer networks that use the Internet Protocol suite (TCP/IP) to link billions of devices worldwide.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What protocol does PPP use to identify the Network layer protocol?\",\"options\":[\"NCP\",\"ISDN\",\"HDLC\",\"LCP\"],\"correctAnswer\":\"A\",\"explanation\":\"Network Control Protocol is used to help identify the Network layer protocol used in the packet.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"In which circumstance are multiple copies of the same unicast frame likely to be transmitted in a switched LAN?\",\"options\":[\"During high-traffic periods\",\"After broken links are reestablished\",\"When upper-layer protocols require high reliability\",\"In an improperly implemented redundant topology\"],\"correctAnswer\":\"D\",\"explanation\":\"If the Spanning Tree Protocol is not running on your switches and you connect them together with redundant links, you will have broadcast storms and multiple frame copies.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What layer in the TCP/IP stack is equivalent to the Transport layer of the OSI model?\",\"options\":[\"Application\",\"Host-to-Host\",\"Internet\",\"Network Access\"],\"correctAnswer\":\"B\",\"explanation\":\"The four layers of the TCP/IP stack (also called the DoD model) are Application/Process, Host-to-Host, Internet, and Network Access. The Host-to-Host layer is equivalent to the Transport layer of the OSI model.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following is the network layer protocol for the internet?\",\"options\":[\"hypertext transfer protocol\",\"file transfer protocol\",\"ethernet\",\"internet protocol\"],\"correctAnswer\":\"D\",\"explanation\":\"There are several protocols used in Network layer. Some of them are IP, ICMP, CLNP, ARP, IPX, HRSP etc. Hypertext transfer protocol is for application layer and ethernet protocol is for data link layer.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which provides the TCP/IP communication over the ethernet and FDDI?\",\"options\":[\"pNA+ network manager\",\"pSOS+\",\"pSOS+ kernel\",\"pSOS+m\"],\"correctAnswer\":\"A\",\"explanation\":\"A pNA+ network manager is a networking option which can provide the TCP/IP communication over a large variety of media such as the FDDI and the ethernet.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What is the full form of DHCP in IoT communication protocols?\",\"options\":[\"Dynamic Host Communication Protocol\",\"Domain Host Communication Protocol\",\"Dynamic Host Control Protocol\",\"Domain Host Control Protocol\"],\"correctAnswer\":\"A\",\"explanation\":\"DHCP is a network management protocol used on internet protocol networks to automatically assign IP addresses. DHCP stands for Dynamic Host Communication Protocol.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following commands will display the current IP addressing and the layer 1 and 2 status of an interface? 1. show version 2. show protocols 3. show interfaces 4. show controllers 5. show ip interface\",\"options\":[\"1, 2 and 4\",\"2, 3 and 5\",\"3 and 4 only\",\"None of the above\"],\"correctAnswer\":\"B\",\"explanation\":\"The commands show protocols , show interfaces , and show ip interface will show you the layer 1 and 2 status and the IP addresses of your router's interfaces.\",\"estimatedTime\":75,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"You need to find the broadcast address used on a LAN on your router. What command will you type into the router from user mode to find the broadcast address?\",\"options\":[\"show running-config\",\"show startup-config\",\"show interfaces\",\"show protocols\"],\"correctAnswer\":\"C\",\"explanation\":\"The command show ip protocols will actually show you the broadcast address for each interface - too bad it isn't a possible answer. Your best answer is show interfaces , which will provide the IP address and mask for each interface.\",\"estimatedTime\":75,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which statement is true regarding classless routing protocols? 1. The use of discontiguous networks is not allowed. 2. The use of variable length subnet masks is permitted. 3. RIPv1 is a classless routing protocol. 4. IGRP supports classless routing within the same autonomous system. 5. RIPv2 supports classless routing.\",\"options\":[\"1, 3 and 5\",\"3 and 4\",\"2 and 5\",\"None of the above\"],\"correctAnswer\":\"C\",\"explanation\":\"Classful routing means that all hosts in the internetwork use the same mask. Classless routing means that you can use Variable Length Subnet Masks (VLSMs) and can also support discontiguous networking.\",\"estimatedTime\":75,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"You have your laptop directly connected into a router's Ethernet port. Which of the following are among the requirements for the copy flash tftp command to be successful? 1. TFTP server software must be running on the router. 2. TFTP server software must be running on your laptop. 3. The Ethernet cable connecting the laptop directly into the router's Ethernet port must be a straight-through cable. 4. The laptop must be on the same subnet as the router's Ethernet interface. 5. The copy flash tftp command must be supplied the IP address of the laptop.\",\"options\":[\"1, 3 and 4\",\"2, 4 and 5\",\"3 and 5 only\",\"5 only\"],\"correctAnswer\":\"B\",\"explanation\":\"Before you back up an IOS image to a laptop directly connected to a router's Ethernet port, make sure the TFTP server software is running on your laptop, that the Ethernet cable is a \\\"crossover,\\\" and that the laptop is in the same subnet as the router's Ethernet port, and then you can use the copy flash tftp command from your laptop.\",\"estimatedTime\":75,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What command will permit SMTP mail to only host 1.1.1.1?\",\"options\":[\"access-list 10 permit smtp host 1.1.1.1\",\"access-list 110 permit ip smtp host 1.1.1.1\",\"access-list 10 permit tcp any host 1.1.1.1 eq smtp\",\"access-list 110 permit tcp any host 1.1.1.1 eq smtp\"],\"correctAnswer\":\"D\",\"explanation\":\"When trying to find the best answer to an access-list question, always check the access-list number and then the protocol. When filtering to an upper-layer protocol, you must use an extended list, numbers 100-199 and 2000-2699. Also, when you filter to an upper-layer protocol, you must use either tcp or udp in the protocol field. If it says ip in the protocol field, you cannot filter to an upper-layer protocol. SMTP uses TCP.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"You have created a named access list called Blocksales. Which of the following is a valid command for applying this to packets trying to enter interface s0 of your router?\",\"options\":[\"(config)# ip access-group 110 in\",\"(config-if)# ip access-group 110 in\",\"(config-if)# ip access-group Blocksales in\",\"(config-if)# blocksales ip access-list in\"],\"correctAnswer\":\"C\",\"explanation\":\"Using a named access list just replaces the number used when applying the list to the router's interface. ip access-group Blocksales in is correct.\",\"estimatedTime\":75,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following describe the DHCP Discover message? 1. It uses FF:FF:FF:FF:FF:FF as a layer 2 broadcast. 2. It uses UDP as the Transport layer protocol. 3. It uses TCP as the Transport layer protocol. 4. It does not use a layer 2 destination address.\",\"options\":[\"1 only\",\"1 and 2\",\"3 and 4\",\"4 only\"],\"correctAnswer\":\"B\",\"explanation\":\"A client that sends out a DHCP Discover message in order to receive an IP address sends out a broadcast at both layer 2 and layer 3. The layer 2 broadcast is all Fs in hex, or FF:FF:FF:FF:FF:FF . The layer 3 broadcast is FF:FF:FF:FF:FF:FF , which means all networks and all hosts. DHCP is connectionless, which means it uses User Datagram Protocol (UDP) at the Transport layer, also called the Host-to-Host layer.\",\"estimatedTime\":75,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which command will display all the EIGRP feasible successor routes known to a router?\",\"options\":[\"show ip routes *\",\"show ip eigrp summary\",\"show ip eigrp topology\",\"show ip eigrp adjacencies\"],\"correctAnswer\":\"C\",\"explanation\":\"Any secondary route to a remote network is considered a feasible successor, and those routes are only found in the topology table and used as backup routes in case of primary route failure. You can see the topology table with the show ip eigrp topology command.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following statements are true regarding the command ip route 172.16.4.0 255.255.255.0 192.168.4.2 ? 1. The command is used to establish a static route. 2. The default administrative distance is used. 3. The command is used to configure the default route. 4. The subnet mask for the source address is 255.255.255.0.\",\"options\":[\"1 and 2\",\"2 and 4\",\"3 and 4\",\"All of the above\"],\"correctAnswer\":\"A\",\"explanation\":\"Although answer D almost seems right, it is not; the mask is the mask used on the remote network, not the source network. Since there is no number at the end of the static route, it is using the default administrative distance of 1.\",\"estimatedTime\":75,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"You are troubleshooting a connectivity problem in your corporate network and want to isolate the problem. You suspect that a router on the route to an unreachable network is at fault. What IOS user exec command should you issue?\",\"options\":[\"Router> ping\",\"Router> trace\",\"Router> show ip route\",\"Router> show interface\"],\"correctAnswer\":\"B\",\"explanation\":\"The command traceroute (trace for short), which can be issued from user mode or privileged mode, is used to find the path a packet takes through an internetwork and will also show you where the packet stops because of an error on a router.\",\"estimatedTime\":75,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What is the maximum number of IP addresses that can be assigned to hosts on a local subnet that uses the 255.255.255.224 subnet mask?\",\"options\":[\"14\",\"15\",\"16\",\"30\"],\"correctAnswer\":\"D\",\"explanation\":\"A /27 (255.255.255.224) is 3 bits on and 5 bits off. This provides 8 subnets, each with 30 hosts. Does it matter if this mask is used with a Class A, B, or C network address? Not at all. The number of host bits would never change.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"The DoD model (also called the TCP/IP stack) has four layers. Which layer of the DoD model is equivalent to the Network layer of the OSI model?\",\"options\":[\"Application\",\"Host-to-Host\",\"Internet\",\"Network Access\"],\"correctAnswer\":\"C\",\"explanation\":\"The four layers of the DoD model are Application/Process, Host-to-Host, Internet, and Network Access. The Internet layer is equivalent to the Network layer of the OSI model.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which command will configure a switch port to use the IEEE standard method of inserting VLAN membership information into Ethernet frames?\",\"options\":[\"Switch(config)# switchport trunk encapsulation isl\",\"Switch(config)# switchport trunk encapsulation ietf\",\"Switch(config)# switchport trunk encapsulation dot1q\",\"Switch(config-if)# switchport trunk encapsulation isl\"],\"correctAnswer\":\"C\",\"explanation\":\"To configure a switch port to use the IEEE standard method of inserting VLAN membership information into Ethernet frames, you would use the dot1q encapsulation method. This method inserts VLAN tags into Ethernet frames according to the IEEE 802.1Q standard, allowing for the transmission of VLAN information across the network. Options A, B, and D are incorrect because: Option A: switchport trunk encapsulation isl configures the switch port to use the Inter-Switch Link (ISL) encapsulation method, which is a Cisco proprietary protocol and not part of the IEEE standard. Option B: switchport trunk encapsulation ietf is not a valid command. There is no encapsulation method called \\\"ietf\\\" for trunk ports in Cisco switches. Option D: switchport trunk encapsulation isl is a command used at the interface configuration level ( Switch(config-if)# ), but it specifies the ISL encapsulation method, which, as mentioned earlier, is not part of the IEEE standard. Therefore, the correct command to configure a switch port to use the IEEE standard method of inserting VLAN membership information into Ethernet frames is Option C: Switch(config)# switchport trunk encapsulation dot1q .\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"You have a Cisco mesh network. What protocol allows multiple APs to connect with many redundant connections between nodes?\",\"options\":[\"LWAPP\",\"AWPP\",\"STP\",\"IEEE\"],\"correctAnswer\":\"B\",\"explanation\":\"Each AP in a mesh network runs the Adaptive Wireless Path Protocol (AWPP). This protocol allows RAPs to communicate with each other to determine the best path back to the wired network via the RAP.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which layer is responsible for process to process delivery in a general network model?\",\"options\":[\"session layer\",\"data link layer\",\"transport layer\",\"network layer\"],\"correctAnswer\":\"C\",\"explanation\":\"The role of Transport layer (Layer 4) is to establish a logical end to end connection between two systems in a network. The protocols used in Transport layer is TCP and UDP. The transport layer is responsible for segmentation of the data. It uses ports for the implementation of process-to-process delivery.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which layer provides the services to user?\",\"options\":[\"physical layer\",\"presentation layer\",\"session layer\",\"application layer\"],\"correctAnswer\":\"D\",\"explanation\":\"In networking, a user mainly interacts with application layer to create and send information to other computer or network. Application layer provides the interface between applications and the network. It is the top-most layer in both the TCP/IP and the OSI model.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"How does the client and the server communicate following the rules defined by the WebSocket protocol?\",\"options\":[\"Long-lived TCP Socket\",\"Short-lived TCP Socket\",\"UDP Socket\",\"HTTP Socket\"],\"correctAnswer\":\"A\",\"explanation\":\"The client and server communicate over a long-lived TCP socket following rules defined by the WebSocket protocol.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What command is used to stop RIP routing updates from exiting out an interface but still allow the interface to receive RIP route updates?\",\"options\":[\"Router (config-if) # no routing\",\"Router (config-if) # passive-interface\",\"Router (config-router) # passive-interface s0\",\"Router (config-router) # no routing updates\"],\"correctAnswer\":\"C\",\"explanation\":\"The (config-router) #passive-interface command stops updates from being sent out an interface, but route updates are still received.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"To enable RIPng, which of the following would you use?\",\"options\":[\"Router1(config-if)# ipv6 ospf 10 area 0.0.0.0\",\"Router1(config-if)# ipv6 router rip 1\",\"Router1(config)# ipv6 router eigrp 10\",\"Router1(config-rtr)# no shutdown\"],\"correctAnswer\":\"B\",\"explanation\":\"It's pretty simple to enable RIPng for IPv6. You configure it right on the interface where you want RIP to run with the ipv6 router rip number command.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which three commands can be used to check LAN connectivity problems on a router? 1. show interfaces 2. show ip route 3. tracert 4. ping 5. dns lookups\",\"options\":[\"1 ,2 and 4\",\"2 and 5\",\"3 and 5\",\"None of the above\"],\"correctAnswer\":\"A\",\"explanation\":\"The tracert command is a Windows command and will not work on a router! A router uses the traceroute command.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which command will show you all the translations active on your router?\",\"options\":[\"show ip nat translations\",\"show ip nat statistics\",\"debug ip nat\",\"clear ip nat translations *\"],\"correctAnswer\":\"A\",\"explanation\":\"The command show ip nat translations will show you the translation table containing all the active NAT entries.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following would be a good starting point for troubleshooting if your router is not translating?\",\"options\":[\"Reboot.\",\"Call Cisco.\",\"Check your interfaces for the correct configuration.\",\"Run the debug all command.\"],\"correctAnswer\":\"C\",\"explanation\":\"In order for NAT to provide translation services, you must have ip nat inside and ip nat outside configured on your router's interfaces.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which are considered the methods of NAT? 1. Static 2. IP NAT pool 3. Dynamic 4. NAT double-translation 5. Overload\",\"options\":[\"1 and 6\",\"3 only\",\"1, 3 and 5\",\"All of the above\"],\"correctAnswer\":\"C\",\"explanation\":\"You can configure NAT three ways on a Cisco router: static, dynamic, and NAT Overload (PAT).\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following is the valid host range for the subnet on which the IP address 192.168.168.188 255.255.255.192 resides?\",\"options\":[\"192.168.168.129-190\",\"192.168.168.129-191\",\"192.168.168.128-190\",\"192.168.168.128-192\"],\"correctAnswer\":\"A\",\"explanation\":\"256 - 192 = 64. 64 + 64 = 128. 128 + 64 = 192. The subnet is 128, the broadcast address is 191, and the valid host range is the numbers in between, or 129-190.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following is true regarding access lists applied to an interface?\",\"options\":[\"You can place as many access lists as you want on any interface until you run out of memory.\",\"You can apply only one access list on any interface.\",\"One access list may be configured, per direction, for each layer 3 protocol configured on an interface.\",\"You can apply two access lists to any interface.\"],\"correctAnswer\":\"C\",\"explanation\":\"A Cisco router has rules regarding the placement of access lists on a router interface. You can place one access list per direction for each layer 3 protocol configured on an interface.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What router command allows you to determine whether an IP access list is enabled on a particular interface?\",\"options\":[\"show ip port\",\"show access-lists\",\"show ip interface\",\"show access-lists interface\"],\"correctAnswer\":\"C\",\"explanation\":\"Only the show ip interface command will tell you which interfaces have access lists applied. show access-lists will not show you which interfaces have an access list applied.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following allows a router to respond to an ARP request that is intended for a remote host?\",\"options\":[\"Gateway DP\",\"Reverse ARP (RARP)\",\"Proxy ARP\",\"Inverse ARP (IARP)\"],\"correctAnswer\":\"C\",\"explanation\":\"Proxy ARP can help machines on a subnet reach remote subnets without configuring routing or a default gateway.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"If you use either Telnet or FTP, which is the highest layer you are using to transmit data?\",\"options\":[\"Application\",\"Presentation\",\"Session\",\"Transport\"],\"correctAnswer\":\"A\",\"explanation\":\"Both FTP and Telnet use TCP at the Transport layer; however, they both are Application layer protocols, so the Application layer is the best answer.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which command would you place on interface on a private network?\",\"options\":[\"ip nat inside\",\"ip nat outside\",\"ip outside global\",\"ip inside local\"],\"correctAnswer\":\"A\",\"explanation\":\"As in access-lists, you must configure your interfaces before NAT will provide any translations. On the inside networks you would use the command ip nat inside . On the outside interface, you will use the command ip nat outside .\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What flavor of Network Address Translation can be used to have one IP address allow many users to connect to the global Internet?\",\"options\":[\"NAT\",\"Static\",\"Dynamic\",\"PAT\"],\"correctAnswer\":\"D\",\"explanation\":\"Port Address Translation (PAT) allows a one-to-many approach to network address translation.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"The network address of 172.16.0.0/19 provides how many subnets and hosts?\",\"options\":[\"7 subnets, 30 hosts each\",\"8 subnets, 8,190 hosts each\",\"8 subnets, 2,046 hosts each\",\"7 subnets, 2,046 hosts each\"],\"correctAnswer\":\"B\",\"explanation\":\"A CIDR address of /19 is 255.255.224.0. This is a Class B address, so that is only 3 subnet bits, but it provides 13 host bits, or 8 subnets, each with 8,190 hosts.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which command will display the CHAP authentication process as it occurs between two routers in the network?\",\"options\":[\"show chap authentication\",\"show interface serial 0\",\"debug ppp authentication\",\"debug chap authentication\"],\"correctAnswer\":\"C\",\"explanation\":\"The command debug ppp authentication will show you the authentication process that PPP uses between point-to-point connections.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"A default Frame Relay WAN is classified as what type of physical network?\",\"options\":[\"Point-to-point\",\"Broadcast multi-access\",\"Non-broadcast multi-access\",\"Non-broadcast multipoint\"],\"correctAnswer\":\"C\",\"explanation\":\"Frame Relay, by default, is a non-broadcast multi-access (NBMA) network, which means that broadcasts, such as RIP updates, will not be forwarded across the link by default.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What are nodes in a computer network?\",\"options\":[\"the computer that routes the data\",\"the computer that terminates the data\",\"the computer that originates the data\",\"all of the mentioned\"],\"correctAnswer\":\"D\",\"explanation\":\"In a computer network, a node can be anything that is capable of sending data or receiving data or even routing the data to its destination. Routers, Computers and Smartphones are some examples of network nodes.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What is the term for an endpoint of an inter-process communication flow across a computer network?\",\"options\":[\"port\",\"machine\",\"socket\",\"pipe\"],\"correctAnswer\":\"C\",\"explanation\":\"Socket is one end point in a two way communication link in the network. TCP layer can identify the application that data is destined to be sent by using the port number that is bound to socket.\",\"estimatedTime\":60,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following maintains the Domain Name System?\",\"options\":[\"a single server\",\"a single computer\",\"distributed database system\",\"none of the mentioned\"],\"correctAnswer\":\"C\",\"explanation\":\"A domain name system is maintained by a distributed database system. It is a collection of multiple, logically interrelated databases distributed over a computer network.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which of the following is not a TDMA standard of 2.5G network?\",\"options\":[\"GPRS\",\"GSM\",\"HSCSD\",\"EDGE\"],\"correctAnswer\":\"B\",\"explanation\":\"GSM (Global System for Mobile) is a TDMA standard for 2G network. HSCSD (High Speed Circuit Switched Data), GPRS (General Packet Radio Service) and EDGE (Enhanced Data rates for GSM Evolution) are TDMA standards of 2.5G technology.\",\"estimatedTime\":45,\"subtopic\":\"Computer Networks - TCP/IP\",\"tags\":[\"networks\",\"technical\",\"tcp\",\"ip\",\"network\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"}]}",
+  "parsed": {
+    "questions": [
+      {
+        "questionText": "What was the name of the first network?",
+        "options": [
+          "ASAPNET",
+          "ARPANET",
+          "CNNET",
+          "NSFNET"
+        ],
+        "correctAnswer": "B",
+        "explanation": "ARPANET stands for Advanced Research Projects Agency Networks. It was the first network to be implemented which used the TCP/IP protocol in the year 1969.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following devices forwards packets between networks by processing the routing information included in the packet?",
+        "options": [
+          "firewall",
+          "bridge",
+          "hub",
+          "router"
+        ],
+        "correctAnswer": "D",
+        "explanation": "A router is a networking device that forwards data packets between computer networks. Routers perform the traffic directing functions on the Internet. They make use of routing protocols like RIP to find the cheapest path to the destination.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "You have the following routing table. Which of the following networks will not be placed in the neighbor routing table? R 192.168.30.0/24 [120/1] via 192.168.40.1, 00:00:12, Serial0 C 192.168.40.0/24 is directly connected, Serial0 172.16.0.0/24 is subnetted, 1 subnets C 172.16.30.0 is directly connected, Loopback0 R 192.168.20.0/24 [120/1] via 192.168.40.1, 00:00:12, Serial0 R 10.0.0.0/8 [120/15] via 192.168.40.1, 00:00:07, Serial0 C 192.168.50.0/24 is directly connected, Ethernet0",
+        "options": [
+          "172.16.30.0",
+          "192.168.30.0",
+          "10.0.0.0",
+          "All of them will be placed in the neighbor routing table"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The network 10.0.0.0 cannot be placed in the next router's routing table because it already is at 15 hops. One more hop would make the route 16 hops, and that is not valid in RIP networking.",
+        "estimatedTime": 75,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "If an Ethernet port on a router were assigned an IP address of 172.16.112.1/25, what would be the valid subnet address of this host?",
+        "options": [
+          "172.16.112.0",
+          "172.16.0.0",
+          "172.16.96.0",
+          "172.16.255.0"
+        ],
+        "correctAnswer": "A",
+        "explanation": "A /25 mask is 255.255.255.128. Used with a Class B network, the third and fourth octets are used for subnetting with a total of 9 subnet bits, 8 bits in the third octet and 1 bit in the fourth octet. Since there is only 1 bit in the fourth octet, the bit is either off or on-which is a value of 0 or 128. The host in the question is in the 0 subnet, which has a broadcast address of 127 since 128 is the next subnet.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following is a stateless protocol?",
+        "options": [
+          "HTML",
+          "XHTML",
+          "HTTP",
+          "All of the mentioned"
+        ],
+        "correctAnswer": "C",
+        "explanation": "HTTP is a stateless protocol. A stateless protocol does not require the server to retain information or status about each user for the duration of multiple requests.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which command displays RIP routing updates?",
+        "options": [
+          "show ip route",
+          "debug ip rip",
+          "show protocols",
+          "debug ip route"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The debug ip rip command is used to show the Internet Protocol (IP) Routing Information Protocol (RIP) updates being sent and received on the router.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following protocol is used to link all the devices in the IoT?",
+        "options": [
+          "HTTP",
+          "UDP",
+          "Network",
+          "TCP/IP"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The internet of Thing is the global system of interconnected computer networks that use the Internet Protocol suite (TCP/IP) to link billions of devices worldwide.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What protocol does PPP use to identify the Network layer protocol?",
+        "options": [
+          "NCP",
+          "ISDN",
+          "HDLC",
+          "LCP"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Network Control Protocol is used to help identify the Network layer protocol used in the packet.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "In which circumstance are multiple copies of the same unicast frame likely to be transmitted in a switched LAN?",
+        "options": [
+          "During high-traffic periods",
+          "After broken links are reestablished",
+          "When upper-layer protocols require high reliability",
+          "In an improperly implemented redundant topology"
+        ],
+        "correctAnswer": "D",
+        "explanation": "If the Spanning Tree Protocol is not running on your switches and you connect them together with redundant links, you will have broadcast storms and multiple frame copies.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What layer in the TCP/IP stack is equivalent to the Transport layer of the OSI model?",
+        "options": [
+          "Application",
+          "Host-to-Host",
+          "Internet",
+          "Network Access"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The four layers of the TCP/IP stack (also called the DoD model) are Application/Process, Host-to-Host, Internet, and Network Access. The Host-to-Host layer is equivalent to the Transport layer of the OSI model.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following is the network layer protocol for the internet?",
+        "options": [
+          "hypertext transfer protocol",
+          "file transfer protocol",
+          "ethernet",
+          "internet protocol"
+        ],
+        "correctAnswer": "D",
+        "explanation": "There are several protocols used in Network layer. Some of them are IP, ICMP, CLNP, ARP, IPX, HRSP etc. Hypertext transfer protocol is for application layer and ethernet protocol is for data link layer.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which provides the TCP/IP communication over the ethernet and FDDI?",
+        "options": [
+          "pNA+ network manager",
+          "pSOS+",
+          "pSOS+ kernel",
+          "pSOS+m"
+        ],
+        "correctAnswer": "A",
+        "explanation": "A pNA+ network manager is a networking option which can provide the TCP/IP communication over a large variety of media such as the FDDI and the ethernet.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What is the full form of DHCP in IoT communication protocols?",
+        "options": [
+          "Dynamic Host Communication Protocol",
+          "Domain Host Communication Protocol",
+          "Dynamic Host Control Protocol",
+          "Domain Host Control Protocol"
+        ],
+        "correctAnswer": "A",
+        "explanation": "DHCP is a network management protocol used on internet protocol networks to automatically assign IP addresses. DHCP stands for Dynamic Host Communication Protocol.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following commands will display the current IP addressing and the layer 1 and 2 status of an interface? 1. show version 2. show protocols 3. show interfaces 4. show controllers 5. show ip interface",
+        "options": [
+          "1, 2 and 4",
+          "2, 3 and 5",
+          "3 and 4 only",
+          "None of the above"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The commands show protocols , show interfaces , and show ip interface will show you the layer 1 and 2 status and the IP addresses of your router's interfaces.",
+        "estimatedTime": 75,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "You need to find the broadcast address used on a LAN on your router. What command will you type into the router from user mode to find the broadcast address?",
+        "options": [
+          "show running-config",
+          "show startup-config",
+          "show interfaces",
+          "show protocols"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The command show ip protocols will actually show you the broadcast address for each interface - too bad it isn't a possible answer. Your best answer is show interfaces , which will provide the IP address and mask for each interface.",
+        "estimatedTime": 75,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which statement is true regarding classless routing protocols? 1. The use of discontiguous networks is not allowed. 2. The use of variable length subnet masks is permitted. 3. RIPv1 is a classless routing protocol. 4. IGRP supports classless routing within the same autonomous system. 5. RIPv2 supports classless routing.",
+        "options": [
+          "1, 3 and 5",
+          "3 and 4",
+          "2 and 5",
+          "None of the above"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Classful routing means that all hosts in the internetwork use the same mask. Classless routing means that you can use Variable Length Subnet Masks (VLSMs) and can also support discontiguous networking.",
+        "estimatedTime": 75,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "You have your laptop directly connected into a router's Ethernet port. Which of the following are among the requirements for the copy flash tftp command to be successful? 1. TFTP server software must be running on the router. 2. TFTP server software must be running on your laptop. 3. The Ethernet cable connecting the laptop directly into the router's Ethernet port must be a straight-through cable. 4. The laptop must be on the same subnet as the router's Ethernet interface. 5. The copy flash tftp command must be supplied the IP address of the laptop.",
+        "options": [
+          "1, 3 and 4",
+          "2, 4 and 5",
+          "3 and 5 only",
+          "5 only"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Before you back up an IOS image to a laptop directly connected to a router's Ethernet port, make sure the TFTP server software is running on your laptop, that the Ethernet cable is a \"crossover,\" and that the laptop is in the same subnet as the router's Ethernet port, and then you can use the copy flash tftp command from your laptop.",
+        "estimatedTime": 75,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What command will permit SMTP mail to only host 1.1.1.1?",
+        "options": [
+          "access-list 10 permit smtp host 1.1.1.1",
+          "access-list 110 permit ip smtp host 1.1.1.1",
+          "access-list 10 permit tcp any host 1.1.1.1 eq smtp",
+          "access-list 110 permit tcp any host 1.1.1.1 eq smtp"
+        ],
+        "correctAnswer": "D",
+        "explanation": "When trying to find the best answer to an access-list question, always check the access-list number and then the protocol. When filtering to an upper-layer protocol, you must use an extended list, numbers 100-199 and 2000-2699. Also, when you filter to an upper-layer protocol, you must use either tcp or udp in the protocol field. If it says ip in the protocol field, you cannot filter to an upper-layer protocol. SMTP uses TCP.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "You have created a named access list called Blocksales. Which of the following is a valid command for applying this to packets trying to enter interface s0 of your router?",
+        "options": [
+          "(config)# ip access-group 110 in",
+          "(config-if)# ip access-group 110 in",
+          "(config-if)# ip access-group Blocksales in",
+          "(config-if)# blocksales ip access-list in"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Using a named access list just replaces the number used when applying the list to the router's interface. ip access-group Blocksales in is correct.",
+        "estimatedTime": 75,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following describe the DHCP Discover message? 1. It uses FF:FF:FF:FF:FF:FF as a layer 2 broadcast. 2. It uses UDP as the Transport layer protocol. 3. It uses TCP as the Transport layer protocol. 4. It does not use a layer 2 destination address.",
+        "options": [
+          "1 only",
+          "1 and 2",
+          "3 and 4",
+          "4 only"
+        ],
+        "correctAnswer": "B",
+        "explanation": "A client that sends out a DHCP Discover message in order to receive an IP address sends out a broadcast at both layer 2 and layer 3. The layer 2 broadcast is all Fs in hex, or FF:FF:FF:FF:FF:FF . The layer 3 broadcast is FF:FF:FF:FF:FF:FF , which means all networks and all hosts. DHCP is connectionless, which means it uses User Datagram Protocol (UDP) at the Transport layer, also called the Host-to-Host layer.",
+        "estimatedTime": 75,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which command will display all the EIGRP feasible successor routes known to a router?",
+        "options": [
+          "show ip routes *",
+          "show ip eigrp summary",
+          "show ip eigrp topology",
+          "show ip eigrp adjacencies"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Any secondary route to a remote network is considered a feasible successor, and those routes are only found in the topology table and used as backup routes in case of primary route failure. You can see the topology table with the show ip eigrp topology command.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following statements are true regarding the command ip route 172.16.4.0 255.255.255.0 192.168.4.2 ? 1. The command is used to establish a static route. 2. The default administrative distance is used. 3. The command is used to configure the default route. 4. The subnet mask for the source address is 255.255.255.0.",
+        "options": [
+          "1 and 2",
+          "2 and 4",
+          "3 and 4",
+          "All of the above"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Although answer D almost seems right, it is not; the mask is the mask used on the remote network, not the source network. Since there is no number at the end of the static route, it is using the default administrative distance of 1.",
+        "estimatedTime": 75,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "You are troubleshooting a connectivity problem in your corporate network and want to isolate the problem. You suspect that a router on the route to an unreachable network is at fault. What IOS user exec command should you issue?",
+        "options": [
+          "Router> ping",
+          "Router> trace",
+          "Router> show ip route",
+          "Router> show interface"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The command traceroute (trace for short), which can be issued from user mode or privileged mode, is used to find the path a packet takes through an internetwork and will also show you where the packet stops because of an error on a router.",
+        "estimatedTime": 75,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What is the maximum number of IP addresses that can be assigned to hosts on a local subnet that uses the 255.255.255.224 subnet mask?",
+        "options": [
+          "14",
+          "15",
+          "16",
+          "30"
+        ],
+        "correctAnswer": "D",
+        "explanation": "A /27 (255.255.255.224) is 3 bits on and 5 bits off. This provides 8 subnets, each with 30 hosts. Does it matter if this mask is used with a Class A, B, or C network address? Not at all. The number of host bits would never change.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "The DoD model (also called the TCP/IP stack) has four layers. Which layer of the DoD model is equivalent to the Network layer of the OSI model?",
+        "options": [
+          "Application",
+          "Host-to-Host",
+          "Internet",
+          "Network Access"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The four layers of the DoD model are Application/Process, Host-to-Host, Internet, and Network Access. The Internet layer is equivalent to the Network layer of the OSI model.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which command will configure a switch port to use the IEEE standard method of inserting VLAN membership information into Ethernet frames?",
+        "options": [
+          "Switch(config)# switchport trunk encapsulation isl",
+          "Switch(config)# switchport trunk encapsulation ietf",
+          "Switch(config)# switchport trunk encapsulation dot1q",
+          "Switch(config-if)# switchport trunk encapsulation isl"
+        ],
+        "correctAnswer": "C",
+        "explanation": "To configure a switch port to use the IEEE standard method of inserting VLAN membership information into Ethernet frames, you would use the dot1q encapsulation method. This method inserts VLAN tags into Ethernet frames according to the IEEE 802.1Q standard, allowing for the transmission of VLAN information across the network. Options A, B, and D are incorrect because: Option A: switchport trunk encapsulation isl configures the switch port to use the Inter-Switch Link (ISL) encapsulation method, which is a Cisco proprietary protocol and not part of the IEEE standard. Option B: switchport trunk encapsulation ietf is not a valid command. There is no encapsulation method called \"ietf\" for trunk ports in Cisco switches. Option D: switchport trunk encapsulation isl is a command used at the interface configuration level ( Switch(config-if)# ), but it specifies the ISL encapsulation method, which, as mentioned earlier, is not part of the IEEE standard. Therefore, the correct command to configure a switch port to use the IEEE standard method of inserting VLAN membership information into Ethernet frames is Option C: Switch(config)# switchport trunk encapsulation dot1q .",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "You have a Cisco mesh network. What protocol allows multiple APs to connect with many redundant connections between nodes?",
+        "options": [
+          "LWAPP",
+          "AWPP",
+          "STP",
+          "IEEE"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Each AP in a mesh network runs the Adaptive Wireless Path Protocol (AWPP). This protocol allows RAPs to communicate with each other to determine the best path back to the wired network via the RAP.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which layer is responsible for process to process delivery in a general network model?",
+        "options": [
+          "session layer",
+          "data link layer",
+          "transport layer",
+          "network layer"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The role of Transport layer (Layer 4) is to establish a logical end to end connection between two systems in a network. The protocols used in Transport layer is TCP and UDP. The transport layer is responsible for segmentation of the data. It uses ports for the implementation of process-to-process delivery.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which layer provides the services to user?",
+        "options": [
+          "physical layer",
+          "presentation layer",
+          "session layer",
+          "application layer"
+        ],
+        "correctAnswer": "D",
+        "explanation": "In networking, a user mainly interacts with application layer to create and send information to other computer or network. Application layer provides the interface between applications and the network. It is the top-most layer in both the TCP/IP and the OSI model.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "How does the client and the server communicate following the rules defined by the WebSocket protocol?",
+        "options": [
+          "Long-lived TCP Socket",
+          "Short-lived TCP Socket",
+          "UDP Socket",
+          "HTTP Socket"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The client and server communicate over a long-lived TCP socket following rules defined by the WebSocket protocol.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What command is used to stop RIP routing updates from exiting out an interface but still allow the interface to receive RIP route updates?",
+        "options": [
+          "Router (config-if) # no routing",
+          "Router (config-if) # passive-interface",
+          "Router (config-router) # passive-interface s0",
+          "Router (config-router) # no routing updates"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The (config-router) #passive-interface command stops updates from being sent out an interface, but route updates are still received.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "To enable RIPng, which of the following would you use?",
+        "options": [
+          "Router1(config-if)# ipv6 ospf 10 area 0.0.0.0",
+          "Router1(config-if)# ipv6 router rip 1",
+          "Router1(config)# ipv6 router eigrp 10",
+          "Router1(config-rtr)# no shutdown"
+        ],
+        "correctAnswer": "B",
+        "explanation": "It's pretty simple to enable RIPng for IPv6. You configure it right on the interface where you want RIP to run with the ipv6 router rip number command.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which three commands can be used to check LAN connectivity problems on a router? 1. show interfaces 2. show ip route 3. tracert 4. ping 5. dns lookups",
+        "options": [
+          "1 ,2 and 4",
+          "2 and 5",
+          "3 and 5",
+          "None of the above"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The tracert command is a Windows command and will not work on a router! A router uses the traceroute command.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which command will show you all the translations active on your router?",
+        "options": [
+          "show ip nat translations",
+          "show ip nat statistics",
+          "debug ip nat",
+          "clear ip nat translations *"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The command show ip nat translations will show you the translation table containing all the active NAT entries.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following would be a good starting point for troubleshooting if your router is not translating?",
+        "options": [
+          "Reboot.",
+          "Call Cisco.",
+          "Check your interfaces for the correct configuration.",
+          "Run the debug all command."
+        ],
+        "correctAnswer": "C",
+        "explanation": "In order for NAT to provide translation services, you must have ip nat inside and ip nat outside configured on your router's interfaces.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which are considered the methods of NAT? 1. Static 2. IP NAT pool 3. Dynamic 4. NAT double-translation 5. Overload",
+        "options": [
+          "1 and 6",
+          "3 only",
+          "1, 3 and 5",
+          "All of the above"
+        ],
+        "correctAnswer": "C",
+        "explanation": "You can configure NAT three ways on a Cisco router: static, dynamic, and NAT Overload (PAT).",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following is the valid host range for the subnet on which the IP address 192.168.168.188 255.255.255.192 resides?",
+        "options": [
+          "192.168.168.129-190",
+          "192.168.168.129-191",
+          "192.168.168.128-190",
+          "192.168.168.128-192"
+        ],
+        "correctAnswer": "A",
+        "explanation": "256 - 192 = 64. 64 + 64 = 128. 128 + 64 = 192. The subnet is 128, the broadcast address is 191, and the valid host range is the numbers in between, or 129-190.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following is true regarding access lists applied to an interface?",
+        "options": [
+          "You can place as many access lists as you want on any interface until you run out of memory.",
+          "You can apply only one access list on any interface.",
+          "One access list may be configured, per direction, for each layer 3 protocol configured on an interface.",
+          "You can apply two access lists to any interface."
+        ],
+        "correctAnswer": "C",
+        "explanation": "A Cisco router has rules regarding the placement of access lists on a router interface. You can place one access list per direction for each layer 3 protocol configured on an interface.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What router command allows you to determine whether an IP access list is enabled on a particular interface?",
+        "options": [
+          "show ip port",
+          "show access-lists",
+          "show ip interface",
+          "show access-lists interface"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Only the show ip interface command will tell you which interfaces have access lists applied. show access-lists will not show you which interfaces have an access list applied.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following allows a router to respond to an ARP request that is intended for a remote host?",
+        "options": [
+          "Gateway DP",
+          "Reverse ARP (RARP)",
+          "Proxy ARP",
+          "Inverse ARP (IARP)"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Proxy ARP can help machines on a subnet reach remote subnets without configuring routing or a default gateway.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "If you use either Telnet or FTP, which is the highest layer you are using to transmit data?",
+        "options": [
+          "Application",
+          "Presentation",
+          "Session",
+          "Transport"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Both FTP and Telnet use TCP at the Transport layer; however, they both are Application layer protocols, so the Application layer is the best answer.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which command would you place on interface on a private network?",
+        "options": [
+          "ip nat inside",
+          "ip nat outside",
+          "ip outside global",
+          "ip inside local"
+        ],
+        "correctAnswer": "A",
+        "explanation": "As in access-lists, you must configure your interfaces before NAT will provide any translations. On the inside networks you would use the command ip nat inside . On the outside interface, you will use the command ip nat outside .",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What flavor of Network Address Translation can be used to have one IP address allow many users to connect to the global Internet?",
+        "options": [
+          "NAT",
+          "Static",
+          "Dynamic",
+          "PAT"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Port Address Translation (PAT) allows a one-to-many approach to network address translation.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "The network address of 172.16.0.0/19 provides how many subnets and hosts?",
+        "options": [
+          "7 subnets, 30 hosts each",
+          "8 subnets, 8,190 hosts each",
+          "8 subnets, 2,046 hosts each",
+          "7 subnets, 2,046 hosts each"
+        ],
+        "correctAnswer": "B",
+        "explanation": "A CIDR address of /19 is 255.255.224.0. This is a Class B address, so that is only 3 subnet bits, but it provides 13 host bits, or 8 subnets, each with 8,190 hosts.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which command will display the CHAP authentication process as it occurs between two routers in the network?",
+        "options": [
+          "show chap authentication",
+          "show interface serial 0",
+          "debug ppp authentication",
+          "debug chap authentication"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The command debug ppp authentication will show you the authentication process that PPP uses between point-to-point connections.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "A default Frame Relay WAN is classified as what type of physical network?",
+        "options": [
+          "Point-to-point",
+          "Broadcast multi-access",
+          "Non-broadcast multi-access",
+          "Non-broadcast multipoint"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Frame Relay, by default, is a non-broadcast multi-access (NBMA) network, which means that broadcasts, such as RIP updates, will not be forwarded across the link by default.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What are nodes in a computer network?",
+        "options": [
+          "the computer that routes the data",
+          "the computer that terminates the data",
+          "the computer that originates the data",
+          "all of the mentioned"
+        ],
+        "correctAnswer": "D",
+        "explanation": "In a computer network, a node can be anything that is capable of sending data or receiving data or even routing the data to its destination. Routers, Computers and Smartphones are some examples of network nodes.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What is the term for an endpoint of an inter-process communication flow across a computer network?",
+        "options": [
+          "port",
+          "machine",
+          "socket",
+          "pipe"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Socket is one end point in a two way communication link in the network. TCP layer can identify the application that data is destined to be sent by using the port number that is bound to socket.",
+        "estimatedTime": 60,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following maintains the Domain Name System?",
+        "options": [
+          "a single server",
+          "a single computer",
+          "distributed database system",
+          "none of the mentioned"
+        ],
+        "correctAnswer": "C",
+        "explanation": "A domain name system is maintained by a distributed database system. It is a collection of multiple, logically interrelated databases distributed over a computer network.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which of the following is not a TDMA standard of 2.5G network?",
+        "options": [
+          "GPRS",
+          "GSM",
+          "HSCSD",
+          "EDGE"
+        ],
+        "correctAnswer": "B",
+        "explanation": "GSM (Global System for Mobile) is a TDMA standard for 2G network. HSCSD (High Speed Circuit Switched Data), GPRS (General Packet Radio Service) and EDGE (Enhanced Data rates for GSM Evolution) are TDMA standards of 2.5G technology.",
+        "estimatedTime": 45,
+        "subtopic": "Computer Networks - TCP/IP",
+        "tags": [
+          "networks",
+          "technical",
+          "tcp",
+          "ip",
+          "network"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      }
+    ]
+  },
+  "providerPayload": {
+    "mode": "offline",
+    "source": "existing_mock_tests",
+    "questionCount": 50
+  },
+  "offlineSource": true
+}

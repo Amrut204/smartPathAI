@@ -1,0 +1,1030 @@
+{
+  "provider": "claude",
+  "model": "claude-sonnet-4-offline",
+  "topic": "Algorithms - Dynamic Programming",
+  "subject": "technical",
+  "category": "algorithms",
+  "difficulty": "hard",
+  "promptStyle": "analytical_structured",
+  "generatedAt": "2026-03-12T18:07:50.956Z",
+  "elapsedMs": 0,
+  "count": 50,
+  "cost": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "usd": 0,
+    "inr": 0
+  },
+  "prompt": "You are an expert question designer for Indian campus placement tests. Generate high-quality multiple-choice questions for engineering students preparing for companies like TCS, Infosys, and Wipro.\n\nTASK: Generate 50 questions on the topic: Algorithms - Dynamic Programming\n\nSPECIFICATIONS:\n- Difficulty Level: hard\n- Time per question: 45-90 seconds\n\nOUTPUT FORMAT (JSON only, no markdown):\n{\n  \"questions\": [\n    {\n      \"questionText\": \"Full question text here\",\n      \"options\": [\"Option A\", \"Option B\", \"Option C\", \"Option D\"],\n      \"correctAnswer\": \"A\",\n      \"explanation\": \"Step-by-step solution showing why A is correct\",\n      \"estimatedTime\": 60,\n      \"subtopic\": \"Specific subtopic within main topic\",\n      \"tags\": [\"tag1\", \"tag2\"]\n    }\n  ]\n}\n\nQUALITY REQUIREMENTS:\n1. Questions must be unambiguous with exactly ONE correct answer\n2. All options should be plausible (no obviously wrong distractors)\n3. Use Indian English conventions (lakhs/crores for large numbers)\n4. Include complete explanations with step-by-step working\n5. Vary problem patterns within the topic\n6. Match actual campus placement difficulty\n7. NO questions copied from existing sources (create original problems)\n\nGenerate exactly 50 questions following these specifications. Output ONLY valid JSON, no additional text.",
+  "rawText": "{\"questions\":[{\"questionText\":\"The initial alignments used to produce the guide tree may be obtained by various methods. Which of the following is not one of them?\",\"options\":[\"pattern-finding approach similar\",\"FASTA\",\"Faster, full dynamic programming method\",\"Fast k-tuple\"],\"correctAnswer\":\"C\",\"explanation\":\"The methods used, might be fast k-tuple or pattern-finding approach similar to FASTA that is useful for many sequences and the full dynamic programming method as well. But the option d becomes incorrect as full dynamic programming method is slower as compared to rest of the methods in options.\",\"estimatedTime\":60,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"In the pairwise energy based method, a protein sequence is searched for in a structural fold database to find the best matching structural fold using ______ criteria.\",\"options\":[\"energy-based\",\"residue-based\",\"structure-based\",\"sequence-based\"],\"correctAnswer\":\"A\",\"explanation\":\"The detailed procedure involves aligning the query sequence with each structural fold in a fold library. The alignment is performed essentially at the sequence profile level using dynamic programming or heuristic approaches. Local alignment is often adjusted to get lower energy and thus better fitting. The adjustment can be achieved using algorithms such as double-dynamic programming.\",\"estimatedTime\":60,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Which of the following is a correct statement? I. For some programming languages, there are parsing algorithms with an O(3) complexity. II. A recursive programming language can be constructed with static storage allocation. III. In the context of bottom-up parsing, no L-attributed definition can be evaluated. IV. Code-improvement modifications can be carried out at both the intermediate and source code levels.\",\"options\":[\"I and III\",\"I and IV\",\"I, II and IV\",\"I, II, III and IV\"],\"correctAnswer\":\"B\",\"explanation\":\"In recursion, space is used but recursive calls can’t be calculated by the compiler.\",\"estimatedTime\":75,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Which are the three conceptual layers in CometCloud?\",\"options\":[\"development, application, physical\",\"infrastructure, dynamic, static\",\"transport, network, programming\",\"programming, service, infrastructure\"],\"correctAnswer\":\"D\",\"explanation\":\"In the CometCloud architecture within the realm of cloud computing , the three key conceptual layers are represented by Option D: programming, service, infrastructure . Let's delve into these layers: Option A: development, application, physical describes various stages but doesn't accurately capture the specific layers in the CometCloud architecture. Option B: infrastructure, dynamic, static doesn't correspond to the layers in CometCloud. While these terms are relevant to cloud computing, they don't align with the CometCloud conceptual layers. Option C: transport, network, programming doesn't directly map to the layers in the CometCloud architecture. Option D: programming, service, infrastructure hits the mark. Let's break it down: Programming: This layer involves the development of applications that utilize CometCloud services and resources. Service: This layer focuses on providing various services to applications, managing their deployment, scaling, and interactions. Infrastructure: This layer forms the foundation, encompassing the underlying hardware and resources on which the entire architecture is built. Therefore, in the context of the CometCloud architecture, Option D: programming, service, infrastructure is indeed the correct answer. It encapsulates the layers that define how applications are developed, interact with services, and leverage the underlying infrastructure within the CometCloud framework.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Dynamic content presented in Google . . . . . . . . crawling isn't normally indexed.\",\"options\":[\"ajax\",\"java\",\"javascript\",\"all of the mentioned\"],\"correctAnswer\":\"C\",\"explanation\":\"Option A: Ajax (Asynchronous JavaScript and XML) is used to create dynamic web pages where content can be updated without reloading the entire page. However, dynamic content loaded via Ajax isn't always indexed by Google’s crawling systems because it requires additional execution beyond static HTML, making it less likely to be indexed by default. Option B: Java is a programming language primarily used for back-end development and web applications. While Java is powerful for various applications, it is not typically related to dynamic content in the context of Google crawling and indexing processes. It does not directly impact how content is rendered for crawling in most cases. Option C: JavaScript is heavily used for dynamic web content. Content generated dynamically by JavaScript often poses a challenge for Google’s crawlers. Unless specific techniques are used, such as server-side rendering, this dynamic content might not be fully indexed because the crawler may not execute the JavaScript needed to display it. Option D: All of the mentioned is partially correct, but it is a generalization. While Ajax and JavaScript directly relate to how dynamic content might not be indexed, Java is not directly linked to Google’s indexing challenges with dynamic content. Conclusion: The correct answer is Option C: JavaScript , as it is the most significant factor in dynamic content that may not be indexed by Google’s crawlers without proper handling.\",\"estimatedTime\":60,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Which of the following programming languages is commonly used for server-side scripting in web development?\",\"options\":[\"HTML\",\"CSS\",\"JavaScript\",\"PHP\"],\"correctAnswer\":\"D\",\"explanation\":\"HTML, CSS, and JavaScript play crucial roles in front-end development, focusing on the visual aspects of web pages, while PHP serves as the primary language for server-side scripting. It manages backend tasks such as database interactions, processing user input, and generating dynamic content.\",\"estimatedTime\":60,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Which programming language is commonly used for Data Science tasks?\",\"options\":[\"Java\",\"Python\",\"C++\",\"JavaScript\"],\"correctAnswer\":\"B\",\"explanation\":\"Let's look at why Python is the correct answer and why the others are not as commonly used for these specific tasks. Option B: Python (Correct Answer) Python is by far the most popular and widely used programming language for Data Science. Here's why it's the top choice: 1. Easy to Learn: Python has a simple and readable structure (syntax), which makes it easy for beginners to understand and write code. 2. Rich Libraries: Python has an amazing collection of specialized tools, called \\\"libraries,\\\" that are specifically designed for Data Science tasks. Some very important ones include: - NumPy: Great for working with numbers and large datasets efficiently. - Pandas: Used for cleaning, analyzing, and manipulating data, similar to working with advanced spreadsheets. - Scikit-learn: Essential for building machine learning models (like algorithms that learn from data to make predictions). - Matplotlib and Seaborn: Used for creating clear and beautiful charts and graphs to visualize data. 3. Versatility: Besides Data Science, Python is also used for web development, automation, and many other areas, making it a very powerful and useful language to know. Option A: Java Java is a powerful and robust language, often used in large enterprise systems and for building big data processing frameworks (like Apache Hadoop or Apache Spark). However, for the everyday tasks of data analysis, writing scripts for quick insights, or directly building machine learning models, Python is generally preferred because of its simpler code and specialized Data Science libraries. Option C: C++ C++ is known for its speed and efficiency. While some very performance-critical parts of Data Science libraries (especially those in Python) might be written in C++ \\\"behind the scenes\\\" to make them run faster, C++ itself is rarely used directly by Data Scientists for their daily coding tasks. It's much more complex and takes more time to write code in C++ compared to Python for data analysis. Option D: JavaScript JavaScript is mainly the language of the internet. It's used to make websites interactive and for developing web applications (both front-end and back-end with Node.js). While you can use JavaScript libraries (like D3.js) for some interactive data visualizations on the web, it is not the primary language for general data cleaning, statistical analysis, or building machine learning models in Data Science. In summary, when you start learning Data Science, Python is the first language you should focus on because of its ease of use, powerful libraries, and a large supportive community.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"empowers IoT by bringing together everyday objects.\",\"options\":[\"intelligence\",\"connectivity\",\"dynamic nature\",\"enormous scale\"],\"correctAnswer\":\"B\",\"explanation\":\"The concept of the Internet of Things (IoT) is based on connectivity , which empowers IoT by bringing together everyday objects into a networked environment. Through connectivity, these objects are able to communicate, share data, and interact with each other over the internet. This interconnectedness allows for the collection of data from various sources, enabling better understanding, control, and automation of processes. Options A (intelligence), C (dynamic nature), and D (enormous scale) are important aspects of IoT as well, but connectivity is the foundational element that enables these other aspects to come into play. While intelligence enhances the ability of devices to process and analyze data, dynamic nature refers to the adaptability of IoT systems, and enormous scale highlights the widespread deployment of connected devices, connectivity is what initially makes all these possibilities achievable. Hence, the correct answer is Option B: connectivity. It's the element that enables the networking of everyday objects to create the IoT ecosystem.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"In C, how are function arguments passed by default?\",\"options\":[\"By value\",\"By reference\",\"By pointer\",\"By address\"],\"correctAnswer\":\"A\",\"explanation\":\"In the C programming language, function arguments are passed by value by default. This means that when you call a function and pass arguments to it, the function receives copies of the values of those arguments, rather than direct access to the original variables. Here's a brief explanation of the other options: Option B: By reference : In C, there is no direct reference concept as in languages like C++ or C#. Pass-by-reference is not the default behavior in C. Option C: By pointer : While you can pass pointers as function arguments in C, it is not the default behavior. By default, the values themselves are passed. Option D: By address : Passing by address is essentially the same as passing by pointer, and it is not the default behavior in C. So, the correct answer is Option A: By value , as it describes the default behavior for passing function arguments in the C programming language.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"What data structure would you mostly likely see in non recursive implementation of a recursive algorithm?\",\"options\":[\"Stack\",\"Linked List\",\"Tree\",\"Queue\"],\"correctAnswer\":\"A\",\"explanation\":\"In recursive algorithms, the order in which the recursive process comes back is the reverse of the order in which it goes forward during execution. The compiler uses the stack data structure to implement recursion. In the forwarding phase, the values of local variables, parameters and the return address are pushed into the stack at each recursion level. In the backing-out phase, the stacked address is popped and used to execute the rest of the code.\",\"estimatedTime\":60,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Which algorithm is used in the top tree data structure?\",\"options\":[\"Backtracking\",\"Divide and Conquer\",\"Branch\",\"Greedy\"],\"correctAnswer\":\"B\",\"explanation\":\"Top tree is a type of data structure which is based on unrooted dynamic binary tree and is used to solve path related problems. It allows an algorithm called divide and conquer.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"______________ is an indirect measure of software development process.\",\"options\":[\"Cost\",\"Effort Applied\",\"Efficiency\",\"All of the mentioned\"],\"correctAnswer\":\"C\",\"explanation\":\"Efficiency is an indirect measure. Indirect measures also include products like maintainability, quality, functionality, complexity, reliability, and many more.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Checked – Compile time) Checked exception can be handled using throws and try-catch public class CheckedExceptions { public static void main(String[] args) throws IOException { System.out.println(\\\"Program is started..\\\"); System.out.println(\\\"Program is progress..\\\"); // try { FileInputStream file=new FileInputStream(\\\"C:\\\\\\\\file.txt\\\"); } catch (FileNotFoundException e) { e.printStackTrace(); } // FileInputStream file=new FileInputStream(\\\"C:\\\\\\\\file.txt\\\"); System.out.println(file.read()); System.out.println(\\\"Program is completed..\\\"); try-catch throws Collections: The Collections Framework in Java provides a set of interfaces and classes to store and manage objects efficiently. Collection (Interface) List (I) Set (I) Map (I) Ordered, allows duplicates Unordered, no duplicates stored in the form of key, value pairs ArrayList (C)→ Dynamic array, fast access HashSet (C) → Uses HashMap internally, no order HashMap (C) LinkedList (C)→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {\",\"options\":[\"→ Dynamic array, fast access HashSet\",\"→ Uses HashMap internally, no order HashMap\",\"LinkedList\",\"→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {\"],\"correctAnswer\":\"A\",\"explanation\":\"This question is mapped to Algorithms - Dynamic Programming. The correct answer is A based on the original source question.\",\"estimatedTime\":75,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Which of the following statements is true about AdaBoost?\",\"options\":[\"It is particularly prone to overfitting on noisy datasets\",\"Complexity of the weak learner is important in AdaBoost\",\"It is generally more prone to overfitting\",\"It improves classification accuracy\"],\"correctAnswer\":\"C\",\"explanation\":\"AdaBoost is generally not more prone to overfitting but is less prone to overfitting. And it is prone to overfitting on noisy datasets. If you use very simple weak learners, then the algorithms are much less prone to overfitting and it improves classification accuracy. So Complexity of the weak learner is important in AdaBoost.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Which of the following are the 5 big ideas of AI? MCQ on Introduction to Artificial Intelligence Artificial Intelligence MCQ on Intelligent Agents Artificial Intelligence Multiple Choice Questions on Problem Solving Artificial Intelligence Multiple Choice Questions on Adversarial Search Artificial Intelligence MCQ on Logical Agents Artificial Intelligence MCQ on Knowledge and Reasoning AI MCQ on Planning and Acting in the Real World AI Multiple Choice Questions on Uncertain Knowledge and Reasoning Artificial Intelligence MCQ on Learning Artificial Intelligence MCQ on Communicating, Perceiving and Acting Artificial Intelligence MCQ on LISP Programming Multiple Choice Questions on Other AI Algorithms & Statistics\",\"options\":[\"Perception\",\"Human-AI Interaction\",\"Societal Impact\",\"All of the above Chapterwise Multiple Choice Questions on Artificial Intelligence Our 1000+ MCQs focus on all topics of the Artificial Intelligence subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. Introduction to Artificial Intelligence Intelligent Agents Problem Solving Adversarial Search Logical Agents Knowledge and Reasoning Planning and Acting in the Real World Uncertain Knowledge and Reasoning Learning Communicating, Perceiving and Acting LISP Programming Other AI Algorithms & Statistics The section contains multiple choice questions and answers on history, linguistics, facts and agents of artificial-intelligence. History of Artificial Intelligence – 1 History of Artificial Intelligence – 2 History of Artificial Intelligence – 3 AI Linguistics Artificial Intelligence Agents Artificial Intelligence Facts – 1 Artificial Intelligence Facts – 2 Artificial Intelligence Facts – 3 Artificial Intelligence Facts – Human-Machine Interaction Machine Learning The section contains Artificial Intelligence questions and answers on various aspects of intelligent agents like their architecture and environments. Artificial Intelligence Agents Intelligent Agents and Environment Online Search Agent Agent Architecture Environments The section contains Artificial Intelligence MCQs on different approaches to problem solving like uninformed and informed search strategies, local search and optimization problems and other constraints satisfaction problems. Problem Solving Uninformed Search Strategy Uninformed Search and Exploration Informed Search Strategy Informed Search and Exploration Local Search Problems and Optimization Problems Constraints Satisfaction Problems The section contains Artificial Intelligence multiple choice questions and answers on approaches to game theory problems like state space search and alpha beta pruning. Game Theory State Space Search Alpha Beta Pruning The section contains Artificial Intelligence questions and answers on agents that reason logically, first order logic and the inference in first order logic which includes forward and backward reasoning. First-Order Logic Propositional Logic Resolution Forward Chaining Backward Chaining The section contains AI MCQ Questions on inference in first order logic, rule based system, semantic net, frames, unification and lifting. Knowledge and Reasoning Inference in First-Order Logic Rule Based System – 1 Rule Based System – 2 Semantic Net – 1 Semantic Net – 2 Frames Unification and Lifting The section contains AI multiple choice questions and answers on different types of planning like partial order planning, graph planning and real world planning. Partial Order Planning Partial Order Planning – 1 Graph Plan Algorithm Planning and Acting in the Real World The section contains AI questions and answers on uncertainty, probability notations and bayesian networks and various probabilistic reasoning systems. Hidden markov models, expert systems, Uncertain reasoning also includes semantic representation and object recognition. Uncertain Knowledge and Reasoning Semantic Interpretation Object Recognition Probability Notation Bayesian Networks Fuzzy Logic Hidden Markov Models Expert Systems The section contains AI MCQs on learning from observations which includes decision trees, learning in neural and belief networks, reinforcement learning and knowledge in learning. It includes questions on inductive logic programming. Learning – 1 Learning – 2 Learning – 3 Neural Networks – 1 Neural Networks – 2 Decision Trees Inductive Logic Programming The section contains Artificial Intelligence multiple choice questions and answers on the agents that communicate which includes robotics, practical natural language processing and perceptions. Communication Perception Speech Recognition Image Perception Robotics – 1 Robotics – 2 Natural Language Processing – 1 Natural Language Processing – 2 The section contains Artificial Intelligence questions and answers on LISP programming. LISP Programming – 1 LISP Programming – 2 LISP Programming – 3 The section contains MCQs on various other topics of artificial-intelligence, ai algorithms and statistics. AI Algorithms AI Statistics Miscellaneous To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. Best Books on Artificial Intelligence Artificial Intelligence Books Artificial Intelligence and Robotics Books Artificial Intelligence in Process Engineering Books Artificial Intelligence and Agent Technology Books Artificial Intelligence and Neural Network Books Artificial Intelligence and Expert System Books Artificial Intelligence Online Test: Artificial Intelligence Tests Artificial Intelligence Certification Test Artificial Intelligence Internship Test Artificial Intelligence Top Rankers\"],\"correctAnswer\":\"D\",\"explanation\":\"The 5 big ideas are:\",\"estimatedTime\":75,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Which character is used to indicate the end of a statement in C?\",\"options\":[\".\",\";\",\":\",\",\"],\"correctAnswer\":\"B\",\"explanation\":\"The character used to indicate the end of a statement in C is ; . This semicolon is a crucial part of C syntax as it separates statements and tells the compiler where one statement ends and the next one begins. So, the correct answer is: Option B: ; In C programming, you terminate a statement with a semicolon. For example: #include <stdio.h> int main() { int x = 5; printf(\\\"Hello, World!\\\"); return 0; } In the above code, the semicolon at the end of each line signifies the end of the respective statement.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Which data type is used to represent a single character in C?\",\"options\":[\"char\",\"int\",\"float\",\"double\"],\"correctAnswer\":\"A\",\"explanation\":\"The data type used to represent a single character in C is char . The char data type is specifically designed to store individual characters, such as letters, digits, and symbols. So, the correct answer is: Option A: char In C programming, you declare a character variable like this: char myChar = 'A'; Here, myChar is a variable of type char , and it stores the character 'A'. The char data type is essential for working with characters and strings in C.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"What is the result of the expression 5 + 7 * 2 in C?\",\"options\":[\"19\",\"24\",\"26\",\"17\"],\"correctAnswer\":\"A\",\"explanation\":\"In C and many programming languages, mathematical expressions follow the operator precedence rules. Multiplication (*) and division (/) have higher precedence than addition (+) and subtraction (-). So, when evaluating the expression \\\"5 + 7 * 2,\\\" the multiplication is performed before addition: 5 + (7 * 2) = 5 + 14 = 19 Therefore, the result of the expression \\\"5 + 7 * 2\\\" in C is Option A: 19 .\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Function key . . . . . . . . in a windows keyboard can perform many functions, which of the following is not a default-\",\"options\":[\"F1\",\"F6\",\"F8\",\"F9\"],\"correctAnswer\":\"D\",\"explanation\":\"Option A: F1 This option suggests that the function key F1 on a Windows keyboard can perform many functions, and the statement asks which of the following is not a default. This is correct, as F1 is commonly used for accessing help and support in various applications and operating systems. Option B: F6 This option suggests that the function key F6 on a Windows keyboard can perform many functions. F6 is often used for navigating between different elements in a window or dialog box, such as tabs, panes, or fields. Option C: F8 This option suggests that the function key F8 on a Windows keyboard can perform many functions. F8 is typically used during system startup to access advanced boot options like Safe Mode. Option D: F9 This option suggests that the function key F9 on a Windows keyboard can perform many functions. F9 is commonly used in productivity applications and programming environments for various purposes, such as refreshing content or executing commands. Conclusion: The correct answer is Option D: F9 because while F1, F6, and F8 have established default functions in Windows and many applications, F9 does not typically have a standardized default function across all Windows systems and software. Its specific function can vary depending on the application or context in which it is used. Therefore, F9 is not considered a default function key with a universally recognized default action in Windows environments.\",\"estimatedTime\":60,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"What will be the output of the following PHP code? <?php $op2 = \\\"blabla\\\" ; function foo ( $op1 ) { echo $op1; echo $op2; } foo ( \\\"hello\\\" ) ; ?>\",\"options\":[\"helloblabla\",\"Error\",\"hello\",\"helloblablablabla\"],\"correctAnswer\":\"B\",\"explanation\":\"The correct answer is Option B: Error Here's why: In PHP, variables defined outside of a function are not automatically accessible inside the function. Scope is a crucial concept in programming. The variable `$op2` is defined outside the function `foo()`. Inside `foo()`, you are trying to use `$op2` without it being defined within the function's scope. Therefore, PHP will throw an error (specifically, a notice about an undefined variable) when trying to access `$op2` within the function. Although the `echo $op1` will work fine , but after that when trying to access the `$op2` that is not defined inside the function scope it will throw error . To make `$op2` accessible inside the function, you would need to either: 1. Pass it as an argument to the function. 2. Use the `global` keyword to bring it into the function's scope . Since neither of these is done in the given code, an error occurs.\",\"estimatedTime\":75,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"The advantages of Ajax is . . . . . . . .\",\"options\":[\"Bandwidth utilization\",\"More interactive\",\"Speeder retrieval of data\",\"All of these\"],\"correctAnswer\":\"D\",\"explanation\":\"Option A: Bandwidth utilization . Ajax (Asynchronous JavaScript and XML) enhances bandwidth utilization by allowing web applications to send and receive small amounts of data in the background without reloading the entire page. This efficiency minimizes unnecessary data transfer, making better use of available bandwidth. Option B: More interactive . Ajax provides a more interactive user experience by enabling asynchronous updates to web pages. Users can interact with a web application without interruptions, leading to smoother and more responsive interactions, such as dynamic content updates or form submissions. Option C: Speedier retrieval of data . Ajax improves the speed of data retrieval by allowing web applications to fetch data from the server in the background. This means that users can access new information quickly without having to wait for the entire page to reload, resulting in a faster and more efficient experience. Option D: All of these . This option suggests that all the previously mentioned advantages—improved bandwidth utilization, increased interactivity, and faster data retrieval—are benefits of using Ajax in web applications. Given that Ajax combines these features effectively, this option is highly valid. Conclusion: The correct answer is Option D: All of these , as Ajax provides multiple advantages, including better bandwidth utilization, enhanced interactivity, and speedier data retrieval, making it a powerful tool for modern web development.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Publishing an application's data as a REST service requires.\",\"options\":[\"@requestmapping\",\"@pathvariable\",\"all of the mentioned\",\"none of the mentioned\"],\"correctAnswer\":\"C\",\"explanation\":\"Option A: @requestmapping . The @RequestMapping annotation in Spring Framework is used to map web requests to specific handler methods. It allows developers to define the URL paths that will trigger the execution of a particular method, making it essential for creating RESTful services. Option B: @pathvariable . The @PathVariable annotation is used to extract values from the URI template in RESTful web services. It allows you to pass parameters through the URL, making it crucial for handling dynamic URLs and enabling parameterized requests in a REST API. Option C: all of the mentioned . This option implies that both @RequestMapping and @PathVariable are necessary for publishing an application's data as a REST service. Since both annotations serve important roles in handling requests and parameters, this option suggests that multiple components are involved in building a RESTful service. Option D: none of the mentioned . This option indicates that none of the previously mentioned annotations are required for publishing an application's data as a REST service, which contradicts the fact that both @RequestMapping and @PathVariable are commonly used in RESTful implementations. Conclusion: The correct answer is Option C: all of the mentioned , as both @RequestMapping and @PathVariable are necessary for effectively publishing an application's data as a REST service.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"client() class provides . . . . . . . . to create topics.\",\"options\":[\"software\",\"classes\",\"methods\",\"batch\"],\"correctAnswer\":\"C\",\"explanation\":\"Option A: software . This option suggests that the client() class provides software to create topics. However, \\\"software\\\" is a broad term and does not specifically refer to any functionality within the context of creating topics in programming or cloud services. Option B: classes . This option implies that the client() class provides classes for creating topics. While classes can be used to define structures or behaviors, they do not directly relate to the functionality needed for creating topics in many APIs or frameworks. Option C: methods . This option indicates that the client() class provides methods for creating topics. Methods are specific functions defined within a class that can be called to perform actions, such as creating topics. This is a common approach in many programming environments where topics need to be instantiated or manipulated. Option D: batch . This option suggests that the client() class provides batch functionality for creating topics. While batching can be used in some contexts to handle multiple operations at once, it does not specifically address the action of creating topics as effectively as methods would. Conclusion: The correct answer is Option C: methods , as the client() class typically provides methods that facilitate the creation of topics in programming and cloud service contexts.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"What does RISC stand for in the context of CPU design?\",\"options\":[\"Rapid Integrated System\",\"Real-time Instruction Set\",\"Random Integrated System\",\"Reduced Instruction Set Computer\"],\"correctAnswer\":\"D\",\"explanation\":\"Option D: Reduced Instruction Set Computer (RISC) RISC stands for Reduced Instruction Set Computer in the context of CPU design. It is a type of microprocessor design that emphasizes a small and highly optimized set of instructions that can be executed within a single clock cycle. RISC processors focus on simplicity and efficiency by reducing the complexity of instructions compared to Complex Instruction Set Computing (CISC) architectures. - The philosophy behind RISC is to perform operations with a small set of simple instructions that can execute quickly, allowing for faster processing speeds and improved performance. - RISC architectures often employ pipelining and other techniques to maximize throughput and efficiency. - Examples of RISC architectures include ARM (Advanced RISC Machine) and MIPS (Microprocessor without Interlocked Pipeline Stages). Option A: Rapid Integrated System This is not a correct expansion for RISC. RISC specifically refers to the design philosophy of reducing the complexity of instructions, not to any rapid integration system. Option B: Real-time Instruction Set This is not correct. RISC does not relate specifically to real-time computing but rather to the design of CPU architectures. Option C: Random Integrated System This is not correct. RISC does not involve randomness but rather a deliberate reduction in the complexity of instruction sets. Conclusion: Among the given options, Option D: Reduced Instruction Set Computer (RISC) is the correct answer because it accurately describes the design philosophy where CPU architectures emphasize simplicity and efficiency through a reduced and optimized set of instructions.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"What is the time complexity for searching a key or integer in Van Emde Boas data structure?\",\"options\":[\"O (M!)\",\"O (log M!)\",\"O (log (log M))\",\"O (M 2 )\"],\"correctAnswer\":\"C\",\"explanation\":\"In order to search a key or integer in the Van Emde Boas data structure, the operation can be performed on an associative array. Hence, the time complexity for searching a key or integer in Van Emde Boas data structure is O (log (log M)).\",\"estimatedTime\":60,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Regardless of application area, project size, or complexity, software development work may be divided into three generic phases: the__________ phase, which focuses on what , the_________ phase, which focuses on how , and the_________ phase, which focuses on change . i. support ii. development iii. definition\",\"options\":[\"iii, ii, i\",\"iii, i, ii\",\"i, ii, iii\",\"ii, i, iii\"],\"correctAnswer\":\"A\",\"explanation\":\"Irrespective of the application area, project size, or complexity, software development work may be divided into three generic phases: the definition phase, which focuses on what , the development phase, which focuses on how , and the support phase, which focuses on change .\",\"estimatedTime\":75,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"In visual basic language what are the rules of a programming language called?\",\"options\":[\"Grammar\",\"Order\",\"Syntax\",\"Rules\"],\"correctAnswer\":\"C\",\"explanation\":\"The Code editor provides the code template to help you follow the rules of the visual basic language. The rules of a programming language are called its syntax. The first line in the code template is called the procedure header and the last line the procedure footer.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Air at 30°C flows at 45 m/s past a wet flat plate of length 0.5 m. Estimate the value of the mass transfer coefficient, assuming the water vapor content of air is initially negligible. The thermophysical properties of air are: diffusion coefficient D = 0.256 × 10 -4 m 2 /s, dynamic viscosity μ = 1.86 × 10 -5 kg/m·s, specific heat c p = 1.005 kJ/kg·°C, Prandtl number Pr = 0.701, and density ρ = 1.165 kg/m 3 .\",\"options\":[\"0.3076 m/s\",\"0.1076 m/s\",\"0.4076 m/s\",\"0.2076 m/s\"],\"correctAnswer\":\"B\",\"explanation\":\"h m = 0.0296 (Re) -0.2 (V)/ (Sc) 0.667 .\",\"estimatedTime\":75,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Which development board uses energia IDE (Integrated development environment) for its programming?\",\"options\":[\"MSP430G2ET Launchpad\",\"Arduino UNO\",\"Arduino nano\",\"NodeMCU\"],\"correctAnswer\":\"A\",\"explanation\":\"MSP430G2ET Launchpad is a development board that uses energia IDE (Integrated development environment) for its programming. Arduino UNO, Arduino nano and NodeMCU uses Arduino IDE (Integrated development environment).\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Which of the following CSS3 property can be used to allow line breaks within words? CSS MCQ on Fundamentals, Colors and Styling CSS MCQ on Text, Borders and Images CSS Multiple Choice Questions on Selectors & Files CSS MCQ on Properties, Elements, Functions & Tables CSS3 MCQ on Fundamentals, Transitions & Animations CSS MCQ on Lists, Tables and Forms CSS MCQ on Layout & Images CSS MCQ on CGI Programming & Miscellaneous\",\"options\":[\"line-break\",\"line-wrap\",\"word-wrap\",\"word-break Chapterwise Multiple Choice Questions on CSS Our 1000+ MCQs focus on all topics of the CSS subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. CSS Fundamentals, Colors and Styling CSS Text, Borders and Images CSS Selectors & Files CSS Properties, Elements, Functions & Tables CSS3 Fundamentals, Transitions & Animations CSS Lists, Tables and Forms CSS Layout & Images CGI Programming & Miscellaneous The section contains CSS multiple choice questions and answers on css basics, functions, fonts, versions, specification and color values, style inclusion methods, specifying sizes, colors and files. Introduction to CSS CSS Functions CSS Fonts CSS Versions Specification of CSS Style Inclusion Methods CSS Color Values Specifying Sizes, Colors and Files The section contains CSS questions and answers on borders, text, voice, outlines and box model, media types, border elements, cross browser layout techniques, styling texts, lists and navigation menus, embedding web fonts, gradients, background borders and targeting styles. CSS border CSS Text CSS Voice CSS Outline CSS Media Types CSS Border Elements Cross Browser Layout Techniques CSS Styling Texts Embedding Web Fonts CSS Box Model CSS Backgrounds, Borders and Drop Shadow CSS Styling Lists and Navigation Menus Gradients without Images Targeting Styles with Media Queries The section contains CSS MCQs with answers on document styles, specificity and importance, selectors and advanced selectors. Applying Style to a Document Using Advanced Selectors CSS Selectors CSS Specificity and Importance The section contains CSS multiple choice questions and answers on xhtml fundamentals, css inheritance and miscellaneous property, major themes, strings and keywords, css measurements, css properties, styling tables, generated content, layout floating elements, css keyframes, elements precise positioning, transforms and transitions, inheritance and cascade. CSS and (X)HTML Elements Fundamentals CSS Miscellaneous Property Document Structure and CSS Inheritance CSS Major Themes CSS Strings and Keywords Measurements in CSS Miscellaneous CSS Constructs CSS 1 and CSS 2.1 Properties Implemented CSS3 and Browser-Specific Features CSS Styling Tables Generated Content CSS Floating Elements for Layout CSS Transforms and Transitions CSS Keyframes Precise Positioning of Elements CSS Inheritance and Cascade The section contains CSS3 questions and answers on css3 images, ui elements transitions, css3 animations, css3 user interface properties, fundamentals and multi column layout. CSS3 Transitions for Images CSS3 Transitions for UI Elements CSS3 Animations with SVG and Filters CSS3 Animation with Responsive Web Design CSS3 3D Transforms, Transitions, and Animations CSS3 User Interface Properties CSS3 Fundamentals Using CSS3 Multi Column Layout The section contains CSS MCQs on form elements appearance. Appearance of Form Elements The section contains CSS MCQ questions with answers on bullet point styles, css image alignment, id & class, image replacement, print styles and their development, server specific css, shadowy styles, multiple backgrounds, css popups and menus, sliding doors, clipped sliding doors, table graphs, 2d transforms and constrained images. Specifying Bullet Point Styles, CSS Image Alignment, ID and Class Suppressing Element Display & Visibility, Image Replacement Print Styles and their Development Server Specific CSS Shadowy Styles, Multiple Backgrounds, CSS Pop-Ups & Menus Sliding Doors & Clipped Sliding Doors Table Graphs, 2D Transforms, Boxing of Images & Constrained Images The section contains CSS questions and answers on css transition and perl cgi programming. CSS Transition & Perl CGI Programming Miscellaneous To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. Important Links: Best Books on CSS HTML Multiple Choice Questions Python Multiple Choice Questions PHP Multiple Choice Questions Javascript Multiple Choice Questions Computer Science Multiple Choice Questions Information Technology Multiple Choice Questions Information Science Multiple Choice Questions CSS Books:\"],\"correctAnswer\":\"D\",\"explanation\":\"word-break property can be used to allow line breaks within the words. Syntax: word-break : break-all | keep-all | normal\",\"estimatedTime\":75,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"What will be the area of triangle PQR formed by joining the midpoints of the sides of the triangle whose vertices are (3, 3), (9, 9) and (4, 6)?\",\"options\":[\"\\\\(\\\\frac {1}{2}\\\\) units\",\"\\\\(\\\\frac {3}{2}\\\\) units\",\"\\\\(\\\\frac {3}{5}\\\\) units\",\"\\\\(\\\\frac {5}{2}\\\\) units\"],\"correctAnswer\":\"B\",\"explanation\":\"ABC is the triangle formed by the coordinates A (3, 3), B (9, 9) and C (4, 6) and DEF is the triangle formed by joining the midpoints of AC, BC, AB. D is the midpoint of AC. Coordinates of D = \\\\( ( \\\\frac {x_1+x_2}{2}, \\\\frac {y_1+y_2}{2} ) = ( \\\\frac {3+4}{2}, \\\\frac {3+6}{2} ) = ( \\\\frac {7}{2}, \\\\frac {9}{2} ) \\\\) E is the midpoint of AB. Coordinates of E = \\\\( ( \\\\frac {x_1+x_2}{2}, \\\\frac {y_1+y_2}{2} ) = ( \\\\frac {3+9}{2}, \\\\frac {3+9}{2} ) = ( \\\\frac {12}{2}, \\\\frac {12}{2} ) \\\\) = (6, 6) F is the midpoint of BC. Coordinates of F = \\\\( ( \\\\frac {x_1+x_2}{2}, \\\\frac {y_1+y_2}{2} ) = ( \\\\frac {9+4}{2}, \\\\frac {9+6}{2} ) = ( \\\\frac {13}{2}, \\\\frac {15}{2} ) \\\\) The area of triangle formed by D \\\\( ( \\\\frac {7}{2}, \\\\frac {9}{2} ) \\\\), E (6, 6) and F\\\\( ( \\\\frac {13}{2}, \\\\frac {15}{2} ) \\\\) We know that, area of triangle = \\\\(\\\\frac {1}{2}\\\\){x 1 (y 2 – y 3 ) + x 2 (y 3 – y 1 ) + x 3 (y 1 – y 2 )} The coordinates of vertices of the triangle are \\\\( ( \\\\frac {7}{2}, \\\\frac {9}{2} ) \\\\), (6, 6) and \\\\( ( \\\\frac {13}{2}, \\\\frac {15}{2} ) \\\\). The area of triangle = \\\\(\\\\frac {1}{2} \\\\{ \\\\frac {7}{2}\\\\) (6 – \\\\(\\\\frac {15}{2}\\\\)) + 6(\\\\(\\\\frac {15}{2} – \\\\frac {9}{2}\\\\)) + \\\\(\\\\frac {13}{2} ( \\\\frac {9}{2} – 6 ) \\\\} \\\\) = \\\\(\\\\frac {1}{2} \\\\{ – \\\\frac {21}{4}\\\\) + 18 – \\\\(\\\\frac {39}{4} \\\\} = \\\\frac {3}{2} \\\\) units\",\"estimatedTime\":75,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"HASHING DBMS 64 Operation:  Insertion: When a record is required to be entered using static hash, the hash function h computes the bucket address for search key K, where the record will be stored. Bucket address = h(K)  Search: When a record needs to be retrieved, the same hash function can be used to retrieve the address of the bucket where the data is stored.  Delete: This is simply a search followed by a deletion operation. Bucket Overflow The condition of bucket-overflow is known as collision. This is a fatal state for any static hash function. In this case, overflow chaining can be used.  Overflow Chaining: When buckets are full, a new bucket is allocated for the same hash result and is linked after the previous one. This mechanism is called Closed Hashing. [Image: Overflow chaining]  Linear Probing: When a hash function generates an address at which data is already stored, the next free bucket is allocated to it. This mechanism is called Open Hashing. DBMS 65 [Image: Linear Probing] Dynamic Hashing The problem with static hashing is that it does not expand or shrink dynamically as the size of the database grows or shrinks. Dynamic hashing provides a mechanism in which data buckets are added and removed dynamically and on- demand. Dynamic hashing is also known as extended hashing. Hash function, in dynamic hashing, is made to produce a large number of values and only a few are used initially. [Image: Dynamic Hashing] DBMS 66 Organization The prefix of an entire hash value is taken as a hash index. Only a portion of the hash value is used for computing bucket addresses. Every hash index has a depth value to signify how many bits are used for computing a hash function. These bits can address 2n buckets. When all these bits are consumed — that is, when all the buckets are full — then the depth value is increased linearly and twice the buckets are allocated. Operation  Querying: Look at the depth value of the hash index and use those bits to compute the bucket address.  Update: Perform a query as above and update the data.  Deletion: Perform a query to locate the desired data and delete the same.  Insertion: Compute the address of the bucket. o If the bucket is already full,  Add more buckets.  Add additional bits to the hash value.  Re-compute the hash function. o Else,  Add data to the bucket, o If all the buckets are full, perform the remedies of static hashing. Hashing is not favorable when the data is organized in some ordering and the queries require a range of data. When data is discrete and random, hash performs the best. Hashing algorithms have high complexity than indexing. All hash operations are done in constant time. DBMS 67 DBMS 68 A transaction can be defined as a group of tasks. A single task is the minimum processing unit which cannot be divided further. Let’s take an example of a simple transaction. Suppose a bank employee transfers Rs 500 from A's account to B's account. This very simple and small transaction involves several low-level tasks. A’s Account Open_Account(A) Old_Balance = A.balance New_Balance = Old_Balance - 500 A.balance = New_Balance Close_Account(A) B’s Account Open_Account(B) Old_Balance = B.balance New_Balance = Old_Balance + 500 B.balance = New_Balance Close_Account(B) ACID Properties A transaction is a very small unit of a program and it may contain several low- level tasks. A transaction in a database system must maintain Atomicity, Consistency, Isolation, and Durability — commonly known as ACID properties — in order to ensure accuracy, completeness, and data integrity.  Atomicity: This property states that a transaction must be treated as an atomic unit, that is, either all of its operations are executed or none. There must be no state in a database where a transaction is left partially completed. States should be defined either before the execution of the transaction or after the execution/abortion/failure of the transaction.  Consistency: The database must remain in a consistent state after any transaction. No transaction should have any adverse effect on the data residing in the database. If the database was in a consistent state before\",\"options\":[\"Old_Balance = A.balance New_Balance = Old_Balance - 500 A.balance = New_Balance Close_Account\",\"B’s Account Open_Account\",\"Old_Balance = B.balance New_Balance = Old_Balance + 500 B.balance = New_Balance Close_Account\",\"ACID Properties A transaction is a very small unit of a program and it may contain several low- level tasks. A transaction in a database system must maintain Atomicity, Consistency, Isolation, and Durability — commonly known as ACID properties — in order to ensure accuracy, completeness, and data integrity.  Atomicity: This property states that a transaction must be treated as an atomic unit, that is, either all of its operations are executed or none. There must be no state in a database where a transaction is left partially completed. States should be defined either before the execution of the transaction or after the execution/abortion/failure of the transaction.  Consistency: The database must remain in a consistent state after any transaction. No transaction should have any adverse effect on the data residing in the database. If the database was in a consistent state before\"],\"correctAnswer\":\"A\",\"explanation\":\"This question is mapped to Algorithms - Dynamic Programming. The correct answer is A based on the original source question.\",\"estimatedTime\":75,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"In simple term, machine learning is\",\"options\":[\"training based on historical data\",\"prediction to answer a query\",\"both A and B\",\"automization of complex tasks\"],\"correctAnswer\":\"C\",\"explanation\":\"Machine learning, in simple terms, can be described as follows: Option A: Training based on historical data Machine learning involves training algorithms or models using historical data to learn patterns, relationships, and trends within the data. This training process enables the machine to make predictions or decisions based on new, unseen data. So, Option A is a fundamental aspect of machine learning. Option B: Prediction to answer a query Machine learning is often used for making predictions or providing answers to queries by analyzing data patterns. It uses the knowledge gained during training to make informed decisions or predictions when presented with new data. Therefore, Option B is another key characteristic of machine learning. Option C: Both A and B Machine learning encompasses both training models based on historical data (Option A) and using these models to make predictions or answer queries (Option B). Therefore, Option C correctly represents the nature of machine learning as it involves both aspects. Option D: Automization of complex tasks While machine learning can automate tasks and processes, it is primarily focused on learning from data and making predictions or decisions. While automation can be a result of machine learning, it is not the core definition of the field. So, Option D is not as precise in describing what machine learning is. In summary, machine learning is best described as a combination of training models based on historical data and using those models for predictions and queries, making Option C the most accurate description.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"The output of training process in machine learning is\",\"options\":[\"machine learning model\",\"machine learning algorithm\",\"null\",\"accuracy\"],\"correctAnswer\":\"A\",\"explanation\":\"The output of the training process in machine learning is: Option A: Machine Learning Model The primary output of the training process in machine learning is the machine learning model itself. During training, the model learns patterns and relationships within the training data, and the result is a trained model that can make predictions or classifications when given new data. So, Option A is the correct answer. Option B: Machine Learning Algorithm While machine learning algorithms are essential components of the training process, they are not the direct output of training. Algorithms are used to train the model, but the model is the end result. Therefore, Option B is not the correct answer. Option C: Null The output of the training process is not null; it is a trained machine learning model. So, Option C is not the correct answer. Option D: Accuracy Accuracy is a performance metric used to evaluate the quality of a machine learning model. It is not the direct output of the training process but rather a measure of how well the model performs. Therefore, Option D is not the correct answer. In summary, the primary output of the training process in machine learning is the trained machine learning model, making Option A the correct choice.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"An artificially intelligent car decreases its speed based on its distance from the car in front of it. Which algorithm is used?\",\"options\":[\"Naïve-Bayes\",\"Decision Tree\",\"Linear Regression\",\"Logistic Regression\"],\"correctAnswer\":\"C\",\"explanation\":\"The output is numerical. It determines the speed of the car. Hence it is not a classification problem. All the three, decision tree, naïve-Bayes, and logistic regression are classification algorithms. Linear regression, on the other hand, outputs numerical values based on input. So, this can be used.\",\"estimatedTime\":60,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"What is the process of hiding the implementation details of a class and showing only the necessary features to the outside world called in C++?\",\"options\":[\"Abstraction\",\"Polymorphism\",\"Encapsulation\",\"Inheritance\"],\"correctAnswer\":\"A\",\"explanation\":\"Abstraction in C++ refers to the process of hiding the implementation details of a class and exposing only the essential features to the outside world. It allows the user to interact with an object without knowing the internal complexity, making the code cleaner, modular, and easier to maintain. Why other options are incorrect: Polymorphism deals with using the same function or operator in different ways. Encapsulation is about wrapping data and functions together into a single unit (class). Inheritance allows one class to acquire the properties of another. Therefore, the correct answer is Abstraction .\",\"estimatedTime\":60,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Which of the following is untrue regarding Prediction with Neural Networks?\",\"options\":[\"A neural network is trained by a single sequence\",\"When the sufficiently trained network processes an unknown sequence, it applies the rules learned in training to recognize particular structural patterns\",\"When multiple sequence alignments and neural networks are combined, the result is further improved accuracy\",\"A neural network is trained by a sequence profile derived from the multiple sequence alignment\"],\"correctAnswer\":\"A\",\"explanation\":\"A neural network is trained not by a single sequence but by a sequence profile derived from the multiple sequence alignment. This combined approach has been shown to improve the accuracy to above 75%, which is a breakthrough in secondary structure prediction. The improvement mainly comes from enhanced secondary structure signals through consensus drawing. The following lists several frequently used third-generation prediction algorithms available as web servers.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"\\\"Cloud\\\" in cloud computing represents what?\",\"options\":[\"Wireless\",\"Hard drives\",\"People\",\"Internet\"],\"correctAnswer\":\"D\",\"explanation\":\"In the realm of cloud computing , the term \\\" Cloud \\\" is emblematic of the Option D: Internet itself. Let's delve into it: Option A: Wireless refers to the mode of connectivity that allows data transmission without physical cables. While wireless technologies are essential for cloud access, they don't encapsulate the full essence of the term \\\" Cloud .\\\" Option B: Hard drives represent the physical storage devices that have been a cornerstone of computing for decades. However, the \\\" Cloud \\\" pertains to virtualized and distributed resources rather than specific hardware components. Option C: People might interact with cloud services, but the term \\\" Cloud \\\" doesn't directly represent individuals. Instead, it's an abstraction that symbolizes the underlying infrastructure. Option D: Internet is where the magic lies. The \\\" Cloud \\\" metaphorically stands for the vast, interconnected network of servers, databases, and services accessible over the Internet . Cloud computing involves delivering various resources and services over the Internet , allowing users to access and utilize them remotely without needing local infrastructure. So, in the context of \\\" Cloud \\\" in cloud computing, the answer is indeed Option D: Internet . This term encapsulates the notion of accessing and utilizing computing resources as if they were floating ubiquitously in the virtual skies of the Internet.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"The BEST way to define Virtualization in cloud computing is\",\"options\":[\"virtualization enables simulating compute, network, and storage service platforms from the underlying virtual hardware\",\"virtualization enables abstracting compute, network, and storage service platforms from the underlying physical hardware\",\"virtualization enables realization of compute, network, and storage service platforms from the underlying virtual hardware\",\"virtualization enables emulating compute, network, and storage service platforms from the underlying virtual hardware\"],\"correctAnswer\":\"B\",\"explanation\":\"In the realm of cloud computing , the most accurate way to define Virtualization is represented by Option B: virtualization enables abstracting compute, network, and storage service platforms from the underlying physical hardware . Let's break down the definition: Option A: virtualization enables simulating compute, network, and storage service platforms from the underlying virtual hardware has the concept correct, but the terminology is not quite aligned with the common understanding of virtualization. Virtualization doesn't necessarily \\\"simulate\\\" but rather \\\"abstracts\\\" the service platforms. Option C: virtualization enables realization of compute, network, and storage service platforms from the underlying virtual hardware uses the term \\\"realization,\\\" which doesn't precisely capture the abstraction that virtualization achieves. Option D: virtualization enables emulating compute, network, and storage service platforms from the underlying virtual hardware uses \\\"emulating,\\\" which might be interpreted as imitating rather than abstracting. Option B: virtualization enables abstracting compute, network, and storage service platforms from the underlying physical hardware encapsulates the essence of virtualization. It involves creating virtual instances of compute, network, and storage resources that appear and function as if they were separate from the underlying physical hardware. This abstraction allows for improved resource utilization, flexibility, and isolation in cloud computing environments. Hence, the most accurate definition of Virtualization in the context of cloud computing is Option B: virtualization enables abstracting compute, network, and storage service platforms from the underlying physical hardware . This option captures the core concept and terminology of virtualization.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"IoT stands for\",\"options\":[\"Internet of Technology\",\"Internet of Things\",\"Internet of Tech\",\"Industrial of things\"],\"correctAnswer\":\"B\",\"explanation\":\"IoT stands for Internet of Things . It refers to the network of physical objects, devices, vehicles, buildings, and other items that are embedded with sensors, software, and connectivity to enable them to collect and exchange data over the internet. This allows these objects to be monitored, controlled, and interacted with remotely, leading to increased automation, efficiency, and convenience in various domains.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"The number of elements in the Open IoT Architecture?\",\"options\":[\"6 elements\",\"8 elements\",\"7 elements\",\"3 elements\"],\"correctAnswer\":\"C\",\"explanation\":\"The Open IoT Architecture is typically composed of 7 elements that collectively form the framework for building IoT solutions. These elements are: 1. Devices: Physical objects or sensors that gather data from the environment. 2. Gateway: An intermediary between devices and the cloud, responsible for data aggregation and preprocessing. 3. Network: The communication infrastructure facilitating data exchange between devices, gateways, and the cloud. 4. Data Processing: Involves analyzing and processing collected data to extract valuable insights. 5. Data Storage: Refers to storing processed data in databases or other storage systems. 6. Application Enablement: Allows the creation of applications utilizing data and insights from IoT devices. 7. Security: Encompasses measures to ensure the security of IoT data, communications, and devices. Hence, the correct answer is Option C: 7 elements. While there may be variations or additional sub-elements in different interpretations, the most commonly accepted categorization includes 7 main elements in the Open IoT Architecture. Options A (6 elements), B (8 elements), and D (3 elements) are not accurate representations of the commonly accepted elements.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"The IoT platforms are mainly divided into how many types\",\"options\":[\"3 types\",\"5 types\",\"4 types\",\"2 types\"],\"correctAnswer\":\"C\",\"explanation\":\"IoT platforms are categorized into four main types based on their functionalities and capabilities. These types are: 1. Connectivity Management Platforms: These platforms primarily focus on managing the connectivity between IoT devices and the network. They handle tasks such as device onboarding, provisioning, and ensuring seamless communication. 2. Device Management Platforms: These platforms are responsible for managing the lifecycle of IoT devices. This includes tasks like device registration, configuration, monitoring, firmware updates, and troubleshooting. 3. Data Management Platforms: These platforms deal with the collection, storage, processing, and analysis of the data generated by IoT devices. They often integrate with data analytics tools to extract valuable insights. 4. Application Enablement Platforms: These platforms facilitate the development and deployment of applications that utilize the data and capabilities of IoT devices. They provide APIs, tools, and services for building custom IoT applications.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"What does the term \\\"pipeline\\\" refer to in computer architecture?\",\"options\":[\"Concurrent execution of multiple instructions\",\"A sequence of logic gates\",\"Data flow between CPU and RAM\",\"A type of CPU cooler\"],\"correctAnswer\":\"A\",\"explanation\":\"Option A: Concurrent execution of multiple instructions This option is correct. In computer architecture, a pipeline refers to a technique where multiple stages of an instruction execution process are overlapped, allowing multiple instructions to be processed concurrently. This improves the throughput of instructions. Option B: A sequence of logic gates A pipeline is not a sequence of logic gates. Logic gates are fundamental building blocks of digital circuits that perform Boolean operations. Option C: Data flow between CPU and RAM Data flow between CPU and RAM is related to memory access and data transfer operations, not specifically to the concept of a pipeline. Option D: A type of CPU cooler A pipeline is not related to CPU cooling. CPU cooling refers to methods and devices used to dissipate heat from a CPU to prevent overheating. Conclusion: Among the options given, Option A: Concurrent execution of multiple instructions correctly describes what a pipeline refers to in computer architecture. It allows for efficient and parallel execution of instructions by breaking down the instruction execution process into stages that can overlap.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"What is the primary function of the Control Unit (CU) in a CPU?\",\"options\":[\"Executes program instructions\",\"Directs operations of the entire computer system\",\"Stores data temporarily\",\"None of the above\"],\"correctAnswer\":\"B\",\"explanation\":\"Option B: Directs operations of the entire computer system The primary function of the Control Unit (CU) in a CPU is to direct and coordinate the operations of the entire computer system. It manages the execution of instructions by fetching them from memory, decoding them, and controlling the data flow between the CPU and other parts of the computer system, including RAM, I/O devices, and the ALU (Arithmetic Logic Unit). The CU also manages the timing and control signals necessary for communication between these components. Option A: Executes program instructions While the CPU as a whole executes program instructions, specifically, it is the combination of the Control Unit (CU) and the Arithmetic Logic Unit (ALU) that executes the instructions. The CU directs this process. Option C: Stores data temporarily This role is typically associated with memory units such as RAM (Random Access Memory) rather than the Control Unit (CU), which primarily handles control and coordination tasks. Conclusion: The correct answer, Option B: Directs operations of the entire computer system , best describes the primary role of the Control Unit (CU) in a CPU, emphasizing its critical function in managing and coordinating the operation of the entire computer system.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Determine Output: void main() { char *p; printf(\\\"%d %d\\\", sizeof(*p), sizeof(p)); }\",\"options\":[\"1 1\",\"1 2\",\"2 1\",\"2 2\"],\"correctAnswer\":\"B\",\"explanation\":\"The sizeof () operator gives the number of bytes taken by its operand. P is a character pointer, which needs one byte for storing its value (a character). Hence sizeof ( *p ) gives a value of 1. Since it needs two bytes to store the address of the character pointer sizeof ( p ) gives 2.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"How do you read a character from a file in C?\",\"options\":[\"getc()\",\"readchar()\",\"read()\",\"getchar()\"],\"correctAnswer\":\"A\",\"explanation\":\"The correct answer is A: getc() Let's break down why: getc() is a standard C library function specifically designed to read a single character from a file stream. It takes a file pointer (FILE*) as an argument and returns the character read (as an integer) or EOF if the end of the file is reached or an error occurs. readchar() is not a standard C function for file input. read() is a lower-level function (usually from the POSIX standard) used for reading a block of data from a file descriptor, not a single character. getchar() reads a character from standard input (stdin), which is usually the keyboard, not from a file. So, getc() is the correct function to use when you want to read a single character from a file in C.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Which of the following is a value type in C#?\",\"options\":[\"int\",\"string\",\"class\",\"object\"],\"correctAnswer\":\"A\",\"explanation\":\"Explanation: The correct answer is A: int . Value Types vs. Reference Types: In C#, data types are categorized into two main groups: value types and reference types. Value Types: * Value types directly store the data within their own memory space. * When you copy a value type variable, you are creating a completely independent copy of the data. * Examples of value types include: int , float , bool , char , struct , and enum . Reference Types: * Reference types store a *reference* (or pointer) to the memory location where the actual data is stored. * When you copy a reference type variable, you are only copying the reference, not the data itself. Both variables will then point to the same location in memory. * Examples of reference types include: string , class , object , arrays , and interfaces . Why the other options are incorrect: * B: string - Strings are reference types in C#. * C: class - Classes are used to define objects, and they are reference types . * D: object - 'object' is the base class for all types in C#, and it is a reference type .\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"A/An . . . . . . . . contains programs that can be selected.\",\"options\":[\"pointer\",\"menu\",\"icon\",\"button\"],\"correctAnswer\":\"B\",\"explanation\":\"Option A: pointer This option suggests that a pointer contains programs that can be selected. This statement is incorrect. In computing, a pointer refers to a graphical symbol on the screen that indicates the position where the next action will take place, such as clicking or selecting items, but it does not contain programs that can be selected. Option B: menu This option suggests that a menu contains programs that can be selected. This statement is correct. In graphical user interfaces (GUIs) like Microsoft Windows, a menu is a list of commands or options displayed on the screen that users can select to perform actions. Menus typically contain various programs, commands, or settings that users can choose from to interact with applications and the operating system. Option C: icon This option suggests that an icon contains programs that can be selected. This statement is incorrect. Icons are graphical representations or symbols displayed on the screen that represent files, folders, applications, or functions. Clicking on an icon typically opens the associated file or starts the corresponding program, but icons themselves do not contain programs. Option D: button This option suggests that a button contains programs that can be selected. This statement is incorrect. Buttons in a graphical user interface (GUI) are interactive elements that users can click on to trigger specific actions or commands within applications or the operating system. However, buttons do not contain programs themselves; they execute predefined functions when clicked. Conclusion: The correct answer is Option B: menu because in computing and Microsoft Windows, a menu is a list of options or commands that users can select from to perform actions, such as opening programs, accessing settings, or executing commands. Menus are integral components of GUIs that provide users with a structured way to interact with software and operating systems.\",\"estimatedTime\":60,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"Microsoft Access is a\",\"options\":[\"RDBMS\",\"OODBMS\",\"ORDBMS\",\"Network database model\"],\"correctAnswer\":\"A\",\"explanation\":\"Microsoft Access is classified as a Relational Database Management System (RDBMS) . An RDBMS is a type of database management system that stores and organizes data in a structured manner using tables with predefined relationships between them. In Microsoft Access, data is stored in tables, and you can create relationships between these tables using keys. Access follows the principles of a relational database by allowing you to establish connections between tables, ensuring data integrity, and supporting SQL (Structured Query Language) for querying and managing data. Option B: Object-Oriented Database Management System (OODBMS) refers to a type of database system that stores data in the form of objects, which are instances of classes. Microsoft Access does not primarily fall under this category. Option C: Object-Relational Database Management System (ORDBMS) combines features of both relational and object-oriented databases. While Microsoft Access has some object-oriented features, it is primarily categorized as an RDBMS. Option D: The Network Database Model is a type of database model that represents data in a network-like structure of records and sets. Microsoft Access doesn't primarily adhere to the network database model. Therefore, the correct option is Option A: RDBMS .\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]},{\"questionText\":\"You can use the formula palette to\",\"options\":[\"Format cells containing numbers\",\"Create and edit formula containing functions\",\"Enter assumptions data\",\"Copy a range of cells\"],\"correctAnswer\":\"B\",\"explanation\":\"Formula palette is used to create and edit formula. It is also possible to type a function directly into a cell, however, as there are over 300 functions built into Microsoft Excel, some of which are quite complex, Excel provides the Formula Palette to simplify the process.\",\"estimatedTime\":45,\"subtopic\":\"Algorithms - Dynamic Programming\",\"tags\":[\"algorithms\",\"technical\",\"dynamic programming\",\"memoization\",\"dp\"]}]}",
+  "parsed": {
+    "questions": [
+      {
+        "questionText": "The initial alignments used to produce the guide tree may be obtained by various methods. Which of the following is not one of them?",
+        "options": [
+          "pattern-finding approach similar",
+          "FASTA",
+          "Faster, full dynamic programming method",
+          "Fast k-tuple"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The methods used, might be fast k-tuple or pattern-finding approach similar to FASTA that is useful for many sequences and the full dynamic programming method as well. But the option d becomes incorrect as full dynamic programming method is slower as compared to rest of the methods in options.",
+        "estimatedTime": 60,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "In the pairwise energy based method, a protein sequence is searched for in a structural fold database to find the best matching structural fold using ______ criteria.",
+        "options": [
+          "energy-based",
+          "residue-based",
+          "structure-based",
+          "sequence-based"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The detailed procedure involves aligning the query sequence with each structural fold in a fold library. The alignment is performed essentially at the sequence profile level using dynamic programming or heuristic approaches. Local alignment is often adjusted to get lower energy and thus better fitting. The adjustment can be achieved using algorithms such as double-dynamic programming.",
+        "estimatedTime": 60,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Which of the following is a correct statement? I. For some programming languages, there are parsing algorithms with an O(3) complexity. II. A recursive programming language can be constructed with static storage allocation. III. In the context of bottom-up parsing, no L-attributed definition can be evaluated. IV. Code-improvement modifications can be carried out at both the intermediate and source code levels.",
+        "options": [
+          "I and III",
+          "I and IV",
+          "I, II and IV",
+          "I, II, III and IV"
+        ],
+        "correctAnswer": "B",
+        "explanation": "In recursion, space is used but recursive calls can’t be calculated by the compiler.",
+        "estimatedTime": 75,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Which are the three conceptual layers in CometCloud?",
+        "options": [
+          "development, application, physical",
+          "infrastructure, dynamic, static",
+          "transport, network, programming",
+          "programming, service, infrastructure"
+        ],
+        "correctAnswer": "D",
+        "explanation": "In the CometCloud architecture within the realm of cloud computing , the three key conceptual layers are represented by Option D: programming, service, infrastructure . Let's delve into these layers: Option A: development, application, physical describes various stages but doesn't accurately capture the specific layers in the CometCloud architecture. Option B: infrastructure, dynamic, static doesn't correspond to the layers in CometCloud. While these terms are relevant to cloud computing, they don't align with the CometCloud conceptual layers. Option C: transport, network, programming doesn't directly map to the layers in the CometCloud architecture. Option D: programming, service, infrastructure hits the mark. Let's break it down: Programming: This layer involves the development of applications that utilize CometCloud services and resources. Service: This layer focuses on providing various services to applications, managing their deployment, scaling, and interactions. Infrastructure: This layer forms the foundation, encompassing the underlying hardware and resources on which the entire architecture is built. Therefore, in the context of the CometCloud architecture, Option D: programming, service, infrastructure is indeed the correct answer. It encapsulates the layers that define how applications are developed, interact with services, and leverage the underlying infrastructure within the CometCloud framework.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Dynamic content presented in Google . . . . . . . . crawling isn't normally indexed.",
+        "options": [
+          "ajax",
+          "java",
+          "javascript",
+          "all of the mentioned"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Option A: Ajax (Asynchronous JavaScript and XML) is used to create dynamic web pages where content can be updated without reloading the entire page. However, dynamic content loaded via Ajax isn't always indexed by Google’s crawling systems because it requires additional execution beyond static HTML, making it less likely to be indexed by default. Option B: Java is a programming language primarily used for back-end development and web applications. While Java is powerful for various applications, it is not typically related to dynamic content in the context of Google crawling and indexing processes. It does not directly impact how content is rendered for crawling in most cases. Option C: JavaScript is heavily used for dynamic web content. Content generated dynamically by JavaScript often poses a challenge for Google’s crawlers. Unless specific techniques are used, such as server-side rendering, this dynamic content might not be fully indexed because the crawler may not execute the JavaScript needed to display it. Option D: All of the mentioned is partially correct, but it is a generalization. While Ajax and JavaScript directly relate to how dynamic content might not be indexed, Java is not directly linked to Google’s indexing challenges with dynamic content. Conclusion: The correct answer is Option C: JavaScript , as it is the most significant factor in dynamic content that may not be indexed by Google’s crawlers without proper handling.",
+        "estimatedTime": 60,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Which of the following programming languages is commonly used for server-side scripting in web development?",
+        "options": [
+          "HTML",
+          "CSS",
+          "JavaScript",
+          "PHP"
+        ],
+        "correctAnswer": "D",
+        "explanation": "HTML, CSS, and JavaScript play crucial roles in front-end development, focusing on the visual aspects of web pages, while PHP serves as the primary language for server-side scripting. It manages backend tasks such as database interactions, processing user input, and generating dynamic content.",
+        "estimatedTime": 60,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Which programming language is commonly used for Data Science tasks?",
+        "options": [
+          "Java",
+          "Python",
+          "C++",
+          "JavaScript"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Let's look at why Python is the correct answer and why the others are not as commonly used for these specific tasks. Option B: Python (Correct Answer) Python is by far the most popular and widely used programming language for Data Science. Here's why it's the top choice: 1. Easy to Learn: Python has a simple and readable structure (syntax), which makes it easy for beginners to understand and write code. 2. Rich Libraries: Python has an amazing collection of specialized tools, called \"libraries,\" that are specifically designed for Data Science tasks. Some very important ones include: - NumPy: Great for working with numbers and large datasets efficiently. - Pandas: Used for cleaning, analyzing, and manipulating data, similar to working with advanced spreadsheets. - Scikit-learn: Essential for building machine learning models (like algorithms that learn from data to make predictions). - Matplotlib and Seaborn: Used for creating clear and beautiful charts and graphs to visualize data. 3. Versatility: Besides Data Science, Python is also used for web development, automation, and many other areas, making it a very powerful and useful language to know. Option A: Java Java is a powerful and robust language, often used in large enterprise systems and for building big data processing frameworks (like Apache Hadoop or Apache Spark). However, for the everyday tasks of data analysis, writing scripts for quick insights, or directly building machine learning models, Python is generally preferred because of its simpler code and specialized Data Science libraries. Option C: C++ C++ is known for its speed and efficiency. While some very performance-critical parts of Data Science libraries (especially those in Python) might be written in C++ \"behind the scenes\" to make them run faster, C++ itself is rarely used directly by Data Scientists for their daily coding tasks. It's much more complex and takes more time to write code in C++ compared to Python for data analysis. Option D: JavaScript JavaScript is mainly the language of the internet. It's used to make websites interactive and for developing web applications (both front-end and back-end with Node.js). While you can use JavaScript libraries (like D3.js) for some interactive data visualizations on the web, it is not the primary language for general data cleaning, statistical analysis, or building machine learning models in Data Science. In summary, when you start learning Data Science, Python is the first language you should focus on because of its ease of use, powerful libraries, and a large supportive community.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "empowers IoT by bringing together everyday objects.",
+        "options": [
+          "intelligence",
+          "connectivity",
+          "dynamic nature",
+          "enormous scale"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The concept of the Internet of Things (IoT) is based on connectivity , which empowers IoT by bringing together everyday objects into a networked environment. Through connectivity, these objects are able to communicate, share data, and interact with each other over the internet. This interconnectedness allows for the collection of data from various sources, enabling better understanding, control, and automation of processes. Options A (intelligence), C (dynamic nature), and D (enormous scale) are important aspects of IoT as well, but connectivity is the foundational element that enables these other aspects to come into play. While intelligence enhances the ability of devices to process and analyze data, dynamic nature refers to the adaptability of IoT systems, and enormous scale highlights the widespread deployment of connected devices, connectivity is what initially makes all these possibilities achievable. Hence, the correct answer is Option B: connectivity. It's the element that enables the networking of everyday objects to create the IoT ecosystem.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "In C, how are function arguments passed by default?",
+        "options": [
+          "By value",
+          "By reference",
+          "By pointer",
+          "By address"
+        ],
+        "correctAnswer": "A",
+        "explanation": "In the C programming language, function arguments are passed by value by default. This means that when you call a function and pass arguments to it, the function receives copies of the values of those arguments, rather than direct access to the original variables. Here's a brief explanation of the other options: Option B: By reference : In C, there is no direct reference concept as in languages like C++ or C#. Pass-by-reference is not the default behavior in C. Option C: By pointer : While you can pass pointers as function arguments in C, it is not the default behavior. By default, the values themselves are passed. Option D: By address : Passing by address is essentially the same as passing by pointer, and it is not the default behavior in C. So, the correct answer is Option A: By value , as it describes the default behavior for passing function arguments in the C programming language.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "What data structure would you mostly likely see in non recursive implementation of a recursive algorithm?",
+        "options": [
+          "Stack",
+          "Linked List",
+          "Tree",
+          "Queue"
+        ],
+        "correctAnswer": "A",
+        "explanation": "In recursive algorithms, the order in which the recursive process comes back is the reverse of the order in which it goes forward during execution. The compiler uses the stack data structure to implement recursion. In the forwarding phase, the values of local variables, parameters and the return address are pushed into the stack at each recursion level. In the backing-out phase, the stacked address is popped and used to execute the rest of the code.",
+        "estimatedTime": 60,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Which algorithm is used in the top tree data structure?",
+        "options": [
+          "Backtracking",
+          "Divide and Conquer",
+          "Branch",
+          "Greedy"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Top tree is a type of data structure which is based on unrooted dynamic binary tree and is used to solve path related problems. It allows an algorithm called divide and conquer.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "______________ is an indirect measure of software development process.",
+        "options": [
+          "Cost",
+          "Effort Applied",
+          "Efficiency",
+          "All of the mentioned"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Efficiency is an indirect measure. Indirect measures also include products like maintainability, quality, functionality, complexity, reliability, and many more.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Checked – Compile time) Checked exception can be handled using throws and try-catch public class CheckedExceptions { public static void main(String[] args) throws IOException { System.out.println(\"Program is started..\"); System.out.println(\"Program is progress..\"); // try { FileInputStream file=new FileInputStream(\"C:\\\\file.txt\"); } catch (FileNotFoundException e) { e.printStackTrace(); } // FileInputStream file=new FileInputStream(\"C:\\\\file.txt\"); System.out.println(file.read()); System.out.println(\"Program is completed..\"); try-catch throws Collections: The Collections Framework in Java provides a set of interfaces and classes to store and manage objects efficiently. Collection (Interface) List (I) Set (I) Map (I) Ordered, allows duplicates Unordered, no duplicates stored in the form of key, value pairs ArrayList (C)→ Dynamic array, fast access HashSet (C) → Uses HashMap internally, no order HashMap (C) LinkedList (C)→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {",
+        "options": [
+          "→ Dynamic array, fast access HashSet",
+          "→ Uses HashMap internally, no order HashMap",
+          "LinkedList",
+          "→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question is mapped to Algorithms - Dynamic Programming. The correct answer is A based on the original source question.",
+        "estimatedTime": 75,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Which of the following statements is true about AdaBoost?",
+        "options": [
+          "It is particularly prone to overfitting on noisy datasets",
+          "Complexity of the weak learner is important in AdaBoost",
+          "It is generally more prone to overfitting",
+          "It improves classification accuracy"
+        ],
+        "correctAnswer": "C",
+        "explanation": "AdaBoost is generally not more prone to overfitting but is less prone to overfitting. And it is prone to overfitting on noisy datasets. If you use very simple weak learners, then the algorithms are much less prone to overfitting and it improves classification accuracy. So Complexity of the weak learner is important in AdaBoost.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Which of the following are the 5 big ideas of AI? MCQ on Introduction to Artificial Intelligence Artificial Intelligence MCQ on Intelligent Agents Artificial Intelligence Multiple Choice Questions on Problem Solving Artificial Intelligence Multiple Choice Questions on Adversarial Search Artificial Intelligence MCQ on Logical Agents Artificial Intelligence MCQ on Knowledge and Reasoning AI MCQ on Planning and Acting in the Real World AI Multiple Choice Questions on Uncertain Knowledge and Reasoning Artificial Intelligence MCQ on Learning Artificial Intelligence MCQ on Communicating, Perceiving and Acting Artificial Intelligence MCQ on LISP Programming Multiple Choice Questions on Other AI Algorithms & Statistics",
+        "options": [
+          "Perception",
+          "Human-AI Interaction",
+          "Societal Impact",
+          "All of the above Chapterwise Multiple Choice Questions on Artificial Intelligence Our 1000+ MCQs focus on all topics of the Artificial Intelligence subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. Introduction to Artificial Intelligence Intelligent Agents Problem Solving Adversarial Search Logical Agents Knowledge and Reasoning Planning and Acting in the Real World Uncertain Knowledge and Reasoning Learning Communicating, Perceiving and Acting LISP Programming Other AI Algorithms & Statistics The section contains multiple choice questions and answers on history, linguistics, facts and agents of artificial-intelligence. History of Artificial Intelligence – 1 History of Artificial Intelligence – 2 History of Artificial Intelligence – 3 AI Linguistics Artificial Intelligence Agents Artificial Intelligence Facts – 1 Artificial Intelligence Facts – 2 Artificial Intelligence Facts – 3 Artificial Intelligence Facts – Human-Machine Interaction Machine Learning The section contains Artificial Intelligence questions and answers on various aspects of intelligent agents like their architecture and environments. Artificial Intelligence Agents Intelligent Agents and Environment Online Search Agent Agent Architecture Environments The section contains Artificial Intelligence MCQs on different approaches to problem solving like uninformed and informed search strategies, local search and optimization problems and other constraints satisfaction problems. Problem Solving Uninformed Search Strategy Uninformed Search and Exploration Informed Search Strategy Informed Search and Exploration Local Search Problems and Optimization Problems Constraints Satisfaction Problems The section contains Artificial Intelligence multiple choice questions and answers on approaches to game theory problems like state space search and alpha beta pruning. Game Theory State Space Search Alpha Beta Pruning The section contains Artificial Intelligence questions and answers on agents that reason logically, first order logic and the inference in first order logic which includes forward and backward reasoning. First-Order Logic Propositional Logic Resolution Forward Chaining Backward Chaining The section contains AI MCQ Questions on inference in first order logic, rule based system, semantic net, frames, unification and lifting. Knowledge and Reasoning Inference in First-Order Logic Rule Based System – 1 Rule Based System – 2 Semantic Net – 1 Semantic Net – 2 Frames Unification and Lifting The section contains AI multiple choice questions and answers on different types of planning like partial order planning, graph planning and real world planning. Partial Order Planning Partial Order Planning – 1 Graph Plan Algorithm Planning and Acting in the Real World The section contains AI questions and answers on uncertainty, probability notations and bayesian networks and various probabilistic reasoning systems. Hidden markov models, expert systems, Uncertain reasoning also includes semantic representation and object recognition. Uncertain Knowledge and Reasoning Semantic Interpretation Object Recognition Probability Notation Bayesian Networks Fuzzy Logic Hidden Markov Models Expert Systems The section contains AI MCQs on learning from observations which includes decision trees, learning in neural and belief networks, reinforcement learning and knowledge in learning. It includes questions on inductive logic programming. Learning – 1 Learning – 2 Learning – 3 Neural Networks – 1 Neural Networks – 2 Decision Trees Inductive Logic Programming The section contains Artificial Intelligence multiple choice questions and answers on the agents that communicate which includes robotics, practical natural language processing and perceptions. Communication Perception Speech Recognition Image Perception Robotics – 1 Robotics – 2 Natural Language Processing – 1 Natural Language Processing – 2 The section contains Artificial Intelligence questions and answers on LISP programming. LISP Programming – 1 LISP Programming – 2 LISP Programming – 3 The section contains MCQs on various other topics of artificial-intelligence, ai algorithms and statistics. AI Algorithms AI Statistics Miscellaneous To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. Best Books on Artificial Intelligence Artificial Intelligence Books Artificial Intelligence and Robotics Books Artificial Intelligence in Process Engineering Books Artificial Intelligence and Agent Technology Books Artificial Intelligence and Neural Network Books Artificial Intelligence and Expert System Books Artificial Intelligence Online Test: Artificial Intelligence Tests Artificial Intelligence Certification Test Artificial Intelligence Internship Test Artificial Intelligence Top Rankers"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The 5 big ideas are:",
+        "estimatedTime": 75,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Which character is used to indicate the end of a statement in C?",
+        "options": [
+          ".",
+          ";",
+          ":",
+          ","
+        ],
+        "correctAnswer": "B",
+        "explanation": "The character used to indicate the end of a statement in C is ; . This semicolon is a crucial part of C syntax as it separates statements and tells the compiler where one statement ends and the next one begins. So, the correct answer is: Option B: ; In C programming, you terminate a statement with a semicolon. For example: #include <stdio.h> int main() { int x = 5; printf(\"Hello, World!\"); return 0; } In the above code, the semicolon at the end of each line signifies the end of the respective statement.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Which data type is used to represent a single character in C?",
+        "options": [
+          "char",
+          "int",
+          "float",
+          "double"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The data type used to represent a single character in C is char . The char data type is specifically designed to store individual characters, such as letters, digits, and symbols. So, the correct answer is: Option A: char In C programming, you declare a character variable like this: char myChar = 'A'; Here, myChar is a variable of type char , and it stores the character 'A'. The char data type is essential for working with characters and strings in C.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "What is the result of the expression 5 + 7 * 2 in C?",
+        "options": [
+          "19",
+          "24",
+          "26",
+          "17"
+        ],
+        "correctAnswer": "A",
+        "explanation": "In C and many programming languages, mathematical expressions follow the operator precedence rules. Multiplication (*) and division (/) have higher precedence than addition (+) and subtraction (-). So, when evaluating the expression \"5 + 7 * 2,\" the multiplication is performed before addition: 5 + (7 * 2) = 5 + 14 = 19 Therefore, the result of the expression \"5 + 7 * 2\" in C is Option A: 19 .",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Function key . . . . . . . . in a windows keyboard can perform many functions, which of the following is not a default-",
+        "options": [
+          "F1",
+          "F6",
+          "F8",
+          "F9"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Option A: F1 This option suggests that the function key F1 on a Windows keyboard can perform many functions, and the statement asks which of the following is not a default. This is correct, as F1 is commonly used for accessing help and support in various applications and operating systems. Option B: F6 This option suggests that the function key F6 on a Windows keyboard can perform many functions. F6 is often used for navigating between different elements in a window or dialog box, such as tabs, panes, or fields. Option C: F8 This option suggests that the function key F8 on a Windows keyboard can perform many functions. F8 is typically used during system startup to access advanced boot options like Safe Mode. Option D: F9 This option suggests that the function key F9 on a Windows keyboard can perform many functions. F9 is commonly used in productivity applications and programming environments for various purposes, such as refreshing content or executing commands. Conclusion: The correct answer is Option D: F9 because while F1, F6, and F8 have established default functions in Windows and many applications, F9 does not typically have a standardized default function across all Windows systems and software. Its specific function can vary depending on the application or context in which it is used. Therefore, F9 is not considered a default function key with a universally recognized default action in Windows environments.",
+        "estimatedTime": 60,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "What will be the output of the following PHP code? <?php $op2 = \"blabla\" ; function foo ( $op1 ) { echo $op1; echo $op2; } foo ( \"hello\" ) ; ?>",
+        "options": [
+          "helloblabla",
+          "Error",
+          "hello",
+          "helloblablablabla"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The correct answer is Option B: Error Here's why: In PHP, variables defined outside of a function are not automatically accessible inside the function. Scope is a crucial concept in programming. The variable `$op2` is defined outside the function `foo()`. Inside `foo()`, you are trying to use `$op2` without it being defined within the function's scope. Therefore, PHP will throw an error (specifically, a notice about an undefined variable) when trying to access `$op2` within the function. Although the `echo $op1` will work fine , but after that when trying to access the `$op2` that is not defined inside the function scope it will throw error . To make `$op2` accessible inside the function, you would need to either: 1. Pass it as an argument to the function. 2. Use the `global` keyword to bring it into the function's scope . Since neither of these is done in the given code, an error occurs.",
+        "estimatedTime": 75,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "The advantages of Ajax is . . . . . . . .",
+        "options": [
+          "Bandwidth utilization",
+          "More interactive",
+          "Speeder retrieval of data",
+          "All of these"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Option A: Bandwidth utilization . Ajax (Asynchronous JavaScript and XML) enhances bandwidth utilization by allowing web applications to send and receive small amounts of data in the background without reloading the entire page. This efficiency minimizes unnecessary data transfer, making better use of available bandwidth. Option B: More interactive . Ajax provides a more interactive user experience by enabling asynchronous updates to web pages. Users can interact with a web application without interruptions, leading to smoother and more responsive interactions, such as dynamic content updates or form submissions. Option C: Speedier retrieval of data . Ajax improves the speed of data retrieval by allowing web applications to fetch data from the server in the background. This means that users can access new information quickly without having to wait for the entire page to reload, resulting in a faster and more efficient experience. Option D: All of these . This option suggests that all the previously mentioned advantages—improved bandwidth utilization, increased interactivity, and faster data retrieval—are benefits of using Ajax in web applications. Given that Ajax combines these features effectively, this option is highly valid. Conclusion: The correct answer is Option D: All of these , as Ajax provides multiple advantages, including better bandwidth utilization, enhanced interactivity, and speedier data retrieval, making it a powerful tool for modern web development.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Publishing an application's data as a REST service requires.",
+        "options": [
+          "@requestmapping",
+          "@pathvariable",
+          "all of the mentioned",
+          "none of the mentioned"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Option A: @requestmapping . The @RequestMapping annotation in Spring Framework is used to map web requests to specific handler methods. It allows developers to define the URL paths that will trigger the execution of a particular method, making it essential for creating RESTful services. Option B: @pathvariable . The @PathVariable annotation is used to extract values from the URI template in RESTful web services. It allows you to pass parameters through the URL, making it crucial for handling dynamic URLs and enabling parameterized requests in a REST API. Option C: all of the mentioned . This option implies that both @RequestMapping and @PathVariable are necessary for publishing an application's data as a REST service. Since both annotations serve important roles in handling requests and parameters, this option suggests that multiple components are involved in building a RESTful service. Option D: none of the mentioned . This option indicates that none of the previously mentioned annotations are required for publishing an application's data as a REST service, which contradicts the fact that both @RequestMapping and @PathVariable are commonly used in RESTful implementations. Conclusion: The correct answer is Option C: all of the mentioned , as both @RequestMapping and @PathVariable are necessary for effectively publishing an application's data as a REST service.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "client() class provides . . . . . . . . to create topics.",
+        "options": [
+          "software",
+          "classes",
+          "methods",
+          "batch"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Option A: software . This option suggests that the client() class provides software to create topics. However, \"software\" is a broad term and does not specifically refer to any functionality within the context of creating topics in programming or cloud services. Option B: classes . This option implies that the client() class provides classes for creating topics. While classes can be used to define structures or behaviors, they do not directly relate to the functionality needed for creating topics in many APIs or frameworks. Option C: methods . This option indicates that the client() class provides methods for creating topics. Methods are specific functions defined within a class that can be called to perform actions, such as creating topics. This is a common approach in many programming environments where topics need to be instantiated or manipulated. Option D: batch . This option suggests that the client() class provides batch functionality for creating topics. While batching can be used in some contexts to handle multiple operations at once, it does not specifically address the action of creating topics as effectively as methods would. Conclusion: The correct answer is Option C: methods , as the client() class typically provides methods that facilitate the creation of topics in programming and cloud service contexts.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "What does RISC stand for in the context of CPU design?",
+        "options": [
+          "Rapid Integrated System",
+          "Real-time Instruction Set",
+          "Random Integrated System",
+          "Reduced Instruction Set Computer"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Option D: Reduced Instruction Set Computer (RISC) RISC stands for Reduced Instruction Set Computer in the context of CPU design. It is a type of microprocessor design that emphasizes a small and highly optimized set of instructions that can be executed within a single clock cycle. RISC processors focus on simplicity and efficiency by reducing the complexity of instructions compared to Complex Instruction Set Computing (CISC) architectures. - The philosophy behind RISC is to perform operations with a small set of simple instructions that can execute quickly, allowing for faster processing speeds and improved performance. - RISC architectures often employ pipelining and other techniques to maximize throughput and efficiency. - Examples of RISC architectures include ARM (Advanced RISC Machine) and MIPS (Microprocessor without Interlocked Pipeline Stages). Option A: Rapid Integrated System This is not a correct expansion for RISC. RISC specifically refers to the design philosophy of reducing the complexity of instructions, not to any rapid integration system. Option B: Real-time Instruction Set This is not correct. RISC does not relate specifically to real-time computing but rather to the design of CPU architectures. Option C: Random Integrated System This is not correct. RISC does not involve randomness but rather a deliberate reduction in the complexity of instruction sets. Conclusion: Among the given options, Option D: Reduced Instruction Set Computer (RISC) is the correct answer because it accurately describes the design philosophy where CPU architectures emphasize simplicity and efficiency through a reduced and optimized set of instructions.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "What is the time complexity for searching a key or integer in Van Emde Boas data structure?",
+        "options": [
+          "O (M!)",
+          "O (log M!)",
+          "O (log (log M))",
+          "O (M 2 )"
+        ],
+        "correctAnswer": "C",
+        "explanation": "In order to search a key or integer in the Van Emde Boas data structure, the operation can be performed on an associative array. Hence, the time complexity for searching a key or integer in Van Emde Boas data structure is O (log (log M)).",
+        "estimatedTime": 60,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Regardless of application area, project size, or complexity, software development work may be divided into three generic phases: the__________ phase, which focuses on what , the_________ phase, which focuses on how , and the_________ phase, which focuses on change . i. support ii. development iii. definition",
+        "options": [
+          "iii, ii, i",
+          "iii, i, ii",
+          "i, ii, iii",
+          "ii, i, iii"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Irrespective of the application area, project size, or complexity, software development work may be divided into three generic phases: the definition phase, which focuses on what , the development phase, which focuses on how , and the support phase, which focuses on change .",
+        "estimatedTime": 75,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "In visual basic language what are the rules of a programming language called?",
+        "options": [
+          "Grammar",
+          "Order",
+          "Syntax",
+          "Rules"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The Code editor provides the code template to help you follow the rules of the visual basic language. The rules of a programming language are called its syntax. The first line in the code template is called the procedure header and the last line the procedure footer.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Air at 30°C flows at 45 m/s past a wet flat plate of length 0.5 m. Estimate the value of the mass transfer coefficient, assuming the water vapor content of air is initially negligible. The thermophysical properties of air are: diffusion coefficient D = 0.256 × 10 -4 m 2 /s, dynamic viscosity μ = 1.86 × 10 -5 kg/m·s, specific heat c p = 1.005 kJ/kg·°C, Prandtl number Pr = 0.701, and density ρ = 1.165 kg/m 3 .",
+        "options": [
+          "0.3076 m/s",
+          "0.1076 m/s",
+          "0.4076 m/s",
+          "0.2076 m/s"
+        ],
+        "correctAnswer": "B",
+        "explanation": "h m = 0.0296 (Re) -0.2 (V)/ (Sc) 0.667 .",
+        "estimatedTime": 75,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Which development board uses energia IDE (Integrated development environment) for its programming?",
+        "options": [
+          "MSP430G2ET Launchpad",
+          "Arduino UNO",
+          "Arduino nano",
+          "NodeMCU"
+        ],
+        "correctAnswer": "A",
+        "explanation": "MSP430G2ET Launchpad is a development board that uses energia IDE (Integrated development environment) for its programming. Arduino UNO, Arduino nano and NodeMCU uses Arduino IDE (Integrated development environment).",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Which of the following CSS3 property can be used to allow line breaks within words? CSS MCQ on Fundamentals, Colors and Styling CSS MCQ on Text, Borders and Images CSS Multiple Choice Questions on Selectors & Files CSS MCQ on Properties, Elements, Functions & Tables CSS3 MCQ on Fundamentals, Transitions & Animations CSS MCQ on Lists, Tables and Forms CSS MCQ on Layout & Images CSS MCQ on CGI Programming & Miscellaneous",
+        "options": [
+          "line-break",
+          "line-wrap",
+          "word-wrap",
+          "word-break Chapterwise Multiple Choice Questions on CSS Our 1000+ MCQs focus on all topics of the CSS subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. CSS Fundamentals, Colors and Styling CSS Text, Borders and Images CSS Selectors & Files CSS Properties, Elements, Functions & Tables CSS3 Fundamentals, Transitions & Animations CSS Lists, Tables and Forms CSS Layout & Images CGI Programming & Miscellaneous The section contains CSS multiple choice questions and answers on css basics, functions, fonts, versions, specification and color values, style inclusion methods, specifying sizes, colors and files. Introduction to CSS CSS Functions CSS Fonts CSS Versions Specification of CSS Style Inclusion Methods CSS Color Values Specifying Sizes, Colors and Files The section contains CSS questions and answers on borders, text, voice, outlines and box model, media types, border elements, cross browser layout techniques, styling texts, lists and navigation menus, embedding web fonts, gradients, background borders and targeting styles. CSS border CSS Text CSS Voice CSS Outline CSS Media Types CSS Border Elements Cross Browser Layout Techniques CSS Styling Texts Embedding Web Fonts CSS Box Model CSS Backgrounds, Borders and Drop Shadow CSS Styling Lists and Navigation Menus Gradients without Images Targeting Styles with Media Queries The section contains CSS MCQs with answers on document styles, specificity and importance, selectors and advanced selectors. Applying Style to a Document Using Advanced Selectors CSS Selectors CSS Specificity and Importance The section contains CSS multiple choice questions and answers on xhtml fundamentals, css inheritance and miscellaneous property, major themes, strings and keywords, css measurements, css properties, styling tables, generated content, layout floating elements, css keyframes, elements precise positioning, transforms and transitions, inheritance and cascade. CSS and (X)HTML Elements Fundamentals CSS Miscellaneous Property Document Structure and CSS Inheritance CSS Major Themes CSS Strings and Keywords Measurements in CSS Miscellaneous CSS Constructs CSS 1 and CSS 2.1 Properties Implemented CSS3 and Browser-Specific Features CSS Styling Tables Generated Content CSS Floating Elements for Layout CSS Transforms and Transitions CSS Keyframes Precise Positioning of Elements CSS Inheritance and Cascade The section contains CSS3 questions and answers on css3 images, ui elements transitions, css3 animations, css3 user interface properties, fundamentals and multi column layout. CSS3 Transitions for Images CSS3 Transitions for UI Elements CSS3 Animations with SVG and Filters CSS3 Animation with Responsive Web Design CSS3 3D Transforms, Transitions, and Animations CSS3 User Interface Properties CSS3 Fundamentals Using CSS3 Multi Column Layout The section contains CSS MCQs on form elements appearance. Appearance of Form Elements The section contains CSS MCQ questions with answers on bullet point styles, css image alignment, id & class, image replacement, print styles and their development, server specific css, shadowy styles, multiple backgrounds, css popups and menus, sliding doors, clipped sliding doors, table graphs, 2d transforms and constrained images. Specifying Bullet Point Styles, CSS Image Alignment, ID and Class Suppressing Element Display & Visibility, Image Replacement Print Styles and their Development Server Specific CSS Shadowy Styles, Multiple Backgrounds, CSS Pop-Ups & Menus Sliding Doors & Clipped Sliding Doors Table Graphs, 2D Transforms, Boxing of Images & Constrained Images The section contains CSS questions and answers on css transition and perl cgi programming. CSS Transition & Perl CGI Programming Miscellaneous To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. Important Links: Best Books on CSS HTML Multiple Choice Questions Python Multiple Choice Questions PHP Multiple Choice Questions Javascript Multiple Choice Questions Computer Science Multiple Choice Questions Information Technology Multiple Choice Questions Information Science Multiple Choice Questions CSS Books:"
+        ],
+        "correctAnswer": "D",
+        "explanation": "word-break property can be used to allow line breaks within the words. Syntax: word-break : break-all | keep-all | normal",
+        "estimatedTime": 75,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "What will be the area of triangle PQR formed by joining the midpoints of the sides of the triangle whose vertices are (3, 3), (9, 9) and (4, 6)?",
+        "options": [
+          "\\(\\frac {1}{2}\\) units",
+          "\\(\\frac {3}{2}\\) units",
+          "\\(\\frac {3}{5}\\) units",
+          "\\(\\frac {5}{2}\\) units"
+        ],
+        "correctAnswer": "B",
+        "explanation": "ABC is the triangle formed by the coordinates A (3, 3), B (9, 9) and C (4, 6) and DEF is the triangle formed by joining the midpoints of AC, BC, AB. D is the midpoint of AC. Coordinates of D = \\( ( \\frac {x_1+x_2}{2}, \\frac {y_1+y_2}{2} ) = ( \\frac {3+4}{2}, \\frac {3+6}{2} ) = ( \\frac {7}{2}, \\frac {9}{2} ) \\) E is the midpoint of AB. Coordinates of E = \\( ( \\frac {x_1+x_2}{2}, \\frac {y_1+y_2}{2} ) = ( \\frac {3+9}{2}, \\frac {3+9}{2} ) = ( \\frac {12}{2}, \\frac {12}{2} ) \\) = (6, 6) F is the midpoint of BC. Coordinates of F = \\( ( \\frac {x_1+x_2}{2}, \\frac {y_1+y_2}{2} ) = ( \\frac {9+4}{2}, \\frac {9+6}{2} ) = ( \\frac {13}{2}, \\frac {15}{2} ) \\) The area of triangle formed by D \\( ( \\frac {7}{2}, \\frac {9}{2} ) \\), E (6, 6) and F\\( ( \\frac {13}{2}, \\frac {15}{2} ) \\) We know that, area of triangle = \\(\\frac {1}{2}\\){x 1 (y 2 – y 3 ) + x 2 (y 3 – y 1 ) + x 3 (y 1 – y 2 )} The coordinates of vertices of the triangle are \\( ( \\frac {7}{2}, \\frac {9}{2} ) \\), (6, 6) and \\( ( \\frac {13}{2}, \\frac {15}{2} ) \\). The area of triangle = \\(\\frac {1}{2} \\{ \\frac {7}{2}\\) (6 – \\(\\frac {15}{2}\\)) + 6(\\(\\frac {15}{2} – \\frac {9}{2}\\)) + \\(\\frac {13}{2} ( \\frac {9}{2} – 6 ) \\} \\) = \\(\\frac {1}{2} \\{ – \\frac {21}{4}\\) + 18 – \\(\\frac {39}{4} \\} = \\frac {3}{2} \\) units",
+        "estimatedTime": 75,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "HASHING DBMS 64 Operation:  Insertion: When a record is required to be entered using static hash, the hash function h computes the bucket address for search key K, where the record will be stored. Bucket address = h(K)  Search: When a record needs to be retrieved, the same hash function can be used to retrieve the address of the bucket where the data is stored.  Delete: This is simply a search followed by a deletion operation. Bucket Overflow The condition of bucket-overflow is known as collision. This is a fatal state for any static hash function. In this case, overflow chaining can be used.  Overflow Chaining: When buckets are full, a new bucket is allocated for the same hash result and is linked after the previous one. This mechanism is called Closed Hashing. [Image: Overflow chaining]  Linear Probing: When a hash function generates an address at which data is already stored, the next free bucket is allocated to it. This mechanism is called Open Hashing. DBMS 65 [Image: Linear Probing] Dynamic Hashing The problem with static hashing is that it does not expand or shrink dynamically as the size of the database grows or shrinks. Dynamic hashing provides a mechanism in which data buckets are added and removed dynamically and on- demand. Dynamic hashing is also known as extended hashing. Hash function, in dynamic hashing, is made to produce a large number of values and only a few are used initially. [Image: Dynamic Hashing] DBMS 66 Organization The prefix of an entire hash value is taken as a hash index. Only a portion of the hash value is used for computing bucket addresses. Every hash index has a depth value to signify how many bits are used for computing a hash function. These bits can address 2n buckets. When all these bits are consumed — that is, when all the buckets are full — then the depth value is increased linearly and twice the buckets are allocated. Operation  Querying: Look at the depth value of the hash index and use those bits to compute the bucket address.  Update: Perform a query as above and update the data.  Deletion: Perform a query to locate the desired data and delete the same.  Insertion: Compute the address of the bucket. o If the bucket is already full,  Add more buckets.  Add additional bits to the hash value.  Re-compute the hash function. o Else,  Add data to the bucket, o If all the buckets are full, perform the remedies of static hashing. Hashing is not favorable when the data is organized in some ordering and the queries require a range of data. When data is discrete and random, hash performs the best. Hashing algorithms have high complexity than indexing. All hash operations are done in constant time. DBMS 67 DBMS 68 A transaction can be defined as a group of tasks. A single task is the minimum processing unit which cannot be divided further. Let’s take an example of a simple transaction. Suppose a bank employee transfers Rs 500 from A's account to B's account. This very simple and small transaction involves several low-level tasks. A’s Account Open_Account(A) Old_Balance = A.balance New_Balance = Old_Balance - 500 A.balance = New_Balance Close_Account(A) B’s Account Open_Account(B) Old_Balance = B.balance New_Balance = Old_Balance + 500 B.balance = New_Balance Close_Account(B) ACID Properties A transaction is a very small unit of a program and it may contain several low- level tasks. A transaction in a database system must maintain Atomicity, Consistency, Isolation, and Durability — commonly known as ACID properties — in order to ensure accuracy, completeness, and data integrity.  Atomicity: This property states that a transaction must be treated as an atomic unit, that is, either all of its operations are executed or none. There must be no state in a database where a transaction is left partially completed. States should be defined either before the execution of the transaction or after the execution/abortion/failure of the transaction.  Consistency: The database must remain in a consistent state after any transaction. No transaction should have any adverse effect on the data residing in the database. If the database was in a consistent state before",
+        "options": [
+          "Old_Balance = A.balance New_Balance = Old_Balance - 500 A.balance = New_Balance Close_Account",
+          "B’s Account Open_Account",
+          "Old_Balance = B.balance New_Balance = Old_Balance + 500 B.balance = New_Balance Close_Account",
+          "ACID Properties A transaction is a very small unit of a program and it may contain several low- level tasks. A transaction in a database system must maintain Atomicity, Consistency, Isolation, and Durability — commonly known as ACID properties — in order to ensure accuracy, completeness, and data integrity.  Atomicity: This property states that a transaction must be treated as an atomic unit, that is, either all of its operations are executed or none. There must be no state in a database where a transaction is left partially completed. States should be defined either before the execution of the transaction or after the execution/abortion/failure of the transaction.  Consistency: The database must remain in a consistent state after any transaction. No transaction should have any adverse effect on the data residing in the database. If the database was in a consistent state before"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question is mapped to Algorithms - Dynamic Programming. The correct answer is A based on the original source question.",
+        "estimatedTime": 75,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "In simple term, machine learning is",
+        "options": [
+          "training based on historical data",
+          "prediction to answer a query",
+          "both A and B",
+          "automization of complex tasks"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Machine learning, in simple terms, can be described as follows: Option A: Training based on historical data Machine learning involves training algorithms or models using historical data to learn patterns, relationships, and trends within the data. This training process enables the machine to make predictions or decisions based on new, unseen data. So, Option A is a fundamental aspect of machine learning. Option B: Prediction to answer a query Machine learning is often used for making predictions or providing answers to queries by analyzing data patterns. It uses the knowledge gained during training to make informed decisions or predictions when presented with new data. Therefore, Option B is another key characteristic of machine learning. Option C: Both A and B Machine learning encompasses both training models based on historical data (Option A) and using these models to make predictions or answer queries (Option B). Therefore, Option C correctly represents the nature of machine learning as it involves both aspects. Option D: Automization of complex tasks While machine learning can automate tasks and processes, it is primarily focused on learning from data and making predictions or decisions. While automation can be a result of machine learning, it is not the core definition of the field. So, Option D is not as precise in describing what machine learning is. In summary, machine learning is best described as a combination of training models based on historical data and using those models for predictions and queries, making Option C the most accurate description.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "The output of training process in machine learning is",
+        "options": [
+          "machine learning model",
+          "machine learning algorithm",
+          "null",
+          "accuracy"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The output of the training process in machine learning is: Option A: Machine Learning Model The primary output of the training process in machine learning is the machine learning model itself. During training, the model learns patterns and relationships within the training data, and the result is a trained model that can make predictions or classifications when given new data. So, Option A is the correct answer. Option B: Machine Learning Algorithm While machine learning algorithms are essential components of the training process, they are not the direct output of training. Algorithms are used to train the model, but the model is the end result. Therefore, Option B is not the correct answer. Option C: Null The output of the training process is not null; it is a trained machine learning model. So, Option C is not the correct answer. Option D: Accuracy Accuracy is a performance metric used to evaluate the quality of a machine learning model. It is not the direct output of the training process but rather a measure of how well the model performs. Therefore, Option D is not the correct answer. In summary, the primary output of the training process in machine learning is the trained machine learning model, making Option A the correct choice.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "An artificially intelligent car decreases its speed based on its distance from the car in front of it. Which algorithm is used?",
+        "options": [
+          "Naïve-Bayes",
+          "Decision Tree",
+          "Linear Regression",
+          "Logistic Regression"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The output is numerical. It determines the speed of the car. Hence it is not a classification problem. All the three, decision tree, naïve-Bayes, and logistic regression are classification algorithms. Linear regression, on the other hand, outputs numerical values based on input. So, this can be used.",
+        "estimatedTime": 60,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "What is the process of hiding the implementation details of a class and showing only the necessary features to the outside world called in C++?",
+        "options": [
+          "Abstraction",
+          "Polymorphism",
+          "Encapsulation",
+          "Inheritance"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Abstraction in C++ refers to the process of hiding the implementation details of a class and exposing only the essential features to the outside world. It allows the user to interact with an object without knowing the internal complexity, making the code cleaner, modular, and easier to maintain. Why other options are incorrect: Polymorphism deals with using the same function or operator in different ways. Encapsulation is about wrapping data and functions together into a single unit (class). Inheritance allows one class to acquire the properties of another. Therefore, the correct answer is Abstraction .",
+        "estimatedTime": 60,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Which of the following is untrue regarding Prediction with Neural Networks?",
+        "options": [
+          "A neural network is trained by a single sequence",
+          "When the sufficiently trained network processes an unknown sequence, it applies the rules learned in training to recognize particular structural patterns",
+          "When multiple sequence alignments and neural networks are combined, the result is further improved accuracy",
+          "A neural network is trained by a sequence profile derived from the multiple sequence alignment"
+        ],
+        "correctAnswer": "A",
+        "explanation": "A neural network is trained not by a single sequence but by a sequence profile derived from the multiple sequence alignment. This combined approach has been shown to improve the accuracy to above 75%, which is a breakthrough in secondary structure prediction. The improvement mainly comes from enhanced secondary structure signals through consensus drawing. The following lists several frequently used third-generation prediction algorithms available as web servers.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "\"Cloud\" in cloud computing represents what?",
+        "options": [
+          "Wireless",
+          "Hard drives",
+          "People",
+          "Internet"
+        ],
+        "correctAnswer": "D",
+        "explanation": "In the realm of cloud computing , the term \" Cloud \" is emblematic of the Option D: Internet itself. Let's delve into it: Option A: Wireless refers to the mode of connectivity that allows data transmission without physical cables. While wireless technologies are essential for cloud access, they don't encapsulate the full essence of the term \" Cloud .\" Option B: Hard drives represent the physical storage devices that have been a cornerstone of computing for decades. However, the \" Cloud \" pertains to virtualized and distributed resources rather than specific hardware components. Option C: People might interact with cloud services, but the term \" Cloud \" doesn't directly represent individuals. Instead, it's an abstraction that symbolizes the underlying infrastructure. Option D: Internet is where the magic lies. The \" Cloud \" metaphorically stands for the vast, interconnected network of servers, databases, and services accessible over the Internet . Cloud computing involves delivering various resources and services over the Internet , allowing users to access and utilize them remotely without needing local infrastructure. So, in the context of \" Cloud \" in cloud computing, the answer is indeed Option D: Internet . This term encapsulates the notion of accessing and utilizing computing resources as if they were floating ubiquitously in the virtual skies of the Internet.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "The BEST way to define Virtualization in cloud computing is",
+        "options": [
+          "virtualization enables simulating compute, network, and storage service platforms from the underlying virtual hardware",
+          "virtualization enables abstracting compute, network, and storage service platforms from the underlying physical hardware",
+          "virtualization enables realization of compute, network, and storage service platforms from the underlying virtual hardware",
+          "virtualization enables emulating compute, network, and storage service platforms from the underlying virtual hardware"
+        ],
+        "correctAnswer": "B",
+        "explanation": "In the realm of cloud computing , the most accurate way to define Virtualization is represented by Option B: virtualization enables abstracting compute, network, and storage service platforms from the underlying physical hardware . Let's break down the definition: Option A: virtualization enables simulating compute, network, and storage service platforms from the underlying virtual hardware has the concept correct, but the terminology is not quite aligned with the common understanding of virtualization. Virtualization doesn't necessarily \"simulate\" but rather \"abstracts\" the service platforms. Option C: virtualization enables realization of compute, network, and storage service platforms from the underlying virtual hardware uses the term \"realization,\" which doesn't precisely capture the abstraction that virtualization achieves. Option D: virtualization enables emulating compute, network, and storage service platforms from the underlying virtual hardware uses \"emulating,\" which might be interpreted as imitating rather than abstracting. Option B: virtualization enables abstracting compute, network, and storage service platforms from the underlying physical hardware encapsulates the essence of virtualization. It involves creating virtual instances of compute, network, and storage resources that appear and function as if they were separate from the underlying physical hardware. This abstraction allows for improved resource utilization, flexibility, and isolation in cloud computing environments. Hence, the most accurate definition of Virtualization in the context of cloud computing is Option B: virtualization enables abstracting compute, network, and storage service platforms from the underlying physical hardware . This option captures the core concept and terminology of virtualization.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "IoT stands for",
+        "options": [
+          "Internet of Technology",
+          "Internet of Things",
+          "Internet of Tech",
+          "Industrial of things"
+        ],
+        "correctAnswer": "B",
+        "explanation": "IoT stands for Internet of Things . It refers to the network of physical objects, devices, vehicles, buildings, and other items that are embedded with sensors, software, and connectivity to enable them to collect and exchange data over the internet. This allows these objects to be monitored, controlled, and interacted with remotely, leading to increased automation, efficiency, and convenience in various domains.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "The number of elements in the Open IoT Architecture?",
+        "options": [
+          "6 elements",
+          "8 elements",
+          "7 elements",
+          "3 elements"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The Open IoT Architecture is typically composed of 7 elements that collectively form the framework for building IoT solutions. These elements are: 1. Devices: Physical objects or sensors that gather data from the environment. 2. Gateway: An intermediary between devices and the cloud, responsible for data aggregation and preprocessing. 3. Network: The communication infrastructure facilitating data exchange between devices, gateways, and the cloud. 4. Data Processing: Involves analyzing and processing collected data to extract valuable insights. 5. Data Storage: Refers to storing processed data in databases or other storage systems. 6. Application Enablement: Allows the creation of applications utilizing data and insights from IoT devices. 7. Security: Encompasses measures to ensure the security of IoT data, communications, and devices. Hence, the correct answer is Option C: 7 elements. While there may be variations or additional sub-elements in different interpretations, the most commonly accepted categorization includes 7 main elements in the Open IoT Architecture. Options A (6 elements), B (8 elements), and D (3 elements) are not accurate representations of the commonly accepted elements.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "The IoT platforms are mainly divided into how many types",
+        "options": [
+          "3 types",
+          "5 types",
+          "4 types",
+          "2 types"
+        ],
+        "correctAnswer": "C",
+        "explanation": "IoT platforms are categorized into four main types based on their functionalities and capabilities. These types are: 1. Connectivity Management Platforms: These platforms primarily focus on managing the connectivity between IoT devices and the network. They handle tasks such as device onboarding, provisioning, and ensuring seamless communication. 2. Device Management Platforms: These platforms are responsible for managing the lifecycle of IoT devices. This includes tasks like device registration, configuration, monitoring, firmware updates, and troubleshooting. 3. Data Management Platforms: These platforms deal with the collection, storage, processing, and analysis of the data generated by IoT devices. They often integrate with data analytics tools to extract valuable insights. 4. Application Enablement Platforms: These platforms facilitate the development and deployment of applications that utilize the data and capabilities of IoT devices. They provide APIs, tools, and services for building custom IoT applications.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "What does the term \"pipeline\" refer to in computer architecture?",
+        "options": [
+          "Concurrent execution of multiple instructions",
+          "A sequence of logic gates",
+          "Data flow between CPU and RAM",
+          "A type of CPU cooler"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Option A: Concurrent execution of multiple instructions This option is correct. In computer architecture, a pipeline refers to a technique where multiple stages of an instruction execution process are overlapped, allowing multiple instructions to be processed concurrently. This improves the throughput of instructions. Option B: A sequence of logic gates A pipeline is not a sequence of logic gates. Logic gates are fundamental building blocks of digital circuits that perform Boolean operations. Option C: Data flow between CPU and RAM Data flow between CPU and RAM is related to memory access and data transfer operations, not specifically to the concept of a pipeline. Option D: A type of CPU cooler A pipeline is not related to CPU cooling. CPU cooling refers to methods and devices used to dissipate heat from a CPU to prevent overheating. Conclusion: Among the options given, Option A: Concurrent execution of multiple instructions correctly describes what a pipeline refers to in computer architecture. It allows for efficient and parallel execution of instructions by breaking down the instruction execution process into stages that can overlap.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "What is the primary function of the Control Unit (CU) in a CPU?",
+        "options": [
+          "Executes program instructions",
+          "Directs operations of the entire computer system",
+          "Stores data temporarily",
+          "None of the above"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Option B: Directs operations of the entire computer system The primary function of the Control Unit (CU) in a CPU is to direct and coordinate the operations of the entire computer system. It manages the execution of instructions by fetching them from memory, decoding them, and controlling the data flow between the CPU and other parts of the computer system, including RAM, I/O devices, and the ALU (Arithmetic Logic Unit). The CU also manages the timing and control signals necessary for communication between these components. Option A: Executes program instructions While the CPU as a whole executes program instructions, specifically, it is the combination of the Control Unit (CU) and the Arithmetic Logic Unit (ALU) that executes the instructions. The CU directs this process. Option C: Stores data temporarily This role is typically associated with memory units such as RAM (Random Access Memory) rather than the Control Unit (CU), which primarily handles control and coordination tasks. Conclusion: The correct answer, Option B: Directs operations of the entire computer system , best describes the primary role of the Control Unit (CU) in a CPU, emphasizing its critical function in managing and coordinating the operation of the entire computer system.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Determine Output: void main() { char *p; printf(\"%d %d\", sizeof(*p), sizeof(p)); }",
+        "options": [
+          "1 1",
+          "1 2",
+          "2 1",
+          "2 2"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The sizeof () operator gives the number of bytes taken by its operand. P is a character pointer, which needs one byte for storing its value (a character). Hence sizeof ( *p ) gives a value of 1. Since it needs two bytes to store the address of the character pointer sizeof ( p ) gives 2.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "How do you read a character from a file in C?",
+        "options": [
+          "getc()",
+          "readchar()",
+          "read()",
+          "getchar()"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The correct answer is A: getc() Let's break down why: getc() is a standard C library function specifically designed to read a single character from a file stream. It takes a file pointer (FILE*) as an argument and returns the character read (as an integer) or EOF if the end of the file is reached or an error occurs. readchar() is not a standard C function for file input. read() is a lower-level function (usually from the POSIX standard) used for reading a block of data from a file descriptor, not a single character. getchar() reads a character from standard input (stdin), which is usually the keyboard, not from a file. So, getc() is the correct function to use when you want to read a single character from a file in C.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Which of the following is a value type in C#?",
+        "options": [
+          "int",
+          "string",
+          "class",
+          "object"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Explanation: The correct answer is A: int . Value Types vs. Reference Types: In C#, data types are categorized into two main groups: value types and reference types. Value Types: * Value types directly store the data within their own memory space. * When you copy a value type variable, you are creating a completely independent copy of the data. * Examples of value types include: int , float , bool , char , struct , and enum . Reference Types: * Reference types store a *reference* (or pointer) to the memory location where the actual data is stored. * When you copy a reference type variable, you are only copying the reference, not the data itself. Both variables will then point to the same location in memory. * Examples of reference types include: string , class , object , arrays , and interfaces . Why the other options are incorrect: * B: string - Strings are reference types in C#. * C: class - Classes are used to define objects, and they are reference types . * D: object - 'object' is the base class for all types in C#, and it is a reference type .",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "A/An . . . . . . . . contains programs that can be selected.",
+        "options": [
+          "pointer",
+          "menu",
+          "icon",
+          "button"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Option A: pointer This option suggests that a pointer contains programs that can be selected. This statement is incorrect. In computing, a pointer refers to a graphical symbol on the screen that indicates the position where the next action will take place, such as clicking or selecting items, but it does not contain programs that can be selected. Option B: menu This option suggests that a menu contains programs that can be selected. This statement is correct. In graphical user interfaces (GUIs) like Microsoft Windows, a menu is a list of commands or options displayed on the screen that users can select to perform actions. Menus typically contain various programs, commands, or settings that users can choose from to interact with applications and the operating system. Option C: icon This option suggests that an icon contains programs that can be selected. This statement is incorrect. Icons are graphical representations or symbols displayed on the screen that represent files, folders, applications, or functions. Clicking on an icon typically opens the associated file or starts the corresponding program, but icons themselves do not contain programs. Option D: button This option suggests that a button contains programs that can be selected. This statement is incorrect. Buttons in a graphical user interface (GUI) are interactive elements that users can click on to trigger specific actions or commands within applications or the operating system. However, buttons do not contain programs themselves; they execute predefined functions when clicked. Conclusion: The correct answer is Option B: menu because in computing and Microsoft Windows, a menu is a list of options or commands that users can select from to perform actions, such as opening programs, accessing settings, or executing commands. Menus are integral components of GUIs that provide users with a structured way to interact with software and operating systems.",
+        "estimatedTime": 60,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "Microsoft Access is a",
+        "options": [
+          "RDBMS",
+          "OODBMS",
+          "ORDBMS",
+          "Network database model"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Microsoft Access is classified as a Relational Database Management System (RDBMS) . An RDBMS is a type of database management system that stores and organizes data in a structured manner using tables with predefined relationships between them. In Microsoft Access, data is stored in tables, and you can create relationships between these tables using keys. Access follows the principles of a relational database by allowing you to establish connections between tables, ensuring data integrity, and supporting SQL (Structured Query Language) for querying and managing data. Option B: Object-Oriented Database Management System (OODBMS) refers to a type of database system that stores data in the form of objects, which are instances of classes. Microsoft Access does not primarily fall under this category. Option C: Object-Relational Database Management System (ORDBMS) combines features of both relational and object-oriented databases. While Microsoft Access has some object-oriented features, it is primarily categorized as an RDBMS. Option D: The Network Database Model is a type of database model that represents data in a network-like structure of records and sets. Microsoft Access doesn't primarily adhere to the network database model. Therefore, the correct option is Option A: RDBMS .",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      },
+      {
+        "questionText": "You can use the formula palette to",
+        "options": [
+          "Format cells containing numbers",
+          "Create and edit formula containing functions",
+          "Enter assumptions data",
+          "Copy a range of cells"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Formula palette is used to create and edit formula. It is also possible to type a function directly into a cell, however, as there are over 300 functions built into Microsoft Excel, some of which are quite complex, Excel provides the Formula Palette to simplify the process.",
+        "estimatedTime": 45,
+        "subtopic": "Algorithms - Dynamic Programming",
+        "tags": [
+          "algorithms",
+          "technical",
+          "dynamic programming",
+          "memoization",
+          "dp"
+        ]
+      }
+    ]
+  },
+  "providerPayload": {
+    "mode": "offline",
+    "source": "existing_mock_tests",
+    "questionCount": 50
+  },
+  "offlineSource": true
+}

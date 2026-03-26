@@ -1,0 +1,1130 @@
+{
+  "provider": "gemini",
+  "model": "gemini-1.5-flash-offline",
+  "topic": "Number Series",
+  "subject": "aptitude",
+  "category": "logical",
+  "difficulty": "medium",
+  "promptStyle": "comprehensive_detailed",
+  "generatedAt": "2026-03-12T18:08:14.679Z",
+  "elapsedMs": 0,
+  "count": 50,
+  "cost": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "usd": 0,
+    "inr": 0
+  },
+  "prompt": "Generate 50 comprehensive placement test questions for Indian engineering students.\n\nTOPIC: Number Series\nDIFFICULTY: medium\n\nOUTPUT FORMAT (JSON only):\n{\n  \"questions\": [\n    {\n      \"questionText\": \"...\",\n      \"options\": [\"A\", \"B\", \"C\", \"D\"],\n      \"correctAnswer\": \"Letter\",\n      \"explanation\": \"Detailed solution\",\n      \"alternativeMethods\": \"Other solving approaches if applicable\",\n      \"commonMistakes\": \"Why wrong answers are tempting\",\n      \"estimatedTime\": 60,\n      \"subtopic\": \"Specific area\",\n      \"tags\": [\"concept1\", \"concept2\"]\n    }\n  ]\n}\n\nREQUIREMENTS:\n- Comprehensive coverage of Number Series\n- Educational explanations that teach concepts\n- Include formula derivations where helpful\n- For numerical answers, include common calculation errors as distractors\n- For conceptual answers, include common misconceptions\n- Verify all mathematical calculations\n- Ensure technical accuracy\n\nGenerate exactly 50 questions. Output ONLY valid JSON.",
+  "rawText": "{\"questions\":[{\"questionText\":\"Ankita’s younger brother Bobby is older than Nilu. Shweta is younger than Rahul but elder than Ankita. Who is the eldest? Logical Reasoning Questions on Odd Man Out Logical Reasoning Questions on Coding and Decoding Verbal Reasoning Questions on Blood Relation Verbal Reasoning Questions and Answers on Analogy Reasoning Questions on Venn Diagram Verbal Reasoning Questions on Logical Sequence of Words Non-Verbal Reasoning Questions on Dot Situation Analysis Non-Verbal Reasoning Questions and Answers on Missing Figures Reasoning Questions on Figure Classification Non-Verbal Questions on Pattern Completion Data Interpretation Quantitative Aptitude\",\"options\":[\"Rahul\",\"Shweta\",\"Ankita\",\"Bobby Topic Wise Questions and Answers on Logical Reasoning Our 1000+ Questions and Answers focus on various topics of Logical Reasoning, covering 20+ topics. This resource will help you prepare for competitive exams such as SSC, CAT, GRE, UPSC, GMAT, Bank Exams, Defense Exams, Railway Exams, and Job placements. You can practice these Logical Reasoning Questions topic by topic, starting from the 1st or you can jump to any topic of your choice. Logical Reasoning: Odd Man Out Coding and Decoding Logical Deduction Verbal Reasoning: Blood Relation Analogy Venn Diagram Logical Sequence of Words Syllogisms Non-Verbal Reasoning: Dot Situation Analysis Missing Figures Figure Classification Pattern Completion Data Interpretation: Data Interpretation Questions Quantitative Aptitude: Quantitative Aptitude Questions The section includes reasoning questions and answers on odd man out series. Odd Man Out – Set 1 Odd Man Out – Set 2 Odd Man Out – Set 3 Odd Man Out – Set 4 Odd Man Out – Set 5 Odd Man Out – Set 6 Odd Man Out – Set 7 Odd Man Out – Set 8 Odd Man Out – Set 9 Odd Man Out – Set 10 The section contains logical reasoning questions and answers on coding and decoding. Coding and Decoding – Set 1 Coding and Decoding – Set 2 Coding and Decoding – Set 3 Coding and Decoding – Set 4 Coding and Decoding – Set 5 Coding and Decoding – Set 6 Coding and Decoding – Set 7 Coding and Decoding – Set 8 Coding and Decoding – Set 9 Coding and Decoding – Set 10 The section contains verbal reasoning questions and answers on blood relation. Blood Relation – Set 1 Blood Relation – Set 2 Blood Relation – Set 3 Blood Relation – Set 4 Blood Relation – Set 5 Blood Relation – Set 6 Blood Relation – Set 7 Blood Relation – Set 8 Blood Relation – Set 9 Blood Relation – Set 10 The section contains verbal reasoning practice questions on analogy. Analogy – Set 1 Analogy – Set 2 Analogy – Set 3 Analogy – Set 4 Analogy – Set 5 Analogy – Set 6 Analogy – Set 7 Analogy – Set 8 Analogy – Set 9 Analogy – Set 10 The section includes verbal reasoning questions and answers on venn diagram. Venn Diagram – Set 1 Venn Diagram – Set 2 Venn Diagram – Set 3 Venn Diagram – Set 4 Venn Diagram – Set 5 Venn Diagram – Set 6 Venn Diagram – Set 7 Venn Diagram – Set 8 Venn Diagram – Set 9 Venn Diagram – Set 10 The section contains logical reasoning questions on sequencing Sequencing – Set 1 Sequencing – Set 2 Sequencing – Set 3 Sequencing – Set 4 Sequencing – Set 5 Sequencing – Set 6 Sequencing – Set 7 Sequencing – Set 8 Sequencing – Set 9 Sequencing – Set 10 The section contains questions and answers on dot situation analysis. Dot Situation Analysis – Set 1 Dot Situation Analysis – Set 2 Dot Situation Analysis – Set 3 Dot Situation Analysis – Set 4 Dot Situation Analysis – Set 5 Dot Situation Analysis – Set 6 Dot Situation Analysis – Set 7 Dot Situation Analysis – Set 8 Dot Situation Analysis – Set 9 Dot Situation Analysis – Set 10 The section contains non verbal reasoning questions on missing figures. Missing Figures – Set 1 Missing Figures – Set 2 Missing Figures – Set 3 Missing Figures – Set 4 Missing Figures – Set 5 Missing Figures – Set 6 Missing Figures – Set 7 Missing Figures – Set 8 Missing Figures – Set 9 Missing Figures – Set 10 The section contains non verbal questions and answers on figure classification. Figure Classification – Set 1 Figure Classification – Set 2 Figure Classification – Set 3 Figure Classification – Set 4 Figure Classification – Set 5 Figure Classification – Set 6 Figure Classification – Set 7 Figure Classification – Set 8 Figure Classification – Set 9 Figure Classification – Set 10 The section contains non verbal reasoning questions and answers on pattern completion. Pattern Completion – Set 1 Pattern Completion – Set 2 Pattern Completion – Set 3 Pattern Completion – Set 4 Pattern Completion – Set 5 Pattern Completion – Set 6 Pattern Completion – Set 7 Pattern Completion – Set 8 Pattern Completion – Set 9 Pattern Completion – Set 10 The section contains questions and answers on data interpretation. Tabulation Bar Graphs Pie Chart Line Graphs The section contains questions and answers on quantitative aptitude. Quantitative Aptitude Questions and Answers If you would like to learn “Logical Reasoning” thoroughly, you should attempt to work on the complete set of questions and answers mentioned above. It will immensely help anyone trying to crack an exam or an interview. Wish you the best in your endeavor to learn and master Logical Reasoning! 👉 For weekly logical reasoning practice, exam, and certification updates, join Sanfoundry’s official WhatsApp & Telegram channels » Next - Odd Man Out Questions and Answers\"],\"correctAnswer\":\"A\",\"explanation\":\"Here, according to question Nilu < Bobby < Ankita < Shweta < Rahul. Therefore, the eldest is Rahul. Hence the answer is Rahul.\",\"estimatedTime\":75,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"It was on the behest of the officer that he made those improvements.\",\"options\":[\"suggestion\",\"orders\",\"recommendation\",\"request\"],\"correctAnswer\":\"B\",\"explanation\":\"Suggestion : an idea or plan put forward for consideration. Orders : the arrangement or disposition of people or things in relation to each other according to a particular sequence, pattern, or method. Recommendation : a suggestion or proposal as to the best course of action, especially one put forward by an authoritative body. Request : an act of asking politely or formally for something. Behest : a person's orders or command. Synonym of Behest is Orders\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Identify the wrong number in the series. 2, 4, 8, 14, 22, 30?\",\"options\":[\"2\",\"14\",\"22\",\"30\"],\"correctAnswer\":\"D\",\"explanation\":\"Here, the series follows a pattern. i.e., 2+2 = 4+4 = 8+6 = 14+8 = 22. Similarly, 22+10 = 32. So the wrong number is 30. Hence, the answer is 30.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Complete the following series 5, 10, 30, 150, 1050...?\",\"options\":[\"82492\",\"68295\",\"11550\",\"92843\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, the series follows the following pattern. 5×2=10, 10×3=30, 30×5=150, 150×7=1050. We are multiplying by next prime number, so next is 11. So, 1050×11=11550. Hence, the answer is 11550.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What is the next number in the series. 21, 16, 22, 15, 23, 14, .....?\",\"options\":[\"24\",\"13\",\"21\",\"19\"],\"correctAnswer\":\"A\",\"explanation\":\"Here, in this series the alternate digits follows pattern. i.e. 21 → 22 → 23. Similarly, 16 → 15→ 14. So the next number will be 24. Hence, the answer is 24.\",\"estimatedTime\":60,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Complete the following series 4, 8, 24, 120, 840...?\",\"options\":[\"8249\",\"6829\",\"9240\",\"9284\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, the series follows the following pattern. 4×2=8, 8×3=24, 24×5=120, 120×7=840. We are multiplying by next prime number, so next is 11. So, 840×11=9240. Hence, the answer is 9240.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"1, 3, 4, 8, 15, 27, ?\",\"options\":[\"37\",\"44\",\"50\",\"55\"],\"correctAnswer\":\"C\",\"explanation\":\"The sum of any three consecutive terms of the series gives the next term. So, missing number = 8 + 15 + 27 = 50.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"589654237, 89654237, 8965423, 965423, ?\",\"options\":[\"58965\",\"65423\",\"89654\",\"96542\"],\"correctAnswer\":\"D\",\"explanation\":\"The given series is: 589654237, 89654237, 8965423, 965423, ? Step 1: Observe the pattern in the series. Step 2: The first number 589654237 loses the first digit '5' to become 89654237 . Step 3: The second number 89654237 loses the last digit '7' to become 8965423 . Step 4: The third number 8965423 loses the first digit '8' to become 965423 . Step 5: The fourth number 965423 loses the last digit '3' to become 96542 . Pattern Observed: The series alternates between removing the first digit and the last digit. Final Step: Following this pattern, the next number after 965423 should be 96542 (removing the last digit '3' ). Thus, the correct answer is: 96542 (Option D).\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"1, 2, 3, 6, 9, 18, ?, 54\",\"options\":[\"18\",\"27\",\"36\",\"81\"],\"correctAnswer\":\"B\",\"explanation\":\"Let's break down this number series question! The series is: 1, 2, 3, 6, 9, 18, ?, 54 Look for a pattern. It's not a simple addition or subtraction. Notice this: 1 + 2 = 3 3 + 6 = 9 9 + 18 = ? It looks like each number is the sum of the two numbers before it. So, to find the missing number: 9 + 18 = 27 Therefore, the missing number is 27. The correct answer is B. Double-check: 18 + 27 = 45 (Incorrect so that Logic is wrong) Notice this new Logic: 1 x 2 = 2 2 x (3/2) = 3 3 x 2 = 6 6 x (3/2) = 9 9 x 2 = 18 18 x (3/2) = ? So, to find the missing number: 18 x (3/2) = 27 Then check it with the next number: 27 x 2 = 54 Therefore, the missing number is 27. The correct answer is B.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What is the sum of all positive integers up to 1000, which are divisible by 5 and are not divisible by 2?\",\"options\":[\"10,050\",\"5050\",\"5000\",\"50,000\"],\"correctAnswer\":\"D\",\"explanation\":\"The positive integers, which are divisible by 5 are 5, 10, 15, ....., 1000 Out of these 10, 20, 30, ......, 1000 are divisible by 2 Thus, we have to find the sum of the positive integers 5, 15, 25, ......, 995 If n is the number of terms in it the sequence then 995 = 5 + 10(n - 1) ⇒ 1000 = 10n ∴ n = 100 Thus the sum of the series $$\\\\eqalign{ & = \\\\left( {\\\\frac{n}{2}} \\\\right)\\\\left( {a + l} \\\\right) \\\\cr & = \\\\left( {\\\\frac{{100}}{2}} \\\\right)\\\\left( {5 + 995} \\\\right) \\\\cr & = \\\\frac{{100 \\\\times 1000}}{2} \\\\cr & = 50000 \\\\cr} $$\",\"estimatedTime\":60,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What is the primary purpose of a scatter plot in EDA?\",\"options\":[\"To show the distribution of a single variable\",\"To visualize relationships between variables\",\"To display categorical data\",\"To represent time series data\"],\"correctAnswer\":\"B\",\"explanation\":\"Option A: To show the distribution of a single variable : This is usually done with histograms or box plots, not scatter plots. Option B: To visualize relationships between variables : This is the main point of a scatter plot! Each point on the plot represents a pair of values for two different variables. By looking at the pattern of points, we can see if there's a correlation or relationship between them. For example, if as one variable increases, the other also tends to increase, that shows a positive relationship. Option C: To display categorical data : Categorical data is better shown with bar charts or pie charts, not scatter plots. Option D: To represent time series data : Time series data is usually displayed using line charts. In simple terms: A scatter plot helps us see if two things are connected. If we plot \\\"ice cream sales\\\" versus \\\"temperature,\\\" we might see that as the temperature goes up, ice cream sales also go up. The scatter plot lets us see that relationship.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Inter division dynamics across the subsidiaries Due Diligence |E-Commerce Sector| Investment | Challenging 2022-2023 (C) Consult Club, IIM Ahmedabad Private Equity firm – Interview Transcript Due Diligence |Social Impact| Challenging Sure, I would like to now look at the various synergies that we can draw from the previous investments. I would like to look at revenue synergies, cost synergies and efficiency synergies. In terms of the revenue synergies, based on our other investments in home services sector we can drive demand for the company and identify skill training opportunities. The client can draw cost and efficiency synergies from similar foreign-based startups in our portfolio by means of technology transfer. Good points. Lets talk about the equity holding and investment amount that we should look at. What factors would influence this decision? Firstly, I would like to understand the nature of the investment – are we looking at a strategic investment with a majority stake or are we looking at a financial investment. As I mentioned, we plan to exit in 5-6 years, so it is a financial investment. I can take population growth as a proxy for the growth in the number of candidates. Similarly, the commissions will be based on the number of employees that we could place. Knowing 15% profit margins, we can discount the cash flows to get the present value of the firm. Good, let’s move on and look at the other factors. Since we are looking at skill programs, we should be looking at only the unemployed youth and students. We can use the labour participation rate and unemployment levels to get a figure. I can then multiply the market with the average fees to get the revenue. To further understand the revenues from commissions, I would like to know the commission rate and the number of companies that we are catering to currently and how is the demand expected to change. Let’s assume that there is enough demand. How would you get the projected revenues for the next 6 years to estimate the value of the firm. Right, so if we are looking at a minority stake in the company, the investment would depend on the valuation of the company and other possible PE firms who are looking to invest in the same company. We should also look at the willingness of the founders about the extent of dilution of their shares. Good points. There are in fact 2 other firms looking to invest in the same company. Let’s quickly now look at the various risks and exit options before the client. Sure. First and foremost, I would like to do a legal due diligence to see if there are any litigations, tax liabilities or regulatory compliance issues with the company, which can contribute to legal risks. I would look at the debt structure as well as the employee contracts of the company. In terms of technological risks, there are chances of obsolesce of some of these skills and need to adapt quickly to changing demands. There are economic risks, with respect to getting fees from the underprivileged in cases where sufficient government scholarships are absent. There is also high competition in the sector and threats from competition who can eat up the market share. In terms of exit options, the company can look to sell its stake back to the the initial promoters or another PE firm since there are existing competition. Alright, I think that’s a comprehensive analysis. Any final recommendation? That sounds like a fair approach. Explain me your approach to estimate the total market size. Good question. There hasn’t been any prior investments and the equity is split equally between the 3 brothers. At this point, I feel I have enough information to proceed. I’ll take a moment to structure my thoughts to produce an overall approach to analyse the feasibility of the investment. Sounds good, please go ahead. Okay, I would like to divide the analysis into 3 buckets – firstly estimating the market attractiveness and coming up with the valuation of the company. Next, I would like to investigate the synergies that we draw from the investments. Lastly, I would like to look at the various risks associated with the company. I would also know about the company’s founders and their vision. That’s interesting. And how is the competitive landscape in the sector where the client operates? It is a fragmented market and there is high competition from some similar early-stage start-ups. Do we have any information about the profitability of our client ? Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Sounds good. Firstly, I would like to understand our client’s motivation behind the investment. There are two motivations primarily, financials gains and driving social impact. Okay, does the client have any number about the quantum of investment that it wants to make? There is no restriction as such. We would like to help in analyzing various factors to decide this. Okay, and is there any exit multiple that you have in mind or any return that you are expecting from this investment? Yes the client has invested in similar companies before but none of them are based out of India. To answer your 2nd question, our current portfolio consists of growth stage startups from the healthcare, services and ed-tech sectors based out of India and other south-east Asian countries. Great. Now that I have information about our client, I would like to know more about the company in which we plan to invest. Can you tell me more about the company and their business model? Yes sure. It is a family run company started by 3-brothers. They work with the underprivileged students from Eastern-Indian states of Orissa, Bihar and West Bengal. Their business model is to upskill students in theoretical and vocational skills and help them provide employment. They get revenue sources include fees from the students at a subsidized amount and commissions from the companies where the students are employed. Thanks for this. Are their specific skills or sectors in which the students are trained. The students are unemployed youth who are provided training as beauticians, cutting and stitching jobs and as baristas for coffee shops. They are continuously expanding the the range of their skill program. Good question. So, we are looking at a 16% CAGR on the investment over a horizon of 6 years after which we plan to exit. That’s helpful. I would now want to get some information about the existing portfolio of the client. Has the client invested in similar companies previously? How does its portfolio look like? So currently the client operated at 15% net margin while the industry operated at 16% margins. Is their any other differentiation that the company has? The company has invested heavily in technology to continuously identify the gap in demand for the required skills in the industry. It also uses helps to identify prospects and incentives them to join the program by identifying government schemes to avail scholarships and get skilled. 2022-2023 Page 154 Lastly, what’s the equity structure of the company and has there been any prior investments? I’ll start by estimating the population of West Bengal, Orissa and Bihar which should be 20% of the total population. Next, I would segment the population by age(18-25 years which is 20% roughly). We can further look at urban and rural segments and then look at the low- and middle- income category. Does that sound like a good approach? Do you think you are missing any other criteria? Given the demand and good profit margins of the company, the investment looks lucrative, and the client should go ahead with it, Alright, thank you for the recommendation. (C) Consult Club, IIM Ahmedabad Recommendations (Beyond the transcript) • a) Do a proper analysis of the competitive landscape to gauge the competitive edge of the target company and also look into the threats of new entrant specially a big player. • b) Understand the operating model and the technology used of the target company to gauge the scalability of the business model. Key Learnings • In cases of due diligence and M&A, the preliminary questions are the most important and adequate time should be given to get relevant case facts. • The question about financial and strategic investment should have been asked in the beginning. Again, since time horizon was known beforehand, here case facts could have been linked better • It is important to think of synergies even between existing portfolio of the PE firm to the target company like potential technology transfer from companies in the portfolio operating abroad • In the guesstimate, it is essential to first lay down the approach the validate from the interviewer if something else is missing Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Approach/ Framework Interviewee Notes • It is important to understand the rationale for the investment • The preliminary questions should cover questions about the client and the target company to get important case facts. • It is essential to have a basic understand of the private equity industry and the process of due diligence, • It is important for the interviewee to link important case facts to subsequent answers. • Guesstimates can be qualitative or quantitative depending upon the interviewer. The approach should be laid out clearly. If numbers are required, reasonable assumptions can be taken. (For example, slightly higher unemployment levels in eastern India) Case Facts • Objective for investment is both social impact and financial gain. • 16% CAGR and a time horizon of 6 years. • No issues on cost side. • No poaching of customers by competitors. • The existing portfolio of the client and prior investments • The industries that the target company caters to currently • The ownership structure of the target company • Profit margins and industry competitiveness Commercial Due Diligence Valuation and financial feasibility Intrinsic Value Private Equity firm Page 155 Business Model P E S T E L Market Size 2022-2023 Due Diligence |Social Impact| Challenging Synergies and Business Model Exit Options and Risks Synergies Acquirer’s Value Customers Operations Differentiation Efficiency Synergies Financials Revenue Synergies Growth Rate Profitability Competition Equity Structure Cost Synergies Risks Exit Options Total Exit Partial Exit IPO Guesstimate Approach: Market size of underprivileged youth seeking jobs Segment total population to get population of Bihar, Orissa and WB (~20% of total – 25 crores) Segment further by age groups (18-30 years ~ 20% of 25 crore – 5 crore) Rural (70%) Urban (30%) Covered in this case Not covered in this case Lower Income group (80%) Lower Income group (40%) % unemployed and seeking jobs(10%) % unemployed and seeking jobs(15%) Total number of unemployed youth seeking jobs in the 3 states ~ 30 lacs Unconventional (C) Consult Club, IIM Ahmedabad Easy wins • Breakdown into a mathematical formula • Always remember Demand and Supply • Any problem can have an internal cause (in control of company) or external cause. For external cause, use PESTEL to analyze possible issues Unconventional - Tips & Tricks Page 157 Pointers to Remember • Never try to force fit a framework • Understand the problem really really well • Ask the interviewer if you’re unfamiliar with a particular industry, do not hesitate to ask question • If the industry is familiar, comparisons with companies you know about would help in providing recommendations • Be as comprehensive as possible and hence bucketing the problems into different sections will help in structured thinking • Can be looked at through 2 lenses – qualitative & quantitative (as a mathematical problem) • Using the 3CP i.e., of Company, Customer, Competitor and Product approach works in certain cases, but focus on keeping the approach MECE • In certain cases when the scope of the cases is broad, the interviewee should ask if the focus needs to be on a specific aspect to structure thoughts in that direction • While scoping the problem, the interviewee can consider if there are competitors in the same industry and the strategies, they follow 2022-2023 (C) Consult Club, IIM Ahmedabad You can go ahead with the ad model assumption. However, X doesn’t have any merchandising rights for GOT. What information do you need from me to calculate X’s revenues? I would need the following: (i) X’s monthly Subscription fee (ii) No. of episodes in GOT S8 (iii) GOT viewers not currently on X (iv) Average ad rate per slot per episode (v) No. of slots auctioned per episode Glad that you asked. I have the following data sheet with me. This should help you calculate revenues for X (Data sheet provided in table I). Thank you. From my calculations, X’s revenue from Subscriptions and Advertisements comes out to be $6 Mn (table II). However, I think there are some synergistic benefits to adding GOT on our platform. These can be attributed to following factors: • Customer Stickiness: Some of the additional customers would stick around after GOT ends increasing their CLV for X. These benefits need to be added to our revenue calculations • Additional ad revenues for existing programmes: X can leverage its added user base to charge a premium for ad slots in its existing shows during GOT‘s 3-month on-air run-time These are some very good points, and you can assume an additional benefit of $1 Mn from Synergy. Can you please now list down the cost heads for X? I have divided X’s costs into two buckets (Framework 1): • Direct Costs: This header would include the Bid amount, Streaming costs, Marketing costs • Overheads: This would include incremental legal costs, regulatory costs, customer service costs Apart from this, there would be Costs of capital (which would include costs of financing the investment and opportunity costs of not putting the money elsewhere), Assume that X expects to incur additional costs of $1 Mn apart from the bid amount. X has expected an ROI of 20% to incorporate for the cost of capital. Oh, I think I have all the data now. Based on my calculations, the bid amount for GOT season 8 cannot exceed $5 Mn to get the desired ROI of 20%. Now, I’d like to focus on the Strategic feasibility. Adding GOT would affect the way subscribers interact with the platform. Given the adult nature of content, some of the family-centric subscribers might get dissuaded from continuing. Also, this would affect our tie-ups with existing content providers which infer HBO as their competitor or substitute. These points are valid, but we can safely assume that X is strategically aligned with getting HBO onboard. Can you please now identify three potential risks that X needs to be aware of? Sure. I have collated the risks into the following categories: • Customer centric: X might not attract enough new customers on the platform given the subscription price and the presence of alternate channels of piracy like torrents, illegal streaming • Content centric: The content is not up to the mark increasing mid-season customer and advertiser drop-outs. Given the explicit content, X could also face added regulatory pressures • Platform centric: Focus on GOT might lead to self- cannibalization with decreased viewership for the platform’s existing content. Plus, X needs to minimize platform glitches such as that could inhibit user watching experience, leaving the new viewers unsatisfied with the platform I think we can stop here. Thank you. Bid Strategy for GOT Season 8– Interview Transcript Unconventional | Bid strategy | Challenging | Entertainment Page 158 Your client is Company X. They have been approached by HBO to bid for the eighth season of GOT. They want your help to evaluate the opportunity and determine the correct bidding strategy. I would like to ask a few clarifying questions to get an understanding about the case. Could you please elaborate on X’s business model and current product offerings? X is an OTT platform operating in India. The company has a website and an app where customers can access media content by paying a monthly subscription fee. X has its own content as well as tie- ups with other providers to provide a curated list of Movies, TV Shows, News Channels and Sporting Events on its platform for its subscribers. What is X’s objective for this bid? Is it to increase user base, or revenues or profits? And what makes GOT so attractive for X? X wants to maximise their profits and this bid should account for that. As for GOT, it is the most watched English TV Series in India. I would like to now understand the bidding terms. Will this bid be for the eighth season only? Also, will X have exclusive rights for this and till when is the bid valid? The bid will be for exclusive rights to stream GOT’s eighth and final season, and valid only for the duration that the show is on-air. Has X bid previously for GOT and if so, do we have any information regarding the bidding process? Also, is it okay to assume that the offer has been made to X’s competitors as well? It’s a closed bidding process that HBO extends to X and its four other competitors. The client had bid for GOT’s seventh season but did not win the bid. They were informed that they were close second and had bid $3 Mn for Season\",\"options\":[\"Consult Club, IIM Ahmedabad Private Equity firm – Interview Transcript Due Diligence |Social Impact| Challenging Sure, I would like to now look at the various synergies that we can draw from the previous investments. I would like to look at revenue synergies, cost synergies and efficiency synergies. In terms of the revenue synergies, based on our other investments in home services sector we can drive demand for the company and identify skill training opportunities. The client can draw cost and efficiency synergies from similar foreign-based startups in our portfolio by means of technology transfer. Good points. Lets talk about the equity holding and investment amount that we should look at. What factors would influence this decision? Firstly, I would like to understand the nature of the investment – are we looking at a strategic investment with a majority stake or are we looking at a financial investment. As I mentioned, we plan to exit in 5-6 years, so it is a financial investment. I can take population growth as a proxy for the growth in the number of candidates. Similarly, the commissions will be based on the number of employees that we could place. Knowing 15% profit margins, we can discount the cash flows to get the present value of the firm. Good, let’s move on and look at the other factors. Since we are looking at skill programs, we should be looking at only the unemployed youth and students. We can use the labour participation rate and unemployment levels to get a figure. I can then multiply the market with the average fees to get the revenue. To further understand the revenues from commissions, I would like to know the commission rate and the number of companies that we are catering to currently and how is the demand expected to change. Let’s assume that there is enough demand. How would you get the projected revenues for the next 6 years to estimate the value of the firm. Right, so if we are looking at a minority stake in the company, the investment would depend on the valuation of the company and other possible PE firms who are looking to invest in the same company. We should also look at the willingness of the founders about the extent of dilution of their shares. Good points. There are in fact 2 other firms looking to invest in the same company. Let’s quickly now look at the various risks and exit options before the client. Sure. First and foremost, I would like to do a legal due diligence to see if there are any litigations, tax liabilities or regulatory compliance issues with the company, which can contribute to legal risks. I would look at the debt structure as well as the employee contracts of the company. In terms of technological risks, there are chances of obsolesce of some of these skills and need to adapt quickly to changing demands. There are economic risks, with respect to getting fees from the underprivileged in cases where sufficient government scholarships are absent. There is also high competition in the sector and threats from competition who can eat up the market share. In terms of exit options, the company can look to sell its stake back to the the initial promoters or another PE firm since there are existing competition. Alright, I think that’s a comprehensive analysis. Any final recommendation? That sounds like a fair approach. Explain me your approach to estimate the total market size. Good question. There hasn’t been any prior investments and the equity is split equally between the 3 brothers. At this point, I feel I have enough information to proceed. I’ll take a moment to structure my thoughts to produce an overall approach to analyse the feasibility of the investment. Sounds good, please go ahead. Okay, I would like to divide the analysis into 3 buckets – firstly estimating the market attractiveness and coming up with the valuation of the company. Next, I would like to investigate the synergies that we draw from the investments. Lastly, I would like to look at the various risks associated with the company. I would also know about the company’s founders and their vision. That’s interesting. And how is the competitive landscape in the sector where the client operates? It is a fragmented market and there is high competition from some similar early-stage start-ups. Do we have any information about the profitability of our client ? Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Sounds good. Firstly, I would like to understand our client’s motivation behind the investment. There are two motivations primarily, financials gains and driving social impact. Okay, does the client have any number about the quantum of investment that it wants to make? There is no restriction as such. We would like to help in analyzing various factors to decide this. Okay, and is there any exit multiple that you have in mind or any return that you are expecting from this investment? Yes the client has invested in similar companies before but none of them are based out of India. To answer your 2nd question, our current portfolio consists of growth stage startups from the healthcare, services and ed-tech sectors based out of India and other south-east Asian countries. Great. Now that I have information about our client, I would like to know more about the company in which we plan to invest. Can you tell me more about the company and their business model? Yes sure. It is a family run company started by 3-brothers. They work with the underprivileged students from Eastern-Indian states of Orissa, Bihar and West Bengal. Their business model is to upskill students in theoretical and vocational skills and help them provide employment. They get revenue sources include fees from the students at a subsidized amount and commissions from the companies where the students are employed. Thanks for this. Are their specific skills or sectors in which the students are trained. The students are unemployed youth who are provided training as beauticians, cutting and stitching jobs and as baristas for coffee shops. They are continuously expanding the the range of their skill program. Good question. So, we are looking at a 16% CAGR on the investment over a horizon of 6 years after which we plan to exit. That’s helpful. I would now want to get some information about the existing portfolio of the client. Has the client invested in similar companies previously? How does its portfolio look like? So currently the client operated at 15% net margin while the industry operated at 16% margins. Is their any other differentiation that the company has? The company has invested heavily in technology to continuously identify the gap in demand for the required skills in the industry. It also uses helps to identify prospects and incentives them to join the program by identifying government schemes to avail scholarships and get skilled. 2022-2023 Page 154 Lastly, what’s the equity structure of the company and has there been any prior investments? I’ll start by estimating the population of West Bengal, Orissa and Bihar which should be 20% of the total population. Next, I would segment the population by age(18-25 years which is 20% roughly). We can further look at urban and rural segments and then look at the low- and middle- income category. Does that sound like a good approach? Do you think you are missing any other criteria? Given the demand and good profit margins of the company, the investment looks lucrative, and the client should go ahead with it, Alright, thank you for the recommendation.\",\"Consult Club, IIM Ahmedabad Recommendations (Beyond the transcript) • a) Do a proper analysis of the competitive landscape to gauge the competitive edge of the target company and also look into the threats of new entrant specially a big player. • b) Understand the operating model and the technology used of the target company to gauge the scalability of the business model. Key Learnings • In cases of due diligence and M&A, the preliminary questions are the most important and adequate time should be given to get relevant case facts. • The question about financial and strategic investment should have been asked in the beginning. Again, since time horizon was known beforehand, here case facts could have been linked better • It is important to think of synergies even between existing portfolio of the PE firm to the target company like potential technology transfer from companies in the portfolio operating abroad • In the guesstimate, it is essential to first lay down the approach the validate from the interviewer if something else is missing Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Approach/ Framework Interviewee Notes • It is important to understand the rationale for the investment • The preliminary questions should cover questions about the client and the target company to get important case facts. • It is essential to have a basic understand of the private equity industry and the process of due diligence, • It is important for the interviewee to link important case facts to subsequent answers. • Guesstimates can be qualitative or quantitative depending upon the interviewer. The approach should be laid out clearly. If numbers are required, reasonable assumptions can be taken. (For example, slightly higher unemployment levels in eastern India) Case Facts • Objective for investment is both social impact and financial gain. • 16% CAGR and a time horizon of 6 years. • No issues on cost side. • No poaching of customers by competitors. • The existing portfolio of the client and prior investments • The industries that the target company caters to currently • The ownership structure of the target company • Profit margins and industry competitiveness Commercial Due Diligence Valuation and financial feasibility Intrinsic Value Private Equity firm Page 155 Business Model P E S T E L Market Size 2022-2023 Due Diligence |Social Impact| Challenging Synergies and Business Model Exit Options and Risks Synergies Acquirer’s Value Customers Operations Differentiation Efficiency Synergies Financials Revenue Synergies Growth Rate Profitability Competition Equity Structure Cost Synergies Risks Exit Options Total Exit Partial Exit IPO Guesstimate Approach: Market size of underprivileged youth seeking jobs Segment total population to get population of Bihar, Orissa and WB (~20% of total – 25 crores) Segment further by age groups (18-30 years ~ 20% of 25 crore – 5 crore) Rural (70%) Urban (30%) Covered in this case Not covered in this case Lower Income group (80%) Lower Income group (40%) % unemployed and seeking jobs(10%) % unemployed and seeking jobs(15%) Total number of unemployed youth seeking jobs in the 3 states ~ 30 lacs Unconventional\",\"Consult Club, IIM Ahmedabad Easy wins • Breakdown into a mathematical formula • Always remember Demand and Supply • Any problem can have an internal cause (in control of company) or external cause. For external cause, use PESTEL to analyze possible issues Unconventional - Tips & Tricks Page 157 Pointers to Remember • Never try to force fit a framework • Understand the problem really really well • Ask the interviewer if you’re unfamiliar with a particular industry, do not hesitate to ask question • If the industry is familiar, comparisons with companies you know about would help in providing recommendations • Be as comprehensive as possible and hence bucketing the problems into different sections will help in structured thinking • Can be looked at through 2 lenses – qualitative & quantitative (as a mathematical problem) • Using the 3CP i.e., of Company, Customer, Competitor and Product approach works in certain cases, but focus on keeping the approach MECE • In certain cases when the scope of the cases is broad, the interviewee should ask if the focus needs to be on a specific aspect to structure thoughts in that direction • While scoping the problem, the interviewee can consider if there are competitors in the same industry and the strategies, they follow 2022-2023\",\"Consult Club, IIM Ahmedabad You can go ahead with the ad model assumption. However, X doesn’t have any merchandising rights for GOT. What information do you need from me to calculate X’s revenues? I would need the following: (i) X’s monthly Subscription fee (ii) No. of episodes in GOT S8 (iii) GOT viewers not currently on X (iv) Average ad rate per slot per episode (v) No. of slots auctioned per episode Glad that you asked. I have the following data sheet with me. This should help you calculate revenues for X (Data sheet provided in table I). Thank you. From my calculations, X’s revenue from Subscriptions and Advertisements comes out to be $6 Mn (table II). However, I think there are some synergistic benefits to adding GOT on our platform. These can be attributed to following factors: • Customer Stickiness: Some of the additional customers would stick around after GOT ends increasing their CLV for X. These benefits need to be added to our revenue calculations • Additional ad revenues for existing programmes: X can leverage its added user base to charge a premium for ad slots in its existing shows during GOT‘s 3-month on-air run-time These are some very good points, and you can assume an additional benefit of $1 Mn from Synergy. Can you please now list down the cost heads for X? I have divided X’s costs into two buckets (Framework 1): • Direct Costs: This header would include the Bid amount, Streaming costs, Marketing costs • Overheads: This would include incremental legal costs, regulatory costs, customer service costs Apart from this, there would be Costs of capital (which would include costs of financing the investment and opportunity costs of not putting the money elsewhere), Assume that X expects to incur additional costs of $1 Mn apart from the bid amount. X has expected an ROI of 20% to incorporate for the cost of capital. Oh, I think I have all the data now. Based on my calculations, the bid amount for GOT season 8 cannot exceed $5 Mn to get the desired ROI of 20%. Now, I’d like to focus on the Strategic feasibility. Adding GOT would affect the way subscribers interact with the platform. Given the adult nature of content, some of the family-centric subscribers might get dissuaded from continuing. Also, this would affect our tie-ups with existing content providers which infer HBO as their competitor or substitute. These points are valid, but we can safely assume that X is strategically aligned with getting HBO onboard. Can you please now identify three potential risks that X needs to be aware of? Sure. I have collated the risks into the following categories: • Customer centric: X might not attract enough new customers on the platform given the subscription price and the presence of alternate channels of piracy like torrents, illegal streaming • Content centric: The content is not up to the mark increasing mid-season customer and advertiser drop-outs. Given the explicit content, X could also face added regulatory pressures • Platform centric: Focus on GOT might lead to self- cannibalization with decreased viewership for the platform’s existing content. Plus, X needs to minimize platform glitches such as that could inhibit user watching experience, leaving the new viewers unsatisfied with the platform I think we can stop here. Thank you. Bid Strategy for GOT Season 8– Interview Transcript Unconventional | Bid strategy | Challenging | Entertainment Page 158 Your client is Company X. They have been approached by HBO to bid for the eighth season of GOT. They want your help to evaluate the opportunity and determine the correct bidding strategy. I would like to ask a few clarifying questions to get an understanding about the case. Could you please elaborate on X’s business model and current product offerings? X is an OTT platform operating in India. The company has a website and an app where customers can access media content by paying a monthly subscription fee. X has its own content as well as tie- ups with other providers to provide a curated list of Movies, TV Shows, News Channels and Sporting Events on its platform for its subscribers. What is X’s objective for this bid? Is it to increase user base, or revenues or profits? And what makes GOT so attractive for X? X wants to maximise their profits and this bid should account for that. As for GOT, it is the most watched English TV Series in India. I would like to now understand the bidding terms. Will this bid be for the eighth season only? Also, will X have exclusive rights for this and till when is the bid valid? The bid will be for exclusive rights to stream GOT’s eighth and final season, and valid only for the duration that the show is on-air. Has X bid previously for GOT and if so, do we have any information regarding the bidding process? Also, is it okay to assume that the offer has been made to X’s competitors as well? It’s a closed bidding process that HBO extends to X and its four other competitors. The client had bid for GOT’s seventh season but did not win the bid. They were informed that they were close second and had bid $3 Mn for Season\"],\"correctAnswer\":\"A\",\"explanation\":\"This question is mapped to Number Series. The correct answer is A based on the original source question.\",\"estimatedTime\":75,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What does a microprocessor understand after decoding opcode?\",\"options\":[\"Perform ALU operation\",\"Go to memory\",\"Length of the instruction and number of operations\",\"Go to the output device\"],\"correctAnswer\":\"C\",\"explanation\":\"After decoding the opcode of the instruction, a microprocessor understands the length of the instruction and the total number of operations to be performed.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"In how many ways 4 boys and 3 girls can be seated in a row so that they are alternate.\",\"options\":[\"144\",\"288\",\"12\",\"256\"],\"correctAnswer\":\"A\",\"explanation\":\"Let the Arrangement be, B G B G B G B 4 boys can be seated in 4! Ways Girl can be seated in 3! Ways Required number of ways, = 4! × 3! = 144\",\"estimatedTime\":60,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Which one set of letters when sequentially placed at the gaps in the given letter series shall complete it ? a_bbc_aab_cca_bbcc\",\"options\":[\"bacb\",\"acba\",\"caba\",\"abba\"],\"correctAnswer\":\"B\",\"explanation\":\"The pattern is, a a bbc c aab b cca a bbcc. The pattern aabbcc is repeated.\",\"estimatedTime\":60,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"ZA 5 , Y 4 B, XC 6 , W 3 D, _____\",\"options\":[\"E 7 V\",\"V 2 E\",\"VE 5\",\"VE 7\"],\"correctAnswer\":\"D\",\"explanation\":\"There are three series to look for here. The first letters are alphabetical in reverse: Z, Y, X, W, V. The second letters are in alphabetical order, beginning with A. The number series is as follows: 5, 4, 6, 3, 7.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"P 5 QR, P 4 QS, P 3 QT, _____, P 1 QV\",\"options\":[\"PQW\",\"PQV 2\",\"P 2 QU\",\"PQ 3 U\"],\"correctAnswer\":\"C\",\"explanation\":\"The first two letters, PQ, are static. The third letter is in alphabetical order, beginning with R. The number series is in descending order beginning with 5.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"What will come at the place of question mark ? 3, 2, 7, 6, 11, ?\",\"options\":[\"8\",\"10\",\"4\",\"2\"],\"correctAnswer\":\"B\",\"explanation\":\"2 nd number is less by 1 than the 1 st number and 3 rd number is more by 5 than the 2 nd number. The same rule follows in other numbers of the series.\",\"estimatedTime\":60,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Find out the pair of numbers that does not belong to the group for lack of common property :\",\"options\":[\"16-18\",\"56-63\",\"96-108\",\"86-99\"],\"correctAnswer\":\"D\",\"explanation\":\"All other number pairs follow the ratio 8:9: 16:18 = 8:9 56:63 = 8:9 96:108 = 8:9 But 86:99 ≠ 8:9 (since 86 ÷ 99 ≈ 0.868, not 0.888...) Hence, 86–99 is the pair that does not fit the pattern.\",\"estimatedTime\":60,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"The arrangement of rational numbers, $$\\\\frac{- 7}{10}$$, $$\\\\frac{5}{- 8}$$, $$\\\\frac{2}{- 3}$$ in ascending order is :\",\"options\":[\"$$\\\\frac{2}{{ - 3}},\\\\frac{5}{{ - 8}},\\\\frac{{ - 7}}{{10}}$$\",\"$$\\\\frac{5}{{ - 8}},\\\\frac{{ - 7}}{{10}},\\\\frac{2}{{ - 3}}$$\",\"$$\\\\frac{{ - 7}}{{10}},\\\\frac{5}{{ - 8}},\\\\frac{2}{{ - 3}}$$\",\"$$\\\\frac{{ - 7}}{{10}},\\\\frac{2}{{ - 3}},\\\\frac{5}{{ - 8}}$$\"],\"correctAnswer\":\"D\",\"explanation\":\"$$\\\\frac{- 7}{10}$$ = - 0.7 $$\\\\frac{5}{- 8}$$ = - $$\\\\frac{5}{8}$$ = - 0.625, $$\\\\frac{2}{- 3}$$ = - $$\\\\frac{2}{3}$$ = - 0.66 Since, -0.7 < -0.66 < -0.625 So, $$\\\\frac{- 7}{10}$$ < $$\\\\frac{2}{- 3}$$ < $$\\\\frac{5}{- 8}$$\",\"estimatedTime\":60,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Find the next number in the series : 61, 52, 63, 94, 46, .... ?\",\"options\":[\"81\",\"18\",\"49\",\"35\"],\"correctAnswer\":\"B\",\"explanation\":\"Here, each number is reverse of a number which is square of a number. i.e. 42=16→61, 52=25→52, 62=36→63, 72=49→94, 82=64→46. So, the next number will be 92=81→18. Hence, the answer is 18.\",\"estimatedTime\":60,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Identify the wrong number in the series. 0, 1, 1, 2, 3, 5, 8, 13, 20, 34?\",\"options\":[\"8\",\"20\",\"13\",\"34\"],\"correctAnswer\":\"B\",\"explanation\":\"Here, the series is a Fibonacci series. i.e. a number in the series is the sum of previous two numbers. So, in this 8+13 = 21. So the wrong number is 20. Hence, the answer is 20.\",\"estimatedTime\":60,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Complete the following series 6, 12, 36, 144, 720...?\",\"options\":[\"4320\",\"2843\",\"8249\",\"6825\"],\"correctAnswer\":\"A\",\"explanation\":\"Here, the series follows the following pattern. 6×2=12, 12×3=36, 36×4=144, 144×5=720. Similarly, 720×6=4320. Hence, the answer is 4320.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Identify the missing number in the series. 8, 13, 21, 34, 55, ?, 144?\",\"options\":[\"55\",\"13\",\"89\",\"21\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, the series is a Fibonacci series. i.e., a number in the series is the sum of previous two numbers. So, in this missing number is 34+55 =89. Hence, the answer is 89.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"The mean of 1, 2, 2 2 , 2 3 , ......, 2 63 lies between which of the following number?\",\"options\":[\"2 57 and 2 58\",\"2 59 and 2 58\",\"2 57 and 2 56\",\"2 56 and 2 55\"],\"correctAnswer\":\"C\",\"explanation\":\"The series is in GP with a=1, r=2 and n=64. Sum = 2 63 – 1 Mean = \\\\(\\\\frac{2^{63}–1}{64}\\\\)=2 57 –\\\\(\\\\frac{1}{2^6}\\\\) Therefore, the mean lies between 2 57 and 2 56 .\",\"estimatedTime\":60,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Find the sum of 1+\\\\(\\\\frac{3}{5}+\\\\frac{5}{25}+\\\\frac{7}{125}\\\\)+⋯ up to n terms.\",\"options\":[\"15/8\",\"15/16\",\"25/16\",\"5/16\"],\"correctAnswer\":\"A\",\"explanation\":\"The given sequence is arithmetic geometric series, where a=1, d=2 and r=(1/5) S ∞ = \\\\(\\\\frac{a}{1-r} + \\\\frac{dr}{(1-r)^2}\\\\) S ∞ = \\\\(\\\\frac{1}{(1-1/5)} + \\\\frac{2/5}{(1-\\\\frac{1}{5})^2}\\\\) S ∞ = 5/4 + 10/16 = 15/8\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"A number is twice a second number which in turn is 3 times the third number. Find the ratio of the series.\",\"options\":[\"6 : 3 : 1\",\"2 : 3 : 5\",\"2 : 3 : 6\",\"2 : 4 : 7\"],\"correctAnswer\":\"A\",\"explanation\":\"Let the last number be x. The second number is 3 time the third number = 3 * x = 3x The first number is twice the second number = 3x * 2 = 6x The ratio of the series = 6x : 3x : x = 6 : 3 : 1\",\"estimatedTime\":60,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Find the next number in the series: 81, 100, 121, 144, 169, ....?\",\"options\":[\"182\",\"812\",\"196\",\"249\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, each number is square of a number. i.e., 92=81, 102=100, 112=121, 122=144, 132=169. So, the next number will be 142=196. Hence, the answer is 196.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Complete the series 27, 35, 47 ,?, 53, 72.\",\"options\":[\"28\",\"62\",\"74\",\"63\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, in the series after first three numbers, remaining three numbers are reversed number of previous numbers. Hence, the answer is 74.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Find the next number in the series: 80, 99, 120, 143, 168, .... ?\",\"options\":[\"182\",\"123\",\"195\",\"249\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, each number is one less than square of a number. i.e. 92=81-1=80, 102=100-1=99, 112=121-1=120, 122=144-1=143, 132=169-1=168. So, the next number will be 142=196-1=195. Hence, the answer is 195.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Complete the series 23, 45, 67, ?, 54, 32.\",\"options\":[\"28\",\"62\",\"76\",\"63\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, in the series after first three numbers, remaining three numbers are reversed number of previous numbers. Hence, the answer is 76.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Complete the following series 16, 20, 29, 45, 70...?\",\"options\":[\"86\",\"94\",\"106\",\"89\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, the difference between the digits is the square of numbers in ascending order i.e., 20-16 = 4, 29-20 = 9, 45-29 = 16, 70-45 = 25. So, next number will be 70 + square(6) = 70+36 = 106.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Find the next number in the series: 15, 24, 35, 48, 63, .... ?\",\"options\":[\"82\",\"80\",\"95\",\"49\"],\"correctAnswer\":\"B\",\"explanation\":\"Here, each number is one less than square of a number. i.e. 42=16-1=15, 52=25-1=24, 62=36-1=35, 72=49-1=48, 82=64-1=63. So, the next number will be 92=81-1=80. Hence, the answer is 80.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Complete the series 12, 34, 87, ?, 43, 21.\",\"options\":[\"28\",\"62\",\"78\",\"63\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, in the series after first three numbers, remaining three numbers are reversed number of previous numbers. Hence, the answer is 78.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Find the next number in the series: 63, 124, 215, 342, 511, .... ?\",\"options\":[\"824\",\"728\",\"951\",\"693\"],\"correctAnswer\":\"B\",\"explanation\":\"Here, each number is one less than cube of a number. i.e. 4 3 =64-1=63, 5 3 =125-1=124, 6 3 =216-1=215, 7 3 =343-1=342, 8 3 =512-1=511. So, the next number will be 9 3 =729-1=728. Hence, the answer is 728.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Complete the series 14, 46, 68, 86, ?, 41.\",\"options\":[\"28\",\"64\",\"78\",\"62\"],\"correctAnswer\":\"B\",\"explanation\":\"Here, in the series after first three numbers, remaining three numbers are reversed number of previous numbers. Hence, the answer is 64.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Complete the following series 7, 14, 56, 448, 7168 ...?\",\"options\":[\"685302\",\"803691\",\"229376\",\"409354\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, the pattern followed is:- 7×2=14, 14×4=56, 56×8=448, 448×16=7168. Similarly, 7168×32=229376. Hence, the answer is 229376.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Find the next number in the series: 7, 63, 215, 511, .... ?\",\"options\":[\"824\",\"728\",\"999\",\"693\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, each number is one less than cube of a number. i.e. 2 3 =8-1=7, 4 3 =64-1=63, 6 3 =216-1=215, 8 3 =512-1=511. So, the next number will be 10 3 =1000-1=999. Hence, the answer is 999.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Complete the series 143, 462, 684, 486, ?, 341.\",\"options\":[\"286\",\"264\",\"578\",\"462\"],\"correctAnswer\":\"B\",\"explanation\":\"Here, in the series after first three numbers, remaining three numbers are reversed number of previous numbers. Hence, the answer is 264.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Complete the following series 12, 24, 96, 768, 12288 ...?\",\"options\":[\"685302\",\"803691\",\"393216\",\"409354\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, the pattern followed is:- 12×2=24, 24×4=96, 96×8=768, 768×16=12288. Similarly, 12288×32=393216. Hence, the answer is 393216.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Complete the following series 3, 6, 18, 72, 360...?\",\"options\":[\"8249\",\"6825\",\"2160\",\"2843\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, the series follows the following pattern. 3×2=6, 6×3=18, 18×4=72, 72×5=360. Similarly, 360×6=2160. Hence, the answer is 2160.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Identify the wrong number in the series. 21, 34, 55, 89, 144, 234, 377?\",\"options\":[\"89\",\"55\",\"234\",\"377\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, the series is a Fibonacci series. i.e., a number in the series is the sum of previous two numbers. So, in this 89+144 = 233. So the wrong number is 234. Hence, the answer is 234.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Find the next number in the series: 26, 124, 342, 728, .... ?\",\"options\":[\"1824\",\"1728\",\"1330\",\"1693\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, each number is one less than cube of a number. i.e., 3 3 =27-1=26, 5 3 =125-1=124, 7 3 =343-1=342, 9 3 =729-1=728. So, the next number will be 11 3 =1331-1=1330. Hence, the answer is 1330.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Complete the series 129, 342, 564, 465, ?, 921.\",\"options\":[\"286\",\"243\",\"578\",\"462\"],\"correctAnswer\":\"B\",\"explanation\":\"Here, in the series after first three numbers, remaining three numbers are reversed number of previous numbers. Hence, the answer is 243.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Complete the following series 13, 26, 104, 832, 13312 ...?\",\"options\":[\"685302\",\"425984\",\"393216\",\"409354\"],\"correctAnswer\":\"B\",\"explanation\":\"Here, the pattern followed is:- 13×2=26, 26×4=104, 104×8=832, 832×16=13312. Similarly, 13312×32=425984. Hence, the answer is 425984.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Identify the wrong number in the series. 8, 13, 21, 34, 55, 87, 144?\",\"options\":[\"87\",\"55\",\"21\",\"13\"],\"correctAnswer\":\"A\",\"explanation\":\"Here, the series is a Fibonacci series. i.e., a number in the series is the sum of previous two numbers. So, in this 34+55 =89. So the wrong number is 87. Hence, the answer is 87.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Find the next number in the series: 6, 62, 214, 510, .... ?\",\"options\":[\"824\",\"728\",\"998\",\"693\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, each number is one less than cube of a number. i.e., 2 3 =8-2=6, 4 3 =64-2=62, 6 3 =216-2=214, 8 3 =512-2=510. So, the next number will be 10 3 =1000-2=998. Hence, the answer is 998.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Complete the series 134, 356, 554, 455, ?, 431.\",\"options\":[\"286\",\"653\",\"578\",\"462\"],\"correctAnswer\":\"B\",\"explanation\":\"Here, in the series after first three numbers, remaining three numbers are reversed number of previous numbers. Hence, the answer is 653.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Complete the following series 16, 32, 128, 1024, 16384 ...?\",\"options\":[\"685302\",\"534288\",\"393216\",\"409354\"],\"correctAnswer\":\"B\",\"explanation\":\"Here, the pattern followed is:- 16×2=32, 32×4=128, 128×8=1024, 1024×16=16384. Similarly, 16384×32=534288. Hence, the answer is 534288.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"},{\"questionText\":\"Complete the following series 9, 19, 58, 233, 1166...?\",\"options\":[\"8249\",\"6825\",\"6997\",\"2843\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, the series follows the following pattern. 9×2=18+1=19, 19×3=57+1=58, 58×4=232+1=233, 233×5=1165+1=1166. Similarly, 1166×6=6996+1=6997. Hence, the answer is 6997.\",\"estimatedTime\":45,\"subtopic\":\"Number Series\",\"tags\":[\"logical\",\"aptitude\",\"series\",\"number\",\"sequence\"],\"alternativeMethods\":\"Offline mode reused an existing validated question from the local question pool.\",\"commonMistakes\":\"Students may choose an incorrect option if they skip the key concept or rush the calculation.\"}]}",
+  "parsed": {
+    "questions": [
+      {
+        "questionText": "Ankita’s younger brother Bobby is older than Nilu. Shweta is younger than Rahul but elder than Ankita. Who is the eldest? Logical Reasoning Questions on Odd Man Out Logical Reasoning Questions on Coding and Decoding Verbal Reasoning Questions on Blood Relation Verbal Reasoning Questions and Answers on Analogy Reasoning Questions on Venn Diagram Verbal Reasoning Questions on Logical Sequence of Words Non-Verbal Reasoning Questions on Dot Situation Analysis Non-Verbal Reasoning Questions and Answers on Missing Figures Reasoning Questions on Figure Classification Non-Verbal Questions on Pattern Completion Data Interpretation Quantitative Aptitude",
+        "options": [
+          "Rahul",
+          "Shweta",
+          "Ankita",
+          "Bobby Topic Wise Questions and Answers on Logical Reasoning Our 1000+ Questions and Answers focus on various topics of Logical Reasoning, covering 20+ topics. This resource will help you prepare for competitive exams such as SSC, CAT, GRE, UPSC, GMAT, Bank Exams, Defense Exams, Railway Exams, and Job placements. You can practice these Logical Reasoning Questions topic by topic, starting from the 1st or you can jump to any topic of your choice. Logical Reasoning: Odd Man Out Coding and Decoding Logical Deduction Verbal Reasoning: Blood Relation Analogy Venn Diagram Logical Sequence of Words Syllogisms Non-Verbal Reasoning: Dot Situation Analysis Missing Figures Figure Classification Pattern Completion Data Interpretation: Data Interpretation Questions Quantitative Aptitude: Quantitative Aptitude Questions The section includes reasoning questions and answers on odd man out series. Odd Man Out – Set 1 Odd Man Out – Set 2 Odd Man Out – Set 3 Odd Man Out – Set 4 Odd Man Out – Set 5 Odd Man Out – Set 6 Odd Man Out – Set 7 Odd Man Out – Set 8 Odd Man Out – Set 9 Odd Man Out – Set 10 The section contains logical reasoning questions and answers on coding and decoding. Coding and Decoding – Set 1 Coding and Decoding – Set 2 Coding and Decoding – Set 3 Coding and Decoding – Set 4 Coding and Decoding – Set 5 Coding and Decoding – Set 6 Coding and Decoding – Set 7 Coding and Decoding – Set 8 Coding and Decoding – Set 9 Coding and Decoding – Set 10 The section contains verbal reasoning questions and answers on blood relation. Blood Relation – Set 1 Blood Relation – Set 2 Blood Relation – Set 3 Blood Relation – Set 4 Blood Relation – Set 5 Blood Relation – Set 6 Blood Relation – Set 7 Blood Relation – Set 8 Blood Relation – Set 9 Blood Relation – Set 10 The section contains verbal reasoning practice questions on analogy. Analogy – Set 1 Analogy – Set 2 Analogy – Set 3 Analogy – Set 4 Analogy – Set 5 Analogy – Set 6 Analogy – Set 7 Analogy – Set 8 Analogy – Set 9 Analogy – Set 10 The section includes verbal reasoning questions and answers on venn diagram. Venn Diagram – Set 1 Venn Diagram – Set 2 Venn Diagram – Set 3 Venn Diagram – Set 4 Venn Diagram – Set 5 Venn Diagram – Set 6 Venn Diagram – Set 7 Venn Diagram – Set 8 Venn Diagram – Set 9 Venn Diagram – Set 10 The section contains logical reasoning questions on sequencing Sequencing – Set 1 Sequencing – Set 2 Sequencing – Set 3 Sequencing – Set 4 Sequencing – Set 5 Sequencing – Set 6 Sequencing – Set 7 Sequencing – Set 8 Sequencing – Set 9 Sequencing – Set 10 The section contains questions and answers on dot situation analysis. Dot Situation Analysis – Set 1 Dot Situation Analysis – Set 2 Dot Situation Analysis – Set 3 Dot Situation Analysis – Set 4 Dot Situation Analysis – Set 5 Dot Situation Analysis – Set 6 Dot Situation Analysis – Set 7 Dot Situation Analysis – Set 8 Dot Situation Analysis – Set 9 Dot Situation Analysis – Set 10 The section contains non verbal reasoning questions on missing figures. Missing Figures – Set 1 Missing Figures – Set 2 Missing Figures – Set 3 Missing Figures – Set 4 Missing Figures – Set 5 Missing Figures – Set 6 Missing Figures – Set 7 Missing Figures – Set 8 Missing Figures – Set 9 Missing Figures – Set 10 The section contains non verbal questions and answers on figure classification. Figure Classification – Set 1 Figure Classification – Set 2 Figure Classification – Set 3 Figure Classification – Set 4 Figure Classification – Set 5 Figure Classification – Set 6 Figure Classification – Set 7 Figure Classification – Set 8 Figure Classification – Set 9 Figure Classification – Set 10 The section contains non verbal reasoning questions and answers on pattern completion. Pattern Completion – Set 1 Pattern Completion – Set 2 Pattern Completion – Set 3 Pattern Completion – Set 4 Pattern Completion – Set 5 Pattern Completion – Set 6 Pattern Completion – Set 7 Pattern Completion – Set 8 Pattern Completion – Set 9 Pattern Completion – Set 10 The section contains questions and answers on data interpretation. Tabulation Bar Graphs Pie Chart Line Graphs The section contains questions and answers on quantitative aptitude. Quantitative Aptitude Questions and Answers If you would like to learn “Logical Reasoning” thoroughly, you should attempt to work on the complete set of questions and answers mentioned above. It will immensely help anyone trying to crack an exam or an interview. Wish you the best in your endeavor to learn and master Logical Reasoning! 👉 For weekly logical reasoning practice, exam, and certification updates, join Sanfoundry’s official WhatsApp & Telegram channels » Next - Odd Man Out Questions and Answers"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Here, according to question Nilu < Bobby < Ankita < Shweta < Rahul. Therefore, the eldest is Rahul. Hence the answer is Rahul.",
+        "estimatedTime": 75,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "It was on the behest of the officer that he made those improvements.",
+        "options": [
+          "suggestion",
+          "orders",
+          "recommendation",
+          "request"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Suggestion : an idea or plan put forward for consideration. Orders : the arrangement or disposition of people or things in relation to each other according to a particular sequence, pattern, or method. Recommendation : a suggestion or proposal as to the best course of action, especially one put forward by an authoritative body. Request : an act of asking politely or formally for something. Behest : a person's orders or command. Synonym of Behest is Orders",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Identify the wrong number in the series. 2, 4, 8, 14, 22, 30?",
+        "options": [
+          "2",
+          "14",
+          "22",
+          "30"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Here, the series follows a pattern. i.e., 2+2 = 4+4 = 8+6 = 14+8 = 22. Similarly, 22+10 = 32. So the wrong number is 30. Hence, the answer is 30.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Complete the following series 5, 10, 30, 150, 1050...?",
+        "options": [
+          "82492",
+          "68295",
+          "11550",
+          "92843"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, the series follows the following pattern. 5×2=10, 10×3=30, 30×5=150, 150×7=1050. We are multiplying by next prime number, so next is 11. So, 1050×11=11550. Hence, the answer is 11550.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What is the next number in the series. 21, 16, 22, 15, 23, 14, .....?",
+        "options": [
+          "24",
+          "13",
+          "21",
+          "19"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Here, in this series the alternate digits follows pattern. i.e. 21 → 22 → 23. Similarly, 16 → 15→ 14. So the next number will be 24. Hence, the answer is 24.",
+        "estimatedTime": 60,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Complete the following series 4, 8, 24, 120, 840...?",
+        "options": [
+          "8249",
+          "6829",
+          "9240",
+          "9284"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, the series follows the following pattern. 4×2=8, 8×3=24, 24×5=120, 120×7=840. We are multiplying by next prime number, so next is 11. So, 840×11=9240. Hence, the answer is 9240.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "1, 3, 4, 8, 15, 27, ?",
+        "options": [
+          "37",
+          "44",
+          "50",
+          "55"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The sum of any three consecutive terms of the series gives the next term. So, missing number = 8 + 15 + 27 = 50.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "589654237, 89654237, 8965423, 965423, ?",
+        "options": [
+          "58965",
+          "65423",
+          "89654",
+          "96542"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The given series is: 589654237, 89654237, 8965423, 965423, ? Step 1: Observe the pattern in the series. Step 2: The first number 589654237 loses the first digit '5' to become 89654237 . Step 3: The second number 89654237 loses the last digit '7' to become 8965423 . Step 4: The third number 8965423 loses the first digit '8' to become 965423 . Step 5: The fourth number 965423 loses the last digit '3' to become 96542 . Pattern Observed: The series alternates between removing the first digit and the last digit. Final Step: Following this pattern, the next number after 965423 should be 96542 (removing the last digit '3' ). Thus, the correct answer is: 96542 (Option D).",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "1, 2, 3, 6, 9, 18, ?, 54",
+        "options": [
+          "18",
+          "27",
+          "36",
+          "81"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Let's break down this number series question! The series is: 1, 2, 3, 6, 9, 18, ?, 54 Look for a pattern. It's not a simple addition or subtraction. Notice this: 1 + 2 = 3 3 + 6 = 9 9 + 18 = ? It looks like each number is the sum of the two numbers before it. So, to find the missing number: 9 + 18 = 27 Therefore, the missing number is 27. The correct answer is B. Double-check: 18 + 27 = 45 (Incorrect so that Logic is wrong) Notice this new Logic: 1 x 2 = 2 2 x (3/2) = 3 3 x 2 = 6 6 x (3/2) = 9 9 x 2 = 18 18 x (3/2) = ? So, to find the missing number: 18 x (3/2) = 27 Then check it with the next number: 27 x 2 = 54 Therefore, the missing number is 27. The correct answer is B.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What is the sum of all positive integers up to 1000, which are divisible by 5 and are not divisible by 2?",
+        "options": [
+          "10,050",
+          "5050",
+          "5000",
+          "50,000"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The positive integers, which are divisible by 5 are 5, 10, 15, ....., 1000 Out of these 10, 20, 30, ......, 1000 are divisible by 2 Thus, we have to find the sum of the positive integers 5, 15, 25, ......, 995 If n is the number of terms in it the sequence then 995 = 5 + 10(n - 1) ⇒ 1000 = 10n ∴ n = 100 Thus the sum of the series $$\\eqalign{ & = \\left( {\\frac{n}{2}} \\right)\\left( {a + l} \\right) \\cr & = \\left( {\\frac{{100}}{2}} \\right)\\left( {5 + 995} \\right) \\cr & = \\frac{{100 \\times 1000}}{2} \\cr & = 50000 \\cr} $$",
+        "estimatedTime": 60,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What is the primary purpose of a scatter plot in EDA?",
+        "options": [
+          "To show the distribution of a single variable",
+          "To visualize relationships between variables",
+          "To display categorical data",
+          "To represent time series data"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Option A: To show the distribution of a single variable : This is usually done with histograms or box plots, not scatter plots. Option B: To visualize relationships between variables : This is the main point of a scatter plot! Each point on the plot represents a pair of values for two different variables. By looking at the pattern of points, we can see if there's a correlation or relationship between them. For example, if as one variable increases, the other also tends to increase, that shows a positive relationship. Option C: To display categorical data : Categorical data is better shown with bar charts or pie charts, not scatter plots. Option D: To represent time series data : Time series data is usually displayed using line charts. In simple terms: A scatter plot helps us see if two things are connected. If we plot \"ice cream sales\" versus \"temperature,\" we might see that as the temperature goes up, ice cream sales also go up. The scatter plot lets us see that relationship.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Inter division dynamics across the subsidiaries Due Diligence |E-Commerce Sector| Investment | Challenging 2022-2023 (C) Consult Club, IIM Ahmedabad Private Equity firm – Interview Transcript Due Diligence |Social Impact| Challenging Sure, I would like to now look at the various synergies that we can draw from the previous investments. I would like to look at revenue synergies, cost synergies and efficiency synergies. In terms of the revenue synergies, based on our other investments in home services sector we can drive demand for the company and identify skill training opportunities. The client can draw cost and efficiency synergies from similar foreign-based startups in our portfolio by means of technology transfer. Good points. Lets talk about the equity holding and investment amount that we should look at. What factors would influence this decision? Firstly, I would like to understand the nature of the investment – are we looking at a strategic investment with a majority stake or are we looking at a financial investment. As I mentioned, we plan to exit in 5-6 years, so it is a financial investment. I can take population growth as a proxy for the growth in the number of candidates. Similarly, the commissions will be based on the number of employees that we could place. Knowing 15% profit margins, we can discount the cash flows to get the present value of the firm. Good, let’s move on and look at the other factors. Since we are looking at skill programs, we should be looking at only the unemployed youth and students. We can use the labour participation rate and unemployment levels to get a figure. I can then multiply the market with the average fees to get the revenue. To further understand the revenues from commissions, I would like to know the commission rate and the number of companies that we are catering to currently and how is the demand expected to change. Let’s assume that there is enough demand. How would you get the projected revenues for the next 6 years to estimate the value of the firm. Right, so if we are looking at a minority stake in the company, the investment would depend on the valuation of the company and other possible PE firms who are looking to invest in the same company. We should also look at the willingness of the founders about the extent of dilution of their shares. Good points. There are in fact 2 other firms looking to invest in the same company. Let’s quickly now look at the various risks and exit options before the client. Sure. First and foremost, I would like to do a legal due diligence to see if there are any litigations, tax liabilities or regulatory compliance issues with the company, which can contribute to legal risks. I would look at the debt structure as well as the employee contracts of the company. In terms of technological risks, there are chances of obsolesce of some of these skills and need to adapt quickly to changing demands. There are economic risks, with respect to getting fees from the underprivileged in cases where sufficient government scholarships are absent. There is also high competition in the sector and threats from competition who can eat up the market share. In terms of exit options, the company can look to sell its stake back to the the initial promoters or another PE firm since there are existing competition. Alright, I think that’s a comprehensive analysis. Any final recommendation? That sounds like a fair approach. Explain me your approach to estimate the total market size. Good question. There hasn’t been any prior investments and the equity is split equally between the 3 brothers. At this point, I feel I have enough information to proceed. I’ll take a moment to structure my thoughts to produce an overall approach to analyse the feasibility of the investment. Sounds good, please go ahead. Okay, I would like to divide the analysis into 3 buckets – firstly estimating the market attractiveness and coming up with the valuation of the company. Next, I would like to investigate the synergies that we draw from the investments. Lastly, I would like to look at the various risks associated with the company. I would also know about the company’s founders and their vision. That’s interesting. And how is the competitive landscape in the sector where the client operates? It is a fragmented market and there is high competition from some similar early-stage start-ups. Do we have any information about the profitability of our client ? Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Sounds good. Firstly, I would like to understand our client’s motivation behind the investment. There are two motivations primarily, financials gains and driving social impact. Okay, does the client have any number about the quantum of investment that it wants to make? There is no restriction as such. We would like to help in analyzing various factors to decide this. Okay, and is there any exit multiple that you have in mind or any return that you are expecting from this investment? Yes the client has invested in similar companies before but none of them are based out of India. To answer your 2nd question, our current portfolio consists of growth stage startups from the healthcare, services and ed-tech sectors based out of India and other south-east Asian countries. Great. Now that I have information about our client, I would like to know more about the company in which we plan to invest. Can you tell me more about the company and their business model? Yes sure. It is a family run company started by 3-brothers. They work with the underprivileged students from Eastern-Indian states of Orissa, Bihar and West Bengal. Their business model is to upskill students in theoretical and vocational skills and help them provide employment. They get revenue sources include fees from the students at a subsidized amount and commissions from the companies where the students are employed. Thanks for this. Are their specific skills or sectors in which the students are trained. The students are unemployed youth who are provided training as beauticians, cutting and stitching jobs and as baristas for coffee shops. They are continuously expanding the the range of their skill program. Good question. So, we are looking at a 16% CAGR on the investment over a horizon of 6 years after which we plan to exit. That’s helpful. I would now want to get some information about the existing portfolio of the client. Has the client invested in similar companies previously? How does its portfolio look like? So currently the client operated at 15% net margin while the industry operated at 16% margins. Is their any other differentiation that the company has? The company has invested heavily in technology to continuously identify the gap in demand for the required skills in the industry. It also uses helps to identify prospects and incentives them to join the program by identifying government schemes to avail scholarships and get skilled. 2022-2023 Page 154 Lastly, what’s the equity structure of the company and has there been any prior investments? I’ll start by estimating the population of West Bengal, Orissa and Bihar which should be 20% of the total population. Next, I would segment the population by age(18-25 years which is 20% roughly). We can further look at urban and rural segments and then look at the low- and middle- income category. Does that sound like a good approach? Do you think you are missing any other criteria? Given the demand and good profit margins of the company, the investment looks lucrative, and the client should go ahead with it, Alright, thank you for the recommendation. (C) Consult Club, IIM Ahmedabad Recommendations (Beyond the transcript) • a) Do a proper analysis of the competitive landscape to gauge the competitive edge of the target company and also look into the threats of new entrant specially a big player. • b) Understand the operating model and the technology used of the target company to gauge the scalability of the business model. Key Learnings • In cases of due diligence and M&A, the preliminary questions are the most important and adequate time should be given to get relevant case facts. • The question about financial and strategic investment should have been asked in the beginning. Again, since time horizon was known beforehand, here case facts could have been linked better • It is important to think of synergies even between existing portfolio of the PE firm to the target company like potential technology transfer from companies in the portfolio operating abroad • In the guesstimate, it is essential to first lay down the approach the validate from the interviewer if something else is missing Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Approach/ Framework Interviewee Notes • It is important to understand the rationale for the investment • The preliminary questions should cover questions about the client and the target company to get important case facts. • It is essential to have a basic understand of the private equity industry and the process of due diligence, • It is important for the interviewee to link important case facts to subsequent answers. • Guesstimates can be qualitative or quantitative depending upon the interviewer. The approach should be laid out clearly. If numbers are required, reasonable assumptions can be taken. (For example, slightly higher unemployment levels in eastern India) Case Facts • Objective for investment is both social impact and financial gain. • 16% CAGR and a time horizon of 6 years. • No issues on cost side. • No poaching of customers by competitors. • The existing portfolio of the client and prior investments • The industries that the target company caters to currently • The ownership structure of the target company • Profit margins and industry competitiveness Commercial Due Diligence Valuation and financial feasibility Intrinsic Value Private Equity firm Page 155 Business Model P E S T E L Market Size 2022-2023 Due Diligence |Social Impact| Challenging Synergies and Business Model Exit Options and Risks Synergies Acquirer’s Value Customers Operations Differentiation Efficiency Synergies Financials Revenue Synergies Growth Rate Profitability Competition Equity Structure Cost Synergies Risks Exit Options Total Exit Partial Exit IPO Guesstimate Approach: Market size of underprivileged youth seeking jobs Segment total population to get population of Bihar, Orissa and WB (~20% of total – 25 crores) Segment further by age groups (18-30 years ~ 20% of 25 crore – 5 crore) Rural (70%) Urban (30%) Covered in this case Not covered in this case Lower Income group (80%) Lower Income group (40%) % unemployed and seeking jobs(10%) % unemployed and seeking jobs(15%) Total number of unemployed youth seeking jobs in the 3 states ~ 30 lacs Unconventional (C) Consult Club, IIM Ahmedabad Easy wins • Breakdown into a mathematical formula • Always remember Demand and Supply • Any problem can have an internal cause (in control of company) or external cause. For external cause, use PESTEL to analyze possible issues Unconventional - Tips & Tricks Page 157 Pointers to Remember • Never try to force fit a framework • Understand the problem really really well • Ask the interviewer if you’re unfamiliar with a particular industry, do not hesitate to ask question • If the industry is familiar, comparisons with companies you know about would help in providing recommendations • Be as comprehensive as possible and hence bucketing the problems into different sections will help in structured thinking • Can be looked at through 2 lenses – qualitative & quantitative (as a mathematical problem) • Using the 3CP i.e., of Company, Customer, Competitor and Product approach works in certain cases, but focus on keeping the approach MECE • In certain cases when the scope of the cases is broad, the interviewee should ask if the focus needs to be on a specific aspect to structure thoughts in that direction • While scoping the problem, the interviewee can consider if there are competitors in the same industry and the strategies, they follow 2022-2023 (C) Consult Club, IIM Ahmedabad You can go ahead with the ad model assumption. However, X doesn’t have any merchandising rights for GOT. What information do you need from me to calculate X’s revenues? I would need the following: (i) X’s monthly Subscription fee (ii) No. of episodes in GOT S8 (iii) GOT viewers not currently on X (iv) Average ad rate per slot per episode (v) No. of slots auctioned per episode Glad that you asked. I have the following data sheet with me. This should help you calculate revenues for X (Data sheet provided in table I). Thank you. From my calculations, X’s revenue from Subscriptions and Advertisements comes out to be $6 Mn (table II). However, I think there are some synergistic benefits to adding GOT on our platform. These can be attributed to following factors: • Customer Stickiness: Some of the additional customers would stick around after GOT ends increasing their CLV for X. These benefits need to be added to our revenue calculations • Additional ad revenues for existing programmes: X can leverage its added user base to charge a premium for ad slots in its existing shows during GOT‘s 3-month on-air run-time These are some very good points, and you can assume an additional benefit of $1 Mn from Synergy. Can you please now list down the cost heads for X? I have divided X’s costs into two buckets (Framework 1): • Direct Costs: This header would include the Bid amount, Streaming costs, Marketing costs • Overheads: This would include incremental legal costs, regulatory costs, customer service costs Apart from this, there would be Costs of capital (which would include costs of financing the investment and opportunity costs of not putting the money elsewhere), Assume that X expects to incur additional costs of $1 Mn apart from the bid amount. X has expected an ROI of 20% to incorporate for the cost of capital. Oh, I think I have all the data now. Based on my calculations, the bid amount for GOT season 8 cannot exceed $5 Mn to get the desired ROI of 20%. Now, I’d like to focus on the Strategic feasibility. Adding GOT would affect the way subscribers interact with the platform. Given the adult nature of content, some of the family-centric subscribers might get dissuaded from continuing. Also, this would affect our tie-ups with existing content providers which infer HBO as their competitor or substitute. These points are valid, but we can safely assume that X is strategically aligned with getting HBO onboard. Can you please now identify three potential risks that X needs to be aware of? Sure. I have collated the risks into the following categories: • Customer centric: X might not attract enough new customers on the platform given the subscription price and the presence of alternate channels of piracy like torrents, illegal streaming • Content centric: The content is not up to the mark increasing mid-season customer and advertiser drop-outs. Given the explicit content, X could also face added regulatory pressures • Platform centric: Focus on GOT might lead to self- cannibalization with decreased viewership for the platform’s existing content. Plus, X needs to minimize platform glitches such as that could inhibit user watching experience, leaving the new viewers unsatisfied with the platform I think we can stop here. Thank you. Bid Strategy for GOT Season 8– Interview Transcript Unconventional | Bid strategy | Challenging | Entertainment Page 158 Your client is Company X. They have been approached by HBO to bid for the eighth season of GOT. They want your help to evaluate the opportunity and determine the correct bidding strategy. I would like to ask a few clarifying questions to get an understanding about the case. Could you please elaborate on X’s business model and current product offerings? X is an OTT platform operating in India. The company has a website and an app where customers can access media content by paying a monthly subscription fee. X has its own content as well as tie- ups with other providers to provide a curated list of Movies, TV Shows, News Channels and Sporting Events on its platform for its subscribers. What is X’s objective for this bid? Is it to increase user base, or revenues or profits? And what makes GOT so attractive for X? X wants to maximise their profits and this bid should account for that. As for GOT, it is the most watched English TV Series in India. I would like to now understand the bidding terms. Will this bid be for the eighth season only? Also, will X have exclusive rights for this and till when is the bid valid? The bid will be for exclusive rights to stream GOT’s eighth and final season, and valid only for the duration that the show is on-air. Has X bid previously for GOT and if so, do we have any information regarding the bidding process? Also, is it okay to assume that the offer has been made to X’s competitors as well? It’s a closed bidding process that HBO extends to X and its four other competitors. The client had bid for GOT’s seventh season but did not win the bid. They were informed that they were close second and had bid $3 Mn for Season",
+        "options": [
+          "Consult Club, IIM Ahmedabad Private Equity firm – Interview Transcript Due Diligence |Social Impact| Challenging Sure, I would like to now look at the various synergies that we can draw from the previous investments. I would like to look at revenue synergies, cost synergies and efficiency synergies. In terms of the revenue synergies, based on our other investments in home services sector we can drive demand for the company and identify skill training opportunities. The client can draw cost and efficiency synergies from similar foreign-based startups in our portfolio by means of technology transfer. Good points. Lets talk about the equity holding and investment amount that we should look at. What factors would influence this decision? Firstly, I would like to understand the nature of the investment – are we looking at a strategic investment with a majority stake or are we looking at a financial investment. As I mentioned, we plan to exit in 5-6 years, so it is a financial investment. I can take population growth as a proxy for the growth in the number of candidates. Similarly, the commissions will be based on the number of employees that we could place. Knowing 15% profit margins, we can discount the cash flows to get the present value of the firm. Good, let’s move on and look at the other factors. Since we are looking at skill programs, we should be looking at only the unemployed youth and students. We can use the labour participation rate and unemployment levels to get a figure. I can then multiply the market with the average fees to get the revenue. To further understand the revenues from commissions, I would like to know the commission rate and the number of companies that we are catering to currently and how is the demand expected to change. Let’s assume that there is enough demand. How would you get the projected revenues for the next 6 years to estimate the value of the firm. Right, so if we are looking at a minority stake in the company, the investment would depend on the valuation of the company and other possible PE firms who are looking to invest in the same company. We should also look at the willingness of the founders about the extent of dilution of their shares. Good points. There are in fact 2 other firms looking to invest in the same company. Let’s quickly now look at the various risks and exit options before the client. Sure. First and foremost, I would like to do a legal due diligence to see if there are any litigations, tax liabilities or regulatory compliance issues with the company, which can contribute to legal risks. I would look at the debt structure as well as the employee contracts of the company. In terms of technological risks, there are chances of obsolesce of some of these skills and need to adapt quickly to changing demands. There are economic risks, with respect to getting fees from the underprivileged in cases where sufficient government scholarships are absent. There is also high competition in the sector and threats from competition who can eat up the market share. In terms of exit options, the company can look to sell its stake back to the the initial promoters or another PE firm since there are existing competition. Alright, I think that’s a comprehensive analysis. Any final recommendation? That sounds like a fair approach. Explain me your approach to estimate the total market size. Good question. There hasn’t been any prior investments and the equity is split equally between the 3 brothers. At this point, I feel I have enough information to proceed. I’ll take a moment to structure my thoughts to produce an overall approach to analyse the feasibility of the investment. Sounds good, please go ahead. Okay, I would like to divide the analysis into 3 buckets – firstly estimating the market attractiveness and coming up with the valuation of the company. Next, I would like to investigate the synergies that we draw from the investments. Lastly, I would like to look at the various risks associated with the company. I would also know about the company’s founders and their vision. That’s interesting. And how is the competitive landscape in the sector where the client operates? It is a fragmented market and there is high competition from some similar early-stage start-ups. Do we have any information about the profitability of our client ? Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Sounds good. Firstly, I would like to understand our client’s motivation behind the investment. There are two motivations primarily, financials gains and driving social impact. Okay, does the client have any number about the quantum of investment that it wants to make? There is no restriction as such. We would like to help in analyzing various factors to decide this. Okay, and is there any exit multiple that you have in mind or any return that you are expecting from this investment? Yes the client has invested in similar companies before but none of them are based out of India. To answer your 2nd question, our current portfolio consists of growth stage startups from the healthcare, services and ed-tech sectors based out of India and other south-east Asian countries. Great. Now that I have information about our client, I would like to know more about the company in which we plan to invest. Can you tell me more about the company and their business model? Yes sure. It is a family run company started by 3-brothers. They work with the underprivileged students from Eastern-Indian states of Orissa, Bihar and West Bengal. Their business model is to upskill students in theoretical and vocational skills and help them provide employment. They get revenue sources include fees from the students at a subsidized amount and commissions from the companies where the students are employed. Thanks for this. Are their specific skills or sectors in which the students are trained. The students are unemployed youth who are provided training as beauticians, cutting and stitching jobs and as baristas for coffee shops. They are continuously expanding the the range of their skill program. Good question. So, we are looking at a 16% CAGR on the investment over a horizon of 6 years after which we plan to exit. That’s helpful. I would now want to get some information about the existing portfolio of the client. Has the client invested in similar companies previously? How does its portfolio look like? So currently the client operated at 15% net margin while the industry operated at 16% margins. Is their any other differentiation that the company has? The company has invested heavily in technology to continuously identify the gap in demand for the required skills in the industry. It also uses helps to identify prospects and incentives them to join the program by identifying government schemes to avail scholarships and get skilled. 2022-2023 Page 154 Lastly, what’s the equity structure of the company and has there been any prior investments? I’ll start by estimating the population of West Bengal, Orissa and Bihar which should be 20% of the total population. Next, I would segment the population by age(18-25 years which is 20% roughly). We can further look at urban and rural segments and then look at the low- and middle- income category. Does that sound like a good approach? Do you think you are missing any other criteria? Given the demand and good profit margins of the company, the investment looks lucrative, and the client should go ahead with it, Alright, thank you for the recommendation.",
+          "Consult Club, IIM Ahmedabad Recommendations (Beyond the transcript) • a) Do a proper analysis of the competitive landscape to gauge the competitive edge of the target company and also look into the threats of new entrant specially a big player. • b) Understand the operating model and the technology used of the target company to gauge the scalability of the business model. Key Learnings • In cases of due diligence and M&A, the preliminary questions are the most important and adequate time should be given to get relevant case facts. • The question about financial and strategic investment should have been asked in the beginning. Again, since time horizon was known beforehand, here case facts could have been linked better • It is important to think of synergies even between existing portfolio of the PE firm to the target company like potential technology transfer from companies in the portfolio operating abroad • In the guesstimate, it is essential to first lay down the approach the validate from the interviewer if something else is missing Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Approach/ Framework Interviewee Notes • It is important to understand the rationale for the investment • The preliminary questions should cover questions about the client and the target company to get important case facts. • It is essential to have a basic understand of the private equity industry and the process of due diligence, • It is important for the interviewee to link important case facts to subsequent answers. • Guesstimates can be qualitative or quantitative depending upon the interviewer. The approach should be laid out clearly. If numbers are required, reasonable assumptions can be taken. (For example, slightly higher unemployment levels in eastern India) Case Facts • Objective for investment is both social impact and financial gain. • 16% CAGR and a time horizon of 6 years. • No issues on cost side. • No poaching of customers by competitors. • The existing portfolio of the client and prior investments • The industries that the target company caters to currently • The ownership structure of the target company • Profit margins and industry competitiveness Commercial Due Diligence Valuation and financial feasibility Intrinsic Value Private Equity firm Page 155 Business Model P E S T E L Market Size 2022-2023 Due Diligence |Social Impact| Challenging Synergies and Business Model Exit Options and Risks Synergies Acquirer’s Value Customers Operations Differentiation Efficiency Synergies Financials Revenue Synergies Growth Rate Profitability Competition Equity Structure Cost Synergies Risks Exit Options Total Exit Partial Exit IPO Guesstimate Approach: Market size of underprivileged youth seeking jobs Segment total population to get population of Bihar, Orissa and WB (~20% of total – 25 crores) Segment further by age groups (18-30 years ~ 20% of 25 crore – 5 crore) Rural (70%) Urban (30%) Covered in this case Not covered in this case Lower Income group (80%) Lower Income group (40%) % unemployed and seeking jobs(10%) % unemployed and seeking jobs(15%) Total number of unemployed youth seeking jobs in the 3 states ~ 30 lacs Unconventional",
+          "Consult Club, IIM Ahmedabad Easy wins • Breakdown into a mathematical formula • Always remember Demand and Supply • Any problem can have an internal cause (in control of company) or external cause. For external cause, use PESTEL to analyze possible issues Unconventional - Tips & Tricks Page 157 Pointers to Remember • Never try to force fit a framework • Understand the problem really really well • Ask the interviewer if you’re unfamiliar with a particular industry, do not hesitate to ask question • If the industry is familiar, comparisons with companies you know about would help in providing recommendations • Be as comprehensive as possible and hence bucketing the problems into different sections will help in structured thinking • Can be looked at through 2 lenses – qualitative & quantitative (as a mathematical problem) • Using the 3CP i.e., of Company, Customer, Competitor and Product approach works in certain cases, but focus on keeping the approach MECE • In certain cases when the scope of the cases is broad, the interviewee should ask if the focus needs to be on a specific aspect to structure thoughts in that direction • While scoping the problem, the interviewee can consider if there are competitors in the same industry and the strategies, they follow 2022-2023",
+          "Consult Club, IIM Ahmedabad You can go ahead with the ad model assumption. However, X doesn’t have any merchandising rights for GOT. What information do you need from me to calculate X’s revenues? I would need the following: (i) X’s monthly Subscription fee (ii) No. of episodes in GOT S8 (iii) GOT viewers not currently on X (iv) Average ad rate per slot per episode (v) No. of slots auctioned per episode Glad that you asked. I have the following data sheet with me. This should help you calculate revenues for X (Data sheet provided in table I). Thank you. From my calculations, X’s revenue from Subscriptions and Advertisements comes out to be $6 Mn (table II). However, I think there are some synergistic benefits to adding GOT on our platform. These can be attributed to following factors: • Customer Stickiness: Some of the additional customers would stick around after GOT ends increasing their CLV for X. These benefits need to be added to our revenue calculations • Additional ad revenues for existing programmes: X can leverage its added user base to charge a premium for ad slots in its existing shows during GOT‘s 3-month on-air run-time These are some very good points, and you can assume an additional benefit of $1 Mn from Synergy. Can you please now list down the cost heads for X? I have divided X’s costs into two buckets (Framework 1): • Direct Costs: This header would include the Bid amount, Streaming costs, Marketing costs • Overheads: This would include incremental legal costs, regulatory costs, customer service costs Apart from this, there would be Costs of capital (which would include costs of financing the investment and opportunity costs of not putting the money elsewhere), Assume that X expects to incur additional costs of $1 Mn apart from the bid amount. X has expected an ROI of 20% to incorporate for the cost of capital. Oh, I think I have all the data now. Based on my calculations, the bid amount for GOT season 8 cannot exceed $5 Mn to get the desired ROI of 20%. Now, I’d like to focus on the Strategic feasibility. Adding GOT would affect the way subscribers interact with the platform. Given the adult nature of content, some of the family-centric subscribers might get dissuaded from continuing. Also, this would affect our tie-ups with existing content providers which infer HBO as their competitor or substitute. These points are valid, but we can safely assume that X is strategically aligned with getting HBO onboard. Can you please now identify three potential risks that X needs to be aware of? Sure. I have collated the risks into the following categories: • Customer centric: X might not attract enough new customers on the platform given the subscription price and the presence of alternate channels of piracy like torrents, illegal streaming • Content centric: The content is not up to the mark increasing mid-season customer and advertiser drop-outs. Given the explicit content, X could also face added regulatory pressures • Platform centric: Focus on GOT might lead to self- cannibalization with decreased viewership for the platform’s existing content. Plus, X needs to minimize platform glitches such as that could inhibit user watching experience, leaving the new viewers unsatisfied with the platform I think we can stop here. Thank you. Bid Strategy for GOT Season 8– Interview Transcript Unconventional | Bid strategy | Challenging | Entertainment Page 158 Your client is Company X. They have been approached by HBO to bid for the eighth season of GOT. They want your help to evaluate the opportunity and determine the correct bidding strategy. I would like to ask a few clarifying questions to get an understanding about the case. Could you please elaborate on X’s business model and current product offerings? X is an OTT platform operating in India. The company has a website and an app where customers can access media content by paying a monthly subscription fee. X has its own content as well as tie- ups with other providers to provide a curated list of Movies, TV Shows, News Channels and Sporting Events on its platform for its subscribers. What is X’s objective for this bid? Is it to increase user base, or revenues or profits? And what makes GOT so attractive for X? X wants to maximise their profits and this bid should account for that. As for GOT, it is the most watched English TV Series in India. I would like to now understand the bidding terms. Will this bid be for the eighth season only? Also, will X have exclusive rights for this and till when is the bid valid? The bid will be for exclusive rights to stream GOT’s eighth and final season, and valid only for the duration that the show is on-air. Has X bid previously for GOT and if so, do we have any information regarding the bidding process? Also, is it okay to assume that the offer has been made to X’s competitors as well? It’s a closed bidding process that HBO extends to X and its four other competitors. The client had bid for GOT’s seventh season but did not win the bid. They were informed that they were close second and had bid $3 Mn for Season"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question is mapped to Number Series. The correct answer is A based on the original source question.",
+        "estimatedTime": 75,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What does a microprocessor understand after decoding opcode?",
+        "options": [
+          "Perform ALU operation",
+          "Go to memory",
+          "Length of the instruction and number of operations",
+          "Go to the output device"
+        ],
+        "correctAnswer": "C",
+        "explanation": "After decoding the opcode of the instruction, a microprocessor understands the length of the instruction and the total number of operations to be performed.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "In how many ways 4 boys and 3 girls can be seated in a row so that they are alternate.",
+        "options": [
+          "144",
+          "288",
+          "12",
+          "256"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Let the Arrangement be, B G B G B G B 4 boys can be seated in 4! Ways Girl can be seated in 3! Ways Required number of ways, = 4! × 3! = 144",
+        "estimatedTime": 60,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Which one set of letters when sequentially placed at the gaps in the given letter series shall complete it ? a_bbc_aab_cca_bbcc",
+        "options": [
+          "bacb",
+          "acba",
+          "caba",
+          "abba"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The pattern is, a a bbc c aab b cca a bbcc. The pattern aabbcc is repeated.",
+        "estimatedTime": 60,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "ZA 5 , Y 4 B, XC 6 , W 3 D, _____",
+        "options": [
+          "E 7 V",
+          "V 2 E",
+          "VE 5",
+          "VE 7"
+        ],
+        "correctAnswer": "D",
+        "explanation": "There are three series to look for here. The first letters are alphabetical in reverse: Z, Y, X, W, V. The second letters are in alphabetical order, beginning with A. The number series is as follows: 5, 4, 6, 3, 7.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "P 5 QR, P 4 QS, P 3 QT, _____, P 1 QV",
+        "options": [
+          "PQW",
+          "PQV 2",
+          "P 2 QU",
+          "PQ 3 U"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The first two letters, PQ, are static. The third letter is in alphabetical order, beginning with R. The number series is in descending order beginning with 5.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "What will come at the place of question mark ? 3, 2, 7, 6, 11, ?",
+        "options": [
+          "8",
+          "10",
+          "4",
+          "2"
+        ],
+        "correctAnswer": "B",
+        "explanation": "2 nd number is less by 1 than the 1 st number and 3 rd number is more by 5 than the 2 nd number. The same rule follows in other numbers of the series.",
+        "estimatedTime": 60,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Find out the pair of numbers that does not belong to the group for lack of common property :",
+        "options": [
+          "16-18",
+          "56-63",
+          "96-108",
+          "86-99"
+        ],
+        "correctAnswer": "D",
+        "explanation": "All other number pairs follow the ratio 8:9: 16:18 = 8:9 56:63 = 8:9 96:108 = 8:9 But 86:99 ≠ 8:9 (since 86 ÷ 99 ≈ 0.868, not 0.888...) Hence, 86–99 is the pair that does not fit the pattern.",
+        "estimatedTime": 60,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "The arrangement of rational numbers, $$\\frac{- 7}{10}$$, $$\\frac{5}{- 8}$$, $$\\frac{2}{- 3}$$ in ascending order is :",
+        "options": [
+          "$$\\frac{2}{{ - 3}},\\frac{5}{{ - 8}},\\frac{{ - 7}}{{10}}$$",
+          "$$\\frac{5}{{ - 8}},\\frac{{ - 7}}{{10}},\\frac{2}{{ - 3}}$$",
+          "$$\\frac{{ - 7}}{{10}},\\frac{5}{{ - 8}},\\frac{2}{{ - 3}}$$",
+          "$$\\frac{{ - 7}}{{10}},\\frac{2}{{ - 3}},\\frac{5}{{ - 8}}$$"
+        ],
+        "correctAnswer": "D",
+        "explanation": "$$\\frac{- 7}{10}$$ = - 0.7 $$\\frac{5}{- 8}$$ = - $$\\frac{5}{8}$$ = - 0.625, $$\\frac{2}{- 3}$$ = - $$\\frac{2}{3}$$ = - 0.66 Since, -0.7 < -0.66 < -0.625 So, $$\\frac{- 7}{10}$$ < $$\\frac{2}{- 3}$$ < $$\\frac{5}{- 8}$$",
+        "estimatedTime": 60,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Find the next number in the series : 61, 52, 63, 94, 46, .... ?",
+        "options": [
+          "81",
+          "18",
+          "49",
+          "35"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Here, each number is reverse of a number which is square of a number. i.e. 42=16→61, 52=25→52, 62=36→63, 72=49→94, 82=64→46. So, the next number will be 92=81→18. Hence, the answer is 18.",
+        "estimatedTime": 60,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Identify the wrong number in the series. 0, 1, 1, 2, 3, 5, 8, 13, 20, 34?",
+        "options": [
+          "8",
+          "20",
+          "13",
+          "34"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Here, the series is a Fibonacci series. i.e. a number in the series is the sum of previous two numbers. So, in this 8+13 = 21. So the wrong number is 20. Hence, the answer is 20.",
+        "estimatedTime": 60,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Complete the following series 6, 12, 36, 144, 720...?",
+        "options": [
+          "4320",
+          "2843",
+          "8249",
+          "6825"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Here, the series follows the following pattern. 6×2=12, 12×3=36, 36×4=144, 144×5=720. Similarly, 720×6=4320. Hence, the answer is 4320.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Identify the missing number in the series. 8, 13, 21, 34, 55, ?, 144?",
+        "options": [
+          "55",
+          "13",
+          "89",
+          "21"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, the series is a Fibonacci series. i.e., a number in the series is the sum of previous two numbers. So, in this missing number is 34+55 =89. Hence, the answer is 89.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "The mean of 1, 2, 2 2 , 2 3 , ......, 2 63 lies between which of the following number?",
+        "options": [
+          "2 57 and 2 58",
+          "2 59 and 2 58",
+          "2 57 and 2 56",
+          "2 56 and 2 55"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The series is in GP with a=1, r=2 and n=64. Sum = 2 63 – 1 Mean = \\(\\frac{2^{63}–1}{64}\\)=2 57 –\\(\\frac{1}{2^6}\\) Therefore, the mean lies between 2 57 and 2 56 .",
+        "estimatedTime": 60,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Find the sum of 1+\\(\\frac{3}{5}+\\frac{5}{25}+\\frac{7}{125}\\)+⋯ up to n terms.",
+        "options": [
+          "15/8",
+          "15/16",
+          "25/16",
+          "5/16"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The given sequence is arithmetic geometric series, where a=1, d=2 and r=(1/5) S ∞ = \\(\\frac{a}{1-r} + \\frac{dr}{(1-r)^2}\\) S ∞ = \\(\\frac{1}{(1-1/5)} + \\frac{2/5}{(1-\\frac{1}{5})^2}\\) S ∞ = 5/4 + 10/16 = 15/8",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "A number is twice a second number which in turn is 3 times the third number. Find the ratio of the series.",
+        "options": [
+          "6 : 3 : 1",
+          "2 : 3 : 5",
+          "2 : 3 : 6",
+          "2 : 4 : 7"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Let the last number be x. The second number is 3 time the third number = 3 * x = 3x The first number is twice the second number = 3x * 2 = 6x The ratio of the series = 6x : 3x : x = 6 : 3 : 1",
+        "estimatedTime": 60,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Find the next number in the series: 81, 100, 121, 144, 169, ....?",
+        "options": [
+          "182",
+          "812",
+          "196",
+          "249"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, each number is square of a number. i.e., 92=81, 102=100, 112=121, 122=144, 132=169. So, the next number will be 142=196. Hence, the answer is 196.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Complete the series 27, 35, 47 ,?, 53, 72.",
+        "options": [
+          "28",
+          "62",
+          "74",
+          "63"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, in the series after first three numbers, remaining three numbers are reversed number of previous numbers. Hence, the answer is 74.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Find the next number in the series: 80, 99, 120, 143, 168, .... ?",
+        "options": [
+          "182",
+          "123",
+          "195",
+          "249"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, each number is one less than square of a number. i.e. 92=81-1=80, 102=100-1=99, 112=121-1=120, 122=144-1=143, 132=169-1=168. So, the next number will be 142=196-1=195. Hence, the answer is 195.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Complete the series 23, 45, 67, ?, 54, 32.",
+        "options": [
+          "28",
+          "62",
+          "76",
+          "63"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, in the series after first three numbers, remaining three numbers are reversed number of previous numbers. Hence, the answer is 76.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Complete the following series 16, 20, 29, 45, 70...?",
+        "options": [
+          "86",
+          "94",
+          "106",
+          "89"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, the difference between the digits is the square of numbers in ascending order i.e., 20-16 = 4, 29-20 = 9, 45-29 = 16, 70-45 = 25. So, next number will be 70 + square(6) = 70+36 = 106.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Find the next number in the series: 15, 24, 35, 48, 63, .... ?",
+        "options": [
+          "82",
+          "80",
+          "95",
+          "49"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Here, each number is one less than square of a number. i.e. 42=16-1=15, 52=25-1=24, 62=36-1=35, 72=49-1=48, 82=64-1=63. So, the next number will be 92=81-1=80. Hence, the answer is 80.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Complete the series 12, 34, 87, ?, 43, 21.",
+        "options": [
+          "28",
+          "62",
+          "78",
+          "63"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, in the series after first three numbers, remaining three numbers are reversed number of previous numbers. Hence, the answer is 78.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Find the next number in the series: 63, 124, 215, 342, 511, .... ?",
+        "options": [
+          "824",
+          "728",
+          "951",
+          "693"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Here, each number is one less than cube of a number. i.e. 4 3 =64-1=63, 5 3 =125-1=124, 6 3 =216-1=215, 7 3 =343-1=342, 8 3 =512-1=511. So, the next number will be 9 3 =729-1=728. Hence, the answer is 728.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Complete the series 14, 46, 68, 86, ?, 41.",
+        "options": [
+          "28",
+          "64",
+          "78",
+          "62"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Here, in the series after first three numbers, remaining three numbers are reversed number of previous numbers. Hence, the answer is 64.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Complete the following series 7, 14, 56, 448, 7168 ...?",
+        "options": [
+          "685302",
+          "803691",
+          "229376",
+          "409354"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, the pattern followed is:- 7×2=14, 14×4=56, 56×8=448, 448×16=7168. Similarly, 7168×32=229376. Hence, the answer is 229376.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Find the next number in the series: 7, 63, 215, 511, .... ?",
+        "options": [
+          "824",
+          "728",
+          "999",
+          "693"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, each number is one less than cube of a number. i.e. 2 3 =8-1=7, 4 3 =64-1=63, 6 3 =216-1=215, 8 3 =512-1=511. So, the next number will be 10 3 =1000-1=999. Hence, the answer is 999.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Complete the series 143, 462, 684, 486, ?, 341.",
+        "options": [
+          "286",
+          "264",
+          "578",
+          "462"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Here, in the series after first three numbers, remaining three numbers are reversed number of previous numbers. Hence, the answer is 264.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Complete the following series 12, 24, 96, 768, 12288 ...?",
+        "options": [
+          "685302",
+          "803691",
+          "393216",
+          "409354"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, the pattern followed is:- 12×2=24, 24×4=96, 96×8=768, 768×16=12288. Similarly, 12288×32=393216. Hence, the answer is 393216.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Complete the following series 3, 6, 18, 72, 360...?",
+        "options": [
+          "8249",
+          "6825",
+          "2160",
+          "2843"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, the series follows the following pattern. 3×2=6, 6×3=18, 18×4=72, 72×5=360. Similarly, 360×6=2160. Hence, the answer is 2160.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Identify the wrong number in the series. 21, 34, 55, 89, 144, 234, 377?",
+        "options": [
+          "89",
+          "55",
+          "234",
+          "377"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, the series is a Fibonacci series. i.e., a number in the series is the sum of previous two numbers. So, in this 89+144 = 233. So the wrong number is 234. Hence, the answer is 234.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Find the next number in the series: 26, 124, 342, 728, .... ?",
+        "options": [
+          "1824",
+          "1728",
+          "1330",
+          "1693"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, each number is one less than cube of a number. i.e., 3 3 =27-1=26, 5 3 =125-1=124, 7 3 =343-1=342, 9 3 =729-1=728. So, the next number will be 11 3 =1331-1=1330. Hence, the answer is 1330.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Complete the series 129, 342, 564, 465, ?, 921.",
+        "options": [
+          "286",
+          "243",
+          "578",
+          "462"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Here, in the series after first three numbers, remaining three numbers are reversed number of previous numbers. Hence, the answer is 243.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Complete the following series 13, 26, 104, 832, 13312 ...?",
+        "options": [
+          "685302",
+          "425984",
+          "393216",
+          "409354"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Here, the pattern followed is:- 13×2=26, 26×4=104, 104×8=832, 832×16=13312. Similarly, 13312×32=425984. Hence, the answer is 425984.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Identify the wrong number in the series. 8, 13, 21, 34, 55, 87, 144?",
+        "options": [
+          "87",
+          "55",
+          "21",
+          "13"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Here, the series is a Fibonacci series. i.e., a number in the series is the sum of previous two numbers. So, in this 34+55 =89. So the wrong number is 87. Hence, the answer is 87.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Find the next number in the series: 6, 62, 214, 510, .... ?",
+        "options": [
+          "824",
+          "728",
+          "998",
+          "693"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, each number is one less than cube of a number. i.e., 2 3 =8-2=6, 4 3 =64-2=62, 6 3 =216-2=214, 8 3 =512-2=510. So, the next number will be 10 3 =1000-2=998. Hence, the answer is 998.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Complete the series 134, 356, 554, 455, ?, 431.",
+        "options": [
+          "286",
+          "653",
+          "578",
+          "462"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Here, in the series after first three numbers, remaining three numbers are reversed number of previous numbers. Hence, the answer is 653.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Complete the following series 16, 32, 128, 1024, 16384 ...?",
+        "options": [
+          "685302",
+          "534288",
+          "393216",
+          "409354"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Here, the pattern followed is:- 16×2=32, 32×4=128, 128×8=1024, 1024×16=16384. Similarly, 16384×32=534288. Hence, the answer is 534288.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      },
+      {
+        "questionText": "Complete the following series 9, 19, 58, 233, 1166...?",
+        "options": [
+          "8249",
+          "6825",
+          "6997",
+          "2843"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, the series follows the following pattern. 9×2=18+1=19, 19×3=57+1=58, 58×4=232+1=233, 233×5=1165+1=1166. Similarly, 1166×6=6996+1=6997. Hence, the answer is 6997.",
+        "estimatedTime": 45,
+        "subtopic": "Number Series",
+        "tags": [
+          "logical",
+          "aptitude",
+          "series",
+          "number",
+          "sequence"
+        ],
+        "alternativeMethods": "Offline mode reused an existing validated question from the local question pool.",
+        "commonMistakes": "Students may choose an incorrect option if they skip the key concept or rush the calculation."
+      }
+    ]
+  },
+  "providerPayload": {
+    "mode": "offline",
+    "source": "existing_mock_tests",
+    "questionCount": 50
+  },
+  "offlineSource": true
+}

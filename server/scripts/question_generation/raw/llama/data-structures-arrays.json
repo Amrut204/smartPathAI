@@ -1,0 +1,1130 @@
+{
+  "provider": "llama",
+  "model": "meta-llama/Llama-3.1-70B-Instruct-Turbo-offline",
+  "topic": "Data Structures - Arrays",
+  "subject": "technical",
+  "category": "data-structures",
+  "difficulty": "easy",
+  "promptStyle": "code_practical",
+  "generatedAt": "2026-03-12T18:08:24.053Z",
+  "elapsedMs": 0,
+  "count": 50,
+  "cost": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "usd": 0,
+    "inr": 0
+  },
+  "prompt": "Create 50 practical placement test questions for campus recruitment.\n\nTOPIC: Data Structures - Arrays\nDIFFICULTY: easy\n\nOUTPUT FORMAT (JSON only):\n{\n  \"questions\": [\n    {\n      \"questionText\": \"Clear, concise question\",\n      \"codeSnippet\": \"// Code if question involves programming (optional)\",\n      \"options\": [\"Option 1\", \"Option 2\", \"Option 3\", \"Option 4\"],\n      \"correctAnswer\": \"A/B/C/D\",\n      \"explanation\": \"Practical explanation with examples\",\n      \"language\": \"C/Java/Python if code involved, otherwise null\",\n      \"estimatedTime\": 60,\n      \"tags\": [\"tag1\", \"tag2\"]\n    }\n  ]\n}\n\nGUIDELINES FOR PROGRAMMING QUESTIONS:\n- Use clean, readable code snippets (under 15 lines)\n- Follow standard conventions\n- For code output questions: show execution flow in explanation\n- For non-programming topics: focus on practical application\n- Include both theoretical and problem-solving questions\n- Cover edge cases and common pitfalls\n\nGenerate exactly 50 questions. Output ONLY valid JSON.",
+  "rawText": "{\"questions\":[{\"questionText\":\"In simple chaining, what data structure is appropriate? Data Structure MCQ on Abstract Data Types Multiple Choice Questions on Application of Stacks Data Structure MCQ on Arrays Types Data Structure MCQ on Types of Lists Multiple Choice Questions on Binary Trees Data Structure MCQs on B-Trees Data Structure MCQ on Trees MCQ on Heap Data Structure Multiple Choice Questions on Trie Data Structure MCQ on Hash Tables Data Structure MCQ on Graph\",\"options\":[\"Doubly linked list\",\"Circular linked list\",\"Singly linked list\",\"Binary trees Chapterwise Multiple Choice Questions on Data Structure Our 1000+ multiple choice questions and answers (MCQs) on “Data Structure – I” (along with 1000+ MCQs on “Data Structure – II (Algorithms)”) focuses on all chapters of Data Structure covering 200+ topics. You can find MCQs on Data Structure – II (Algorithms) here . This Data Structure MCQ will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. Abstract Data Types Application of Stacks Arrays Types Types of Lists Binary Trees B-Trees Trees Heap Trie Hash Tables Graph The section contains Data Structure multiple choice questions and answers on arrays, stacks, queues, single linked lists, doubly and circular linked lists, stacks using arrays and linked lists, queues using arrays, stacks and linked lists, priority queues and double ended queues. Array and Array Operations Stack Operations – 1 Stack Operations – 2 Stack Operations – 3 Queue Operations Singly Linked Lists Operations – 1 Singly Linked Lists Operations – 2 Singly Linked Lists Operations – 3 Singly Linked Lists Doubly Linked Lists Circular Linked Lists Stack using Array Stack using Linked List Queue using Array Queue using Linked List Priority Queue Double Ended Queue (Deque) Queue using Stacks Stack using Queues The section contains Data Structure questions and answers on decimal to binary using stacks, towers of hanoi, expression evaluation of infix, prefix and postfix, conversions like infix to postfix, postfix to infix, prefix to infix and infix to prefix conversions, reversing the word using stack and balanced parenthesis. Decimal to Binary using Stacks Evaluation of an Infix Expression (Not Parenthesized) Evaluation of a Prefix Expression Evaluation of a Postfix Expression Infix to Prefix Conversion Infix to Postfix Conversion Prefix to Infix Conversion Postfix to Infix Conversion Towers of Hanoi Reverse a Word using Stack Balanced Parenthesis The section contains Data Structure MCQs on bit array, dynamic and parallel array, count inversion, rotation and reversal array operations, end array operations, sparse and suffix array, matrix and sparse matrix. Bit Array Dynamic Array Variable Length Array Parallel Array Sparse Array Suffix Array Matrix Sparse Matrix Count Inversion Rotation Array Operation Reversal Array Operation Number of Jumps to Reach End-array Operation The section contains Data Structure multiple choice questions and answers on skip list, self organizing list, xor linked list and free list. Skip List Self Organizing List Unrolled Linked List Xor Linked List Free List Triply Linked List The section contains Data Structure questions and answers on binary trees using arrays and linked lists, preorder, postorder and inorder traversal, avl tree, binary tree properties and operations, cartesian tree, weight balanced tree, red black and splay trees, threaded binary tree and binary search trees, aa tree, top tree, treap, tango tree and rope. Binary Trees using Array Binary Trees using Linked Lists Binary Tree Operations Preorder Traversal Postorder Traversal Inorder Traversal Binary Tree Properties Binary Search Tree Balanced Binary Tree Self Balancing Binary Search Tree Randomized Binary Search Tree AA Tree AVL Tree Cartesian Tree Weight Balanced Tree Red Black Tree Top Tree Splay Tree Treap Threaded Binary Tree Tango Tree Rope The section contains Data Structure MCQs on b tree, b+ tree and 2-3 tree. B-Tree B+ Tree 2-3 Tree The section contains Data Structure multiple choice questions and answers on trees like ternary tree, k-ary tree, kd tree, expression tree, bin, van emde boas tree and disjoint set data structure. Ternary Tree – 1 Ternary Tree – 2 K-ary Tree – 1 K-ary Tree – 2 Van Emde Boas Tree Disjoint-Set Data Structure Bin KD Tree Abstract Syntax Tree Parse Tree Expression Tree The section contains Data Structure questions and answers on heap, binary and weak heap, binomial and fibonacci heap, d ary heap, ternary heap, pairing and leftlist heap, skew heap, min and max heap. Heap Binary Heap Weak Heap Binomial and Fibonacci Heap D-ary Heap Ternary Heap – 1 Ternary Heap – 2 Pairing Heap Leftlist Heap Skew Heap Min/Max Heap The section contains Data Structure MCQs on trie and suffix tree. Trie Suffix Tree – 1 Suffix Tree – 2 The section contains Data Structure multiple choice questions and answers on hash tables, direct addressing tables, hash tables chaining using linked lists, doubly linked lists, binary trees and list heads, hash tables with linear and quadratic probing, hashing functions, hash tree, min hash and double hashing. Hash Tables Hash Tables Chaining using Linked Lists Hash Tables Chaining using Doubly Linked Lists Hash Tables Chaining with Binary Trees Hash Tables Chaining with List Heads Hash Tables with Linear Probing Hash Tables with Quadratic Probing Hashing Functions Double Hashing Hash Tree Min Hash Direct Addressing Tables The section contains Data Structure questions and answers on graph, adjacency matrix, incidence matrix, adjacency list, directed and undirected graph, directed acyclic graphs, multigraph and hypergraph, binary decision diagrams & and-inverter graph. Graph Adjacency Matrix Incidence Matrix and Graph Structured Stack Adjacency List Undirected Graph Directed Graph Directed Acyclic Graph Propositional and Directed Acyclic Word Graph Multigraph and Hypergraph Binary Decision Diagrams & and Inverter Graph To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. Important Links: Design & Analysis of Algorithms Multiple Choice Questions C Multiple Choice Questions C++ Multiple Choice Questions Java Multiple Choice Questions Python Multiple Choice Questions C# Multiple Choice Questions Computer Science Multiple Choice Questions Data Structure and Algorithms Books Data Structure Online Test\"],\"correctAnswer\":\"A\",\"explanation\":\"Deletion becomes easier with doubly linked list, hence it is appropriate.\",\"estimatedTime\":75,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Checked – Compile time) Checked exception can be handled using throws and try-catch public class CheckedExceptions { public static void main(String[] args) throws IOException { System.out.println(\\\"Program is started..\\\"); System.out.println(\\\"Program is progress..\\\"); // try { FileInputStream file=new FileInputStream(\\\"C:\\\\\\\\file.txt\\\"); } catch (FileNotFoundException e) { e.printStackTrace(); } // FileInputStream file=new FileInputStream(\\\"C:\\\\\\\\file.txt\\\"); System.out.println(file.read()); System.out.println(\\\"Program is completed..\\\"); try-catch throws Collections: The Collections Framework in Java provides a set of interfaces and classes to store and manage objects efficiently. Collection (Interface) List (I) Set (I) Map (I) Ordered, allows duplicates Unordered, no duplicates stored in the form of key, value pairs ArrayList (C)→ Dynamic array, fast access HashSet (C) → Uses HashMap internally, no order HashMap (C) LinkedList (C)→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {\",\"options\":[\"→ Dynamic array, fast access HashSet\",\"→ Uses HashMap internally, no order HashMap\",\"LinkedList\",\"→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {\"],\"correctAnswer\":\"A\",\"explanation\":\"This question is mapped to Data Structures - Arrays. The correct answer is A based on the original source question.\",\"estimatedTime\":75,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following points is/are not true about Linked List data structure when it is compared with an array?\",\"options\":[\"Random access is not allowed in a typical implementation of Linked Lists\",\"Access of elements in linked list takes less time than compared to arrays\",\"Arrays have better cache locality that can make them better in terms of performance\",\"It is easy to insert and delete elements in Linked List\"],\"correctAnswer\":\"B\",\"explanation\":\"To access an element in a linked list, we need to traverse every element until we reach the desired element. This will take more time than arrays as arrays provide random access to its elements.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is also known as Rope data structure?\",\"options\":[\"Linked List\",\"Array\",\"String\",\"Cord\"],\"correctAnswer\":\"D\",\"explanation\":\"Array is a linear data structure. Strings are a collection and sequence of codes, alphabets or characters. Linked List is a linear data structure having a node containing data input and the address of the next node. The cord is also known as the rope data structure.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is a value type in C#?\",\"options\":[\"int\",\"string\",\"class\",\"object\"],\"correctAnswer\":\"A\",\"explanation\":\"Explanation: The correct answer is A: int . Value Types vs. Reference Types: In C#, data types are categorized into two main groups: value types and reference types. Value Types: * Value types directly store the data within their own memory space. * When you copy a value type variable, you are creating a completely independent copy of the data. * Examples of value types include: int , float , bool , char , struct , and enum . Reference Types: * Reference types store a *reference* (or pointer) to the memory location where the actual data is stored. * When you copy a reference type variable, you are only copying the reference, not the data itself. Both variables will then point to the same location in memory. * Examples of reference types include: string , class , object , arrays , and interfaces . Why the other options are incorrect: * B: string - Strings are reference types in C#. * C: class - Classes are used to define objects, and they are reference types . * D: object - 'object' is the base class for all types in C#, and it is a reference type .\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"The data structure required for Breadth First Traversal on a graph is?\",\"options\":[\"Array\",\"Stack\",\"Tree\",\"Queue\"],\"correctAnswer\":\"D\",\"explanation\":\"In Breadth First Search Traversal, BFS, starting vertex is first taken and adjacent vertices which are unvisited are also taken. Again, the first vertex which was added as an unvisited adjacent vertex list will be considered to add further unvisited vertices of the graph. To get the first unvisited vertex we need to follows First In First Out principle. Queue uses FIFO principle.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the purpose of memory refresh register of Z80?\",\"options\":[\"To control on-chip SRAM\",\"To control on-chip DRAM\",\"To clear cache\",\"To control ROM\"],\"correctAnswer\":\"B\",\"explanation\":\"In addition to the general purpose registers, a stack pointer, program counter, and two index registers are included in Z80. It was also used in many embedded designs because of its high-quality performance and for its in-built refresh circuitry for DRAMs.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which graph represents relation between whole and its parts?\",\"options\":[\"Histogram\",\"Pie graph\",\"Line graph\",\"Stacked bar graph\"],\"correctAnswer\":\"B\",\"explanation\":\"The correct answer is pie graph as pie graph represents relationship between whole and its parts. Histogram is represented with bars of equal width with no gap between adjacent bars. The height of the bar represents the number of data items in the given data range called frequency. Line graph is a line joining all the data points. A stacked bar graph is a chart that uses bars to show comparisons between categories of data with ability to break down and compare parts of a whole.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following is not the application of stack?\",\"options\":[\"Data Transfer between two asynchronous process\",\"Compiler Syntax Analyzer\",\"Tracking of local variables at run time\",\"A parentheses balancing program\"],\"correctAnswer\":\"A\",\"explanation\":\"Data transfer between the two asynchronous process uses the queue data structure for synchronisation. The rest are all stack applications.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Note the merging part has been written to show what’s going on here. If you were to actually use merge sort (or a similar algorithm) in Python, you would probably use heapq.merge to do the merging. BLACK BOX: TIMSORT The algorithm hiding in list.sort is one invented (and implemented) by Tim Peters, one of the big names in the Python community.7 The algorithm, aptly named timsort, replaces an earlier algorithm that had lots of tweaks to handle special cases such as segments of ascending and descending values, and the like. In timsort, these cases are handled by the general mechanism, so the performance is still there (and in some cases, it’s much improved), but the algorithm is cleaner and simpler. The algorithm is still a bit too involved to explain in detail here; I’ll try to give you a quick overview. For more details, take a look at the source.8 Timsort is a close relative to merge sort. It’s an in-place algorithm, in that it merges segments and leaves the result in the original array (although it uses some auxiliary memory during the merging). Instead of simply sorting the array half-and-half and then merging those, though, it starts at the beginning, looking for segments that are already sorted (possibly in reverse), called runs. In random arrays, there won’t be many, but in many kinds of real data, there may be a lot—giving the algorithm a clear edge over a plain merge sort and a linear running time in the best case (and that covers a lot of cases beyond simply getting a sequence that’s already sorted). As timsort iterates over the sequence, identifying runs and pushing their bounds onto a stack, it uses some heuristics to decide which runs are to be merged when. The idea is to avoid the kind of merge imbalance that would give you a quadratic running time while still exploiting the structure in the data (that is, the runs). First, any really short runs are artificially extended and sorted (using a stable insertion sort). Second, the following invariants are maintained for the three topmost runs on the stack, A, B, and C (with A on top): len(A) > len(B) + len(C) and len(B) > len(C). If the first invariant is violated, the smaller of A and C is merged with B, and the result replaces the merged runs in the stack. The second invariant may still not hold, and the merging continues until both invariants hold. The algorithm uses some other tricks as well, to get as much speed as possible. If you’re interested, I recommend you check out the source.9 If you’d rather not read C code, you could also take a look at the pure Python version of timsort, available as part of the PyPy project.10 Their implementation has excellent comments and is clearly written. (The PyPy project is discussed in Appendix A.) 7Timsort is, in fact, also used in Java SE 7, for sorting arrays. 8See, for example, the file listsort.txt in the source code (or online, http://svn.python.org/projects/python/trunk/ Objects/listsort.txt). 9You can find the actual C code at http://svn.python.org/projects/python/trunk/Objects/listobject.c. 10See https://bitbucket.org/pypy/pypy/src/default/rpython/rlib/listsort.py. Chapter 6 ■ Divide, Combine, and Conquer 127 How Fast Can We Sort? One important result about sorting is that divide-and-conquer algorithms such as merge sort are optimal; for arbitrary values (where we can figure out which is bigger) it’s impossible, in the worst case, to do any better than W(n lg n). An important case where this holds is when we sort arbitrary real numbers.11 Note ■ ■ Counting sort and its relatives (discussed in Chapter 4) seem to break this rule. Note that there we can’t sort arbitrary values—we need to be able to count occurrences, which means that the objects must be hashable, and we need to be able to iterate over the value range in linear time. How do we know this? The reasoning is actually quite simple. First insight: Because the values are arbitrary and we’re assuming that we can figure out only whether one of them is greater than another, each object comparison boils down to a yes/no question. Second insight: The number of orderings of n elements is n!, and we’re looking for exactly one of them. Where does that get us? We’re back to “think of a particle,” or, in this case, “think of a permutation.” This means that the best we can do is to use W(lg n!) yes/no questions (the comparisons) to get the right permutation (that is, to sort the numbers). And it just so happens that lg n! is asymptotically equivalent to n lg n.12 In other words, the running time in the worst case is W(lg n!) = W(n lg n). How, you say, do we arrive at this equivalence? The easiest way is to just use Stirling’s approximation, which says that n! is Q(nn). Take the logarithm and Bob’s your uncle.13 Now, we derived the bound for the worst case; using information theory (which I won’t go into here), it is, in fact, possible to show that this bound holds also in the average case. In other words, in a very real sense, unless we know something substantial about the value range or distribution of our data, loglinear is the best we can do. Three More Examples Before wrapping up this chapter with a slightly advanced (and optional) section, here are three examples for the road. The first two deal with computational geometry (where the divide-and-conquer strategy is frequently useful), while the last one is a relatively simple problem (with some interesting twists) on a sequence of numbers. I have only sketched the solutions, because the point is mainly to illustrate the design principle. Closest Pair The problem: You have a set of points in the plane, and you want to find the two that are closest to each other. The first idea that springs to mind is, perhaps, to use brute force: For each point, check all the others, or, at least, the ones we haven’t looked at yet. This is, by the handshake sum, a quadratic algorithm, of course. Using divide and conquer, we can get that down to loglinear. This is a rather nifty problem, so if you’re into puzzle-solving, you might want to try to solve it for yourself before reading my explanation. The fact that you should use divide and conquer (and that the resulting algorithm is loglinear) is a strong hint, but the solution is by no means obvious. 11Real numbers usually aren’t all that arbitrary, of course. As long as your numbers use a fixed number of bits, you can use radix sort (mentioned in Chapter 4) and sort the values in linear time. 12I think that’s so cool, I wanted to add an exclamation mark after the sentence ... but I guess that might have been a bit confusing, given the subject matter. 13Actually, the approximation isn’t asymptotic in nature. If you want the details, you’ll find them in any good mathematics reference. Chapter 6 ■ Divide, Combine, and Conquer 128 The structure of the algorithm follows almost directly from the (merge sort-like) loglinear divide-and-conquer schema: We’ll divide the points into two subsets, recursively find the closest pair in each, and then—in linear time—merge the results. By the power of induction/recursion (and the divide-and-conquer schema), we have now reduce the problem to this merging operation. But we can peel away even a bit more before we engage our creativity: The result of the merge must be either (1) the closest pair from the left side, (2) the closest pair on the right side, or (3) a pair consisting of one point from either side. In other words, what we need to do is find the closest pair “straddling” the division line. While doing this, we also have an upper limit to the distance involved (the minimum of the closest pairs from the left and right sides). Having drilled down to the essence of the problem, let’s look at how bad things can get. Let’s say, for the moment, that we have sorted all points in the middle region (of width 2d) by their y-coordinate. We then want to go through them in order, considering other points to see whether we find any points closer than d (the smallest distance found so far). For each point, how many other “neighbors” must we consider? This is where the crucial insight of the solution enters the picture: on either side of the midline, we know that all points are at least a distance of d apart. Because what we’re looking for is a pair at most a distance apart, straddling the midline, we need to consider only a vertical slice of height d (and width 2d) at any one time. And how many points can fit inside this region? Figure 6-7 illustrates the situation. We have no lower bounds on the distances between left and right, so in the worst case, we may have coinciding points on the middle line (highlighted). Beyond that, it’s quite easy to show that at most four points with a minimum distance of d can fit inside a d×d square, which we have on either side; see Exercise 6\",\"options\":[\"> len\",\"+ len\",\"and len\",\". If the first invariant is violated, the smaller of A and C is merged with B, and the result replaces the merged runs in the stack. The second invariant may still not hold, and the merging continues until both invariants hold. The algorithm uses some other tricks as well, to get as much speed as possible. If you’re interested, I recommend you check out the source.9 If you’d rather not read C code, you could also take a look at the pure Python version of timsort, available as part of the PyPy project.10 Their implementation has excellent comments and is clearly written. (The PyPy project is discussed in Appendix A.) 7Timsort is, in fact, also used in Java SE 7, for sorting arrays. 8See, for example, the file listsort.txt in the source code (or online, http://svn.python.org/projects/python/trunk/ Objects/listsort.txt). 9You can find the actual C code at http://svn.python.org/projects/python/trunk/Objects/listobject.c. 10See https://bitbucket.org/pypy/pypy/src/default/rpython/rlib/listsort.py. Chapter 6 ■ Divide, Combine, and Conquer 127 How Fast Can We Sort? One important result about sorting is that divide-and-conquer algorithms such as merge sort are optimal; for arbitrary values (where we can figure out which is bigger) it’s impossible, in the worst case, to do any better than W(n lg n). An important case where this holds is when we sort arbitrary real numbers.11 Note ■ ■ Counting sort and its relatives (discussed in Chapter 4) seem to break this rule. Note that there we can’t sort arbitrary values—we need to be able to count occurrences, which means that the objects must be hashable, and we need to be able to iterate over the value range in linear time. How do we know this? The reasoning is actually quite simple. First insight: Because the values are arbitrary and we’re assuming that we can figure out only whether one of them is greater than another, each object comparison boils down to a yes/no question. Second insight: The number of orderings of n elements is n!, and we’re looking for exactly one of them. Where does that get us? We’re back to “think of a particle,” or, in this case, “think of a permutation.” This means that the best we can do is to use W(lg n!) yes/no questions (the comparisons) to get the right permutation (that is, to sort the numbers). And it just so happens that lg n! is asymptotically equivalent to n lg n.12 In other words, the running time in the worst case is W(lg n!) = W(n lg n). How, you say, do we arrive at this equivalence? The easiest way is to just use Stirling’s approximation, which says that n! is Q(nn). Take the logarithm and Bob’s your uncle.13 Now, we derived the bound for the worst case; using information theory (which I won’t go into here), it is, in fact, possible to show that this bound holds also in the average case. In other words, in a very real sense, unless we know something substantial about the value range or distribution of our data, loglinear is the best we can do. Three More Examples Before wrapping up this chapter with a slightly advanced (and optional) section, here are three examples for the road. The first two deal with computational geometry (where the divide-and-conquer strategy is frequently useful), while the last one is a relatively simple problem (with some interesting twists) on a sequence of numbers. I have only sketched the solutions, because the point is mainly to illustrate the design principle. Closest Pair The problem: You have a set of points in the plane, and you want to find the two that are closest to each other. The first idea that springs to mind is, perhaps, to use brute force: For each point, check all the others, or, at least, the ones we haven’t looked at yet. This is, by the handshake sum, a quadratic algorithm, of course. Using divide and conquer, we can get that down to loglinear. This is a rather nifty problem, so if you’re into puzzle-solving, you might want to try to solve it for yourself before reading my explanation. The fact that you should use divide and conquer (and that the resulting algorithm is loglinear) is a strong hint, but the solution is by no means obvious. 11Real numbers usually aren’t all that arbitrary, of course. As long as your numbers use a fixed number of bits, you can use radix sort (mentioned in Chapter 4) and sort the values in linear time. 12I think that’s so cool, I wanted to add an exclamation mark after the sentence ... but I guess that might have been a bit confusing, given the subject matter. 13Actually, the approximation isn’t asymptotic in nature. If you want the details, you’ll find them in any good mathematics reference. Chapter 6 ■ Divide, Combine, and Conquer 128 The structure of the algorithm follows almost directly from the (merge sort-like) loglinear divide-and-conquer schema: We’ll divide the points into two subsets, recursively find the closest pair in each, and then—in linear time—merge the results. By the power of induction/recursion (and the divide-and-conquer schema), we have now reduce the problem to this merging operation. But we can peel away even a bit more before we engage our creativity: The result of the merge must be either (1) the closest pair from the left side, (2) the closest pair on the right side, or (3) a pair consisting of one point from either side. In other words, what we need to do is find the closest pair “straddling” the division line. While doing this, we also have an upper limit to the distance involved (the minimum of the closest pairs from the left and right sides). Having drilled down to the essence of the problem, let’s look at how bad things can get. Let’s say, for the moment, that we have sorted all points in the middle region (of width 2d) by their y-coordinate. We then want to go through them in order, considering other points to see whether we find any points closer than d (the smallest distance found so far). For each point, how many other “neighbors” must we consider? This is where the crucial insight of the solution enters the picture: on either side of the midline, we know that all points are at least a distance of d apart. Because what we’re looking for is a pair at most a distance apart, straddling the midline, we need to consider only a vertical slice of height d (and width 2d) at any one time. And how many points can fit inside this region? Figure 6-7 illustrates the situation. We have no lower bounds on the distances between left and right, so in the worst case, we may have coinciding points on the middle line (highlighted). Beyond that, it’s quite easy to show that at most four points with a minimum distance of d can fit inside a d×d square, which we have on either side; see Exercise 6\"],\"correctAnswer\":\"A\",\"explanation\":\"This question is mapped to Data Structures - Arrays. The correct answer is A based on the original source question.\",\"estimatedTime\":75,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"In a binary search tree which traversal visits the nodes in ascending order?\",\"options\":[\"Preorder\",\"Inorder\",\"Postorder\",\"Levelorder\"],\"correctAnswer\":\"B\",\"explanation\":\"This question is mapped to Data Structures - Arrays. The correct answer is B based on the original source question.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"PHP’s numerically indexed array begin with position ______.\",\"options\":[\"1\",\"2\",\"0\",\"-1\"],\"correctAnswer\":\"C\",\"explanation\":\"Like many programming languages, the first element of an array has an index value of 0.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"The yearly sales were 2,36,250 units, study the graph and find the sales in 3 rd quarter.\",\"options\":[\"83025 units\",\"80325 units\",\"86250 units\",\"83265 units\"],\"correctAnswer\":\"B\",\"explanation\":\"The sales during the 3 rd quarter = 236250 * 34 / 100 = 80325 units.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is the angle of the sector of the 1 st sector?\",\"options\":[\"58 degrees\",\"50 degrees\",\"62 degrees\",\"54 degrees\"],\"correctAnswer\":\"D\",\"explanation\":\"The angle of the sector of the 1 st quarter = 15 / 100 * 360 = 54 degrees.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find the angle of the sector of the 4 th quarter.\",\"options\":[\"118 degrees\",\"126 degrees\",\"132 degrees\",\"144 degrees\"],\"correctAnswer\":\"D\",\"explanation\":\"The angle of the sector of the 4 th quarter = 40 / 100 * 360 = 144 degrees.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is the total sales of p?\",\"options\":[\"75 crores\",\"80 crores\",\"55 crores\",\"65 crores\"],\"correctAnswer\":\"D\",\"explanation\":\"The total sales of p = 2.5 + 25 + 22.5 + 25 = 65 crores\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is an AVL tree?\",\"options\":[\"a tree which is unbalanced and is a height balanced tree\",\"a tree which is balanced and is a height balanced tree\",\"a tree with atmost 3 children\",\"a tree with three children\"],\"correctAnswer\":\"B\",\"explanation\":\"It is a self balancing tree with height difference atmost 1.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find the total production of rice throughout 4 years.\",\"options\":[\"45 tonnes\",\"60 tonnes\",\"42.5 tonnes\",\"47.5 tonnes\"],\"correctAnswer\":\"B\",\"explanation\":\"The total production of rice throughout the years is 10 + 15 + 20 + 15 = 60 tonnes.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"The total sales throughout the year was 2625 units, study the graph and find the sales in 2 nd quarter.\",\"options\":[\"315 units\",\"485 units\",\"195 units\",\"120 units\"],\"correctAnswer\":\"A\",\"explanation\":\"The sales in 2 nd quarter = 12 / 100 * 2625 = 315 units.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is the angle of sector of the 3 rd quarter?\",\"options\":[\"94 degrees\",\"97 degrees\",\"99 degrees\",\"102 degrees\"],\"correctAnswer\":\"B\",\"explanation\":\"The angle of the sector of the third quarter = 22500 / 83450 * 360 = 97.06 degrees ≈ 97 degrees.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find the total sales of p an r in the year 2003 and 2004.\",\"options\":[\"250 crores\",\"260 crores\",\"270 crores\",\"275 crores\"],\"correctAnswer\":\"B\",\"explanation\":\"The total sales = 75 + 80 + 55 + 50 = 260 crores\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is the average yearly consumption of milk?\",\"options\":[\"14.5 litres\",\"15.6 litres\",\"17.8 litres\",\"14.4 litres\"],\"correctAnswer\":\"B\",\"explanation\":\"The average yearly consumption of milk = (14 + 15 + 16 + 18 + 15) / 5 = 78 / 5 = 15.6 litres yearly.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"The yearly sales were 10240 units, study the graph and find the sales in 3 rd quarter.\",\"options\":[\"3584 units\",\"3984 units\",\"3594 units\",\"3444 units\"],\"correctAnswer\":\"A\",\"explanation\":\"The sales during the 3 rd quarter = 10240 * 35 / 100 = 3584 units.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"If the total sales throughout the year was 2385 units, study the graph and find the sales in 2 nd quarter.\",\"options\":[\"477 units\",\"485 units\",\"497 units\",\"515 units\"],\"correctAnswer\":\"A\",\"explanation\":\"The sales in 2 nd quarter = 20 / 100 * 2385 = 477 units.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"If the yearly sales were 1,21,150 units, study the graph and find the sales in 3 rd quarter.\",\"options\":[\"36345 units\",\"35345 units\",\"36365 units\",\"34365 units\"],\"correctAnswer\":\"A\",\"explanation\":\"The sales during the 3 rd quarter = 121150 * 30 / 100 = 36345 units.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find the angle of sector of milk.\",\"options\":[\"45 degrees\",\"60 degrees\",\"85 degrees\",\"90 degrees\"],\"correctAnswer\":\"D\",\"explanation\":\"The angle of sector of milk = 25 / 100 * 360 = 90 degrees.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is the consumption of tea if coffee toe quantity of coffee consumed is 120 litres?\",\"options\":[\"112 litres\",\"120 litres\",\"126 litres\",\"132 litres\"],\"correctAnswer\":\"C\",\"explanation\":\"The consumption of tea = 120 / 20 * 21 = 126 litres.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is the quantity of tea consumed if juice consumed is 85 litres?\",\"options\":[\"50 litres\",\"52.5 litres\",\"55 litres\",\"58.75 litres\"],\"correctAnswer\":\"B\",\"explanation\":\"The quantity of coffee consumed = 85 / 34 * 21 = 52.5 litres.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is the average production of rice throughout the years?\",\"options\":[\"10 tonnes\",\"11 tonnes\",\"13 tonnes\",\"14 tonnes\"],\"correctAnswer\":\"B\",\"explanation\":\"The average production = (6 + 8 + 12 + 18) / 4 = 44 / 4 = 11 tonnes\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Study the graph and find what is the average production of all the three crops in 2001?\",\"options\":[\"6.66 tonnes\",\"6.33 tonnes\",\"9.99 tonnes\",\"9.33 tonnes\"],\"correctAnswer\":\"D\",\"explanation\":\"The average production = (6 + 10 + 12) / 3 = 9.33 tonnes\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the maximum number of elements that can be stored in an array in C?\",\"options\":[\"Depends on memory\",\"256\",\"1000\",\"Unlimited\"],\"correctAnswer\":\"A\",\"explanation\":\"The maximum number of elements that can be stored in an array in C depends on the available memory of the system in which the program is running. An array in C is a fixed-size data structure, which means that you need to specify the size (number of elements) of the array when you declare it. Here are a few key points: The size of an array should be a positive integer. The maximum value for the size of an array is limited by the amount of memory available in the system. The actual maximum size may vary from system to system. Attempting to allocate an array that is too large for the available memory can lead to program crashes or errors. So, in C, you can declare an array with a size that depends on the specific memory constraints of the computer where the program is executed. This is why the correct answer is Option A: Depends on memory . The other options specify fixed limits, which is not accurate for C arrays. Remember that it's essential to manage memory efficiently to avoid issues like memory exhaustion or segmentation faults when working with arrays in C.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Determine Output: void main() { char s[]=\\\"man\\\"; int i; for(i=0; s[i]; i++) printf(\\\"%c%c%c%c \\\", s[i], *(s+i), *(i+s), i[s]); }\",\"options\":[\"mmm nnn aaa\",\"mmmm nnnn aaaa\",\"Compiler Error\",\"None of These\"],\"correctAnswer\":\"D\",\"explanation\":\"Correct Output : mmmm aaaa nnnn s[i], *(i+s), *(s+i), i[s] are all different ways of expressing the same idea. Generally array name is the base address for that array. Here s is the base address. i is the index number/displacement from the base address. So, indirecting it with * is same as s[i]. i[s] may be surprising. But in the case of C it is same as s[i].\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following application makes use of a circular linked list?\",\"options\":[\"Recursive function calls\",\"Undo operation in a text editor\",\"Implement Hash Tables\",\"Allocating CPU to resources\"],\"correctAnswer\":\"D\",\"explanation\":\"Generally, round robin fashion is employed to allocate CPU time to resources which makes use of the circular linked list data structure. Recursive function calls use stack data structure. Undo Operation in text editor uses doubly linked lists. Hash tables uses singly linked lists.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the need for a circular queue?\",\"options\":[\"easier computations\",\"implement LIFO principle in queues\",\"effective usage of memory\",\"to delete elements based on priority\"],\"correctAnswer\":\"C\",\"explanation\":\"In a linear queue, dequeue operation causes the starting elements of the array to be empty, and there is no way you can use that space, while in a circular queue, you can effectively use that space. Priority queue is used to delete the elements based on their priority. Higher priority elements will be deleted first whereas lower priority elements will be deleted next. Queue data structure always follows FIFO principle.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following section is used to make text appear around the image? MCQ on Visual Basic Introduction VB.Net MCQ on ToolBox Window Visual Basic Multiple Choice Questions on User Interface Visual Basic MCQ on Coding the Application Visual Basic MCQ on Variables and Constants VB.Net MCQ on Modifying the Playtime Cellular Application Visual Basic MCQ on Selection Structures VB.Net MCQ on Making an Application & Interface Design Visual Basic MCQ on Repetition Structure VB.Net MCQ on Sub and Function Procedures Visual Basic MCQ on String Manipulation Visual Basic MCQ on Arrays VB.Net MCQ on Structures and Sequential Access Files Visual Basic MCQ on Classes and Objects VB.Net MCQ on Web Applications\",\"options\":[\"Wrapping style\",\"Text style\",\"Image properties\",\"Align Chapterwise Multiple Choice Questions on Visual Basic (VB.Net) Our 1000+ MCQs focus on all topics of the Visual Basic (VB.Net) subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. Visual Basic Introduction Visual Basic ToolBox Window VB.Net User Interface VB.Net Coding the Application Visual Basic Variables and Constants Modifying the Playtime Cellular Application Visual Basic Selection Structures Making an Application & Interface Design Visual Basic Repetition Structure Visual Basic Sub and Function Procedures VB.Net String Manipulation Visual Basic Arrays VB.Net Structures and Sequential Access Files VB.Net Classes and Objects Visual Basic Web Applications The section contains Visual Basic multiple choice questions and answers on properties window, application starting and ending process. Visual Basic Properties Window Starting and Ending an Application The section contains VB.Net questions and answers on label tool, picture box tool, buttontool, code editor, timer tool, formborder style, minimizebox, maximizebox and controlbox properties. Visual Basic Label Tool Visual Basic Picture Box Tool and Button Tool Visual Basic Code Editor Visual Basic Timer Tool FormBorder Style, MinimizeBox, MaximizeBox and ControlBox Property in Visual Basic The section contains Visual Basic MCQs on user interface buiding, interface border style and autosize properties, access keys assinging and tab order controlling. Building the User Interface Visual Basic Border Style and AutoSize Properties Visual Basic Assigning Access Keys Controlling the Tab Order The section contains Visual Basic multiple choice questions and answers on application coding using psedocode and flowchart, writing arithmetic expressions, application testing and debugging. Coding the Application Using Pseudocode and Flowchart Writing Arithmetic Expressions Testing and Debugging Application The section contains Visual Basic questions and answers on variables data type selection, declaring and assigning data to existing variable, variable scope and lifetime, static variables, named constants, option explict, option inner and strict. Selecting Data Type and Name for the Variable Declaring and Assigning Data to an Existing Variable Scope and Lifetime of a Variable Static Variables and Named Constants Option Explicit, Option Inner and Option Strict The section contains VB.Net MCQs on strings concatenation, inputbox function and tostring method, controlchars.newline constant and designing default button. Concatenating Strings, InputBox Function and toString Method in VB.Net ControlChars.Newline Constant and Designing Default Button in VB.Net The section contains Visual Basic multiple choice questions and answers on single alternative and dual alternative selection structures, logical operators, selection structures, nested and multiple alternative selection structures. Single-Alternative and Dual-Alternative Selection Structures Visual Basic Logical Operators Visual Basic Strings in Selection Structures Visual Basic Nested Selection Structures Visual Basic Multiple Altenative Selection Structures The section contains VB.Net questions and answers on financial.pmt method, messagebox show method, addition of groupbox, radio button and check boxes in the form. Adding a GroupBox to the Form and Using Financial.Pmt Method Using the MessageBox.Show Method Adding a Radio Button & Check Box to the Form The section contains Visual Basic MCQs on do loop statement, counters, accumulators, for next statement, list box, refresh and sleep methods in interface. Visual Basic Do Loop Statement Visual Basic Counters and Accumulators For..Next Statement Refresh and Sleep Methods, Including List Box in an Interface The section contains VB.Net multiple choice questions and answers on passing variables, function procedures and interface. VB.Net Passing Variables VB.Net Function Procedures Including a ComboBox in an Interface The section contains Visual Basic questions and answers on string working and searching, comparing strings using pattern matching, menu addition to form and mnufilenew object click event procedure coding. Working with String Searching a String Using Pattern Matching to Compare Strings Adding a Menu to a Form The section contains Visual Basic MCQs on one dimensional array, for each next statement, parallel and two dimensional arrays, total and average values calculations, arrays, collections, accumulator, counter arrays, searching and sorting of one and two dimensional arrays. Visual Basic One-Dimensional Array For Each..Next Statement Sorting a One-Dimensional Array Visual Basic Parallel & Two-dimensional Arrays The section contains VB.Net multiple choice questions and answers on structure variable declaration, information alignment, writing, closing and reading data of a sequential access file. Declaring and Using a Structure Variable Writing Data to a Sequential Access File The section contains Visual Basic questions and answers on oop terminology, class creation, working and reuse, classes that contains parameterized constructor, readonly property, auto-implemented properties and overloaded methods, base and derived class. Object Oriented Programming Terminology Creating a Class Working with Classes The section contains VB.Net MCQs on web applications and dynamic web pages. Web Applications Dynamic Web Pages To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews.\"],\"correctAnswer\":\"A\",\"explanation\":\"Wrapping style makes the text appear around image. In Visual Basic 6.0, the WordWrap property determines if text wraps to multiple lines when it is too long to fit in a label. In Visual Basic 2008, the text in a Label control automatically wraps. The only way to prevent wrapping is to make the height of the Label control equivalent to a single line of text.\",\"estimatedTime\":75,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is the highest index for an array with 10 elements in C?\",\"options\":[\"5\",\"9\",\"10\",\"11\"],\"correctAnswer\":\"B\",\"explanation\":\"An array in C is indexed starting from 0. If an array has 10 elements, the first element will have an index of 0. The last element, therefore, will have an index of 9. Hence, the highest index for an array with 10 elements is 9.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Type Hinting was introduced in which version of PHP?\",\"options\":[\"PHP 4\",\"PHP 5\",\"PHP 5.3\",\"PHP 6\"],\"correctAnswer\":\"B\",\"explanation\":\"Type hinting gives you the ability to force parameters to be objects of certain class or to be arrays. PHP 5 introduced this feature.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What are the disadvantages of arrays?\",\"options\":[\"Index value of an array can be negative\",\"Elements are sequentially accessed\",\"Data structure like queue or stack cannot be implemented\",\"There are chances of wastage of memory space if elements inserted in an array are lesser than the allocated size\"],\"correctAnswer\":\"D\",\"explanation\":\"Arrays are of fixed size. If we insert elements less than the allocated size, unoccupied positions can’t be used again. Wastage will occur in memory.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"The optimal data structure used to solve Tower of Hanoi is _________\",\"options\":[\"Tree\",\"Heap\",\"Priority queue\",\"Stack\"],\"correctAnswer\":\"D\",\"explanation\":\"The Tower of Hanoi involves moving of disks ‘stacked’ at one peg to another peg with respect to the size constraint. It is conveniently done using stacks and priority queues. Stack approach is widely used to solve Tower of Hanoi.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"In a graphical system, an array of pixels in the picture are stored in which of the following locations?\",\"options\":[\"Frame buffer\",\"Processor\",\"Memory\",\"All of the mentioned\"],\"correctAnswer\":\"A\",\"explanation\":\"The main purpose of using a framer buffer is to store pixels.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What will be the output of the following PHP program? <?php $fruits = array ( \\\"apple\\\" , \\\"orange\\\" , array ( \\\"pear\\\" , \\\"mango\\\" ) , \\\"banana\\\" ) ; echo ( count ( $fruits , 1 ) ) ; ?>\",\"options\":[\"6\",\"5\",\"4\",\"3\"],\"correctAnswer\":\"A\",\"explanation\":\"function count() will return the number of elements in an array. The parameter 1 counts the array recursively i.e it will count all the elements of multidimensional arrays.\",\"estimatedTime\":75,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following CSS Property sets the stacking order of positioned elements?\",\"options\":[\"y-index\",\"z-index\",\"x-index\",\"all of the mentioned\"],\"correctAnswer\":\"B\",\"explanation\":\"z-index property sets the stacking order of positioned elements. Syntax: z-index : auto |number| initial | inherit ;\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"MongoDB documents are composed of field-and-value pairs and have the following structure?\",\"options\":[\"field1: value1\",\"field1: value1;\",\"field1:; value1\",\"none of the mentioned\"],\"correctAnswer\":\"A\",\"explanation\":\"The value of a field can be any of the BSON data types, including other documents, arrays, and arrays of documents.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"The property of JSON() method is:\",\"options\":[\"it can be invoked manually as object.JSON()\",\"it will be automatically invoked by the compiler\",\"it is invoked automatically by the JSON.stringify() method\",\"it cannot be invoked in any form\"],\"correctAnswer\":\"C\",\"explanation\":\"The JSON format is intended for serialization of data structures and can handle JavaScript primitive values, arrays, and plain objects. It does not know about classes, and when serializing an object, it ignores the object’s prototype and constructor. If you call JSON.stringify() on a Range or Complex object, for example, it returns a string like {“from”:1, “to”:3} or {“r”:1, “i”:-1}.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Where is the memory allocated for the objects?\",\"options\":[\"Cache\",\"ROM\",\"HDD\",\"RAM\"],\"correctAnswer\":\"D\",\"explanation\":\"The memory for the objects or any other data is allocated in RAM initially. This is while we run a program all the memory allocation takes place in some RAM segments. Arrays in heap and local members in stack etc.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which of the following statements is true regarding arrays in C#?\",\"options\":[\"Arrays in C# can dynamically resize\",\"The length of an array cannot be changed\",\"Arrays in C# can only store primitive types\",\"None of the above\"],\"correctAnswer\":\"B\",\"explanation\":\"This question is mapped to Data Structures - Arrays. The correct answer is B based on the original source question.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"A distributed database has which of the following advantages over a centralized database?\",\"options\":[\"Software cost\",\"Software complexity\",\"Slow Response\",\"Modular growth\"],\"correctAnswer\":\"D\",\"explanation\":\"A distributed database offers several advantages over a centralized database architecture. Option A: Software cost This option is not typically considered an advantage of distributed databases over centralized databases. The cost of software can vary based on factors such as licensing models, vendor pricing, and the specific requirements of the database system. Both distributed and centralized databases may incur software costs depending on the technologies used and the scale of deployment. Option B: Software complexity While distributed databases may introduce additional complexity compared to centralized databases due to factors such as network communication, data replication, and synchronization mechanisms, this complexity is often outweighed by the benefits they offer, such as improved scalability, fault tolerance, and performance. Additionally, advancements in distributed database technologies have led to the development of tools and frameworks that help manage and mitigate the complexity associated with distributed systems. Option C: Slow Response Distributed databases are designed to enhance responsiveness and performance by distributing data across multiple sites and allowing parallel processing of queries. While network latency and communication overhead can affect response times in distributed systems, proper design, optimization, and caching mechanisms can mitigate these issues. In many cases, distributed databases can provide faster response times compared to centralized databases, especially for geographically dispersed users. Option D: Modular growth One of the significant advantages of distributed databases is their ability to support modular growth. Distributed architectures allow organizations to scale their database systems by adding or removing nodes (servers) as needed without significant disruptions to operations. This modular scalability enables organizations to adapt their database infrastructure to changing demands, such as increasing data volumes, user concurrency, or geographic expansion, without the need for costly and time-consuming migrations or overhauls. Therefore, in the context of advantages of distributed databases over centralized databases, the correct option is Modular growth (Option D).\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"Which programming language is commonly used for Data Science tasks?\",\"options\":[\"Java\",\"Python\",\"C++\",\"JavaScript\"],\"correctAnswer\":\"B\",\"explanation\":\"Let's look at why Python is the correct answer and why the others are not as commonly used for these specific tasks. Option B: Python (Correct Answer) Python is by far the most popular and widely used programming language for Data Science. Here's why it's the top choice: 1. Easy to Learn: Python has a simple and readable structure (syntax), which makes it easy for beginners to understand and write code. 2. Rich Libraries: Python has an amazing collection of specialized tools, called \\\"libraries,\\\" that are specifically designed for Data Science tasks. Some very important ones include: - NumPy: Great for working with numbers and large datasets efficiently. - Pandas: Used for cleaning, analyzing, and manipulating data, similar to working with advanced spreadsheets. - Scikit-learn: Essential for building machine learning models (like algorithms that learn from data to make predictions). - Matplotlib and Seaborn: Used for creating clear and beautiful charts and graphs to visualize data. 3. Versatility: Besides Data Science, Python is also used for web development, automation, and many other areas, making it a very powerful and useful language to know. Option A: Java Java is a powerful and robust language, often used in large enterprise systems and for building big data processing frameworks (like Apache Hadoop or Apache Spark). However, for the everyday tasks of data analysis, writing scripts for quick insights, or directly building machine learning models, Python is generally preferred because of its simpler code and specialized Data Science libraries. Option C: C++ C++ is known for its speed and efficiency. While some very performance-critical parts of Data Science libraries (especially those in Python) might be written in C++ \\\"behind the scenes\\\" to make them run faster, C++ itself is rarely used directly by Data Scientists for their daily coding tasks. It's much more complex and takes more time to write code in C++ compared to Python for data analysis. Option D: JavaScript JavaScript is mainly the language of the internet. It's used to make websites interactive and for developing web applications (both front-end and back-end with Node.js). While you can use JavaScript libraries (like D3.js) for some interactive data visualizations on the web, it is not the primary language for general data cleaning, statistical analysis, or building machine learning models in Data Science. In summary, when you start learning Data Science, Python is the first language you should focus on because of its ease of use, powerful libraries, and a large supportive community.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"A/An . . . . . . . . contains programs that can be selected.\",\"options\":[\"pointer\",\"menu\",\"icon\",\"button\"],\"correctAnswer\":\"B\",\"explanation\":\"Option A: pointer This option suggests that a pointer contains programs that can be selected. This statement is incorrect. In computing, a pointer refers to a graphical symbol on the screen that indicates the position where the next action will take place, such as clicking or selecting items, but it does not contain programs that can be selected. Option B: menu This option suggests that a menu contains programs that can be selected. This statement is correct. In graphical user interfaces (GUIs) like Microsoft Windows, a menu is a list of commands or options displayed on the screen that users can select to perform actions. Menus typically contain various programs, commands, or settings that users can choose from to interact with applications and the operating system. Option C: icon This option suggests that an icon contains programs that can be selected. This statement is incorrect. Icons are graphical representations or symbols displayed on the screen that represent files, folders, applications, or functions. Clicking on an icon typically opens the associated file or starts the corresponding program, but icons themselves do not contain programs. Option D: button This option suggests that a button contains programs that can be selected. This statement is incorrect. Buttons in a graphical user interface (GUI) are interactive elements that users can click on to trigger specific actions or commands within applications or the operating system. However, buttons do not contain programs themselves; they execute predefined functions when clicked. Conclusion: The correct answer is Option B: menu because in computing and Microsoft Windows, a menu is a list of options or commands that users can select from to perform actions, such as opening programs, accessing settings, or executing commands. Menus are integral components of GUIs that provide users with a structured way to interact with software and operating systems.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null},{\"questionText\":\"What is gutter margin?\",\"options\":[\"Margin that is added to the left margin when printing\",\"Margin that is added to right margin when printing\",\"Margin that is added to the binding side of page when printing\",\"Margin that is added to the outside of the page when printing\"],\"correctAnswer\":\"C\",\"explanation\":\"The gutter margin is a typographical term used to designate an additional margin added to a page layout to compensate for the part of the paper made unusable by the binding process. In a facing pages layout (Word refers to this type of layout as \\\"mirror margins\\\"), the gutter margin is on the very inside of both pages.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Arrays\",\"tags\":[\"data-structures\",\"technical\",\"array\",\"index\",\"contiguous\"],\"codeSnippet\":null,\"language\":null}]}",
+  "parsed": {
+    "questions": [
+      {
+        "questionText": "In simple chaining, what data structure is appropriate? Data Structure MCQ on Abstract Data Types Multiple Choice Questions on Application of Stacks Data Structure MCQ on Arrays Types Data Structure MCQ on Types of Lists Multiple Choice Questions on Binary Trees Data Structure MCQs on B-Trees Data Structure MCQ on Trees MCQ on Heap Data Structure Multiple Choice Questions on Trie Data Structure MCQ on Hash Tables Data Structure MCQ on Graph",
+        "options": [
+          "Doubly linked list",
+          "Circular linked list",
+          "Singly linked list",
+          "Binary trees Chapterwise Multiple Choice Questions on Data Structure Our 1000+ multiple choice questions and answers (MCQs) on “Data Structure – I” (along with 1000+ MCQs on “Data Structure – II (Algorithms)”) focuses on all chapters of Data Structure covering 200+ topics. You can find MCQs on Data Structure – II (Algorithms) here . This Data Structure MCQ will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. Abstract Data Types Application of Stacks Arrays Types Types of Lists Binary Trees B-Trees Trees Heap Trie Hash Tables Graph The section contains Data Structure multiple choice questions and answers on arrays, stacks, queues, single linked lists, doubly and circular linked lists, stacks using arrays and linked lists, queues using arrays, stacks and linked lists, priority queues and double ended queues. Array and Array Operations Stack Operations – 1 Stack Operations – 2 Stack Operations – 3 Queue Operations Singly Linked Lists Operations – 1 Singly Linked Lists Operations – 2 Singly Linked Lists Operations – 3 Singly Linked Lists Doubly Linked Lists Circular Linked Lists Stack using Array Stack using Linked List Queue using Array Queue using Linked List Priority Queue Double Ended Queue (Deque) Queue using Stacks Stack using Queues The section contains Data Structure questions and answers on decimal to binary using stacks, towers of hanoi, expression evaluation of infix, prefix and postfix, conversions like infix to postfix, postfix to infix, prefix to infix and infix to prefix conversions, reversing the word using stack and balanced parenthesis. Decimal to Binary using Stacks Evaluation of an Infix Expression (Not Parenthesized) Evaluation of a Prefix Expression Evaluation of a Postfix Expression Infix to Prefix Conversion Infix to Postfix Conversion Prefix to Infix Conversion Postfix to Infix Conversion Towers of Hanoi Reverse a Word using Stack Balanced Parenthesis The section contains Data Structure MCQs on bit array, dynamic and parallel array, count inversion, rotation and reversal array operations, end array operations, sparse and suffix array, matrix and sparse matrix. Bit Array Dynamic Array Variable Length Array Parallel Array Sparse Array Suffix Array Matrix Sparse Matrix Count Inversion Rotation Array Operation Reversal Array Operation Number of Jumps to Reach End-array Operation The section contains Data Structure multiple choice questions and answers on skip list, self organizing list, xor linked list and free list. Skip List Self Organizing List Unrolled Linked List Xor Linked List Free List Triply Linked List The section contains Data Structure questions and answers on binary trees using arrays and linked lists, preorder, postorder and inorder traversal, avl tree, binary tree properties and operations, cartesian tree, weight balanced tree, red black and splay trees, threaded binary tree and binary search trees, aa tree, top tree, treap, tango tree and rope. Binary Trees using Array Binary Trees using Linked Lists Binary Tree Operations Preorder Traversal Postorder Traversal Inorder Traversal Binary Tree Properties Binary Search Tree Balanced Binary Tree Self Balancing Binary Search Tree Randomized Binary Search Tree AA Tree AVL Tree Cartesian Tree Weight Balanced Tree Red Black Tree Top Tree Splay Tree Treap Threaded Binary Tree Tango Tree Rope The section contains Data Structure MCQs on b tree, b+ tree and 2-3 tree. B-Tree B+ Tree 2-3 Tree The section contains Data Structure multiple choice questions and answers on trees like ternary tree, k-ary tree, kd tree, expression tree, bin, van emde boas tree and disjoint set data structure. Ternary Tree – 1 Ternary Tree – 2 K-ary Tree – 1 K-ary Tree – 2 Van Emde Boas Tree Disjoint-Set Data Structure Bin KD Tree Abstract Syntax Tree Parse Tree Expression Tree The section contains Data Structure questions and answers on heap, binary and weak heap, binomial and fibonacci heap, d ary heap, ternary heap, pairing and leftlist heap, skew heap, min and max heap. Heap Binary Heap Weak Heap Binomial and Fibonacci Heap D-ary Heap Ternary Heap – 1 Ternary Heap – 2 Pairing Heap Leftlist Heap Skew Heap Min/Max Heap The section contains Data Structure MCQs on trie and suffix tree. Trie Suffix Tree – 1 Suffix Tree – 2 The section contains Data Structure multiple choice questions and answers on hash tables, direct addressing tables, hash tables chaining using linked lists, doubly linked lists, binary trees and list heads, hash tables with linear and quadratic probing, hashing functions, hash tree, min hash and double hashing. Hash Tables Hash Tables Chaining using Linked Lists Hash Tables Chaining using Doubly Linked Lists Hash Tables Chaining with Binary Trees Hash Tables Chaining with List Heads Hash Tables with Linear Probing Hash Tables with Quadratic Probing Hashing Functions Double Hashing Hash Tree Min Hash Direct Addressing Tables The section contains Data Structure questions and answers on graph, adjacency matrix, incidence matrix, adjacency list, directed and undirected graph, directed acyclic graphs, multigraph and hypergraph, binary decision diagrams & and-inverter graph. Graph Adjacency Matrix Incidence Matrix and Graph Structured Stack Adjacency List Undirected Graph Directed Graph Directed Acyclic Graph Propositional and Directed Acyclic Word Graph Multigraph and Hypergraph Binary Decision Diagrams & and Inverter Graph To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. Important Links: Design & Analysis of Algorithms Multiple Choice Questions C Multiple Choice Questions C++ Multiple Choice Questions Java Multiple Choice Questions Python Multiple Choice Questions C# Multiple Choice Questions Computer Science Multiple Choice Questions Data Structure and Algorithms Books Data Structure Online Test"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Deletion becomes easier with doubly linked list, hence it is appropriate.",
+        "estimatedTime": 75,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Checked – Compile time) Checked exception can be handled using throws and try-catch public class CheckedExceptions { public static void main(String[] args) throws IOException { System.out.println(\"Program is started..\"); System.out.println(\"Program is progress..\"); // try { FileInputStream file=new FileInputStream(\"C:\\\\file.txt\"); } catch (FileNotFoundException e) { e.printStackTrace(); } // FileInputStream file=new FileInputStream(\"C:\\\\file.txt\"); System.out.println(file.read()); System.out.println(\"Program is completed..\"); try-catch throws Collections: The Collections Framework in Java provides a set of interfaces and classes to store and manage objects efficiently. Collection (Interface) List (I) Set (I) Map (I) Ordered, allows duplicates Unordered, no duplicates stored in the form of key, value pairs ArrayList (C)→ Dynamic array, fast access HashSet (C) → Uses HashMap internally, no order HashMap (C) LinkedList (C)→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {",
+        "options": [
+          "→ Dynamic array, fast access HashSet",
+          "→ Uses HashMap internally, no order HashMap",
+          "LinkedList",
+          "→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question is mapped to Data Structures - Arrays. The correct answer is A based on the original source question.",
+        "estimatedTime": 75,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following points is/are not true about Linked List data structure when it is compared with an array?",
+        "options": [
+          "Random access is not allowed in a typical implementation of Linked Lists",
+          "Access of elements in linked list takes less time than compared to arrays",
+          "Arrays have better cache locality that can make them better in terms of performance",
+          "It is easy to insert and delete elements in Linked List"
+        ],
+        "correctAnswer": "B",
+        "explanation": "To access an element in a linked list, we need to traverse every element until we reach the desired element. This will take more time than arrays as arrays provide random access to its elements.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is also known as Rope data structure?",
+        "options": [
+          "Linked List",
+          "Array",
+          "String",
+          "Cord"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Array is a linear data structure. Strings are a collection and sequence of codes, alphabets or characters. Linked List is a linear data structure having a node containing data input and the address of the next node. The cord is also known as the rope data structure.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is a value type in C#?",
+        "options": [
+          "int",
+          "string",
+          "class",
+          "object"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Explanation: The correct answer is A: int . Value Types vs. Reference Types: In C#, data types are categorized into two main groups: value types and reference types. Value Types: * Value types directly store the data within their own memory space. * When you copy a value type variable, you are creating a completely independent copy of the data. * Examples of value types include: int , float , bool , char , struct , and enum . Reference Types: * Reference types store a *reference* (or pointer) to the memory location where the actual data is stored. * When you copy a reference type variable, you are only copying the reference, not the data itself. Both variables will then point to the same location in memory. * Examples of reference types include: string , class , object , arrays , and interfaces . Why the other options are incorrect: * B: string - Strings are reference types in C#. * C: class - Classes are used to define objects, and they are reference types . * D: object - 'object' is the base class for all types in C#, and it is a reference type .",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "The data structure required for Breadth First Traversal on a graph is?",
+        "options": [
+          "Array",
+          "Stack",
+          "Tree",
+          "Queue"
+        ],
+        "correctAnswer": "D",
+        "explanation": "In Breadth First Search Traversal, BFS, starting vertex is first taken and adjacent vertices which are unvisited are also taken. Again, the first vertex which was added as an unvisited adjacent vertex list will be considered to add further unvisited vertices of the graph. To get the first unvisited vertex we need to follows First In First Out principle. Queue uses FIFO principle.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the purpose of memory refresh register of Z80?",
+        "options": [
+          "To control on-chip SRAM",
+          "To control on-chip DRAM",
+          "To clear cache",
+          "To control ROM"
+        ],
+        "correctAnswer": "B",
+        "explanation": "In addition to the general purpose registers, a stack pointer, program counter, and two index registers are included in Z80. It was also used in many embedded designs because of its high-quality performance and for its in-built refresh circuitry for DRAMs.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which graph represents relation between whole and its parts?",
+        "options": [
+          "Histogram",
+          "Pie graph",
+          "Line graph",
+          "Stacked bar graph"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The correct answer is pie graph as pie graph represents relationship between whole and its parts. Histogram is represented with bars of equal width with no gap between adjacent bars. The height of the bar represents the number of data items in the given data range called frequency. Line graph is a line joining all the data points. A stacked bar graph is a chart that uses bars to show comparisons between categories of data with ability to break down and compare parts of a whole.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following is not the application of stack?",
+        "options": [
+          "Data Transfer between two asynchronous process",
+          "Compiler Syntax Analyzer",
+          "Tracking of local variables at run time",
+          "A parentheses balancing program"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Data transfer between the two asynchronous process uses the queue data structure for synchronisation. The rest are all stack applications.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Note the merging part has been written to show what’s going on here. If you were to actually use merge sort (or a similar algorithm) in Python, you would probably use heapq.merge to do the merging. BLACK BOX: TIMSORT The algorithm hiding in list.sort is one invented (and implemented) by Tim Peters, one of the big names in the Python community.7 The algorithm, aptly named timsort, replaces an earlier algorithm that had lots of tweaks to handle special cases such as segments of ascending and descending values, and the like. In timsort, these cases are handled by the general mechanism, so the performance is still there (and in some cases, it’s much improved), but the algorithm is cleaner and simpler. The algorithm is still a bit too involved to explain in detail here; I’ll try to give you a quick overview. For more details, take a look at the source.8 Timsort is a close relative to merge sort. It’s an in-place algorithm, in that it merges segments and leaves the result in the original array (although it uses some auxiliary memory during the merging). Instead of simply sorting the array half-and-half and then merging those, though, it starts at the beginning, looking for segments that are already sorted (possibly in reverse), called runs. In random arrays, there won’t be many, but in many kinds of real data, there may be a lot—giving the algorithm a clear edge over a plain merge sort and a linear running time in the best case (and that covers a lot of cases beyond simply getting a sequence that’s already sorted). As timsort iterates over the sequence, identifying runs and pushing their bounds onto a stack, it uses some heuristics to decide which runs are to be merged when. The idea is to avoid the kind of merge imbalance that would give you a quadratic running time while still exploiting the structure in the data (that is, the runs). First, any really short runs are artificially extended and sorted (using a stable insertion sort). Second, the following invariants are maintained for the three topmost runs on the stack, A, B, and C (with A on top): len(A) > len(B) + len(C) and len(B) > len(C). If the first invariant is violated, the smaller of A and C is merged with B, and the result replaces the merged runs in the stack. The second invariant may still not hold, and the merging continues until both invariants hold. The algorithm uses some other tricks as well, to get as much speed as possible. If you’re interested, I recommend you check out the source.9 If you’d rather not read C code, you could also take a look at the pure Python version of timsort, available as part of the PyPy project.10 Their implementation has excellent comments and is clearly written. (The PyPy project is discussed in Appendix A.) 7Timsort is, in fact, also used in Java SE 7, for sorting arrays. 8See, for example, the file listsort.txt in the source code (or online, http://svn.python.org/projects/python/trunk/ Objects/listsort.txt). 9You can find the actual C code at http://svn.python.org/projects/python/trunk/Objects/listobject.c. 10See https://bitbucket.org/pypy/pypy/src/default/rpython/rlib/listsort.py. Chapter 6 ■ Divide, Combine, and Conquer 127 How Fast Can We Sort? One important result about sorting is that divide-and-conquer algorithms such as merge sort are optimal; for arbitrary values (where we can figure out which is bigger) it’s impossible, in the worst case, to do any better than W(n lg n). An important case where this holds is when we sort arbitrary real numbers.11 Note ■ ■ Counting sort and its relatives (discussed in Chapter 4) seem to break this rule. Note that there we can’t sort arbitrary values—we need to be able to count occurrences, which means that the objects must be hashable, and we need to be able to iterate over the value range in linear time. How do we know this? The reasoning is actually quite simple. First insight: Because the values are arbitrary and we’re assuming that we can figure out only whether one of them is greater than another, each object comparison boils down to a yes/no question. Second insight: The number of orderings of n elements is n!, and we’re looking for exactly one of them. Where does that get us? We’re back to “think of a particle,” or, in this case, “think of a permutation.” This means that the best we can do is to use W(lg n!) yes/no questions (the comparisons) to get the right permutation (that is, to sort the numbers). And it just so happens that lg n! is asymptotically equivalent to n lg n.12 In other words, the running time in the worst case is W(lg n!) = W(n lg n). How, you say, do we arrive at this equivalence? The easiest way is to just use Stirling’s approximation, which says that n! is Q(nn). Take the logarithm and Bob’s your uncle.13 Now, we derived the bound for the worst case; using information theory (which I won’t go into here), it is, in fact, possible to show that this bound holds also in the average case. In other words, in a very real sense, unless we know something substantial about the value range or distribution of our data, loglinear is the best we can do. Three More Examples Before wrapping up this chapter with a slightly advanced (and optional) section, here are three examples for the road. The first two deal with computational geometry (where the divide-and-conquer strategy is frequently useful), while the last one is a relatively simple problem (with some interesting twists) on a sequence of numbers. I have only sketched the solutions, because the point is mainly to illustrate the design principle. Closest Pair The problem: You have a set of points in the plane, and you want to find the two that are closest to each other. The first idea that springs to mind is, perhaps, to use brute force: For each point, check all the others, or, at least, the ones we haven’t looked at yet. This is, by the handshake sum, a quadratic algorithm, of course. Using divide and conquer, we can get that down to loglinear. This is a rather nifty problem, so if you’re into puzzle-solving, you might want to try to solve it for yourself before reading my explanation. The fact that you should use divide and conquer (and that the resulting algorithm is loglinear) is a strong hint, but the solution is by no means obvious. 11Real numbers usually aren’t all that arbitrary, of course. As long as your numbers use a fixed number of bits, you can use radix sort (mentioned in Chapter 4) and sort the values in linear time. 12I think that’s so cool, I wanted to add an exclamation mark after the sentence ... but I guess that might have been a bit confusing, given the subject matter. 13Actually, the approximation isn’t asymptotic in nature. If you want the details, you’ll find them in any good mathematics reference. Chapter 6 ■ Divide, Combine, and Conquer 128 The structure of the algorithm follows almost directly from the (merge sort-like) loglinear divide-and-conquer schema: We’ll divide the points into two subsets, recursively find the closest pair in each, and then—in linear time—merge the results. By the power of induction/recursion (and the divide-and-conquer schema), we have now reduce the problem to this merging operation. But we can peel away even a bit more before we engage our creativity: The result of the merge must be either (1) the closest pair from the left side, (2) the closest pair on the right side, or (3) a pair consisting of one point from either side. In other words, what we need to do is find the closest pair “straddling” the division line. While doing this, we also have an upper limit to the distance involved (the minimum of the closest pairs from the left and right sides). Having drilled down to the essence of the problem, let’s look at how bad things can get. Let’s say, for the moment, that we have sorted all points in the middle region (of width 2d) by their y-coordinate. We then want to go through them in order, considering other points to see whether we find any points closer than d (the smallest distance found so far). For each point, how many other “neighbors” must we consider? This is where the crucial insight of the solution enters the picture: on either side of the midline, we know that all points are at least a distance of d apart. Because what we’re looking for is a pair at most a distance apart, straddling the midline, we need to consider only a vertical slice of height d (and width 2d) at any one time. And how many points can fit inside this region? Figure 6-7 illustrates the situation. We have no lower bounds on the distances between left and right, so in the worst case, we may have coinciding points on the middle line (highlighted). Beyond that, it’s quite easy to show that at most four points with a minimum distance of d can fit inside a d×d square, which we have on either side; see Exercise 6",
+        "options": [
+          "> len",
+          "+ len",
+          "and len",
+          ". If the first invariant is violated, the smaller of A and C is merged with B, and the result replaces the merged runs in the stack. The second invariant may still not hold, and the merging continues until both invariants hold. The algorithm uses some other tricks as well, to get as much speed as possible. If you’re interested, I recommend you check out the source.9 If you’d rather not read C code, you could also take a look at the pure Python version of timsort, available as part of the PyPy project.10 Their implementation has excellent comments and is clearly written. (The PyPy project is discussed in Appendix A.) 7Timsort is, in fact, also used in Java SE 7, for sorting arrays. 8See, for example, the file listsort.txt in the source code (or online, http://svn.python.org/projects/python/trunk/ Objects/listsort.txt). 9You can find the actual C code at http://svn.python.org/projects/python/trunk/Objects/listobject.c. 10See https://bitbucket.org/pypy/pypy/src/default/rpython/rlib/listsort.py. Chapter 6 ■ Divide, Combine, and Conquer 127 How Fast Can We Sort? One important result about sorting is that divide-and-conquer algorithms such as merge sort are optimal; for arbitrary values (where we can figure out which is bigger) it’s impossible, in the worst case, to do any better than W(n lg n). An important case where this holds is when we sort arbitrary real numbers.11 Note ■ ■ Counting sort and its relatives (discussed in Chapter 4) seem to break this rule. Note that there we can’t sort arbitrary values—we need to be able to count occurrences, which means that the objects must be hashable, and we need to be able to iterate over the value range in linear time. How do we know this? The reasoning is actually quite simple. First insight: Because the values are arbitrary and we’re assuming that we can figure out only whether one of them is greater than another, each object comparison boils down to a yes/no question. Second insight: The number of orderings of n elements is n!, and we’re looking for exactly one of them. Where does that get us? We’re back to “think of a particle,” or, in this case, “think of a permutation.” This means that the best we can do is to use W(lg n!) yes/no questions (the comparisons) to get the right permutation (that is, to sort the numbers). And it just so happens that lg n! is asymptotically equivalent to n lg n.12 In other words, the running time in the worst case is W(lg n!) = W(n lg n). How, you say, do we arrive at this equivalence? The easiest way is to just use Stirling’s approximation, which says that n! is Q(nn). Take the logarithm and Bob’s your uncle.13 Now, we derived the bound for the worst case; using information theory (which I won’t go into here), it is, in fact, possible to show that this bound holds also in the average case. In other words, in a very real sense, unless we know something substantial about the value range or distribution of our data, loglinear is the best we can do. Three More Examples Before wrapping up this chapter with a slightly advanced (and optional) section, here are three examples for the road. The first two deal with computational geometry (where the divide-and-conquer strategy is frequently useful), while the last one is a relatively simple problem (with some interesting twists) on a sequence of numbers. I have only sketched the solutions, because the point is mainly to illustrate the design principle. Closest Pair The problem: You have a set of points in the plane, and you want to find the two that are closest to each other. The first idea that springs to mind is, perhaps, to use brute force: For each point, check all the others, or, at least, the ones we haven’t looked at yet. This is, by the handshake sum, a quadratic algorithm, of course. Using divide and conquer, we can get that down to loglinear. This is a rather nifty problem, so if you’re into puzzle-solving, you might want to try to solve it for yourself before reading my explanation. The fact that you should use divide and conquer (and that the resulting algorithm is loglinear) is a strong hint, but the solution is by no means obvious. 11Real numbers usually aren’t all that arbitrary, of course. As long as your numbers use a fixed number of bits, you can use radix sort (mentioned in Chapter 4) and sort the values in linear time. 12I think that’s so cool, I wanted to add an exclamation mark after the sentence ... but I guess that might have been a bit confusing, given the subject matter. 13Actually, the approximation isn’t asymptotic in nature. If you want the details, you’ll find them in any good mathematics reference. Chapter 6 ■ Divide, Combine, and Conquer 128 The structure of the algorithm follows almost directly from the (merge sort-like) loglinear divide-and-conquer schema: We’ll divide the points into two subsets, recursively find the closest pair in each, and then—in linear time—merge the results. By the power of induction/recursion (and the divide-and-conquer schema), we have now reduce the problem to this merging operation. But we can peel away even a bit more before we engage our creativity: The result of the merge must be either (1) the closest pair from the left side, (2) the closest pair on the right side, or (3) a pair consisting of one point from either side. In other words, what we need to do is find the closest pair “straddling” the division line. While doing this, we also have an upper limit to the distance involved (the minimum of the closest pairs from the left and right sides). Having drilled down to the essence of the problem, let’s look at how bad things can get. Let’s say, for the moment, that we have sorted all points in the middle region (of width 2d) by their y-coordinate. We then want to go through them in order, considering other points to see whether we find any points closer than d (the smallest distance found so far). For each point, how many other “neighbors” must we consider? This is where the crucial insight of the solution enters the picture: on either side of the midline, we know that all points are at least a distance of d apart. Because what we’re looking for is a pair at most a distance apart, straddling the midline, we need to consider only a vertical slice of height d (and width 2d) at any one time. And how many points can fit inside this region? Figure 6-7 illustrates the situation. We have no lower bounds on the distances between left and right, so in the worst case, we may have coinciding points on the middle line (highlighted). Beyond that, it’s quite easy to show that at most four points with a minimum distance of d can fit inside a d×d square, which we have on either side; see Exercise 6"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question is mapped to Data Structures - Arrays. The correct answer is A based on the original source question.",
+        "estimatedTime": 75,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "In a binary search tree which traversal visits the nodes in ascending order?",
+        "options": [
+          "Preorder",
+          "Inorder",
+          "Postorder",
+          "Levelorder"
+        ],
+        "correctAnswer": "B",
+        "explanation": "This question is mapped to Data Structures - Arrays. The correct answer is B based on the original source question.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "PHP’s numerically indexed array begin with position ______.",
+        "options": [
+          "1",
+          "2",
+          "0",
+          "-1"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Like many programming languages, the first element of an array has an index value of 0.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "The yearly sales were 2,36,250 units, study the graph and find the sales in 3 rd quarter.",
+        "options": [
+          "83025 units",
+          "80325 units",
+          "86250 units",
+          "83265 units"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The sales during the 3 rd quarter = 236250 * 34 / 100 = 80325 units.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is the angle of the sector of the 1 st sector?",
+        "options": [
+          "58 degrees",
+          "50 degrees",
+          "62 degrees",
+          "54 degrees"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The angle of the sector of the 1 st quarter = 15 / 100 * 360 = 54 degrees.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find the angle of the sector of the 4 th quarter.",
+        "options": [
+          "118 degrees",
+          "126 degrees",
+          "132 degrees",
+          "144 degrees"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The angle of the sector of the 4 th quarter = 40 / 100 * 360 = 144 degrees.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is the total sales of p?",
+        "options": [
+          "75 crores",
+          "80 crores",
+          "55 crores",
+          "65 crores"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The total sales of p = 2.5 + 25 + 22.5 + 25 = 65 crores",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is an AVL tree?",
+        "options": [
+          "a tree which is unbalanced and is a height balanced tree",
+          "a tree which is balanced and is a height balanced tree",
+          "a tree with atmost 3 children",
+          "a tree with three children"
+        ],
+        "correctAnswer": "B",
+        "explanation": "It is a self balancing tree with height difference atmost 1.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find the total production of rice throughout 4 years.",
+        "options": [
+          "45 tonnes",
+          "60 tonnes",
+          "42.5 tonnes",
+          "47.5 tonnes"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The total production of rice throughout the years is 10 + 15 + 20 + 15 = 60 tonnes.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "The total sales throughout the year was 2625 units, study the graph and find the sales in 2 nd quarter.",
+        "options": [
+          "315 units",
+          "485 units",
+          "195 units",
+          "120 units"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The sales in 2 nd quarter = 12 / 100 * 2625 = 315 units.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is the angle of sector of the 3 rd quarter?",
+        "options": [
+          "94 degrees",
+          "97 degrees",
+          "99 degrees",
+          "102 degrees"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The angle of the sector of the third quarter = 22500 / 83450 * 360 = 97.06 degrees ≈ 97 degrees.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find the total sales of p an r in the year 2003 and 2004.",
+        "options": [
+          "250 crores",
+          "260 crores",
+          "270 crores",
+          "275 crores"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The total sales = 75 + 80 + 55 + 50 = 260 crores",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is the average yearly consumption of milk?",
+        "options": [
+          "14.5 litres",
+          "15.6 litres",
+          "17.8 litres",
+          "14.4 litres"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The average yearly consumption of milk = (14 + 15 + 16 + 18 + 15) / 5 = 78 / 5 = 15.6 litres yearly.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "The yearly sales were 10240 units, study the graph and find the sales in 3 rd quarter.",
+        "options": [
+          "3584 units",
+          "3984 units",
+          "3594 units",
+          "3444 units"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The sales during the 3 rd quarter = 10240 * 35 / 100 = 3584 units.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "If the total sales throughout the year was 2385 units, study the graph and find the sales in 2 nd quarter.",
+        "options": [
+          "477 units",
+          "485 units",
+          "497 units",
+          "515 units"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The sales in 2 nd quarter = 20 / 100 * 2385 = 477 units.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "If the yearly sales were 1,21,150 units, study the graph and find the sales in 3 rd quarter.",
+        "options": [
+          "36345 units",
+          "35345 units",
+          "36365 units",
+          "34365 units"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The sales during the 3 rd quarter = 121150 * 30 / 100 = 36345 units.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find the angle of sector of milk.",
+        "options": [
+          "45 degrees",
+          "60 degrees",
+          "85 degrees",
+          "90 degrees"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The angle of sector of milk = 25 / 100 * 360 = 90 degrees.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is the consumption of tea if coffee toe quantity of coffee consumed is 120 litres?",
+        "options": [
+          "112 litres",
+          "120 litres",
+          "126 litres",
+          "132 litres"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The consumption of tea = 120 / 20 * 21 = 126 litres.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is the quantity of tea consumed if juice consumed is 85 litres?",
+        "options": [
+          "50 litres",
+          "52.5 litres",
+          "55 litres",
+          "58.75 litres"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The quantity of coffee consumed = 85 / 34 * 21 = 52.5 litres.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is the average production of rice throughout the years?",
+        "options": [
+          "10 tonnes",
+          "11 tonnes",
+          "13 tonnes",
+          "14 tonnes"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The average production = (6 + 8 + 12 + 18) / 4 = 44 / 4 = 11 tonnes",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Study the graph and find what is the average production of all the three crops in 2001?",
+        "options": [
+          "6.66 tonnes",
+          "6.33 tonnes",
+          "9.99 tonnes",
+          "9.33 tonnes"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The average production = (6 + 10 + 12) / 3 = 9.33 tonnes",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the maximum number of elements that can be stored in an array in C?",
+        "options": [
+          "Depends on memory",
+          "256",
+          "1000",
+          "Unlimited"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The maximum number of elements that can be stored in an array in C depends on the available memory of the system in which the program is running. An array in C is a fixed-size data structure, which means that you need to specify the size (number of elements) of the array when you declare it. Here are a few key points: The size of an array should be a positive integer. The maximum value for the size of an array is limited by the amount of memory available in the system. The actual maximum size may vary from system to system. Attempting to allocate an array that is too large for the available memory can lead to program crashes or errors. So, in C, you can declare an array with a size that depends on the specific memory constraints of the computer where the program is executed. This is why the correct answer is Option A: Depends on memory . The other options specify fixed limits, which is not accurate for C arrays. Remember that it's essential to manage memory efficiently to avoid issues like memory exhaustion or segmentation faults when working with arrays in C.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Determine Output: void main() { char s[]=\"man\"; int i; for(i=0; s[i]; i++) printf(\"%c%c%c%c \", s[i], *(s+i), *(i+s), i[s]); }",
+        "options": [
+          "mmm nnn aaa",
+          "mmmm nnnn aaaa",
+          "Compiler Error",
+          "None of These"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Correct Output : mmmm aaaa nnnn s[i], *(i+s), *(s+i), i[s] are all different ways of expressing the same idea. Generally array name is the base address for that array. Here s is the base address. i is the index number/displacement from the base address. So, indirecting it with * is same as s[i]. i[s] may be surprising. But in the case of C it is same as s[i].",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following application makes use of a circular linked list?",
+        "options": [
+          "Recursive function calls",
+          "Undo operation in a text editor",
+          "Implement Hash Tables",
+          "Allocating CPU to resources"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Generally, round robin fashion is employed to allocate CPU time to resources which makes use of the circular linked list data structure. Recursive function calls use stack data structure. Undo Operation in text editor uses doubly linked lists. Hash tables uses singly linked lists.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the need for a circular queue?",
+        "options": [
+          "easier computations",
+          "implement LIFO principle in queues",
+          "effective usage of memory",
+          "to delete elements based on priority"
+        ],
+        "correctAnswer": "C",
+        "explanation": "In a linear queue, dequeue operation causes the starting elements of the array to be empty, and there is no way you can use that space, while in a circular queue, you can effectively use that space. Priority queue is used to delete the elements based on their priority. Higher priority elements will be deleted first whereas lower priority elements will be deleted next. Queue data structure always follows FIFO principle.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following section is used to make text appear around the image? MCQ on Visual Basic Introduction VB.Net MCQ on ToolBox Window Visual Basic Multiple Choice Questions on User Interface Visual Basic MCQ on Coding the Application Visual Basic MCQ on Variables and Constants VB.Net MCQ on Modifying the Playtime Cellular Application Visual Basic MCQ on Selection Structures VB.Net MCQ on Making an Application & Interface Design Visual Basic MCQ on Repetition Structure VB.Net MCQ on Sub and Function Procedures Visual Basic MCQ on String Manipulation Visual Basic MCQ on Arrays VB.Net MCQ on Structures and Sequential Access Files Visual Basic MCQ on Classes and Objects VB.Net MCQ on Web Applications",
+        "options": [
+          "Wrapping style",
+          "Text style",
+          "Image properties",
+          "Align Chapterwise Multiple Choice Questions on Visual Basic (VB.Net) Our 1000+ MCQs focus on all topics of the Visual Basic (VB.Net) subject, covering 100+ topics. This will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. Visual Basic Introduction Visual Basic ToolBox Window VB.Net User Interface VB.Net Coding the Application Visual Basic Variables and Constants Modifying the Playtime Cellular Application Visual Basic Selection Structures Making an Application & Interface Design Visual Basic Repetition Structure Visual Basic Sub and Function Procedures VB.Net String Manipulation Visual Basic Arrays VB.Net Structures and Sequential Access Files VB.Net Classes and Objects Visual Basic Web Applications The section contains Visual Basic multiple choice questions and answers on properties window, application starting and ending process. Visual Basic Properties Window Starting and Ending an Application The section contains VB.Net questions and answers on label tool, picture box tool, buttontool, code editor, timer tool, formborder style, minimizebox, maximizebox and controlbox properties. Visual Basic Label Tool Visual Basic Picture Box Tool and Button Tool Visual Basic Code Editor Visual Basic Timer Tool FormBorder Style, MinimizeBox, MaximizeBox and ControlBox Property in Visual Basic The section contains Visual Basic MCQs on user interface buiding, interface border style and autosize properties, access keys assinging and tab order controlling. Building the User Interface Visual Basic Border Style and AutoSize Properties Visual Basic Assigning Access Keys Controlling the Tab Order The section contains Visual Basic multiple choice questions and answers on application coding using psedocode and flowchart, writing arithmetic expressions, application testing and debugging. Coding the Application Using Pseudocode and Flowchart Writing Arithmetic Expressions Testing and Debugging Application The section contains Visual Basic questions and answers on variables data type selection, declaring and assigning data to existing variable, variable scope and lifetime, static variables, named constants, option explict, option inner and strict. Selecting Data Type and Name for the Variable Declaring and Assigning Data to an Existing Variable Scope and Lifetime of a Variable Static Variables and Named Constants Option Explicit, Option Inner and Option Strict The section contains VB.Net MCQs on strings concatenation, inputbox function and tostring method, controlchars.newline constant and designing default button. Concatenating Strings, InputBox Function and toString Method in VB.Net ControlChars.Newline Constant and Designing Default Button in VB.Net The section contains Visual Basic multiple choice questions and answers on single alternative and dual alternative selection structures, logical operators, selection structures, nested and multiple alternative selection structures. Single-Alternative and Dual-Alternative Selection Structures Visual Basic Logical Operators Visual Basic Strings in Selection Structures Visual Basic Nested Selection Structures Visual Basic Multiple Altenative Selection Structures The section contains VB.Net questions and answers on financial.pmt method, messagebox show method, addition of groupbox, radio button and check boxes in the form. Adding a GroupBox to the Form and Using Financial.Pmt Method Using the MessageBox.Show Method Adding a Radio Button & Check Box to the Form The section contains Visual Basic MCQs on do loop statement, counters, accumulators, for next statement, list box, refresh and sleep methods in interface. Visual Basic Do Loop Statement Visual Basic Counters and Accumulators For..Next Statement Refresh and Sleep Methods, Including List Box in an Interface The section contains VB.Net multiple choice questions and answers on passing variables, function procedures and interface. VB.Net Passing Variables VB.Net Function Procedures Including a ComboBox in an Interface The section contains Visual Basic questions and answers on string working and searching, comparing strings using pattern matching, menu addition to form and mnufilenew object click event procedure coding. Working with String Searching a String Using Pattern Matching to Compare Strings Adding a Menu to a Form The section contains Visual Basic MCQs on one dimensional array, for each next statement, parallel and two dimensional arrays, total and average values calculations, arrays, collections, accumulator, counter arrays, searching and sorting of one and two dimensional arrays. Visual Basic One-Dimensional Array For Each..Next Statement Sorting a One-Dimensional Array Visual Basic Parallel & Two-dimensional Arrays The section contains VB.Net multiple choice questions and answers on structure variable declaration, information alignment, writing, closing and reading data of a sequential access file. Declaring and Using a Structure Variable Writing Data to a Sequential Access File The section contains Visual Basic questions and answers on oop terminology, class creation, working and reuse, classes that contains parameterized constructor, readonly property, auto-implemented properties and overloaded methods, base and derived class. Object Oriented Programming Terminology Creating a Class Working with Classes The section contains VB.Net MCQs on web applications and dynamic web pages. Web Applications Dynamic Web Pages To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews."
+        ],
+        "correctAnswer": "A",
+        "explanation": "Wrapping style makes the text appear around image. In Visual Basic 6.0, the WordWrap property determines if text wraps to multiple lines when it is too long to fit in a label. In Visual Basic 2008, the text in a Label control automatically wraps. The only way to prevent wrapping is to make the height of the Label control equivalent to a single line of text.",
+        "estimatedTime": 75,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is the highest index for an array with 10 elements in C?",
+        "options": [
+          "5",
+          "9",
+          "10",
+          "11"
+        ],
+        "correctAnswer": "B",
+        "explanation": "An array in C is indexed starting from 0. If an array has 10 elements, the first element will have an index of 0. The last element, therefore, will have an index of 9. Hence, the highest index for an array with 10 elements is 9.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Type Hinting was introduced in which version of PHP?",
+        "options": [
+          "PHP 4",
+          "PHP 5",
+          "PHP 5.3",
+          "PHP 6"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Type hinting gives you the ability to force parameters to be objects of certain class or to be arrays. PHP 5 introduced this feature.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What are the disadvantages of arrays?",
+        "options": [
+          "Index value of an array can be negative",
+          "Elements are sequentially accessed",
+          "Data structure like queue or stack cannot be implemented",
+          "There are chances of wastage of memory space if elements inserted in an array are lesser than the allocated size"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Arrays are of fixed size. If we insert elements less than the allocated size, unoccupied positions can’t be used again. Wastage will occur in memory.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "The optimal data structure used to solve Tower of Hanoi is _________",
+        "options": [
+          "Tree",
+          "Heap",
+          "Priority queue",
+          "Stack"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The Tower of Hanoi involves moving of disks ‘stacked’ at one peg to another peg with respect to the size constraint. It is conveniently done using stacks and priority queues. Stack approach is widely used to solve Tower of Hanoi.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "In a graphical system, an array of pixels in the picture are stored in which of the following locations?",
+        "options": [
+          "Frame buffer",
+          "Processor",
+          "Memory",
+          "All of the mentioned"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The main purpose of using a framer buffer is to store pixels.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What will be the output of the following PHP program? <?php $fruits = array ( \"apple\" , \"orange\" , array ( \"pear\" , \"mango\" ) , \"banana\" ) ; echo ( count ( $fruits , 1 ) ) ; ?>",
+        "options": [
+          "6",
+          "5",
+          "4",
+          "3"
+        ],
+        "correctAnswer": "A",
+        "explanation": "function count() will return the number of elements in an array. The parameter 1 counts the array recursively i.e it will count all the elements of multidimensional arrays.",
+        "estimatedTime": 75,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following CSS Property sets the stacking order of positioned elements?",
+        "options": [
+          "y-index",
+          "z-index",
+          "x-index",
+          "all of the mentioned"
+        ],
+        "correctAnswer": "B",
+        "explanation": "z-index property sets the stacking order of positioned elements. Syntax: z-index : auto |number| initial | inherit ;",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "MongoDB documents are composed of field-and-value pairs and have the following structure?",
+        "options": [
+          "field1: value1",
+          "field1: value1;",
+          "field1:; value1",
+          "none of the mentioned"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The value of a field can be any of the BSON data types, including other documents, arrays, and arrays of documents.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "The property of JSON() method is:",
+        "options": [
+          "it can be invoked manually as object.JSON()",
+          "it will be automatically invoked by the compiler",
+          "it is invoked automatically by the JSON.stringify() method",
+          "it cannot be invoked in any form"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The JSON format is intended for serialization of data structures and can handle JavaScript primitive values, arrays, and plain objects. It does not know about classes, and when serializing an object, it ignores the object’s prototype and constructor. If you call JSON.stringify() on a Range or Complex object, for example, it returns a string like {“from”:1, “to”:3} or {“r”:1, “i”:-1}.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Where is the memory allocated for the objects?",
+        "options": [
+          "Cache",
+          "ROM",
+          "HDD",
+          "RAM"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The memory for the objects or any other data is allocated in RAM initially. This is while we run a program all the memory allocation takes place in some RAM segments. Arrays in heap and local members in stack etc.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which of the following statements is true regarding arrays in C#?",
+        "options": [
+          "Arrays in C# can dynamically resize",
+          "The length of an array cannot be changed",
+          "Arrays in C# can only store primitive types",
+          "None of the above"
+        ],
+        "correctAnswer": "B",
+        "explanation": "This question is mapped to Data Structures - Arrays. The correct answer is B based on the original source question.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "A distributed database has which of the following advantages over a centralized database?",
+        "options": [
+          "Software cost",
+          "Software complexity",
+          "Slow Response",
+          "Modular growth"
+        ],
+        "correctAnswer": "D",
+        "explanation": "A distributed database offers several advantages over a centralized database architecture. Option A: Software cost This option is not typically considered an advantage of distributed databases over centralized databases. The cost of software can vary based on factors such as licensing models, vendor pricing, and the specific requirements of the database system. Both distributed and centralized databases may incur software costs depending on the technologies used and the scale of deployment. Option B: Software complexity While distributed databases may introduce additional complexity compared to centralized databases due to factors such as network communication, data replication, and synchronization mechanisms, this complexity is often outweighed by the benefits they offer, such as improved scalability, fault tolerance, and performance. Additionally, advancements in distributed database technologies have led to the development of tools and frameworks that help manage and mitigate the complexity associated with distributed systems. Option C: Slow Response Distributed databases are designed to enhance responsiveness and performance by distributing data across multiple sites and allowing parallel processing of queries. While network latency and communication overhead can affect response times in distributed systems, proper design, optimization, and caching mechanisms can mitigate these issues. In many cases, distributed databases can provide faster response times compared to centralized databases, especially for geographically dispersed users. Option D: Modular growth One of the significant advantages of distributed databases is their ability to support modular growth. Distributed architectures allow organizations to scale their database systems by adding or removing nodes (servers) as needed without significant disruptions to operations. This modular scalability enables organizations to adapt their database infrastructure to changing demands, such as increasing data volumes, user concurrency, or geographic expansion, without the need for costly and time-consuming migrations or overhauls. Therefore, in the context of advantages of distributed databases over centralized databases, the correct option is Modular growth (Option D).",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "Which programming language is commonly used for Data Science tasks?",
+        "options": [
+          "Java",
+          "Python",
+          "C++",
+          "JavaScript"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Let's look at why Python is the correct answer and why the others are not as commonly used for these specific tasks. Option B: Python (Correct Answer) Python is by far the most popular and widely used programming language for Data Science. Here's why it's the top choice: 1. Easy to Learn: Python has a simple and readable structure (syntax), which makes it easy for beginners to understand and write code. 2. Rich Libraries: Python has an amazing collection of specialized tools, called \"libraries,\" that are specifically designed for Data Science tasks. Some very important ones include: - NumPy: Great for working with numbers and large datasets efficiently. - Pandas: Used for cleaning, analyzing, and manipulating data, similar to working with advanced spreadsheets. - Scikit-learn: Essential for building machine learning models (like algorithms that learn from data to make predictions). - Matplotlib and Seaborn: Used for creating clear and beautiful charts and graphs to visualize data. 3. Versatility: Besides Data Science, Python is also used for web development, automation, and many other areas, making it a very powerful and useful language to know. Option A: Java Java is a powerful and robust language, often used in large enterprise systems and for building big data processing frameworks (like Apache Hadoop or Apache Spark). However, for the everyday tasks of data analysis, writing scripts for quick insights, or directly building machine learning models, Python is generally preferred because of its simpler code and specialized Data Science libraries. Option C: C++ C++ is known for its speed and efficiency. While some very performance-critical parts of Data Science libraries (especially those in Python) might be written in C++ \"behind the scenes\" to make them run faster, C++ itself is rarely used directly by Data Scientists for their daily coding tasks. It's much more complex and takes more time to write code in C++ compared to Python for data analysis. Option D: JavaScript JavaScript is mainly the language of the internet. It's used to make websites interactive and for developing web applications (both front-end and back-end with Node.js). While you can use JavaScript libraries (like D3.js) for some interactive data visualizations on the web, it is not the primary language for general data cleaning, statistical analysis, or building machine learning models in Data Science. In summary, when you start learning Data Science, Python is the first language you should focus on because of its ease of use, powerful libraries, and a large supportive community.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "A/An . . . . . . . . contains programs that can be selected.",
+        "options": [
+          "pointer",
+          "menu",
+          "icon",
+          "button"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Option A: pointer This option suggests that a pointer contains programs that can be selected. This statement is incorrect. In computing, a pointer refers to a graphical symbol on the screen that indicates the position where the next action will take place, such as clicking or selecting items, but it does not contain programs that can be selected. Option B: menu This option suggests that a menu contains programs that can be selected. This statement is correct. In graphical user interfaces (GUIs) like Microsoft Windows, a menu is a list of commands or options displayed on the screen that users can select to perform actions. Menus typically contain various programs, commands, or settings that users can choose from to interact with applications and the operating system. Option C: icon This option suggests that an icon contains programs that can be selected. This statement is incorrect. Icons are graphical representations or symbols displayed on the screen that represent files, folders, applications, or functions. Clicking on an icon typically opens the associated file or starts the corresponding program, but icons themselves do not contain programs. Option D: button This option suggests that a button contains programs that can be selected. This statement is incorrect. Buttons in a graphical user interface (GUI) are interactive elements that users can click on to trigger specific actions or commands within applications or the operating system. However, buttons do not contain programs themselves; they execute predefined functions when clicked. Conclusion: The correct answer is Option B: menu because in computing and Microsoft Windows, a menu is a list of options or commands that users can select from to perform actions, such as opening programs, accessing settings, or executing commands. Menus are integral components of GUIs that provide users with a structured way to interact with software and operating systems.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      },
+      {
+        "questionText": "What is gutter margin?",
+        "options": [
+          "Margin that is added to the left margin when printing",
+          "Margin that is added to right margin when printing",
+          "Margin that is added to the binding side of page when printing",
+          "Margin that is added to the outside of the page when printing"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The gutter margin is a typographical term used to designate an additional margin added to a page layout to compensate for the part of the paper made unusable by the binding process. In a facing pages layout (Word refers to this type of layout as \"mirror margins\"), the gutter margin is on the very inside of both pages.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Arrays",
+        "tags": [
+          "data-structures",
+          "technical",
+          "array",
+          "index",
+          "contiguous"
+        ],
+        "codeSnippet": null,
+        "language": null
+      }
+    ]
+  },
+  "providerPayload": {
+    "mode": "offline",
+    "source": "existing_mock_tests",
+    "questionCount": 50
+  },
+  "offlineSource": true
+}

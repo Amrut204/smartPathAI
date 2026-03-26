@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:7
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd="mongosh --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      MONGODB_URI: mongodb://127.0.0.1:27017
+      MONGODB_DB_NAME: campusdrive_ai
+      APP_JWT_SECRET: ci-test-secret
+      COMM_UNSUB_SECRET: ci-test-secret
+      APP_URL: http://localhost:5173
+      EMAIL_MODE: mock
+      NODE_ENV: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            server/package-lock.json
+            client/package-lock.json
+
+      - name: Install root deps
+        run: npm ci
+
+      - name: Install server deps
+        run: npm ci
+        working-directory: server
+
+      - name: Install client deps
+        run: npm ci
+        working-directory: client
+
+      - name: Build server
+        run: npm run build
+        working-directory: server
+
+      - name: Build client
+        run: npm run build
+        working-directory: client
+
+      - name: Seed demo tenant
+        run: npm run seed:demo:reset
+        working-directory: server
+
+      - name: Run demo flow tests
+        run: npm run test:demo
+        working-directory: server

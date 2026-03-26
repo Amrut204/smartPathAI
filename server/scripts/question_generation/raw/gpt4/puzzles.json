@@ -1,0 +1,1030 @@
+{
+  "provider": "gpt4",
+  "model": "gpt-4o-mini-offline",
+  "topic": "Puzzles",
+  "subject": "aptitude",
+  "category": "logical",
+  "difficulty": "hard",
+  "promptStyle": "scenario_creative",
+  "generatedAt": "2026-03-12T18:08:03.001Z",
+  "elapsedMs": 0,
+  "count": 50,
+  "cost": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "usd": 0,
+    "inr": 0
+  },
+  "prompt": "You are creating placement test questions for Indian engineering students. Focus on creative, real-world scenarios.\n\nTOPIC: Puzzles\nDIFFICULTY: hard\nCOUNT: 50 questions\n\nCreate engaging, scenario-based questions that feel like real-world problems using Indian context.\n\nOUTPUT FORMAT (JSON only):\n{\n  \"questions\": [\n    {\n      \"questionText\": \"Scenario + question\",\n      \"options\": [\"A\", \"B\", \"C\", \"D\"],\n      \"correctAnswer\": \"Letter\",\n      \"explanation\": \"Clear solution with steps\",\n      \"estimatedTime\": 60,\n      \"difficulty\": \"hard\",\n      \"tags\": [\"tag1\", \"tag2\"]\n    }\n  ]\n}\n\nGUIDELINES:\n- Wrap concepts in realistic stories (business problems, daily life)\n- Use Indian context (cities, companies, currencies in Rs)\n- Use different protagonists (Rahul, Priya, Amit, Sneha, etc.)\n- Mix traditional and modern scenarios\n- Ensure all calculations are mathematically correct\n- Make incorrect options arise from common mistakes\n\nGenerate exactly 50 questions. Output ONLY valid JSON.",
+  "rawText": "{\"questions\":[{\"questionText\":\"Ankita’s younger brother Bobby is older than Nilu. Shweta is younger than Rahul but elder than Ankita. Who is the eldest? Logical Reasoning Questions on Odd Man Out Logical Reasoning Questions on Coding and Decoding Verbal Reasoning Questions on Blood Relation Verbal Reasoning Questions and Answers on Analogy Reasoning Questions on Venn Diagram Verbal Reasoning Questions on Logical Sequence of Words Non-Verbal Reasoning Questions on Dot Situation Analysis Non-Verbal Reasoning Questions and Answers on Missing Figures Reasoning Questions on Figure Classification Non-Verbal Questions on Pattern Completion Data Interpretation Quantitative Aptitude\",\"options\":[\"Rahul\",\"Shweta\",\"Ankita\",\"Bobby Topic Wise Questions and Answers on Logical Reasoning Our 1000+ Questions and Answers focus on various topics of Logical Reasoning, covering 20+ topics. This resource will help you prepare for competitive exams such as SSC, CAT, GRE, UPSC, GMAT, Bank Exams, Defense Exams, Railway Exams, and Job placements. You can practice these Logical Reasoning Questions topic by topic, starting from the 1st or you can jump to any topic of your choice. Logical Reasoning: Odd Man Out Coding and Decoding Logical Deduction Verbal Reasoning: Blood Relation Analogy Venn Diagram Logical Sequence of Words Syllogisms Non-Verbal Reasoning: Dot Situation Analysis Missing Figures Figure Classification Pattern Completion Data Interpretation: Data Interpretation Questions Quantitative Aptitude: Quantitative Aptitude Questions The section includes reasoning questions and answers on odd man out series. Odd Man Out – Set 1 Odd Man Out – Set 2 Odd Man Out – Set 3 Odd Man Out – Set 4 Odd Man Out – Set 5 Odd Man Out – Set 6 Odd Man Out – Set 7 Odd Man Out – Set 8 Odd Man Out – Set 9 Odd Man Out – Set 10 The section contains logical reasoning questions and answers on coding and decoding. Coding and Decoding – Set 1 Coding and Decoding – Set 2 Coding and Decoding – Set 3 Coding and Decoding – Set 4 Coding and Decoding – Set 5 Coding and Decoding – Set 6 Coding and Decoding – Set 7 Coding and Decoding – Set 8 Coding and Decoding – Set 9 Coding and Decoding – Set 10 The section contains verbal reasoning questions and answers on blood relation. Blood Relation – Set 1 Blood Relation – Set 2 Blood Relation – Set 3 Blood Relation – Set 4 Blood Relation – Set 5 Blood Relation – Set 6 Blood Relation – Set 7 Blood Relation – Set 8 Blood Relation – Set 9 Blood Relation – Set 10 The section contains verbal reasoning practice questions on analogy. Analogy – Set 1 Analogy – Set 2 Analogy – Set 3 Analogy – Set 4 Analogy – Set 5 Analogy – Set 6 Analogy – Set 7 Analogy – Set 8 Analogy – Set 9 Analogy – Set 10 The section includes verbal reasoning questions and answers on venn diagram. Venn Diagram – Set 1 Venn Diagram – Set 2 Venn Diagram – Set 3 Venn Diagram – Set 4 Venn Diagram – Set 5 Venn Diagram – Set 6 Venn Diagram – Set 7 Venn Diagram – Set 8 Venn Diagram – Set 9 Venn Diagram – Set 10 The section contains logical reasoning questions on sequencing Sequencing – Set 1 Sequencing – Set 2 Sequencing – Set 3 Sequencing – Set 4 Sequencing – Set 5 Sequencing – Set 6 Sequencing – Set 7 Sequencing – Set 8 Sequencing – Set 9 Sequencing – Set 10 The section contains questions and answers on dot situation analysis. Dot Situation Analysis – Set 1 Dot Situation Analysis – Set 2 Dot Situation Analysis – Set 3 Dot Situation Analysis – Set 4 Dot Situation Analysis – Set 5 Dot Situation Analysis – Set 6 Dot Situation Analysis – Set 7 Dot Situation Analysis – Set 8 Dot Situation Analysis – Set 9 Dot Situation Analysis – Set 10 The section contains non verbal reasoning questions on missing figures. Missing Figures – Set 1 Missing Figures – Set 2 Missing Figures – Set 3 Missing Figures – Set 4 Missing Figures – Set 5 Missing Figures – Set 6 Missing Figures – Set 7 Missing Figures – Set 8 Missing Figures – Set 9 Missing Figures – Set 10 The section contains non verbal questions and answers on figure classification. Figure Classification – Set 1 Figure Classification – Set 2 Figure Classification – Set 3 Figure Classification – Set 4 Figure Classification – Set 5 Figure Classification – Set 6 Figure Classification – Set 7 Figure Classification – Set 8 Figure Classification – Set 9 Figure Classification – Set 10 The section contains non verbal reasoning questions and answers on pattern completion. Pattern Completion – Set 1 Pattern Completion – Set 2 Pattern Completion – Set 3 Pattern Completion – Set 4 Pattern Completion – Set 5 Pattern Completion – Set 6 Pattern Completion – Set 7 Pattern Completion – Set 8 Pattern Completion – Set 9 Pattern Completion – Set 10 The section contains questions and answers on data interpretation. Tabulation Bar Graphs Pie Chart Line Graphs The section contains questions and answers on quantitative aptitude. Quantitative Aptitude Questions and Answers If you would like to learn “Logical Reasoning” thoroughly, you should attempt to work on the complete set of questions and answers mentioned above. It will immensely help anyone trying to crack an exam or an interview. Wish you the best in your endeavor to learn and master Logical Reasoning! 👉 For weekly logical reasoning practice, exam, and certification updates, join Sanfoundry’s official WhatsApp & Telegram channels » Next - Odd Man Out Questions and Answers\"],\"correctAnswer\":\"A\",\"explanation\":\"Here, according to question Nilu < Bobby < Ankita < Shweta < Rahul. Therefore, the eldest is Rahul. Hence the answer is Rahul.\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Study of the evolution of man as an animal\",\"options\":[\"Archaeology\",\"Anthropology\",\"Chronology\",\"Ethnology\"],\"correctAnswer\":\"B\",\"explanation\":\"One word substitute is Anthropology . Archaeology: the study of human history and prehistory through the excavation of sites and the analysis of artefacts and other physical remains. Anthropology: the study of human biological and physiological characteristics and their evolution. Chronology: the arrangement of events or dates in the order of their occurrence. Ethnology: the study of the characteristics of different peoples and the differences and relationships between them.\",\"estimatedTime\":45,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Leela, who is Sohan's daughter, says to Latika, \\\"Your mother Alka is the younger sister of my father who is the third child of Gajanan.\\\" What is the relation of Gajanan to Latika ?\",\"options\":[\"Father\",\"Uncle\",\"Grandfather\",\"Father-in-law\"],\"correctAnswer\":\"C\",\"explanation\":\"The correct answer is C: Grandfather . Let's break down the relationships step by step: 1. Leela's statement: \\\"Your mother Alka is the younger sister of my father who is the third child of Gajanan.\\\" 2. Decoding: * Leela's father is Sohan. * Alka is Latika's mother. * Alka is Sohan's younger sister. * Sohan is the third child of Gajanan. 3. Putting it together: * Sohan and Alka are siblings (brother and sister). * Gajanan is the father of both Sohan and Alka. * Therefore, Gajanan is the father of Latika's mother (Alka). 4. Conclusion: Since Gajanan is the father of Latika's mother, Gajanan is Latika's grandfather .\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"What is the primary function of the Control Unit (CU) in a CPU?\",\"options\":[\"Executes program instructions\",\"Directs operations of the entire computer system\",\"Stores data temporarily\",\"None of the above\"],\"correctAnswer\":\"B\",\"explanation\":\"Option B: Directs operations of the entire computer system The primary function of the Control Unit (CU) in a CPU is to direct and coordinate the operations of the entire computer system. It manages the execution of instructions by fetching them from memory, decoding them, and controlling the data flow between the CPU and other parts of the computer system, including RAM, I/O devices, and the ALU (Arithmetic Logic Unit). The CU also manages the timing and control signals necessary for communication between these components. Option A: Executes program instructions While the CPU as a whole executes program instructions, specifically, it is the combination of the Control Unit (CU) and the Arithmetic Logic Unit (ALU) that executes the instructions. The CU directs this process. Option C: Stores data temporarily This role is typically associated with memory units such as RAM (Random Access Memory) rather than the Control Unit (CU), which primarily handles control and coordination tasks. Conclusion: The correct answer, Option B: Directs operations of the entire computer system , best describes the primary role of the Control Unit (CU) in a CPU, emphasizing its critical function in managing and coordinating the operation of the entire computer system.\",\"estimatedTime\":45,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"1, 2, 3, 6, 9, 18, ?, 54\",\"options\":[\"18\",\"27\",\"36\",\"81\"],\"correctAnswer\":\"B\",\"explanation\":\"Let's break down this number series question! The series is: 1, 2, 3, 6, 9, 18, ?, 54 Look for a pattern. It's not a simple addition or subtraction. Notice this: 1 + 2 = 3 3 + 6 = 9 9 + 18 = ? It looks like each number is the sum of the two numbers before it. So, to find the missing number: 9 + 18 = 27 Therefore, the missing number is 27. The correct answer is B. Double-check: 18 + 27 = 45 (Incorrect so that Logic is wrong) Notice this new Logic: 1 x 2 = 2 2 x (3/2) = 3 3 x 2 = 6 6 x (3/2) = 9 9 x 2 = 18 18 x (3/2) = ? So, to find the missing number: 18 x (3/2) = 27 Then check it with the next number: 27 x 2 = 54 Therefore, the missing number is 27. The correct answer is B.\",\"estimatedTime\":45,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"It was on the behest of the officer that he made those improvements.\",\"options\":[\"suggestion\",\"orders\",\"recommendation\",\"request\"],\"correctAnswer\":\"B\",\"explanation\":\"Suggestion : an idea or plan put forward for consideration. Orders : the arrangement or disposition of people or things in relation to each other according to a particular sequence, pattern, or method. Recommendation : a suggestion or proposal as to the best course of action, especially one put forward by an authoritative body. Request : an act of asking politely or formally for something. Behest : a person's orders or command. Synonym of Behest is Orders\",\"estimatedTime\":45,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"S 1 : Biological evolution has not fitted man to any specific environment. P : It is by no means a biological evolution, but it is a cultural one. Q : His imagination, his reason, his emotional subtlety and toughness, makes it possible for him not to accept the environment but to change. R : And that series of inventions by which man from age by age has reshaped his environment is a different kind of evolution. S : Among the multitude of animals which scamper, burrow swim around us he is in the only one who is not locked in to his environment. S 6 : That brilliant sequence of cultural peaks can most appropriately be termed the ascent of man. The Proper sequence should be:\",\"options\":[\"QPRS\",\"SRQP\",\"QRSP\",\"SQRP\"],\"correctAnswer\":\"C\",\"explanation\":\"His imagination, his reason, his emotional subtlety and toughness, makes it possible for him not to accept the environment but to change. And that series of inventions by which man from age by age has reshaped his environment is a different kind of evolution. Among the multitude of animals which scamper, burrow swim around us he is in the only one who is not locked into his environment. It is by no means a biological evolution, but is a cultural one.\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"What is the primary purpose of a scatter plot in EDA?\",\"options\":[\"To show the distribution of a single variable\",\"To visualize relationships between variables\",\"To display categorical data\",\"To represent time series data\"],\"correctAnswer\":\"B\",\"explanation\":\"Option A: To show the distribution of a single variable : This is usually done with histograms or box plots, not scatter plots. Option B: To visualize relationships between variables : This is the main point of a scatter plot! Each point on the plot represents a pair of values for two different variables. By looking at the pattern of points, we can see if there's a correlation or relationship between them. For example, if as one variable increases, the other also tends to increase, that shows a positive relationship. Option C: To display categorical data : Categorical data is better shown with bar charts or pie charts, not scatter plots. Option D: To represent time series data : Time series data is usually displayed using line charts. In simple terms: A scatter plot helps us see if two things are connected. If we plot \\\"ice cream sales\\\" versus \\\"temperature,\\\" we might see that as the temperature goes up, ice cream sales also go up. The scatter plot lets us see that relationship.\",\"estimatedTime\":45,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Which of the following digital logic circuits can be used to add more than 1 – bit simultaneously?\",\"options\":[\"Full – adder\",\"Ripple – carry adder\",\"Half – adder\",\"Serial adder\"],\"correctAnswer\":\"B\",\"explanation\":\"A Ripple – carry adder is a parallel binary adder in which the addition of more than 1 – bit data can be done simultaneously. The inputs to a parallel circuit can be sent and processed at once unlike series circuits in which inputs are sent one by one.\",\"estimatedTime\":60,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Inter division dynamics across the subsidiaries Due Diligence |E-Commerce Sector| Investment | Challenging 2022-2023 (C) Consult Club, IIM Ahmedabad Private Equity firm – Interview Transcript Due Diligence |Social Impact| Challenging Sure, I would like to now look at the various synergies that we can draw from the previous investments. I would like to look at revenue synergies, cost synergies and efficiency synergies. In terms of the revenue synergies, based on our other investments in home services sector we can drive demand for the company and identify skill training opportunities. The client can draw cost and efficiency synergies from similar foreign-based startups in our portfolio by means of technology transfer. Good points. Lets talk about the equity holding and investment amount that we should look at. What factors would influence this decision? Firstly, I would like to understand the nature of the investment – are we looking at a strategic investment with a majority stake or are we looking at a financial investment. As I mentioned, we plan to exit in 5-6 years, so it is a financial investment. I can take population growth as a proxy for the growth in the number of candidates. Similarly, the commissions will be based on the number of employees that we could place. Knowing 15% profit margins, we can discount the cash flows to get the present value of the firm. Good, let’s move on and look at the other factors. Since we are looking at skill programs, we should be looking at only the unemployed youth and students. We can use the labour participation rate and unemployment levels to get a figure. I can then multiply the market with the average fees to get the revenue. To further understand the revenues from commissions, I would like to know the commission rate and the number of companies that we are catering to currently and how is the demand expected to change. Let’s assume that there is enough demand. How would you get the projected revenues for the next 6 years to estimate the value of the firm. Right, so if we are looking at a minority stake in the company, the investment would depend on the valuation of the company and other possible PE firms who are looking to invest in the same company. We should also look at the willingness of the founders about the extent of dilution of their shares. Good points. There are in fact 2 other firms looking to invest in the same company. Let’s quickly now look at the various risks and exit options before the client. Sure. First and foremost, I would like to do a legal due diligence to see if there are any litigations, tax liabilities or regulatory compliance issues with the company, which can contribute to legal risks. I would look at the debt structure as well as the employee contracts of the company. In terms of technological risks, there are chances of obsolesce of some of these skills and need to adapt quickly to changing demands. There are economic risks, with respect to getting fees from the underprivileged in cases where sufficient government scholarships are absent. There is also high competition in the sector and threats from competition who can eat up the market share. In terms of exit options, the company can look to sell its stake back to the the initial promoters or another PE firm since there are existing competition. Alright, I think that’s a comprehensive analysis. Any final recommendation? That sounds like a fair approach. Explain me your approach to estimate the total market size. Good question. There hasn’t been any prior investments and the equity is split equally between the 3 brothers. At this point, I feel I have enough information to proceed. I’ll take a moment to structure my thoughts to produce an overall approach to analyse the feasibility of the investment. Sounds good, please go ahead. Okay, I would like to divide the analysis into 3 buckets – firstly estimating the market attractiveness and coming up with the valuation of the company. Next, I would like to investigate the synergies that we draw from the investments. Lastly, I would like to look at the various risks associated with the company. I would also know about the company’s founders and their vision. That’s interesting. And how is the competitive landscape in the sector where the client operates? It is a fragmented market and there is high competition from some similar early-stage start-ups. Do we have any information about the profitability of our client ? Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Sounds good. Firstly, I would like to understand our client’s motivation behind the investment. There are two motivations primarily, financials gains and driving social impact. Okay, does the client have any number about the quantum of investment that it wants to make? There is no restriction as such. We would like to help in analyzing various factors to decide this. Okay, and is there any exit multiple that you have in mind or any return that you are expecting from this investment? Yes the client has invested in similar companies before but none of them are based out of India. To answer your 2nd question, our current portfolio consists of growth stage startups from the healthcare, services and ed-tech sectors based out of India and other south-east Asian countries. Great. Now that I have information about our client, I would like to know more about the company in which we plan to invest. Can you tell me more about the company and their business model? Yes sure. It is a family run company started by 3-brothers. They work with the underprivileged students from Eastern-Indian states of Orissa, Bihar and West Bengal. Their business model is to upskill students in theoretical and vocational skills and help them provide employment. They get revenue sources include fees from the students at a subsidized amount and commissions from the companies where the students are employed. Thanks for this. Are their specific skills or sectors in which the students are trained. The students are unemployed youth who are provided training as beauticians, cutting and stitching jobs and as baristas for coffee shops. They are continuously expanding the the range of their skill program. Good question. So, we are looking at a 16% CAGR on the investment over a horizon of 6 years after which we plan to exit. That’s helpful. I would now want to get some information about the existing portfolio of the client. Has the client invested in similar companies previously? How does its portfolio look like? So currently the client operated at 15% net margin while the industry operated at 16% margins. Is their any other differentiation that the company has? The company has invested heavily in technology to continuously identify the gap in demand for the required skills in the industry. It also uses helps to identify prospects and incentives them to join the program by identifying government schemes to avail scholarships and get skilled. 2022-2023 Page 154 Lastly, what’s the equity structure of the company and has there been any prior investments? I’ll start by estimating the population of West Bengal, Orissa and Bihar which should be 20% of the total population. Next, I would segment the population by age(18-25 years which is 20% roughly). We can further look at urban and rural segments and then look at the low- and middle- income category. Does that sound like a good approach? Do you think you are missing any other criteria? Given the demand and good profit margins of the company, the investment looks lucrative, and the client should go ahead with it, Alright, thank you for the recommendation. (C) Consult Club, IIM Ahmedabad Recommendations (Beyond the transcript) • a) Do a proper analysis of the competitive landscape to gauge the competitive edge of the target company and also look into the threats of new entrant specially a big player. • b) Understand the operating model and the technology used of the target company to gauge the scalability of the business model. Key Learnings • In cases of due diligence and M&A, the preliminary questions are the most important and adequate time should be given to get relevant case facts. • The question about financial and strategic investment should have been asked in the beginning. Again, since time horizon was known beforehand, here case facts could have been linked better • It is important to think of synergies even between existing portfolio of the PE firm to the target company like potential technology transfer from companies in the portfolio operating abroad • In the guesstimate, it is essential to first lay down the approach the validate from the interviewer if something else is missing Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Approach/ Framework Interviewee Notes • It is important to understand the rationale for the investment • The preliminary questions should cover questions about the client and the target company to get important case facts. • It is essential to have a basic understand of the private equity industry and the process of due diligence, • It is important for the interviewee to link important case facts to subsequent answers. • Guesstimates can be qualitative or quantitative depending upon the interviewer. The approach should be laid out clearly. If numbers are required, reasonable assumptions can be taken. (For example, slightly higher unemployment levels in eastern India) Case Facts • Objective for investment is both social impact and financial gain. • 16% CAGR and a time horizon of 6 years. • No issues on cost side. • No poaching of customers by competitors. • The existing portfolio of the client and prior investments • The industries that the target company caters to currently • The ownership structure of the target company • Profit margins and industry competitiveness Commercial Due Diligence Valuation and financial feasibility Intrinsic Value Private Equity firm Page 155 Business Model P E S T E L Market Size 2022-2023 Due Diligence |Social Impact| Challenging Synergies and Business Model Exit Options and Risks Synergies Acquirer’s Value Customers Operations Differentiation Efficiency Synergies Financials Revenue Synergies Growth Rate Profitability Competition Equity Structure Cost Synergies Risks Exit Options Total Exit Partial Exit IPO Guesstimate Approach: Market size of underprivileged youth seeking jobs Segment total population to get population of Bihar, Orissa and WB (~20% of total – 25 crores) Segment further by age groups (18-30 years ~ 20% of 25 crore – 5 crore) Rural (70%) Urban (30%) Covered in this case Not covered in this case Lower Income group (80%) Lower Income group (40%) % unemployed and seeking jobs(10%) % unemployed and seeking jobs(15%) Total number of unemployed youth seeking jobs in the 3 states ~ 30 lacs Unconventional (C) Consult Club, IIM Ahmedabad Easy wins • Breakdown into a mathematical formula • Always remember Demand and Supply • Any problem can have an internal cause (in control of company) or external cause. For external cause, use PESTEL to analyze possible issues Unconventional - Tips & Tricks Page 157 Pointers to Remember • Never try to force fit a framework • Understand the problem really really well • Ask the interviewer if you’re unfamiliar with a particular industry, do not hesitate to ask question • If the industry is familiar, comparisons with companies you know about would help in providing recommendations • Be as comprehensive as possible and hence bucketing the problems into different sections will help in structured thinking • Can be looked at through 2 lenses – qualitative & quantitative (as a mathematical problem) • Using the 3CP i.e., of Company, Customer, Competitor and Product approach works in certain cases, but focus on keeping the approach MECE • In certain cases when the scope of the cases is broad, the interviewee should ask if the focus needs to be on a specific aspect to structure thoughts in that direction • While scoping the problem, the interviewee can consider if there are competitors in the same industry and the strategies, they follow 2022-2023 (C) Consult Club, IIM Ahmedabad You can go ahead with the ad model assumption. However, X doesn’t have any merchandising rights for GOT. What information do you need from me to calculate X’s revenues? I would need the following: (i) X’s monthly Subscription fee (ii) No. of episodes in GOT S8 (iii) GOT viewers not currently on X (iv) Average ad rate per slot per episode (v) No. of slots auctioned per episode Glad that you asked. I have the following data sheet with me. This should help you calculate revenues for X (Data sheet provided in table I). Thank you. From my calculations, X’s revenue from Subscriptions and Advertisements comes out to be $6 Mn (table II). However, I think there are some synergistic benefits to adding GOT on our platform. These can be attributed to following factors: • Customer Stickiness: Some of the additional customers would stick around after GOT ends increasing their CLV for X. These benefits need to be added to our revenue calculations • Additional ad revenues for existing programmes: X can leverage its added user base to charge a premium for ad slots in its existing shows during GOT‘s 3-month on-air run-time These are some very good points, and you can assume an additional benefit of $1 Mn from Synergy. Can you please now list down the cost heads for X? I have divided X’s costs into two buckets (Framework 1): • Direct Costs: This header would include the Bid amount, Streaming costs, Marketing costs • Overheads: This would include incremental legal costs, regulatory costs, customer service costs Apart from this, there would be Costs of capital (which would include costs of financing the investment and opportunity costs of not putting the money elsewhere), Assume that X expects to incur additional costs of $1 Mn apart from the bid amount. X has expected an ROI of 20% to incorporate for the cost of capital. Oh, I think I have all the data now. Based on my calculations, the bid amount for GOT season 8 cannot exceed $5 Mn to get the desired ROI of 20%. Now, I’d like to focus on the Strategic feasibility. Adding GOT would affect the way subscribers interact with the platform. Given the adult nature of content, some of the family-centric subscribers might get dissuaded from continuing. Also, this would affect our tie-ups with existing content providers which infer HBO as their competitor or substitute. These points are valid, but we can safely assume that X is strategically aligned with getting HBO onboard. Can you please now identify three potential risks that X needs to be aware of? Sure. I have collated the risks into the following categories: • Customer centric: X might not attract enough new customers on the platform given the subscription price and the presence of alternate channels of piracy like torrents, illegal streaming • Content centric: The content is not up to the mark increasing mid-season customer and advertiser drop-outs. Given the explicit content, X could also face added regulatory pressures • Platform centric: Focus on GOT might lead to self- cannibalization with decreased viewership for the platform’s existing content. Plus, X needs to minimize platform glitches such as that could inhibit user watching experience, leaving the new viewers unsatisfied with the platform I think we can stop here. Thank you. Bid Strategy for GOT Season 8– Interview Transcript Unconventional | Bid strategy | Challenging | Entertainment Page 158 Your client is Company X. They have been approached by HBO to bid for the eighth season of GOT. They want your help to evaluate the opportunity and determine the correct bidding strategy. I would like to ask a few clarifying questions to get an understanding about the case. Could you please elaborate on X’s business model and current product offerings? X is an OTT platform operating in India. The company has a website and an app where customers can access media content by paying a monthly subscription fee. X has its own content as well as tie- ups with other providers to provide a curated list of Movies, TV Shows, News Channels and Sporting Events on its platform for its subscribers. What is X’s objective for this bid? Is it to increase user base, or revenues or profits? And what makes GOT so attractive for X? X wants to maximise their profits and this bid should account for that. As for GOT, it is the most watched English TV Series in India. I would like to now understand the bidding terms. Will this bid be for the eighth season only? Also, will X have exclusive rights for this and till when is the bid valid? The bid will be for exclusive rights to stream GOT’s eighth and final season, and valid only for the duration that the show is on-air. Has X bid previously for GOT and if so, do we have any information regarding the bidding process? Also, is it okay to assume that the offer has been made to X’s competitors as well? It’s a closed bidding process that HBO extends to X and its four other competitors. The client had bid for GOT’s seventh season but did not win the bid. They were informed that they were close second and had bid $3 Mn for Season\",\"options\":[\"Consult Club, IIM Ahmedabad Private Equity firm – Interview Transcript Due Diligence |Social Impact| Challenging Sure, I would like to now look at the various synergies that we can draw from the previous investments. I would like to look at revenue synergies, cost synergies and efficiency synergies. In terms of the revenue synergies, based on our other investments in home services sector we can drive demand for the company and identify skill training opportunities. The client can draw cost and efficiency synergies from similar foreign-based startups in our portfolio by means of technology transfer. Good points. Lets talk about the equity holding and investment amount that we should look at. What factors would influence this decision? Firstly, I would like to understand the nature of the investment – are we looking at a strategic investment with a majority stake or are we looking at a financial investment. As I mentioned, we plan to exit in 5-6 years, so it is a financial investment. I can take population growth as a proxy for the growth in the number of candidates. Similarly, the commissions will be based on the number of employees that we could place. Knowing 15% profit margins, we can discount the cash flows to get the present value of the firm. Good, let’s move on and look at the other factors. Since we are looking at skill programs, we should be looking at only the unemployed youth and students. We can use the labour participation rate and unemployment levels to get a figure. I can then multiply the market with the average fees to get the revenue. To further understand the revenues from commissions, I would like to know the commission rate and the number of companies that we are catering to currently and how is the demand expected to change. Let’s assume that there is enough demand. How would you get the projected revenues for the next 6 years to estimate the value of the firm. Right, so if we are looking at a minority stake in the company, the investment would depend on the valuation of the company and other possible PE firms who are looking to invest in the same company. We should also look at the willingness of the founders about the extent of dilution of their shares. Good points. There are in fact 2 other firms looking to invest in the same company. Let’s quickly now look at the various risks and exit options before the client. Sure. First and foremost, I would like to do a legal due diligence to see if there are any litigations, tax liabilities or regulatory compliance issues with the company, which can contribute to legal risks. I would look at the debt structure as well as the employee contracts of the company. In terms of technological risks, there are chances of obsolesce of some of these skills and need to adapt quickly to changing demands. There are economic risks, with respect to getting fees from the underprivileged in cases where sufficient government scholarships are absent. There is also high competition in the sector and threats from competition who can eat up the market share. In terms of exit options, the company can look to sell its stake back to the the initial promoters or another PE firm since there are existing competition. Alright, I think that’s a comprehensive analysis. Any final recommendation? That sounds like a fair approach. Explain me your approach to estimate the total market size. Good question. There hasn’t been any prior investments and the equity is split equally between the 3 brothers. At this point, I feel I have enough information to proceed. I’ll take a moment to structure my thoughts to produce an overall approach to analyse the feasibility of the investment. Sounds good, please go ahead. Okay, I would like to divide the analysis into 3 buckets – firstly estimating the market attractiveness and coming up with the valuation of the company. Next, I would like to investigate the synergies that we draw from the investments. Lastly, I would like to look at the various risks associated with the company. I would also know about the company’s founders and their vision. That’s interesting. And how is the competitive landscape in the sector where the client operates? It is a fragmented market and there is high competition from some similar early-stage start-ups. Do we have any information about the profitability of our client ? Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Sounds good. Firstly, I would like to understand our client’s motivation behind the investment. There are two motivations primarily, financials gains and driving social impact. Okay, does the client have any number about the quantum of investment that it wants to make? There is no restriction as such. We would like to help in analyzing various factors to decide this. Okay, and is there any exit multiple that you have in mind or any return that you are expecting from this investment? Yes the client has invested in similar companies before but none of them are based out of India. To answer your 2nd question, our current portfolio consists of growth stage startups from the healthcare, services and ed-tech sectors based out of India and other south-east Asian countries. Great. Now that I have information about our client, I would like to know more about the company in which we plan to invest. Can you tell me more about the company and their business model? Yes sure. It is a family run company started by 3-brothers. They work with the underprivileged students from Eastern-Indian states of Orissa, Bihar and West Bengal. Their business model is to upskill students in theoretical and vocational skills and help them provide employment. They get revenue sources include fees from the students at a subsidized amount and commissions from the companies where the students are employed. Thanks for this. Are their specific skills or sectors in which the students are trained. The students are unemployed youth who are provided training as beauticians, cutting and stitching jobs and as baristas for coffee shops. They are continuously expanding the the range of their skill program. Good question. So, we are looking at a 16% CAGR on the investment over a horizon of 6 years after which we plan to exit. That’s helpful. I would now want to get some information about the existing portfolio of the client. Has the client invested in similar companies previously? How does its portfolio look like? So currently the client operated at 15% net margin while the industry operated at 16% margins. Is their any other differentiation that the company has? The company has invested heavily in technology to continuously identify the gap in demand for the required skills in the industry. It also uses helps to identify prospects and incentives them to join the program by identifying government schemes to avail scholarships and get skilled. 2022-2023 Page 154 Lastly, what’s the equity structure of the company and has there been any prior investments? I’ll start by estimating the population of West Bengal, Orissa and Bihar which should be 20% of the total population. Next, I would segment the population by age(18-25 years which is 20% roughly). We can further look at urban and rural segments and then look at the low- and middle- income category. Does that sound like a good approach? Do you think you are missing any other criteria? Given the demand and good profit margins of the company, the investment looks lucrative, and the client should go ahead with it, Alright, thank you for the recommendation.\",\"Consult Club, IIM Ahmedabad Recommendations (Beyond the transcript) • a) Do a proper analysis of the competitive landscape to gauge the competitive edge of the target company and also look into the threats of new entrant specially a big player. • b) Understand the operating model and the technology used of the target company to gauge the scalability of the business model. Key Learnings • In cases of due diligence and M&A, the preliminary questions are the most important and adequate time should be given to get relevant case facts. • The question about financial and strategic investment should have been asked in the beginning. Again, since time horizon was known beforehand, here case facts could have been linked better • It is important to think of synergies even between existing portfolio of the PE firm to the target company like potential technology transfer from companies in the portfolio operating abroad • In the guesstimate, it is essential to first lay down the approach the validate from the interviewer if something else is missing Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Approach/ Framework Interviewee Notes • It is important to understand the rationale for the investment • The preliminary questions should cover questions about the client and the target company to get important case facts. • It is essential to have a basic understand of the private equity industry and the process of due diligence, • It is important for the interviewee to link important case facts to subsequent answers. • Guesstimates can be qualitative or quantitative depending upon the interviewer. The approach should be laid out clearly. If numbers are required, reasonable assumptions can be taken. (For example, slightly higher unemployment levels in eastern India) Case Facts • Objective for investment is both social impact and financial gain. • 16% CAGR and a time horizon of 6 years. • No issues on cost side. • No poaching of customers by competitors. • The existing portfolio of the client and prior investments • The industries that the target company caters to currently • The ownership structure of the target company • Profit margins and industry competitiveness Commercial Due Diligence Valuation and financial feasibility Intrinsic Value Private Equity firm Page 155 Business Model P E S T E L Market Size 2022-2023 Due Diligence |Social Impact| Challenging Synergies and Business Model Exit Options and Risks Synergies Acquirer’s Value Customers Operations Differentiation Efficiency Synergies Financials Revenue Synergies Growth Rate Profitability Competition Equity Structure Cost Synergies Risks Exit Options Total Exit Partial Exit IPO Guesstimate Approach: Market size of underprivileged youth seeking jobs Segment total population to get population of Bihar, Orissa and WB (~20% of total – 25 crores) Segment further by age groups (18-30 years ~ 20% of 25 crore – 5 crore) Rural (70%) Urban (30%) Covered in this case Not covered in this case Lower Income group (80%) Lower Income group (40%) % unemployed and seeking jobs(10%) % unemployed and seeking jobs(15%) Total number of unemployed youth seeking jobs in the 3 states ~ 30 lacs Unconventional\",\"Consult Club, IIM Ahmedabad Easy wins • Breakdown into a mathematical formula • Always remember Demand and Supply • Any problem can have an internal cause (in control of company) or external cause. For external cause, use PESTEL to analyze possible issues Unconventional - Tips & Tricks Page 157 Pointers to Remember • Never try to force fit a framework • Understand the problem really really well • Ask the interviewer if you’re unfamiliar with a particular industry, do not hesitate to ask question • If the industry is familiar, comparisons with companies you know about would help in providing recommendations • Be as comprehensive as possible and hence bucketing the problems into different sections will help in structured thinking • Can be looked at through 2 lenses – qualitative & quantitative (as a mathematical problem) • Using the 3CP i.e., of Company, Customer, Competitor and Product approach works in certain cases, but focus on keeping the approach MECE • In certain cases when the scope of the cases is broad, the interviewee should ask if the focus needs to be on a specific aspect to structure thoughts in that direction • While scoping the problem, the interviewee can consider if there are competitors in the same industry and the strategies, they follow 2022-2023\",\"Consult Club, IIM Ahmedabad You can go ahead with the ad model assumption. However, X doesn’t have any merchandising rights for GOT. What information do you need from me to calculate X’s revenues? I would need the following: (i) X’s monthly Subscription fee (ii) No. of episodes in GOT S8 (iii) GOT viewers not currently on X (iv) Average ad rate per slot per episode (v) No. of slots auctioned per episode Glad that you asked. I have the following data sheet with me. This should help you calculate revenues for X (Data sheet provided in table I). Thank you. From my calculations, X’s revenue from Subscriptions and Advertisements comes out to be $6 Mn (table II). However, I think there are some synergistic benefits to adding GOT on our platform. These can be attributed to following factors: • Customer Stickiness: Some of the additional customers would stick around after GOT ends increasing their CLV for X. These benefits need to be added to our revenue calculations • Additional ad revenues for existing programmes: X can leverage its added user base to charge a premium for ad slots in its existing shows during GOT‘s 3-month on-air run-time These are some very good points, and you can assume an additional benefit of $1 Mn from Synergy. Can you please now list down the cost heads for X? I have divided X’s costs into two buckets (Framework 1): • Direct Costs: This header would include the Bid amount, Streaming costs, Marketing costs • Overheads: This would include incremental legal costs, regulatory costs, customer service costs Apart from this, there would be Costs of capital (which would include costs of financing the investment and opportunity costs of not putting the money elsewhere), Assume that X expects to incur additional costs of $1 Mn apart from the bid amount. X has expected an ROI of 20% to incorporate for the cost of capital. Oh, I think I have all the data now. Based on my calculations, the bid amount for GOT season 8 cannot exceed $5 Mn to get the desired ROI of 20%. Now, I’d like to focus on the Strategic feasibility. Adding GOT would affect the way subscribers interact with the platform. Given the adult nature of content, some of the family-centric subscribers might get dissuaded from continuing. Also, this would affect our tie-ups with existing content providers which infer HBO as their competitor or substitute. These points are valid, but we can safely assume that X is strategically aligned with getting HBO onboard. Can you please now identify three potential risks that X needs to be aware of? Sure. I have collated the risks into the following categories: • Customer centric: X might not attract enough new customers on the platform given the subscription price and the presence of alternate channels of piracy like torrents, illegal streaming • Content centric: The content is not up to the mark increasing mid-season customer and advertiser drop-outs. Given the explicit content, X could also face added regulatory pressures • Platform centric: Focus on GOT might lead to self- cannibalization with decreased viewership for the platform’s existing content. Plus, X needs to minimize platform glitches such as that could inhibit user watching experience, leaving the new viewers unsatisfied with the platform I think we can stop here. Thank you. Bid Strategy for GOT Season 8– Interview Transcript Unconventional | Bid strategy | Challenging | Entertainment Page 158 Your client is Company X. They have been approached by HBO to bid for the eighth season of GOT. They want your help to evaluate the opportunity and determine the correct bidding strategy. I would like to ask a few clarifying questions to get an understanding about the case. Could you please elaborate on X’s business model and current product offerings? X is an OTT platform operating in India. The company has a website and an app where customers can access media content by paying a monthly subscription fee. X has its own content as well as tie- ups with other providers to provide a curated list of Movies, TV Shows, News Channels and Sporting Events on its platform for its subscribers. What is X’s objective for this bid? Is it to increase user base, or revenues or profits? And what makes GOT so attractive for X? X wants to maximise their profits and this bid should account for that. As for GOT, it is the most watched English TV Series in India. I would like to now understand the bidding terms. Will this bid be for the eighth season only? Also, will X have exclusive rights for this and till when is the bid valid? The bid will be for exclusive rights to stream GOT’s eighth and final season, and valid only for the duration that the show is on-air. Has X bid previously for GOT and if so, do we have any information regarding the bidding process? Also, is it okay to assume that the offer has been made to X’s competitors as well? It’s a closed bidding process that HBO extends to X and its four other competitors. The client had bid for GOT’s seventh season but did not win the bid. They were informed that they were close second and had bid $3 Mn for Season\"],\"correctAnswer\":\"A\",\"explanation\":\"This question is mapped to Puzzles. The correct answer is A based on the original source question.\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Each vowel of the GLADIOLUS word is substituted with the next letter of the English alphabetical series and each consonant is substituted with the letters preceding it. How many vowels will be present in the new arrangement?\",\"options\":[\"One\",\"Two\",\"Three\",\"No Vowel\"],\"correctAnswer\":\"D\",\"explanation\":\"G → F L → K A → B D → C I → J O → P L → K U → V S → R Thus, GLADIOLUS = FKBCJPKVR.\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Current transformers are __________________\",\"options\":[\"parallel connected type of instrument transformers\",\"series connected type of instrument transformers\",\"parallel connected normal transformers\",\"series-parallel connected type of instrument transformers\"],\"correctAnswer\":\"B\",\"explanation\":\"Current transformer (CT) is a series connected type of instrument transformer. They are designed to present negligible load to the supply which is being measured and also have an accurate current ratio and phase relationship to enable accurate secondary connected metering.\",\"estimatedTime\":45,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Thermometer : Temperature :: Glucometer : ?\",\"options\":[\"Body sugar\",\"Body resistance\",\"Blood\",\"Blood sugar\"],\"correctAnswer\":\"D\",\"explanation\":\"This question gives you the pair \\\"Thermometer : Temperature\\\". Think about what a thermometer does: it measures temperature . We need to find a similar pair. A glucometer is a device used to measure something related to the body. Let's look at the options: Option A: Body sugar - A glucometer doesn't measure all body sugar, it measures a specific type. Option B: Body resistance - This is incorrect; a glucometer doesn't measure resistance. Option C: Blood - A glucometer uses blood but doesn't measure the overall amount of blood. Option D: Blood sugar - This is correct! A glucometer measures blood sugar levels , just like a thermometer measures temperature. Therefore, the best answer is Option D: Blood sugar because it shows the same relationship as \\\"Thermometer : Temperature\\\".\",\"estimatedTime\":45,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"The main factor to be considered while preparing a detailed estimate, is\",\"options\":[\"Quantity of the materials\",\"Availability of materials\",\"Transportation of materials\",\"All the above\"],\"correctAnswer\":\"D\",\"explanation\":\"Definition: A detailed estimate is a comprehensive calculation of the quantities and costs of all items required for the execution of a construction project. Main factors: While preparing a detailed estimate, several aspects must be considered, including the quantity of materials , their availability , and the transportation arrangements to the site. Reason: The quantity of materials directly affects the total cost and ensures sufficient supply for uninterrupted work. The availability of materials determines procurement timelines and can influence choice of suppliers and scheduling. The transportation of materials impacts delivery efficiency, cost, and timely completion of the project. Conclusion: All these factors are interlinked and crucial for accurate cost estimation and smooth project execution, hence all the above is the correct answer.\",\"estimatedTime\":45,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Please, don’t laugh . . . . . . those beggars.\",\"options\":[\"for\",\"against\",\"at\",\"from\"],\"correctAnswer\":\"C\",\"explanation\":\"The correct answer is C: at First, let's define the preposition \\\"at\\\" in this context. \\\"At\\\" is used to indicate the direction of an action or feeling towards a specific person or thing. The sentence \\\"Please, don't laugh . . . . . . those beggars\\\" implies a request to refrain from a disrespectful action directed towards the beggars. Laughing \\\"at\\\" someone implies mockery or ridicule, which is the negative action the sentence seeks to prevent. Let's look at why the other options are incorrect: A: for - \\\"Laugh for\\\" implies laughing because of something, not at someone. This doesn't fit the context of the sentence. B: against - \\\"Laugh against\\\" isn't a standard English expression. It doesn't make logical sense in this context. D: from - \\\"Laugh from\\\" suggests the source of laughter, not the target. This also doesn't fit the meaning of the sentence. Therefore, only \\\"at\\\" accurately conveys the intended meaning of directing the action of laughter towards the beggars, highlighting the negative connotation of mocking them.\",\"estimatedTime\":45,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Jill was ________ by her employees because she often _______ them for not working hard enough.\",\"options\":[\"deified, goaded\",\"loathed, berated\",\"disregarded, eulogized\",\"cherished, decided\"],\"correctAnswer\":\"B\",\"explanation\":\"Let's break down each word pair to see which one makes the most sense: Option A: deified, goaded \\\"Deified\\\" means to treat someone as a god. \\\"Goaded\\\" means to provoke or annoy someone. This doesn't fit because it's unlikely employees would dislike a boss who treated them like a god, even if she provoked them. Option B: loathed, berated \\\"Loathed\\\" means strongly disliked. \\\"Berated\\\" means scolded harshly. This makes sense! If Jill constantly scolded her employees, it's likely they would dislike her. Option C: disregarded, eulogized \\\"Disregarded\\\" means ignored. \\\"Eulogized\\\" means praised highly. This doesn't fit the sentence's negative tone. If Jill ignored them, the employees might be annoyed but not necessarily loathe her. Praising them doesn't fit with the context. Option D: cherished, decided \\\"Cherished\\\" means loved dearly. \\\"Decided\\\" means made up one's mind. This doesn't make sense in the context. It suggests a positive relationship between Jill and her employees, which contrasts with the negative feeling described in the sentence. Therefore, the best answer is Option B: loathed, berated . It creates a logical and coherent sentence.\",\"estimatedTime\":60,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Angel is famous . . . . . English in Jasdan.\",\"options\":[\"for\",\"in\",\"about\",\"with\"],\"correctAnswer\":\"A\",\"explanation\":\"The correct answer is A: for First, let's define the term \\\"preposition\\\". A preposition is a word that shows the relationship between a noun or pronoun and other words in a sentence. Prepositions often indicate location, time, direction, or manner. The sentence requires a preposition that indicates the reason for Angel's fame. \\\"Famous for\\\" means that Angel is well-known because of her skill or talent in English. Option B, \\\"in,\\\" suggests location, implying Angel is famous *within* Jasdan. This doesn't directly explain her fame. Option C, \\\"about,\\\" implies that Angel is famous *because of information or stories about her*, not because of her inherent skill in English. Option D, \\\"with,\\\" suggests that Angel is famous *in association with* something, which is not relevant to the context. It doesn't explain the basis of her fame. Therefore, only \\\"for\\\" accurately conveys the reason for Angel's fame in Jasdan: her proficiency in English.\",\"estimatedTime\":45,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Do you always go to school . . . . . foot?\",\"options\":[\"on\",\"by\",\"with\",\"walking\"],\"correctAnswer\":\"A\",\"explanation\":\"The question asks about the correct preposition to use with \\\"foot\\\" when referring to the mode of transportation. Preposition: A preposition is a word that shows the relationship between a noun or pronoun and another word in the sentence. It indicates things like location, time, direction, or manner. On foot: This phrase means \\\"walking.\\\" It is a fixed expression in English, meaning we don't use other prepositions with \\\"foot\\\" in this context. Therefore, the correct answer is A: on . Let's look at why the other options are incorrect: B: by – \\\"By foot\\\" is grammatically correct in some contexts, but it is less common than \\\"on foot\\\" and sounds slightly unnatural to many native speakers when talking about regular travel to school. \\\"By\\\" is typically used with other means of transportation (e.g., by bus, by car, by train). C: with – \\\"With foot\\\" is grammatically incorrect in this context. \\\"With\\\" indicates accompaniment or the instrument used to perform an action. D: walking – \\\"Walking\\\" is a verb, not a preposition. While you could say \\\"Do you always go to school walking?\\\", it's grammatically correct but less concise and common than \\\"Do you always go to school on foot?\\\".\",\"estimatedTime\":45,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Two buses start from a bus terminal with a speed of 20 km/h at interval of 10 minutes. What is the speed of a man coming from the opposite direction towards the bus terminal if he meets the buses at interval of 8 minutes?\",\"options\":[\"3 km/h\",\"4 km/h\",\"5 km/h\",\"7 km/h\"],\"correctAnswer\":\"C\",\"explanation\":\"Let Speed of the man is x kmph. Distance covered in 10 minutes at 20 kmph = distance covered in 8 minutes at (20 + x) kmph. Or, $$20 \\\\times \\\\frac{{10}}{{60}} = \\\\frac{8}{60}\\\\times\\\\left(20+x\\\\right) $$ Or, 200 = 160 + 8x Or, 8x = 40 Hence, x = 5kmph. Detailed Explanation: A _____________M_______________B A = Bus Terminal. B = Let meeting point of first bus and the man and this distance is covered by Bus in 10 minutes. I.e. Distance A to be is covered first bus in 10 min. As AB distance can be covered by second bus in 10 minutes as well. Distance Covered by Bus in 10 min = AB = $$\\\\frac{{20}}{{60}} \\\\times 10$$ = $$\\\\frac{{10}}{3}$$ km. Now, M is the Meeting Point of Second Bus with Man. Man covered distance B to M in 8 minutes. Now, Relative distance of both Man and Bus will be same as both are traveling in opposite direction of each other. Let Speed of the man = x kmph. Relative speed = 20 + x To meet at Point M, bus and Man has covered the distance (AB) in 8 minutes with relative speed. And Same AB distance is covered by bus in 10 minutes. Thus, Distance covered in 8 minutes with relative speed (20 + x) kmph = distance covered by bus in 10 minuted with speed 20 kmph.\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"From two places, 60 km apart, A and B start towards each other at the same time and meet each other after 6 hour. If A traveled with $$\\\\frac{2}{3}$$ of his speed and B traveled with double of his speed, they would have met after 5 hours. The speed of A is:\",\"options\":[\"4 km/h\",\"6 km/h\",\"10 km/h\",\"12 km/h\"],\"correctAnswer\":\"B\",\"explanation\":\"A →_______60Km_________← B Let the speed of A = x kmph and that of B = y kmph According to the question; x × 6 + y × 6 = 60 Or, x + y = 10 --------- (i) And, $$\\\\left( {\\\\frac{{2{\\\\text{x}}}}{3} \\\\times 5} \\\\right) + \\\\left( {2{\\\\text{y}} \\\\times 5} \\\\right) = 60$$ Or, 10x + 30y = 180 Or, x + 3y = 18 ---------- (ii) From equation (i) × 3 - (ii) 3x + 3y - x - 3y = 30 - 18 Or, 2x = 12 Hence, x = 6 kmph Alternate $$\\\\because $$ They meet after 6 hours if they walk towards each other i.e., their speed will be added. So, their relative speed in opposite direction $$ = \\\\frac{{{\\\\text{Distance }}}}{{{\\\\text{Time }}}} = \\\\frac{{60}}{6}$$ Relative speed in opposite direction : $$\\\\left( \\\\rightleftharpoons \\\\right) = 10{\\\\text{ km/h}}.....{\\\\text{(i)}}$$ According to the question, $$\\\\eqalign{ & \\\\Rightarrow \\\\frac{2}{3}A + 2B = \\\\frac{{60}}{5} \\\\cr & \\\\Rightarrow \\\\frac{2}{3}A + 2B = 12 \\\\cr & \\\\Rightarrow A + 3B = 18 \\\\cr & \\\\Rightarrow B's{\\\\text{ Speed = }}\\\\frac{{18 - A}}{3} \\\\cr & \\\\Rightarrow A + B = 10 \\\\cr & \\\\Rightarrow A + \\\\frac{{18 - A}}{3} = 10 \\\\cr & \\\\Rightarrow 3A + 18 - A = 30 \\\\cr & \\\\Rightarrow 2A = 12 \\\\cr & \\\\Rightarrow A{\\\\text{'s speed = 6 km/h}} \\\\cr} $$\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"How many different words can be formed using all the letters of the word ALLAHABAD? (a) When vowels occupy the even positions. (b) Both L do not occur together.\",\"options\":[\"7560,60,1680\",\"7890,120,650\",\"7650,200,4444\",\"None of these\"],\"correctAnswer\":\"D\",\"explanation\":\"ALLAHABAD = 9 letters. Out of these 9 letters there is 4 A's and 2 L's are there. So, permutations = $$\\\\frac{{9!}}{{4!.2!}}$$ = 7560 (a) There are 4 vowels and all are alike i.e. 4A's. _2 nd _4 th _6 th _8 th _ These even places can be occupied by 4 vowels. In $$\\\\frac{{4!}}{{4!}}$$ = 1 Way. In other five places 5 other letter can be occupied of which two are alike i.e. 2L's. Number of ways = $$\\\\frac{{5!}}{{2!}}$$ Ways. Hence, total number of ways in which vowels occupy the even places = $$\\\\frac{{5!}}{{2!}}$$ × 1 = 60 ways. (b) Taking both L's together and treating them as one letter we have 8 letters out of which A repeats 4 times and others are distinct. These 8 letters can be arranged in $$\\\\frac{{8!}}{{4!}}$$ = 1680 ways. Also two L can be arranged themselves in 2! ways. So, Total no. of ways in which L are together = 1680 × 2 = 3360 ways. Now, Total arrangement in which L never occur together, = Total arrangement - Total no. of ways in which L occur together. = 7560 - 3360 = 4200 ways\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"In how many ways can 10 examination papers be arranged so that the best and the worst papers never come together?\",\"options\":[\"8 × 9!\",\"8 × 8!\",\"7 × 9!\",\"9 × 8!\"],\"correctAnswer\":\"A\",\"explanation\":\"No. of ways in which 10 paper can arranged is 10! Ways. When the best and the worst papers come together, regarding the two as one paper, we have only 9 papers. These 9 papers can be arranged in 9! Ways. And two papers can be arranged themselves in 2! Ways. No. of arrangement when best and worst paper do not come together, = 10! - 9! × 2! = 9!(10 - 2) = 8 × 9!\",\"estimatedTime\":60,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Two trains running in opposite directions cross a man standing on the platform in 27 seconds and 17 seconds respectively and they cross each other in 23 seconds. The ratio of their speeds is:\",\"options\":[\"1 : 3\",\"3 : 2\",\"3 : 4\",\"None of these\"],\"correctAnswer\":\"B\",\"explanation\":\"$$\\\\eqalign{ & {\\\\text{Let}}\\\\,{\\\\text{the}}\\\\,{\\\\text{speeds}}\\\\,{\\\\text{of}}\\\\,{\\\\text{the}}\\\\,{\\\\text{two}}\\\\,{\\\\text{trains}}\\\\,{\\\\text{be}}\\\\,x\\\\,{\\\\text{m/sec}} \\\\cr & {\\\\text{and}}\\\\,y\\\\,{\\\\text{m/sec}}\\\\,{\\\\text{respectively}}. \\\\cr & {\\\\text{Then,}}\\\\,{\\\\text{length}}\\\\,{\\\\text{of}}\\\\,{\\\\text{the}}\\\\,{\\\\text{first}}\\\\,{\\\\text{train}} = 27x\\\\,{\\\\text{metres}}, \\\\cr & {\\\\text{and}}\\\\,{\\\\text{length}}\\\\,{\\\\text{of}}\\\\,{\\\\text{the}}\\\\,{\\\\text{second}}\\\\,{\\\\text{train}} = 17y\\\\,{\\\\text{metres}}. \\\\cr & \\\\therefore \\\\frac{{27x + 17y}}{{x + y}} = 23 \\\\cr & \\\\Rightarrow 27x + 17y = 23x + 23y \\\\cr & \\\\Rightarrow 4x = 6y \\\\cr & \\\\Rightarrow \\\\frac{x}{y} = \\\\frac{3}{2} \\\\cr} $$\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Two trains of equal length are running on parallel lines in the same direction at 46 km/hr and 36 km/hr. The faster train passes the slower train in 36 seconds. The length of each train is:\",\"options\":[\"50 m\",\"72 m\",\"80 m\",\"82 m\"],\"correctAnswer\":\"A\",\"explanation\":\"$$\\\\eqalign{ & {\\\\text{Let}}\\\\,{\\\\text{the}}\\\\,{\\\\text{length}}\\\\,{\\\\text{of}}\\\\,{\\\\text{each}}\\\\,{\\\\text{train}}\\\\,{\\\\text{be}}\\\\,x\\\\,{\\\\text{metres}}. \\\\cr & {\\\\text{Then,}}\\\\,{\\\\text{distance}}\\\\,{\\\\text{covered}} = 2x\\\\,{\\\\text{metres}}. \\\\cr & {\\\\text{Relative}}\\\\,{\\\\text{speed}} \\\\cr & = \\\\left( {46 - 36} \\\\right)\\\\,{\\\\text{km/hr}} \\\\cr & = {10 \\\\times \\\\frac{5}{{18}}} \\\\,{\\\\text{m/sec}} \\\\cr & = {\\\\frac{{25}}{9}} \\\\,{\\\\text{m/sec}} \\\\cr & \\\\therefore \\\\frac{{2x}}{{36}} = \\\\frac{{25}}{9} \\\\cr & \\\\Rightarrow 2x = 100 \\\\cr & \\\\Rightarrow x = 50 \\\\cr} $$\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Two trains are moving in opposite directions @ 60 km/hr and 90 km/hr. Their lengths are 1.10 km and 0.9 km respectively. The time taken by the slower train to cross the faster train in seconds is:\",\"options\":[\"36\",\"45\",\"48\",\"49\"],\"correctAnswer\":\"C\",\"explanation\":\"$$\\\\eqalign{ & {\\\\text{Relative}}\\\\,{\\\\text{speed}} = \\\\left( {60 + 90} \\\\right)\\\\,{\\\\text{km/hr}} \\\\cr & = {150 \\\\times \\\\frac{5}{{18}}} \\\\,{\\\\text{m/sec}} \\\\cr & = {\\\\frac{{125}}{3}} \\\\,{\\\\text{m/sec}} \\\\cr & {\\\\text{Distance}}\\\\,{\\\\text{covered}} \\\\cr & = \\\\left( {1.10 + 0.9} \\\\right)\\\\,km \\\\cr & = 2\\\\,km \\\\cr & = \\\\,2000\\\\,m \\\\cr & {\\\\text{Required}}\\\\,{\\\\text{time}} \\\\cr & = {2000 \\\\times \\\\frac{3}{{125}}} \\\\,{\\\\text{sec}} \\\\cr & = 48\\\\,sec \\\\cr} $$\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"A jogger running at 9 kmph alongside a railway track in 240 metres ahead of the engine of a 120 metres long train running at 45 kmph in the same direction. In how much time will the train pass the jogger?\",\"options\":[\"3.6 sec\",\"18 sec\",\"36 sec\",\"72 sec\"],\"correctAnswer\":\"C\",\"explanation\":\"$$\\\\eqalign{ & {\\\\text{Speed}}\\\\,{\\\\text{of}}\\\\,{\\\\text{train}}\\\\,{\\\\text{relative}}\\\\,{\\\\text{to}}\\\\,{\\\\text{jogger}} \\\\cr & = \\\\left( {45 - 9} \\\\right)\\\\,{\\\\text{km/hr}} \\\\cr & = 36\\\\,{\\\\text{km/hr}} \\\\cr & {36 \\\\times \\\\frac{5}{{18}}} \\\\,{\\\\text{m/sec}} \\\\cr & = 10\\\\,{\\\\text{m/sec}} \\\\cr & {\\\\text{Distance}}\\\\,{\\\\text{to}}\\\\,{\\\\text{be}}\\\\,{\\\\text{covered}} \\\\cr & = \\\\left( {240 + 120} \\\\right)\\\\,m \\\\cr & = 360\\\\,m \\\\cr & \\\\therefore {\\\\text{Time}}\\\\,{\\\\text{taken}} \\\\cr & = {\\\\frac{{360}}{{10}}} \\\\,{\\\\text{sec}} \\\\cr & = 36\\\\,{\\\\text{sec}} \\\\cr} $$\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"The cascade amplifier is a multistage configuration of\",\"options\":[\"CC-CB\",\"CE-CB\",\"CB-CC\",\"CE-CC\"],\"correctAnswer\":\"D\",\"explanation\":\"Explanation of each option: Option A: CC-CB is incorrect because this configuration consists of a common collector (CC) stage followed by a common base (CB) stage. While this can be used in some amplifiers, it is not a typical configuration for a cascade amplifier. Option B: CE-CB is incorrect because this configuration consists of a common emitter (CE) stage followed by a common base (CB) stage. While this may be used in certain applications, it is not the standard configuration for a cascade amplifier. Option C: CB-CC is incorrect because this configuration starts with a common base (CB) stage followed by a common collector (CC) stage. This is also not a common arrangement for cascade amplifiers. Option D: CE-CC is correct because the typical cascade amplifier configuration uses a common emitter (CE) stage followed by a common collector (CC) stage. The CE stage provides high voltage gain, while the CC stage provides current gain and impedance matching, making this a common choice for multistage amplifiers. Conclusion: The correct answer is Option D: CE-CC because this is the standard multistage configuration for cascade amplifiers.\",\"estimatedTime\":45,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"A low ratio of the ac to the dc load impedance of a diode detector results in\",\"options\":[\"Diagonal clipping\",\"Poor AGC operation\",\"Negative-peak clipping\",\"Poor AF response\"],\"correctAnswer\":\"C\",\"explanation\":\"Understanding Diode Detectors in Radio Receivers Diode detectors are used in radio receivers to extract the audio signal from the radio frequency (RF) signal. They work by rectifying the RF signal, meaning they convert the alternating current (AC) signal into a direct current (DC) signal. The detector's performance depends on the relationship between the AC load impedance (the impedance seen by the AC component of the signal) and the DC load impedance (the impedance seen by the DC component). A low ratio of AC to DC load impedance means the AC impedance is much smaller than the DC impedance. This impacts how well the detector can handle the signal. Imagine the detector trying to follow a quickly changing AC signal while also maintaining a steady DC level. If the AC impedance is too low, the detector struggles to accurately follow the rapid changes in the signal, which leads to distortion. The various options show different types of this distortion. Therefore, a low ratio of AC to DC load impedance will cause negative-peak clipping . This is because the detector can't efficiently follow the negative portions of the AC signal, causing those portions to be \\\"clipped\\\" off. The other options, while possible problems in a radio receiver, aren't the direct result of a low AC-to-DC impedance ratio in the diode detector itself.\",\"estimatedTime\":60,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"If the ratio of long and short spans of a two way slab with corners held down is r, the actual reduction of B.M. is given by\",\"options\":[\"$$\\\\frac{5}{6}\\\\left( {\\\\frac{{\\\\text{r}}}{{1 + {{\\\\text{r}}^2}}}} \\\\right){\\\\text{M}}$$\",\"$$\\\\frac{5}{6}\\\\left( {\\\\frac{{{{\\\\text{r}}^2}}}{{1 + {{\\\\text{r}}^2}}}} \\\\right){\\\\text{M}}$$\",\"$$\\\\frac{5}{6}\\\\left( {\\\\frac{{{{\\\\text{r}}^2}}}{{1 + {{\\\\text{r}}^3}}}} \\\\right){\\\\text{M}}$$\",\"$$\\\\frac{5}{6}\\\\left( {\\\\frac{{{{\\\\text{r}}^2}}}{{1 + {{\\\\text{r}}^4}}}} \\\\right){\\\\text{M}}$$\"],\"correctAnswer\":\"B\",\"explanation\":\"The question is about two-way slabs in Reinforced Cement Concrete (RCC) structures. Two-way slabs are supported on all four sides and the load is carried in both directions (length and width). The ratio 'r' refers to the ratio of the longer span to the shorter span of the slab. When the corners of a two-way slab are held down (meaning they are prevented from lifting), it changes how the slab bends (its bending moment, or B.M.). Because the corners are held down, the bending moment is reduced . The question asks which formula correctly represents this reduction in bending moment. The correct formula, representing the reduction, is: $$\\\\frac{5}{6}\\\\left( {\\\\frac{{{{\\\\text{r}}^2}}}{{1 + {{\\\\text{r}}^2}}}} \\\\right){\\\\text{M}}$$ , where M is the original bending moment. So, the answer is Option B.\",\"estimatedTime\":60,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"There are 10 seats around a circular table. If 8 men and 2 women have to seated around a circular table, such that no two women have to be separated by at least one man. If P and Q denote the respective number of ways of seating these people around a table when seats are numbered and unnumbered, then P : Q equals\",\"options\":[\"9 : 1\",\"72 : 1\",\"10 : 1\",\"8 : 1\"],\"correctAnswer\":\"C\",\"explanation\":\"Initially we look at the general case of the seats not numbered. The total number of cases of arranging 8 men and 2 women, so that women are together, ⇒ 8! ×2! The number of cases where in the women are not together, ⇒ 9! - (8! × 2!) = Q Now, when the seats are numbered, it can be considered to a linear arrangement and the number of ways of arranging the group such that no two women are together is, ⇒ 10! - (9! × 2!) But the arrangements where in the women occupy the first and the tenth chairs are not favorable as when the chairs which are assumed to be arranged in a row are arranged in a circle, the two women would be sitting next to each other. The number of ways the women can occupy the first and the tenth position, = 8! × 2! The value of P = 10! - (9! × 2!) - (8! × 2!) Thus P : Q = 10 : 1\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"If Rahim moves 20 metres in East direction and then turns to his left and then moves 15 metres and then he turns to his right and moves 25 metres. After this he turns to his right and moves 15 metres. Now, how far is he from starting point ?\",\"options\":[\"40 m\",\"50 m\",\"25 m\",\"45 m\"],\"correctAnswer\":\"D\",\"explanation\":\"Rahim's Movement Therefore, the distance of Rahim from his starting point, = 20 + 25 = 45 meters\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"A, B, C and D are standing on the four corners of a square field as shown in the figure below: A starts crossing the field diagonally. After walking half the distance, he turns right, walks some distance and turns left. Which direction is A facing now?\",\"options\":[\"North-East\",\"South-West\",\"South-East\",\"North-West\"],\"correctAnswer\":\"D\",\"explanation\":\"Movement of A : Finally A is facing in the direction of North-West.\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"FAG, GAF, HAI, IAH, ____\",\"options\":[\"JAK\",\"HAL\",\"HAK\",\"JAI\"],\"correctAnswer\":\"A\",\"explanation\":\"The middle letters are static, so concentrate on the first and third letters. The series involves an alphabetical order with a reversal of the letters. The first letters are in alphabetical order: F, G, H, I , J. The second and fourth segments are reversals of the first and third segments. The missing segment begins with a new letter.\",\"estimatedTime\":45,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"If each of the digits in the number 92581473 is arranged in ascending order, what will be the difference between the digits which are fourth from the right and third from left in the new arrangement? The ascending order of the number is 123456789.\",\"options\":[\"1\",\"2\",\"3\",\"4\"],\"correctAnswer\":\"C\",\"explanation\":\"The ascending order of the number is 123456789. Required difference, 6-3 = 3.\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"589654237, 89654237, 8965423, 965423, ?\",\"options\":[\"58965\",\"65423\",\"89654\",\"96542\"],\"correctAnswer\":\"D\",\"explanation\":\"The given series is: 589654237, 89654237, 8965423, 965423, ? Step 1: Observe the pattern in the series. Step 2: The first number 589654237 loses the first digit '5' to become 89654237 . Step 3: The second number 89654237 loses the last digit '7' to become 8965423 . Step 4: The third number 8965423 loses the first digit '8' to become 965423 . Step 5: The fourth number 965423 loses the last digit '3' to become 96542 . Pattern Observed: The series alternates between removing the first digit and the last digit. Final Step: Following this pattern, the next number after 965423 should be 96542 (removing the last digit '3' ). Thus, the correct answer is: 96542 (Option D).\",\"estimatedTime\":45,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"What is the sum of all two digit numbers that gives a remainder of 3 when they are divided by 7?\",\"options\":[\"666\",\"676\",\"683\",\"777\"],\"correctAnswer\":\"B\",\"explanation\":\"The two digit number which gives a remainder of 3 when divided by 7 are: 10, 17, 24 ..... 94. Now, these number are in AP series with 1st Term, a = 10; Number of Terms, n = 13; Last term, L = 94 andCommon Difference, d = 7. Sum, $$\\\\eqalign{ & = \\\\left\\\\{ {{\\\\text{n}} \\\\times \\\\frac{{{\\\\text{a}} + {\\\\text{L}}}}{2}} \\\\right\\\\} \\\\cr & = 13 \\\\times 52 \\\\cr & = 676 \\\\cr} $$\",\"estimatedTime\":60,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Given, N = 98765432109876543210 ..... up to 1000 digits, find the smallest natural number n such that N + n is divisible by 11.\",\"options\":[\"2\",\"3\",\"4\",\"5\"],\"correctAnswer\":\"D\",\"explanation\":\"For a no. to be divisible by 11, Sum(odd digit nos) - Sum(even digit nos) = 0 or divisible by 11 If we look at 9876543210, the difference we get is 5 i.e. [(9 + 7 + 5 + 3 + 1) - (8 + 6 + 4 + 2 + 0) = 5] The series is up to 1000 digit, That means, we get $$\\\\frac{{1000}}{{10}}$$ = 100 time 5, then the difference will be 5 × 100 = 500 In order for the difference to be divisible by 11, we need to add 5 and the no will become 505 505 is divisible by 11\",\"estimatedTime\":60,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"A man positioned at the origin of the coordinate system. the man can take steps of unit measure in the direction North, East, West or South. Find the number of ways of he can reach the point (5,6), covering the shortest possible distance.\",\"options\":[\"252\",\"432\",\"462\",\"504\"],\"correctAnswer\":\"C\",\"explanation\":\"In order to reach (5,6) covering the shortest distance at the same time the man has to make 5 horizontal and 6 vertical steps. The number of ways in which these steps can be taken is given by, $$\\\\eqalign{ & = \\\\frac{{11!}}{{5! \\\\times 6!}} \\\\cr & = 462 \\\\cr} $$\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"In how many ways can the letters of the word EDUCATION be rearranged so that the relative position of the vowels and consonants remain the same as in the word EDUCATION ?\",\"options\":[\"9! × 4\",\"9! × 4! × 5!\",\"4! × 5!\",\"None of these\"],\"correctAnswer\":\"C\",\"explanation\":\"The word EDUCATION is a 9 letter word, with none of the letters repeating. The vowels occupy 3 rd , 5 th , 7 th and 8 th position in the word and the remaining 5 positions are occupied by consonants. As the relative position of the vowels and consonants in any arrangement should remain the same as in the word EDUCATION, the vowels can occupy only the before mentioned 4 places and the consonants can occupy 1 st , 2 nd , 4 th , 6 th and 9 th positions. The 4 vowels can be arranged in the 3 rd , 5 th , 7 th and 8 th position in 4! Ways. Similarly, the 5 consonants can be arranged in 1 st , 2 nd , 4 th , 6 th and 9 th\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"How many arrangements of four 0's (zeroes), two 1's and two 2's are there in which the first 1 occur before the first 2?\",\"options\":[\"420\",\"360\",\"320\",\"210\"],\"correctAnswer\":\"D\",\"explanation\":\"Total number of arrangements = $$\\\\frac{{8!}}{{4! \\\\times 2! \\\\times 2!}}$$ = 420 Since, there are two 1's and two 0's, the number of arrangements in which the first 1 is before the first 2 is same as the number of arrangement in which the first 2 is before the first 1 and they are each equal to half the total number of arrangements = 210\",\"estimatedTime\":60,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"P and Q sit in a ring arrangement with 10 persons. What is the probability that P and Q will sit together?\",\"options\":[\"$$\\\\frac{{2}}{{11}}$$\",\"$$\\\\frac{{3}}{{11}}$$\",\"$$\\\\frac{{2}}{{9}}$$\",\"$$\\\\frac{{4}}{{9}}$$\"],\"correctAnswer\":\"A\",\"explanation\":\"n(S)= number of ways of sitting 12 persons at round table: = (12 - 1)! = 11! Since two persons will be always together, then number of persons: = 10 + 1 = 11 So, 11 persons will be seated in (11 - 1)! = 10! ways at round table and 2 particular persons will be seated in 2! ways. n(A) = The number of ways in which two persons always sit together = 10! × 2 $$\\\\eqalign{ & P\\\\left( A \\\\right) = \\\\frac{{n\\\\left( A \\\\right)}}{{n\\\\left( S \\\\right)}} \\\\cr & = \\\\frac{{10!\\\\, \\\\times 2!}}{{11!}} \\\\cr & = \\\\frac{2}{{11}} \\\\cr} $$\",\"estimatedTime\":60,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Find the probability that in a random arrangement of the letters of the word 'UNIVERSITY' the two I's come together.\",\"options\":[\"$$\\\\frac{1}{7}$$\",\"$$\\\\frac{3}{5}$$\",\"$$\\\\frac{5}{11}$$\",\"$$\\\\frac{1}{5}$$\"],\"correctAnswer\":\"D\",\"explanation\":\"The total number of words which can be formed by permuting the letters of the word 'UNIVERSITY' is $$\\\\frac{{10!}}{{2!}}$$ as there is two I's. Hence $$n(S) = \\\\frac{{10!}}{{2!}}$$ Taking two I's as one letter, number of ways of arrangement in which both I's are together = 9! $${\\\\text{So}}\\\\,n\\\\left( X \\\\right) = 9!$$ Hence required probability $$\\\\eqalign{ & = \\\\frac{{n(X)}}{{n(S)}} \\\\cr & = \\\\frac{{9!}}{{10!/2!}} \\\\cr & = \\\\frac{1}{5} \\\\cr} $$\",\"estimatedTime\":60,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"From a point on a circular track 5km long A,B and C started running in the same direction at the same time with speed of $$2\\\\frac{1}{2}$$ km per hour, 3 km per hour and 2 km per hour respectively. Then on the starting point all three will meet again after ?\",\"options\":[\"30 hours\",\"6 hours\",\"10 hours\",\"15 hours\"],\"correctAnswer\":\"C\",\"explanation\":\"$$\\\\eqalign{ & {\\\\text{Distance = 5 km}} \\\\cr & {\\\\text{Speed of A = 2}}\\\\frac{1}{2}{\\\\text{ km/hr}} \\\\cr & {\\\\text{Time taken by A}} \\\\cr & {\\\\text{ = }}\\\\frac{5}{5} \\\\times 2 = 5{\\\\text{hours}} \\\\cr & {\\\\text{Speed of B = 3 km/hr}} \\\\cr & {\\\\text{Time taken by B}} \\\\cr & {\\\\text{ = }}\\\\frac{5}{3}{\\\\text{hours}} \\\\cr & {\\\\text{Speed of C = 2 km/hr}} \\\\cr & {\\\\text{Time taken by C}} \\\\cr & {\\\\text{ = }}\\\\frac{5}{2}{\\\\text{hours}} \\\\cr & \\\\frac{{{\\\\text{LCM of numerator}}}}{{{\\\\text{HCF of denominator}}}} \\\\cr & = 2,\\\\,\\\\frac{5}{3},\\\\,\\\\frac{5}{2} \\\\cr & {\\\\text{LCM = }}\\\\frac{{10}}{1} = 10 \\\\cr} $$ They will meet again after 10 hours\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Two trains 140 m and 160 m long run at the speed of 60 km/hr and 40 km/hr respectively in opposite directions on parallel tracks. The time (in seconds) which they take to cross each other, is:\",\"options\":[\"9\",\"9.6\",\"10\",\"10.8\"],\"correctAnswer\":\"D\",\"explanation\":\"$$\\\\eqalign{ & {\\\\text{Relative}}\\\\,{\\\\text{speed}} = \\\\left( {60 + 40} \\\\right)\\\\,{\\\\text{km/hr}} \\\\cr & = {100 \\\\times \\\\frac{5}{{18}}} \\\\,{\\\\text{m/sec}} \\\\cr & = {\\\\frac{{250}}{9}} \\\\,{\\\\text{m/sec}}. \\\\cr & {\\\\text{Distance}}\\\\,{\\\\text{covered}}\\\\,{\\\\text{in}}\\\\,{\\\\text{crossing}}\\\\,{\\\\text{each}}\\\\,{\\\\text{other}} \\\\cr & = \\\\left( {140 + 160} \\\\right)m = 300\\\\,m \\\\cr & {\\\\text{Required}}\\\\,{\\\\text{time}} \\\\cr & = {300 \\\\times \\\\frac{9}{{250}}} \\\\,{\\\\text{sec}} \\\\cr & = \\\\frac{{54}}{5}\\\\,{\\\\text{sec}} \\\\cr & = 10.8\\\\,{\\\\text{sec}} \\\\cr} $$\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Two goods train each 500 m long, are running in opposite directions on parallel tracks. Their speeds are 45 km/hr and 30 km/hr respectively. Find the time taken by the slower train to pass the driver of the faster one.\",\"options\":[\"12 sec\",\"24 sec\",\"48 sec\",\"60 sec\"],\"correctAnswer\":\"B\",\"explanation\":\"$$\\\\eqalign{ & {\\\\text{Relative}}\\\\,{\\\\text{speed}} \\\\cr & = \\\\left( {45 + 30} \\\\right)\\\\,{\\\\text{km/hr}} \\\\cr & = \\\\left(75 \\\\times \\\\frac{5}{18} \\\\right)\\\\, \\\\text{m/sec} \\\\cr & = {\\\\frac{{125}}{6}} \\\\,{\\\\text{m/sec}} \\\\cr & {\\\\text{We}}\\\\,{\\\\text{have}}\\\\,{\\\\text{to}}\\\\,{\\\\text{find}}\\\\,{\\\\text{the}}\\\\,{\\\\text{time}}\\\\,{\\\\text{taken}}\\\\,{\\\\text{by}}\\\\,{\\\\text{the}} \\\\cr & {\\\\text{slower}}\\\\,{\\\\text{train}}\\\\,{\\\\text{to}}\\\\,{\\\\text{pass}}\\\\,{\\\\text{the}}\\\\,{\\\\text{DRIVER}}\\\\,{\\\\text{of}}\\\\, \\\\cr & {\\\\text{The}}\\\\,{\\\\text{faster}}\\\\,{\\\\text{train}}\\\\,{\\\\text{and}}\\\\,{\\\\text{not}}\\\\,{\\\\text{the}}\\\\,{\\\\text{complete}}\\\\,{\\\\text{train}}{\\\\text{.}} \\\\cr & \\\\cr & {\\\\text{So,}}\\\\,{\\\\text{distance}}\\\\,{\\\\text{covered = Length}}\\\\,{\\\\text{of}}\\\\,{\\\\text{the}}\\\\,{\\\\text{slower}}\\\\,{\\\\text{train}}. \\\\cr & {\\\\text{Therefore,}}\\\\,{\\\\text{Distance}}\\\\,{\\\\text{covered = 500}}\\\\,{\\\\text{m}}. \\\\cr & \\\\therefore {\\\\text{Required}}\\\\,{\\\\text{time}} \\\\cr & = {500 \\\\times \\\\frac{6}{{125}}} \\\\cr & = 24\\\\,\\\\sec \\\\cr} $$\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"A train 108 m long moving at a speed of 50 km/hr crosses a train 112 m long coming from opposite direction in 6 seconds. The speed of the second train is:\",\"options\":[\"48 km/hr\",\"54 km/hr\",\"66 km/hr\",\"82 km/hr\"],\"correctAnswer\":\"D\",\"explanation\":\"$$\\\\eqalign{ & {\\\\text{Let}}\\\\,{\\\\text{the}}\\\\,{\\\\text{speed}}\\\\,{\\\\text{of}}\\\\,{\\\\text{the}}\\\\,{\\\\text{second}}\\\\,{\\\\text{train}}\\\\,{\\\\text{be}}\\\\,x\\\\,{\\\\text{km/hr}}. \\\\cr & {\\\\text{Relative}}\\\\,{\\\\text{speed}}\\\\, \\\\cr & = \\\\,\\\\left( {x + 50} \\\\right)\\\\,{\\\\text{km/hr}} \\\\cr & = \\\\left[ {\\\\left( {x + 50} \\\\right) \\\\times \\\\frac{5}{{18}}} \\\\right]\\\\,{\\\\text{m/sec}} \\\\cr & = {\\\\frac{{250 + 5x}}{{18}}} \\\\,{\\\\text{m/sec}} \\\\cr & {\\\\text{Distance}}\\\\,{\\\\text{covered}} \\\\cr & = \\\\left( {108 + 112} \\\\right) = 220\\\\,m \\\\cr & \\\\therefore \\\\frac{{220}}{{ {\\\\frac{{250 + 5x}}{{18}}} }} = 6 \\\\cr & \\\\Rightarrow 250 + 5x = 660 \\\\cr & \\\\Rightarrow x = 82\\\\,{\\\\text{km/hr}} \\\\cr} $$\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Two trains A and B start running together from the same point in the same direction, at the speed of 60 kmph and 72 kmph respectively. If the length of each of the trains is 240 meters, how long will it take for B to cross train A?\",\"options\":[\"1 min 12 sec\",\"1 min 24 sec\",\"2 min 12 sec\",\"2 min 24 sec\"],\"correctAnswer\":\"D\",\"explanation\":\"$$\\\\eqalign{ & {\\\\text{Relative speed}} \\\\cr & {\\\\text{ = (72}} - {\\\\text{60) km/hr}} \\\\cr & {\\\\text{ = 12 km/hr}} \\\\cr & = \\\\left( {12 \\\\times \\\\frac{5}{{18}}} \\\\right)m/\\\\sec \\\\cr & = \\\\left( {\\\\frac{{10}}{3}} \\\\right)m/\\\\sec \\\\cr & {\\\\text{Total distance covered}} \\\\cr & {\\\\text{ = Sum of lengths of trains}} \\\\cr & {\\\\text{ = (240 + 240) m}} \\\\cr & {\\\\text{ = 480 m}} \\\\cr & {\\\\text{Time taken}} \\\\cr & {\\\\text{ = }}\\\\left( {480 \\\\times \\\\frac{3}{{10}}} \\\\right)\\\\sec \\\\cr & = 144\\\\sec \\\\cr & = 2\\\\min \\\\,24sec \\\\cr} $$\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Two trains are coming from opposite directions with speed of 75 km/hr and 100 km/hr on to parallel tracks. At some moment the distance between them is 100km. After T hours, distance between them is again 100 km. T is equal to?\",\"options\":[\"1 hr\",\"$$1\\\\frac{1}{7}$$ hr\",\"$$1\\\\frac{1}{2}$$ hr\",\"2 hr\"],\"correctAnswer\":\"B\",\"explanation\":\"$$\\\\eqalign{ & {\\\\text{Relative speed}} \\\\cr & {\\\\text{ = (75 + 100)km/hr}} \\\\cr & {\\\\text{ = 175 km/hr}} \\\\cr & {\\\\text{Time taken to cover 175 km}} \\\\cr & {\\\\text{at relative speed = 1 hr}} \\\\cr & \\\\therefore {\\\\text{T = Time taken to cover 200 km}} \\\\cr & {\\\\text{ = }}\\\\left( {\\\\frac{1}{{175}} \\\\times 200} \\\\right)\\\\, \\\\text{hr} \\\\cr & = \\\\frac{8}{7}\\\\, \\\\text{hr} \\\\cr & = 1\\\\frac{1}{7}\\\\, \\\\text{hr} \\\\cr} $$\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"Two train 100 meters and 95 meters long respectively pass each other in 27 seconds, when they run in the same direction and in 9 seconds when they run in opposite directions. Speed of the two trains are?\",\"options\":[\"44 km/hr, 22 km/hr\",\"52 km/hr, 26 km/hr\",\"36 km/hr, 18 km/hr\",\"40 km/hr, 20 km/hr\"],\"correctAnswer\":\"B\",\"explanation\":\"$$\\\\eqalign{ & {\\\\text{Let the speed of first train be }} \\\\cr & {{\\\\text{S}}_1}{\\\\text{ km/hr and speed of second train}} \\\\cr & {\\\\text{is }}{{\\\\text{S}}_2}{\\\\text{km/hr }} \\\\cr & {\\\\text{As we know,}} \\\\cr & {\\\\text{Time }} \\\\cr & {\\\\text{ = }}\\\\frac{{{\\\\text{total distance}}}}{{{\\\\text{relative speed in same/opposite direction}}}} \\\\cr & {\\\\text{In the same direction}} \\\\cr & \\\\Rightarrow {\\\\text{27 sec = }}\\\\frac{{\\\\left( {100 + 95} \\\\right)}}{{\\\\left( {{\\\\text{ }}{{\\\\text{S}}_1} - {\\\\text{ }}{{\\\\text{S}}_2}} \\\\right) \\\\times \\\\frac{5}{{18}}}} \\\\cr & \\\\Rightarrow 27 = \\\\frac{{195 \\\\times 18}}{{\\\\left( {{\\\\text{ }}{{\\\\text{S}}_1} - {\\\\text{ }}{{\\\\text{S}}_2}} \\\\right) \\\\times 5}} \\\\cr & \\\\Rightarrow {\\\\text{ }}{{\\\\text{S}}_1} - {\\\\text{ }}{{\\\\text{S}}_2} = 26.......................(i) \\\\cr & {\\\\text{In the opposite direction,}} \\\\cr & \\\\Rightarrow 9 = \\\\frac{{\\\\left( {100 + 95} \\\\right)}}{{\\\\left( {{\\\\text{ }}{{\\\\text{S}}_1}{\\\\text{ + }}{{\\\\text{S}}_2}} \\\\right) \\\\times \\\\frac{5}{{18}}}} \\\\cr & \\\\Rightarrow 9 = \\\\frac{{195 \\\\times 18}}{{\\\\left( {{\\\\text{ }}{{\\\\text{S}}_1}{\\\\text{ + }}{{\\\\text{S}}_2}} \\\\right) \\\\times 5}} \\\\cr & \\\\Rightarrow {\\\\text{ }}{{\\\\text{S}}_1}{\\\\text{ + }}{{\\\\text{S}}_2} = 39 \\\\times 2 \\\\cr & \\\\Rightarrow {\\\\text{ }}{{\\\\text{S}}_1}{\\\\text{ + }}{{\\\\text{S}}_2} = 78 \\\\cr & {\\\\text{From equation (i) and (ii)}} \\\\cr & \\\\Rightarrow {\\\\text{ }}{{\\\\text{S}}_1} - {\\\\text{ }}{{\\\\text{S}}_2} = 26 \\\\cr & \\\\Rightarrow {\\\\text{ }}{{\\\\text{S}}_1}{\\\\text{ + }}{{\\\\text{S}}_2} = 78 \\\\cr & \\\\Rightarrow {\\\\text{ }}{{\\\\text{S}}_1} = \\\\frac{{26 + 78}}{2} \\\\cr & \\\\Rightarrow {\\\\text{ }}{{\\\\text{S}}_1} = \\\\frac{{104}}{2} \\\\cr & \\\\Rightarrow {\\\\text{ }}{{\\\\text{S}}_1}{\\\\text{ = 52 km/hr and }} \\\\cr & \\\\,\\\\,\\\\,\\\\,\\\\,\\\\,\\\\,\\\\,\\\\,\\\\,{{\\\\text{S}}_2}{\\\\text{ = 26 km/hr}} \\\\cr} $$\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]},{\"questionText\":\"A train running at the speed of 84 km/hr passes a man walking in opposite direction at the speed of 6 km/hr in 4 seconds. What is the length of train (in meter)?\",\"options\":[\"150 m\",\"120 m\",\"100 m\",\"90 m\"],\"correctAnswer\":\"C\",\"explanation\":\"$$\\\\eqalign{ & {\\\\text{Let length of train }} \\\\cr & {\\\\text{ = }}l\\\\,{\\\\text{metre}} \\\\cr & \\\\Rightarrow {\\\\text{Time }} \\\\cr & {\\\\text{ = }}\\\\frac{{{\\\\text{total distance}}}}{{{\\\\text{relative speed in opposite direction}}}} \\\\cr & \\\\Rightarrow 4\\\\sec \\\\, = \\\\,\\\\frac{{l + 0}}{{\\\\left( {84 + 6} \\\\right) \\\\times \\\\frac{5}{{18}}{\\\\text{m/s}}}} \\\\cr & \\\\Rightarrow 4\\\\, = \\\\frac{l}{{90 \\\\times \\\\frac{5}{{18}}}} \\\\cr & \\\\Rightarrow \\\\,l\\\\, = \\\\,100\\\\,{\\\\text{m}} \\\\cr & \\\\therefore {\\\\text{ length of the train = 100 m}} \\\\cr} $$\",\"estimatedTime\":75,\"subtopic\":\"Puzzles\",\"tags\":[\"logical\",\"aptitude\",\"puzzle\",\"arrangement\",\"scheduling\"]}]}",
+  "parsed": {
+    "questions": [
+      {
+        "questionText": "Ankita’s younger brother Bobby is older than Nilu. Shweta is younger than Rahul but elder than Ankita. Who is the eldest? Logical Reasoning Questions on Odd Man Out Logical Reasoning Questions on Coding and Decoding Verbal Reasoning Questions on Blood Relation Verbal Reasoning Questions and Answers on Analogy Reasoning Questions on Venn Diagram Verbal Reasoning Questions on Logical Sequence of Words Non-Verbal Reasoning Questions on Dot Situation Analysis Non-Verbal Reasoning Questions and Answers on Missing Figures Reasoning Questions on Figure Classification Non-Verbal Questions on Pattern Completion Data Interpretation Quantitative Aptitude",
+        "options": [
+          "Rahul",
+          "Shweta",
+          "Ankita",
+          "Bobby Topic Wise Questions and Answers on Logical Reasoning Our 1000+ Questions and Answers focus on various topics of Logical Reasoning, covering 20+ topics. This resource will help you prepare for competitive exams such as SSC, CAT, GRE, UPSC, GMAT, Bank Exams, Defense Exams, Railway Exams, and Job placements. You can practice these Logical Reasoning Questions topic by topic, starting from the 1st or you can jump to any topic of your choice. Logical Reasoning: Odd Man Out Coding and Decoding Logical Deduction Verbal Reasoning: Blood Relation Analogy Venn Diagram Logical Sequence of Words Syllogisms Non-Verbal Reasoning: Dot Situation Analysis Missing Figures Figure Classification Pattern Completion Data Interpretation: Data Interpretation Questions Quantitative Aptitude: Quantitative Aptitude Questions The section includes reasoning questions and answers on odd man out series. Odd Man Out – Set 1 Odd Man Out – Set 2 Odd Man Out – Set 3 Odd Man Out – Set 4 Odd Man Out – Set 5 Odd Man Out – Set 6 Odd Man Out – Set 7 Odd Man Out – Set 8 Odd Man Out – Set 9 Odd Man Out – Set 10 The section contains logical reasoning questions and answers on coding and decoding. Coding and Decoding – Set 1 Coding and Decoding – Set 2 Coding and Decoding – Set 3 Coding and Decoding – Set 4 Coding and Decoding – Set 5 Coding and Decoding – Set 6 Coding and Decoding – Set 7 Coding and Decoding – Set 8 Coding and Decoding – Set 9 Coding and Decoding – Set 10 The section contains verbal reasoning questions and answers on blood relation. Blood Relation – Set 1 Blood Relation – Set 2 Blood Relation – Set 3 Blood Relation – Set 4 Blood Relation – Set 5 Blood Relation – Set 6 Blood Relation – Set 7 Blood Relation – Set 8 Blood Relation – Set 9 Blood Relation – Set 10 The section contains verbal reasoning practice questions on analogy. Analogy – Set 1 Analogy – Set 2 Analogy – Set 3 Analogy – Set 4 Analogy – Set 5 Analogy – Set 6 Analogy – Set 7 Analogy – Set 8 Analogy – Set 9 Analogy – Set 10 The section includes verbal reasoning questions and answers on venn diagram. Venn Diagram – Set 1 Venn Diagram – Set 2 Venn Diagram – Set 3 Venn Diagram – Set 4 Venn Diagram – Set 5 Venn Diagram – Set 6 Venn Diagram – Set 7 Venn Diagram – Set 8 Venn Diagram – Set 9 Venn Diagram – Set 10 The section contains logical reasoning questions on sequencing Sequencing – Set 1 Sequencing – Set 2 Sequencing – Set 3 Sequencing – Set 4 Sequencing – Set 5 Sequencing – Set 6 Sequencing – Set 7 Sequencing – Set 8 Sequencing – Set 9 Sequencing – Set 10 The section contains questions and answers on dot situation analysis. Dot Situation Analysis – Set 1 Dot Situation Analysis – Set 2 Dot Situation Analysis – Set 3 Dot Situation Analysis – Set 4 Dot Situation Analysis – Set 5 Dot Situation Analysis – Set 6 Dot Situation Analysis – Set 7 Dot Situation Analysis – Set 8 Dot Situation Analysis – Set 9 Dot Situation Analysis – Set 10 The section contains non verbal reasoning questions on missing figures. Missing Figures – Set 1 Missing Figures – Set 2 Missing Figures – Set 3 Missing Figures – Set 4 Missing Figures – Set 5 Missing Figures – Set 6 Missing Figures – Set 7 Missing Figures – Set 8 Missing Figures – Set 9 Missing Figures – Set 10 The section contains non verbal questions and answers on figure classification. Figure Classification – Set 1 Figure Classification – Set 2 Figure Classification – Set 3 Figure Classification – Set 4 Figure Classification – Set 5 Figure Classification – Set 6 Figure Classification – Set 7 Figure Classification – Set 8 Figure Classification – Set 9 Figure Classification – Set 10 The section contains non verbal reasoning questions and answers on pattern completion. Pattern Completion – Set 1 Pattern Completion – Set 2 Pattern Completion – Set 3 Pattern Completion – Set 4 Pattern Completion – Set 5 Pattern Completion – Set 6 Pattern Completion – Set 7 Pattern Completion – Set 8 Pattern Completion – Set 9 Pattern Completion – Set 10 The section contains questions and answers on data interpretation. Tabulation Bar Graphs Pie Chart Line Graphs The section contains questions and answers on quantitative aptitude. Quantitative Aptitude Questions and Answers If you would like to learn “Logical Reasoning” thoroughly, you should attempt to work on the complete set of questions and answers mentioned above. It will immensely help anyone trying to crack an exam or an interview. Wish you the best in your endeavor to learn and master Logical Reasoning! 👉 For weekly logical reasoning practice, exam, and certification updates, join Sanfoundry’s official WhatsApp & Telegram channels » Next - Odd Man Out Questions and Answers"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Here, according to question Nilu < Bobby < Ankita < Shweta < Rahul. Therefore, the eldest is Rahul. Hence the answer is Rahul.",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Study of the evolution of man as an animal",
+        "options": [
+          "Archaeology",
+          "Anthropology",
+          "Chronology",
+          "Ethnology"
+        ],
+        "correctAnswer": "B",
+        "explanation": "One word substitute is Anthropology . Archaeology: the study of human history and prehistory through the excavation of sites and the analysis of artefacts and other physical remains. Anthropology: the study of human biological and physiological characteristics and their evolution. Chronology: the arrangement of events or dates in the order of their occurrence. Ethnology: the study of the characteristics of different peoples and the differences and relationships between them.",
+        "estimatedTime": 45,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Leela, who is Sohan's daughter, says to Latika, \"Your mother Alka is the younger sister of my father who is the third child of Gajanan.\" What is the relation of Gajanan to Latika ?",
+        "options": [
+          "Father",
+          "Uncle",
+          "Grandfather",
+          "Father-in-law"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The correct answer is C: Grandfather . Let's break down the relationships step by step: 1. Leela's statement: \"Your mother Alka is the younger sister of my father who is the third child of Gajanan.\" 2. Decoding: * Leela's father is Sohan. * Alka is Latika's mother. * Alka is Sohan's younger sister. * Sohan is the third child of Gajanan. 3. Putting it together: * Sohan and Alka are siblings (brother and sister). * Gajanan is the father of both Sohan and Alka. * Therefore, Gajanan is the father of Latika's mother (Alka). 4. Conclusion: Since Gajanan is the father of Latika's mother, Gajanan is Latika's grandfather .",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "What is the primary function of the Control Unit (CU) in a CPU?",
+        "options": [
+          "Executes program instructions",
+          "Directs operations of the entire computer system",
+          "Stores data temporarily",
+          "None of the above"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Option B: Directs operations of the entire computer system The primary function of the Control Unit (CU) in a CPU is to direct and coordinate the operations of the entire computer system. It manages the execution of instructions by fetching them from memory, decoding them, and controlling the data flow between the CPU and other parts of the computer system, including RAM, I/O devices, and the ALU (Arithmetic Logic Unit). The CU also manages the timing and control signals necessary for communication between these components. Option A: Executes program instructions While the CPU as a whole executes program instructions, specifically, it is the combination of the Control Unit (CU) and the Arithmetic Logic Unit (ALU) that executes the instructions. The CU directs this process. Option C: Stores data temporarily This role is typically associated with memory units such as RAM (Random Access Memory) rather than the Control Unit (CU), which primarily handles control and coordination tasks. Conclusion: The correct answer, Option B: Directs operations of the entire computer system , best describes the primary role of the Control Unit (CU) in a CPU, emphasizing its critical function in managing and coordinating the operation of the entire computer system.",
+        "estimatedTime": 45,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "1, 2, 3, 6, 9, 18, ?, 54",
+        "options": [
+          "18",
+          "27",
+          "36",
+          "81"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Let's break down this number series question! The series is: 1, 2, 3, 6, 9, 18, ?, 54 Look for a pattern. It's not a simple addition or subtraction. Notice this: 1 + 2 = 3 3 + 6 = 9 9 + 18 = ? It looks like each number is the sum of the two numbers before it. So, to find the missing number: 9 + 18 = 27 Therefore, the missing number is 27. The correct answer is B. Double-check: 18 + 27 = 45 (Incorrect so that Logic is wrong) Notice this new Logic: 1 x 2 = 2 2 x (3/2) = 3 3 x 2 = 6 6 x (3/2) = 9 9 x 2 = 18 18 x (3/2) = ? So, to find the missing number: 18 x (3/2) = 27 Then check it with the next number: 27 x 2 = 54 Therefore, the missing number is 27. The correct answer is B.",
+        "estimatedTime": 45,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "It was on the behest of the officer that he made those improvements.",
+        "options": [
+          "suggestion",
+          "orders",
+          "recommendation",
+          "request"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Suggestion : an idea or plan put forward for consideration. Orders : the arrangement or disposition of people or things in relation to each other according to a particular sequence, pattern, or method. Recommendation : a suggestion or proposal as to the best course of action, especially one put forward by an authoritative body. Request : an act of asking politely or formally for something. Behest : a person's orders or command. Synonym of Behest is Orders",
+        "estimatedTime": 45,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "S 1 : Biological evolution has not fitted man to any specific environment. P : It is by no means a biological evolution, but it is a cultural one. Q : His imagination, his reason, his emotional subtlety and toughness, makes it possible for him not to accept the environment but to change. R : And that series of inventions by which man from age by age has reshaped his environment is a different kind of evolution. S : Among the multitude of animals which scamper, burrow swim around us he is in the only one who is not locked in to his environment. S 6 : That brilliant sequence of cultural peaks can most appropriately be termed the ascent of man. The Proper sequence should be:",
+        "options": [
+          "QPRS",
+          "SRQP",
+          "QRSP",
+          "SQRP"
+        ],
+        "correctAnswer": "C",
+        "explanation": "His imagination, his reason, his emotional subtlety and toughness, makes it possible for him not to accept the environment but to change. And that series of inventions by which man from age by age has reshaped his environment is a different kind of evolution. Among the multitude of animals which scamper, burrow swim around us he is in the only one who is not locked into his environment. It is by no means a biological evolution, but is a cultural one.",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "What is the primary purpose of a scatter plot in EDA?",
+        "options": [
+          "To show the distribution of a single variable",
+          "To visualize relationships between variables",
+          "To display categorical data",
+          "To represent time series data"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Option A: To show the distribution of a single variable : This is usually done with histograms or box plots, not scatter plots. Option B: To visualize relationships between variables : This is the main point of a scatter plot! Each point on the plot represents a pair of values for two different variables. By looking at the pattern of points, we can see if there's a correlation or relationship between them. For example, if as one variable increases, the other also tends to increase, that shows a positive relationship. Option C: To display categorical data : Categorical data is better shown with bar charts or pie charts, not scatter plots. Option D: To represent time series data : Time series data is usually displayed using line charts. In simple terms: A scatter plot helps us see if two things are connected. If we plot \"ice cream sales\" versus \"temperature,\" we might see that as the temperature goes up, ice cream sales also go up. The scatter plot lets us see that relationship.",
+        "estimatedTime": 45,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Which of the following digital logic circuits can be used to add more than 1 – bit simultaneously?",
+        "options": [
+          "Full – adder",
+          "Ripple – carry adder",
+          "Half – adder",
+          "Serial adder"
+        ],
+        "correctAnswer": "B",
+        "explanation": "A Ripple – carry adder is a parallel binary adder in which the addition of more than 1 – bit data can be done simultaneously. The inputs to a parallel circuit can be sent and processed at once unlike series circuits in which inputs are sent one by one.",
+        "estimatedTime": 60,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Inter division dynamics across the subsidiaries Due Diligence |E-Commerce Sector| Investment | Challenging 2022-2023 (C) Consult Club, IIM Ahmedabad Private Equity firm – Interview Transcript Due Diligence |Social Impact| Challenging Sure, I would like to now look at the various synergies that we can draw from the previous investments. I would like to look at revenue synergies, cost synergies and efficiency synergies. In terms of the revenue synergies, based on our other investments in home services sector we can drive demand for the company and identify skill training opportunities. The client can draw cost and efficiency synergies from similar foreign-based startups in our portfolio by means of technology transfer. Good points. Lets talk about the equity holding and investment amount that we should look at. What factors would influence this decision? Firstly, I would like to understand the nature of the investment – are we looking at a strategic investment with a majority stake or are we looking at a financial investment. As I mentioned, we plan to exit in 5-6 years, so it is a financial investment. I can take population growth as a proxy for the growth in the number of candidates. Similarly, the commissions will be based on the number of employees that we could place. Knowing 15% profit margins, we can discount the cash flows to get the present value of the firm. Good, let’s move on and look at the other factors. Since we are looking at skill programs, we should be looking at only the unemployed youth and students. We can use the labour participation rate and unemployment levels to get a figure. I can then multiply the market with the average fees to get the revenue. To further understand the revenues from commissions, I would like to know the commission rate and the number of companies that we are catering to currently and how is the demand expected to change. Let’s assume that there is enough demand. How would you get the projected revenues for the next 6 years to estimate the value of the firm. Right, so if we are looking at a minority stake in the company, the investment would depend on the valuation of the company and other possible PE firms who are looking to invest in the same company. We should also look at the willingness of the founders about the extent of dilution of their shares. Good points. There are in fact 2 other firms looking to invest in the same company. Let’s quickly now look at the various risks and exit options before the client. Sure. First and foremost, I would like to do a legal due diligence to see if there are any litigations, tax liabilities or regulatory compliance issues with the company, which can contribute to legal risks. I would look at the debt structure as well as the employee contracts of the company. In terms of technological risks, there are chances of obsolesce of some of these skills and need to adapt quickly to changing demands. There are economic risks, with respect to getting fees from the underprivileged in cases where sufficient government scholarships are absent. There is also high competition in the sector and threats from competition who can eat up the market share. In terms of exit options, the company can look to sell its stake back to the the initial promoters or another PE firm since there are existing competition. Alright, I think that’s a comprehensive analysis. Any final recommendation? That sounds like a fair approach. Explain me your approach to estimate the total market size. Good question. There hasn’t been any prior investments and the equity is split equally between the 3 brothers. At this point, I feel I have enough information to proceed. I’ll take a moment to structure my thoughts to produce an overall approach to analyse the feasibility of the investment. Sounds good, please go ahead. Okay, I would like to divide the analysis into 3 buckets – firstly estimating the market attractiveness and coming up with the valuation of the company. Next, I would like to investigate the synergies that we draw from the investments. Lastly, I would like to look at the various risks associated with the company. I would also know about the company’s founders and their vision. That’s interesting. And how is the competitive landscape in the sector where the client operates? It is a fragmented market and there is high competition from some similar early-stage start-ups. Do we have any information about the profitability of our client ? Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Sounds good. Firstly, I would like to understand our client’s motivation behind the investment. There are two motivations primarily, financials gains and driving social impact. Okay, does the client have any number about the quantum of investment that it wants to make? There is no restriction as such. We would like to help in analyzing various factors to decide this. Okay, and is there any exit multiple that you have in mind or any return that you are expecting from this investment? Yes the client has invested in similar companies before but none of them are based out of India. To answer your 2nd question, our current portfolio consists of growth stage startups from the healthcare, services and ed-tech sectors based out of India and other south-east Asian countries. Great. Now that I have information about our client, I would like to know more about the company in which we plan to invest. Can you tell me more about the company and their business model? Yes sure. It is a family run company started by 3-brothers. They work with the underprivileged students from Eastern-Indian states of Orissa, Bihar and West Bengal. Their business model is to upskill students in theoretical and vocational skills and help them provide employment. They get revenue sources include fees from the students at a subsidized amount and commissions from the companies where the students are employed. Thanks for this. Are their specific skills or sectors in which the students are trained. The students are unemployed youth who are provided training as beauticians, cutting and stitching jobs and as baristas for coffee shops. They are continuously expanding the the range of their skill program. Good question. So, we are looking at a 16% CAGR on the investment over a horizon of 6 years after which we plan to exit. That’s helpful. I would now want to get some information about the existing portfolio of the client. Has the client invested in similar companies previously? How does its portfolio look like? So currently the client operated at 15% net margin while the industry operated at 16% margins. Is their any other differentiation that the company has? The company has invested heavily in technology to continuously identify the gap in demand for the required skills in the industry. It also uses helps to identify prospects and incentives them to join the program by identifying government schemes to avail scholarships and get skilled. 2022-2023 Page 154 Lastly, what’s the equity structure of the company and has there been any prior investments? I’ll start by estimating the population of West Bengal, Orissa and Bihar which should be 20% of the total population. Next, I would segment the population by age(18-25 years which is 20% roughly). We can further look at urban and rural segments and then look at the low- and middle- income category. Does that sound like a good approach? Do you think you are missing any other criteria? Given the demand and good profit margins of the company, the investment looks lucrative, and the client should go ahead with it, Alright, thank you for the recommendation. (C) Consult Club, IIM Ahmedabad Recommendations (Beyond the transcript) • a) Do a proper analysis of the competitive landscape to gauge the competitive edge of the target company and also look into the threats of new entrant specially a big player. • b) Understand the operating model and the technology used of the target company to gauge the scalability of the business model. Key Learnings • In cases of due diligence and M&A, the preliminary questions are the most important and adequate time should be given to get relevant case facts. • The question about financial and strategic investment should have been asked in the beginning. Again, since time horizon was known beforehand, here case facts could have been linked better • It is important to think of synergies even between existing portfolio of the PE firm to the target company like potential technology transfer from companies in the portfolio operating abroad • In the guesstimate, it is essential to first lay down the approach the validate from the interviewer if something else is missing Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Approach/ Framework Interviewee Notes • It is important to understand the rationale for the investment • The preliminary questions should cover questions about the client and the target company to get important case facts. • It is essential to have a basic understand of the private equity industry and the process of due diligence, • It is important for the interviewee to link important case facts to subsequent answers. • Guesstimates can be qualitative or quantitative depending upon the interviewer. The approach should be laid out clearly. If numbers are required, reasonable assumptions can be taken. (For example, slightly higher unemployment levels in eastern India) Case Facts • Objective for investment is both social impact and financial gain. • 16% CAGR and a time horizon of 6 years. • No issues on cost side. • No poaching of customers by competitors. • The existing portfolio of the client and prior investments • The industries that the target company caters to currently • The ownership structure of the target company • Profit margins and industry competitiveness Commercial Due Diligence Valuation and financial feasibility Intrinsic Value Private Equity firm Page 155 Business Model P E S T E L Market Size 2022-2023 Due Diligence |Social Impact| Challenging Synergies and Business Model Exit Options and Risks Synergies Acquirer’s Value Customers Operations Differentiation Efficiency Synergies Financials Revenue Synergies Growth Rate Profitability Competition Equity Structure Cost Synergies Risks Exit Options Total Exit Partial Exit IPO Guesstimate Approach: Market size of underprivileged youth seeking jobs Segment total population to get population of Bihar, Orissa and WB (~20% of total – 25 crores) Segment further by age groups (18-30 years ~ 20% of 25 crore – 5 crore) Rural (70%) Urban (30%) Covered in this case Not covered in this case Lower Income group (80%) Lower Income group (40%) % unemployed and seeking jobs(10%) % unemployed and seeking jobs(15%) Total number of unemployed youth seeking jobs in the 3 states ~ 30 lacs Unconventional (C) Consult Club, IIM Ahmedabad Easy wins • Breakdown into a mathematical formula • Always remember Demand and Supply • Any problem can have an internal cause (in control of company) or external cause. For external cause, use PESTEL to analyze possible issues Unconventional - Tips & Tricks Page 157 Pointers to Remember • Never try to force fit a framework • Understand the problem really really well • Ask the interviewer if you’re unfamiliar with a particular industry, do not hesitate to ask question • If the industry is familiar, comparisons with companies you know about would help in providing recommendations • Be as comprehensive as possible and hence bucketing the problems into different sections will help in structured thinking • Can be looked at through 2 lenses – qualitative & quantitative (as a mathematical problem) • Using the 3CP i.e., of Company, Customer, Competitor and Product approach works in certain cases, but focus on keeping the approach MECE • In certain cases when the scope of the cases is broad, the interviewee should ask if the focus needs to be on a specific aspect to structure thoughts in that direction • While scoping the problem, the interviewee can consider if there are competitors in the same industry and the strategies, they follow 2022-2023 (C) Consult Club, IIM Ahmedabad You can go ahead with the ad model assumption. However, X doesn’t have any merchandising rights for GOT. What information do you need from me to calculate X’s revenues? I would need the following: (i) X’s monthly Subscription fee (ii) No. of episodes in GOT S8 (iii) GOT viewers not currently on X (iv) Average ad rate per slot per episode (v) No. of slots auctioned per episode Glad that you asked. I have the following data sheet with me. This should help you calculate revenues for X (Data sheet provided in table I). Thank you. From my calculations, X’s revenue from Subscriptions and Advertisements comes out to be $6 Mn (table II). However, I think there are some synergistic benefits to adding GOT on our platform. These can be attributed to following factors: • Customer Stickiness: Some of the additional customers would stick around after GOT ends increasing their CLV for X. These benefits need to be added to our revenue calculations • Additional ad revenues for existing programmes: X can leverage its added user base to charge a premium for ad slots in its existing shows during GOT‘s 3-month on-air run-time These are some very good points, and you can assume an additional benefit of $1 Mn from Synergy. Can you please now list down the cost heads for X? I have divided X’s costs into two buckets (Framework 1): • Direct Costs: This header would include the Bid amount, Streaming costs, Marketing costs • Overheads: This would include incremental legal costs, regulatory costs, customer service costs Apart from this, there would be Costs of capital (which would include costs of financing the investment and opportunity costs of not putting the money elsewhere), Assume that X expects to incur additional costs of $1 Mn apart from the bid amount. X has expected an ROI of 20% to incorporate for the cost of capital. Oh, I think I have all the data now. Based on my calculations, the bid amount for GOT season 8 cannot exceed $5 Mn to get the desired ROI of 20%. Now, I’d like to focus on the Strategic feasibility. Adding GOT would affect the way subscribers interact with the platform. Given the adult nature of content, some of the family-centric subscribers might get dissuaded from continuing. Also, this would affect our tie-ups with existing content providers which infer HBO as their competitor or substitute. These points are valid, but we can safely assume that X is strategically aligned with getting HBO onboard. Can you please now identify three potential risks that X needs to be aware of? Sure. I have collated the risks into the following categories: • Customer centric: X might not attract enough new customers on the platform given the subscription price and the presence of alternate channels of piracy like torrents, illegal streaming • Content centric: The content is not up to the mark increasing mid-season customer and advertiser drop-outs. Given the explicit content, X could also face added regulatory pressures • Platform centric: Focus on GOT might lead to self- cannibalization with decreased viewership for the platform’s existing content. Plus, X needs to minimize platform glitches such as that could inhibit user watching experience, leaving the new viewers unsatisfied with the platform I think we can stop here. Thank you. Bid Strategy for GOT Season 8– Interview Transcript Unconventional | Bid strategy | Challenging | Entertainment Page 158 Your client is Company X. They have been approached by HBO to bid for the eighth season of GOT. They want your help to evaluate the opportunity and determine the correct bidding strategy. I would like to ask a few clarifying questions to get an understanding about the case. Could you please elaborate on X’s business model and current product offerings? X is an OTT platform operating in India. The company has a website and an app where customers can access media content by paying a monthly subscription fee. X has its own content as well as tie- ups with other providers to provide a curated list of Movies, TV Shows, News Channels and Sporting Events on its platform for its subscribers. What is X’s objective for this bid? Is it to increase user base, or revenues or profits? And what makes GOT so attractive for X? X wants to maximise their profits and this bid should account for that. As for GOT, it is the most watched English TV Series in India. I would like to now understand the bidding terms. Will this bid be for the eighth season only? Also, will X have exclusive rights for this and till when is the bid valid? The bid will be for exclusive rights to stream GOT’s eighth and final season, and valid only for the duration that the show is on-air. Has X bid previously for GOT and if so, do we have any information regarding the bidding process? Also, is it okay to assume that the offer has been made to X’s competitors as well? It’s a closed bidding process that HBO extends to X and its four other competitors. The client had bid for GOT’s seventh season but did not win the bid. They were informed that they were close second and had bid $3 Mn for Season",
+        "options": [
+          "Consult Club, IIM Ahmedabad Private Equity firm – Interview Transcript Due Diligence |Social Impact| Challenging Sure, I would like to now look at the various synergies that we can draw from the previous investments. I would like to look at revenue synergies, cost synergies and efficiency synergies. In terms of the revenue synergies, based on our other investments in home services sector we can drive demand for the company and identify skill training opportunities. The client can draw cost and efficiency synergies from similar foreign-based startups in our portfolio by means of technology transfer. Good points. Lets talk about the equity holding and investment amount that we should look at. What factors would influence this decision? Firstly, I would like to understand the nature of the investment – are we looking at a strategic investment with a majority stake or are we looking at a financial investment. As I mentioned, we plan to exit in 5-6 years, so it is a financial investment. I can take population growth as a proxy for the growth in the number of candidates. Similarly, the commissions will be based on the number of employees that we could place. Knowing 15% profit margins, we can discount the cash flows to get the present value of the firm. Good, let’s move on and look at the other factors. Since we are looking at skill programs, we should be looking at only the unemployed youth and students. We can use the labour participation rate and unemployment levels to get a figure. I can then multiply the market with the average fees to get the revenue. To further understand the revenues from commissions, I would like to know the commission rate and the number of companies that we are catering to currently and how is the demand expected to change. Let’s assume that there is enough demand. How would you get the projected revenues for the next 6 years to estimate the value of the firm. Right, so if we are looking at a minority stake in the company, the investment would depend on the valuation of the company and other possible PE firms who are looking to invest in the same company. We should also look at the willingness of the founders about the extent of dilution of their shares. Good points. There are in fact 2 other firms looking to invest in the same company. Let’s quickly now look at the various risks and exit options before the client. Sure. First and foremost, I would like to do a legal due diligence to see if there are any litigations, tax liabilities or regulatory compliance issues with the company, which can contribute to legal risks. I would look at the debt structure as well as the employee contracts of the company. In terms of technological risks, there are chances of obsolesce of some of these skills and need to adapt quickly to changing demands. There are economic risks, with respect to getting fees from the underprivileged in cases where sufficient government scholarships are absent. There is also high competition in the sector and threats from competition who can eat up the market share. In terms of exit options, the company can look to sell its stake back to the the initial promoters or another PE firm since there are existing competition. Alright, I think that’s a comprehensive analysis. Any final recommendation? That sounds like a fair approach. Explain me your approach to estimate the total market size. Good question. There hasn’t been any prior investments and the equity is split equally between the 3 brothers. At this point, I feel I have enough information to proceed. I’ll take a moment to structure my thoughts to produce an overall approach to analyse the feasibility of the investment. Sounds good, please go ahead. Okay, I would like to divide the analysis into 3 buckets – firstly estimating the market attractiveness and coming up with the valuation of the company. Next, I would like to investigate the synergies that we draw from the investments. Lastly, I would like to look at the various risks associated with the company. I would also know about the company’s founders and their vision. That’s interesting. And how is the competitive landscape in the sector where the client operates? It is a fragmented market and there is high competition from some similar early-stage start-ups. Do we have any information about the profitability of our client ? Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Sounds good. Firstly, I would like to understand our client’s motivation behind the investment. There are two motivations primarily, financials gains and driving social impact. Okay, does the client have any number about the quantum of investment that it wants to make? There is no restriction as such. We would like to help in analyzing various factors to decide this. Okay, and is there any exit multiple that you have in mind or any return that you are expecting from this investment? Yes the client has invested in similar companies before but none of them are based out of India. To answer your 2nd question, our current portfolio consists of growth stage startups from the healthcare, services and ed-tech sectors based out of India and other south-east Asian countries. Great. Now that I have information about our client, I would like to know more about the company in which we plan to invest. Can you tell me more about the company and their business model? Yes sure. It is a family run company started by 3-brothers. They work with the underprivileged students from Eastern-Indian states of Orissa, Bihar and West Bengal. Their business model is to upskill students in theoretical and vocational skills and help them provide employment. They get revenue sources include fees from the students at a subsidized amount and commissions from the companies where the students are employed. Thanks for this. Are their specific skills or sectors in which the students are trained. The students are unemployed youth who are provided training as beauticians, cutting and stitching jobs and as baristas for coffee shops. They are continuously expanding the the range of their skill program. Good question. So, we are looking at a 16% CAGR on the investment over a horizon of 6 years after which we plan to exit. That’s helpful. I would now want to get some information about the existing portfolio of the client. Has the client invested in similar companies previously? How does its portfolio look like? So currently the client operated at 15% net margin while the industry operated at 16% margins. Is their any other differentiation that the company has? The company has invested heavily in technology to continuously identify the gap in demand for the required skills in the industry. It also uses helps to identify prospects and incentives them to join the program by identifying government schemes to avail scholarships and get skilled. 2022-2023 Page 154 Lastly, what’s the equity structure of the company and has there been any prior investments? I’ll start by estimating the population of West Bengal, Orissa and Bihar which should be 20% of the total population. Next, I would segment the population by age(18-25 years which is 20% roughly). We can further look at urban and rural segments and then look at the low- and middle- income category. Does that sound like a good approach? Do you think you are missing any other criteria? Given the demand and good profit margins of the company, the investment looks lucrative, and the client should go ahead with it, Alright, thank you for the recommendation.",
+          "Consult Club, IIM Ahmedabad Recommendations (Beyond the transcript) • a) Do a proper analysis of the competitive landscape to gauge the competitive edge of the target company and also look into the threats of new entrant specially a big player. • b) Understand the operating model and the technology used of the target company to gauge the scalability of the business model. Key Learnings • In cases of due diligence and M&A, the preliminary questions are the most important and adequate time should be given to get relevant case facts. • The question about financial and strategic investment should have been asked in the beginning. Again, since time horizon was known beforehand, here case facts could have been linked better • It is important to think of synergies even between existing portfolio of the PE firm to the target company like potential technology transfer from companies in the portfolio operating abroad • In the guesstimate, it is essential to first lay down the approach the validate from the interviewer if something else is missing Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Approach/ Framework Interviewee Notes • It is important to understand the rationale for the investment • The preliminary questions should cover questions about the client and the target company to get important case facts. • It is essential to have a basic understand of the private equity industry and the process of due diligence, • It is important for the interviewee to link important case facts to subsequent answers. • Guesstimates can be qualitative or quantitative depending upon the interviewer. The approach should be laid out clearly. If numbers are required, reasonable assumptions can be taken. (For example, slightly higher unemployment levels in eastern India) Case Facts • Objective for investment is both social impact and financial gain. • 16% CAGR and a time horizon of 6 years. • No issues on cost side. • No poaching of customers by competitors. • The existing portfolio of the client and prior investments • The industries that the target company caters to currently • The ownership structure of the target company • Profit margins and industry competitiveness Commercial Due Diligence Valuation and financial feasibility Intrinsic Value Private Equity firm Page 155 Business Model P E S T E L Market Size 2022-2023 Due Diligence |Social Impact| Challenging Synergies and Business Model Exit Options and Risks Synergies Acquirer’s Value Customers Operations Differentiation Efficiency Synergies Financials Revenue Synergies Growth Rate Profitability Competition Equity Structure Cost Synergies Risks Exit Options Total Exit Partial Exit IPO Guesstimate Approach: Market size of underprivileged youth seeking jobs Segment total population to get population of Bihar, Orissa and WB (~20% of total – 25 crores) Segment further by age groups (18-30 years ~ 20% of 25 crore – 5 crore) Rural (70%) Urban (30%) Covered in this case Not covered in this case Lower Income group (80%) Lower Income group (40%) % unemployed and seeking jobs(10%) % unemployed and seeking jobs(15%) Total number of unemployed youth seeking jobs in the 3 states ~ 30 lacs Unconventional",
+          "Consult Club, IIM Ahmedabad Easy wins • Breakdown into a mathematical formula • Always remember Demand and Supply • Any problem can have an internal cause (in control of company) or external cause. For external cause, use PESTEL to analyze possible issues Unconventional - Tips & Tricks Page 157 Pointers to Remember • Never try to force fit a framework • Understand the problem really really well • Ask the interviewer if you’re unfamiliar with a particular industry, do not hesitate to ask question • If the industry is familiar, comparisons with companies you know about would help in providing recommendations • Be as comprehensive as possible and hence bucketing the problems into different sections will help in structured thinking • Can be looked at through 2 lenses – qualitative & quantitative (as a mathematical problem) • Using the 3CP i.e., of Company, Customer, Competitor and Product approach works in certain cases, but focus on keeping the approach MECE • In certain cases when the scope of the cases is broad, the interviewee should ask if the focus needs to be on a specific aspect to structure thoughts in that direction • While scoping the problem, the interviewee can consider if there are competitors in the same industry and the strategies, they follow 2022-2023",
+          "Consult Club, IIM Ahmedabad You can go ahead with the ad model assumption. However, X doesn’t have any merchandising rights for GOT. What information do you need from me to calculate X’s revenues? I would need the following: (i) X’s monthly Subscription fee (ii) No. of episodes in GOT S8 (iii) GOT viewers not currently on X (iv) Average ad rate per slot per episode (v) No. of slots auctioned per episode Glad that you asked. I have the following data sheet with me. This should help you calculate revenues for X (Data sheet provided in table I). Thank you. From my calculations, X’s revenue from Subscriptions and Advertisements comes out to be $6 Mn (table II). However, I think there are some synergistic benefits to adding GOT on our platform. These can be attributed to following factors: • Customer Stickiness: Some of the additional customers would stick around after GOT ends increasing their CLV for X. These benefits need to be added to our revenue calculations • Additional ad revenues for existing programmes: X can leverage its added user base to charge a premium for ad slots in its existing shows during GOT‘s 3-month on-air run-time These are some very good points, and you can assume an additional benefit of $1 Mn from Synergy. Can you please now list down the cost heads for X? I have divided X’s costs into two buckets (Framework 1): • Direct Costs: This header would include the Bid amount, Streaming costs, Marketing costs • Overheads: This would include incremental legal costs, regulatory costs, customer service costs Apart from this, there would be Costs of capital (which would include costs of financing the investment and opportunity costs of not putting the money elsewhere), Assume that X expects to incur additional costs of $1 Mn apart from the bid amount. X has expected an ROI of 20% to incorporate for the cost of capital. Oh, I think I have all the data now. Based on my calculations, the bid amount for GOT season 8 cannot exceed $5 Mn to get the desired ROI of 20%. Now, I’d like to focus on the Strategic feasibility. Adding GOT would affect the way subscribers interact with the platform. Given the adult nature of content, some of the family-centric subscribers might get dissuaded from continuing. Also, this would affect our tie-ups with existing content providers which infer HBO as their competitor or substitute. These points are valid, but we can safely assume that X is strategically aligned with getting HBO onboard. Can you please now identify three potential risks that X needs to be aware of? Sure. I have collated the risks into the following categories: • Customer centric: X might not attract enough new customers on the platform given the subscription price and the presence of alternate channels of piracy like torrents, illegal streaming • Content centric: The content is not up to the mark increasing mid-season customer and advertiser drop-outs. Given the explicit content, X could also face added regulatory pressures • Platform centric: Focus on GOT might lead to self- cannibalization with decreased viewership for the platform’s existing content. Plus, X needs to minimize platform glitches such as that could inhibit user watching experience, leaving the new viewers unsatisfied with the platform I think we can stop here. Thank you. Bid Strategy for GOT Season 8– Interview Transcript Unconventional | Bid strategy | Challenging | Entertainment Page 158 Your client is Company X. They have been approached by HBO to bid for the eighth season of GOT. They want your help to evaluate the opportunity and determine the correct bidding strategy. I would like to ask a few clarifying questions to get an understanding about the case. Could you please elaborate on X’s business model and current product offerings? X is an OTT platform operating in India. The company has a website and an app where customers can access media content by paying a monthly subscription fee. X has its own content as well as tie- ups with other providers to provide a curated list of Movies, TV Shows, News Channels and Sporting Events on its platform for its subscribers. What is X’s objective for this bid? Is it to increase user base, or revenues or profits? And what makes GOT so attractive for X? X wants to maximise their profits and this bid should account for that. As for GOT, it is the most watched English TV Series in India. I would like to now understand the bidding terms. Will this bid be for the eighth season only? Also, will X have exclusive rights for this and till when is the bid valid? The bid will be for exclusive rights to stream GOT’s eighth and final season, and valid only for the duration that the show is on-air. Has X bid previously for GOT and if so, do we have any information regarding the bidding process? Also, is it okay to assume that the offer has been made to X’s competitors as well? It’s a closed bidding process that HBO extends to X and its four other competitors. The client had bid for GOT’s seventh season but did not win the bid. They were informed that they were close second and had bid $3 Mn for Season"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question is mapped to Puzzles. The correct answer is A based on the original source question.",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Each vowel of the GLADIOLUS word is substituted with the next letter of the English alphabetical series and each consonant is substituted with the letters preceding it. How many vowels will be present in the new arrangement?",
+        "options": [
+          "One",
+          "Two",
+          "Three",
+          "No Vowel"
+        ],
+        "correctAnswer": "D",
+        "explanation": "G → F L → K A → B D → C I → J O → P L → K U → V S → R Thus, GLADIOLUS = FKBCJPKVR.",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Current transformers are __________________",
+        "options": [
+          "parallel connected type of instrument transformers",
+          "series connected type of instrument transformers",
+          "parallel connected normal transformers",
+          "series-parallel connected type of instrument transformers"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Current transformer (CT) is a series connected type of instrument transformer. They are designed to present negligible load to the supply which is being measured and also have an accurate current ratio and phase relationship to enable accurate secondary connected metering.",
+        "estimatedTime": 45,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Thermometer : Temperature :: Glucometer : ?",
+        "options": [
+          "Body sugar",
+          "Body resistance",
+          "Blood",
+          "Blood sugar"
+        ],
+        "correctAnswer": "D",
+        "explanation": "This question gives you the pair \"Thermometer : Temperature\". Think about what a thermometer does: it measures temperature . We need to find a similar pair. A glucometer is a device used to measure something related to the body. Let's look at the options: Option A: Body sugar - A glucometer doesn't measure all body sugar, it measures a specific type. Option B: Body resistance - This is incorrect; a glucometer doesn't measure resistance. Option C: Blood - A glucometer uses blood but doesn't measure the overall amount of blood. Option D: Blood sugar - This is correct! A glucometer measures blood sugar levels , just like a thermometer measures temperature. Therefore, the best answer is Option D: Blood sugar because it shows the same relationship as \"Thermometer : Temperature\".",
+        "estimatedTime": 45,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "The main factor to be considered while preparing a detailed estimate, is",
+        "options": [
+          "Quantity of the materials",
+          "Availability of materials",
+          "Transportation of materials",
+          "All the above"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Definition: A detailed estimate is a comprehensive calculation of the quantities and costs of all items required for the execution of a construction project. Main factors: While preparing a detailed estimate, several aspects must be considered, including the quantity of materials , their availability , and the transportation arrangements to the site. Reason: The quantity of materials directly affects the total cost and ensures sufficient supply for uninterrupted work. The availability of materials determines procurement timelines and can influence choice of suppliers and scheduling. The transportation of materials impacts delivery efficiency, cost, and timely completion of the project. Conclusion: All these factors are interlinked and crucial for accurate cost estimation and smooth project execution, hence all the above is the correct answer.",
+        "estimatedTime": 45,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Please, don’t laugh . . . . . . those beggars.",
+        "options": [
+          "for",
+          "against",
+          "at",
+          "from"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The correct answer is C: at First, let's define the preposition \"at\" in this context. \"At\" is used to indicate the direction of an action or feeling towards a specific person or thing. The sentence \"Please, don't laugh . . . . . . those beggars\" implies a request to refrain from a disrespectful action directed towards the beggars. Laughing \"at\" someone implies mockery or ridicule, which is the negative action the sentence seeks to prevent. Let's look at why the other options are incorrect: A: for - \"Laugh for\" implies laughing because of something, not at someone. This doesn't fit the context of the sentence. B: against - \"Laugh against\" isn't a standard English expression. It doesn't make logical sense in this context. D: from - \"Laugh from\" suggests the source of laughter, not the target. This also doesn't fit the meaning of the sentence. Therefore, only \"at\" accurately conveys the intended meaning of directing the action of laughter towards the beggars, highlighting the negative connotation of mocking them.",
+        "estimatedTime": 45,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Jill was ________ by her employees because she often _______ them for not working hard enough.",
+        "options": [
+          "deified, goaded",
+          "loathed, berated",
+          "disregarded, eulogized",
+          "cherished, decided"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Let's break down each word pair to see which one makes the most sense: Option A: deified, goaded \"Deified\" means to treat someone as a god. \"Goaded\" means to provoke or annoy someone. This doesn't fit because it's unlikely employees would dislike a boss who treated them like a god, even if she provoked them. Option B: loathed, berated \"Loathed\" means strongly disliked. \"Berated\" means scolded harshly. This makes sense! If Jill constantly scolded her employees, it's likely they would dislike her. Option C: disregarded, eulogized \"Disregarded\" means ignored. \"Eulogized\" means praised highly. This doesn't fit the sentence's negative tone. If Jill ignored them, the employees might be annoyed but not necessarily loathe her. Praising them doesn't fit with the context. Option D: cherished, decided \"Cherished\" means loved dearly. \"Decided\" means made up one's mind. This doesn't make sense in the context. It suggests a positive relationship between Jill and her employees, which contrasts with the negative feeling described in the sentence. Therefore, the best answer is Option B: loathed, berated . It creates a logical and coherent sentence.",
+        "estimatedTime": 60,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Angel is famous . . . . . English in Jasdan.",
+        "options": [
+          "for",
+          "in",
+          "about",
+          "with"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The correct answer is A: for First, let's define the term \"preposition\". A preposition is a word that shows the relationship between a noun or pronoun and other words in a sentence. Prepositions often indicate location, time, direction, or manner. The sentence requires a preposition that indicates the reason for Angel's fame. \"Famous for\" means that Angel is well-known because of her skill or talent in English. Option B, \"in,\" suggests location, implying Angel is famous *within* Jasdan. This doesn't directly explain her fame. Option C, \"about,\" implies that Angel is famous *because of information or stories about her*, not because of her inherent skill in English. Option D, \"with,\" suggests that Angel is famous *in association with* something, which is not relevant to the context. It doesn't explain the basis of her fame. Therefore, only \"for\" accurately conveys the reason for Angel's fame in Jasdan: her proficiency in English.",
+        "estimatedTime": 45,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Do you always go to school . . . . . foot?",
+        "options": [
+          "on",
+          "by",
+          "with",
+          "walking"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The question asks about the correct preposition to use with \"foot\" when referring to the mode of transportation. Preposition: A preposition is a word that shows the relationship between a noun or pronoun and another word in the sentence. It indicates things like location, time, direction, or manner. On foot: This phrase means \"walking.\" It is a fixed expression in English, meaning we don't use other prepositions with \"foot\" in this context. Therefore, the correct answer is A: on . Let's look at why the other options are incorrect: B: by – \"By foot\" is grammatically correct in some contexts, but it is less common than \"on foot\" and sounds slightly unnatural to many native speakers when talking about regular travel to school. \"By\" is typically used with other means of transportation (e.g., by bus, by car, by train). C: with – \"With foot\" is grammatically incorrect in this context. \"With\" indicates accompaniment or the instrument used to perform an action. D: walking – \"Walking\" is a verb, not a preposition. While you could say \"Do you always go to school walking?\", it's grammatically correct but less concise and common than \"Do you always go to school on foot?\".",
+        "estimatedTime": 45,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Two buses start from a bus terminal with a speed of 20 km/h at interval of 10 minutes. What is the speed of a man coming from the opposite direction towards the bus terminal if he meets the buses at interval of 8 minutes?",
+        "options": [
+          "3 km/h",
+          "4 km/h",
+          "5 km/h",
+          "7 km/h"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Let Speed of the man is x kmph. Distance covered in 10 minutes at 20 kmph = distance covered in 8 minutes at (20 + x) kmph. Or, $$20 \\times \\frac{{10}}{{60}} = \\frac{8}{60}\\times\\left(20+x\\right) $$ Or, 200 = 160 + 8x Or, 8x = 40 Hence, x = 5kmph. Detailed Explanation: A _____________M_______________B A = Bus Terminal. B = Let meeting point of first bus and the man and this distance is covered by Bus in 10 minutes. I.e. Distance A to be is covered first bus in 10 min. As AB distance can be covered by second bus in 10 minutes as well. Distance Covered by Bus in 10 min = AB = $$\\frac{{20}}{{60}} \\times 10$$ = $$\\frac{{10}}{3}$$ km. Now, M is the Meeting Point of Second Bus with Man. Man covered distance B to M in 8 minutes. Now, Relative distance of both Man and Bus will be same as both are traveling in opposite direction of each other. Let Speed of the man = x kmph. Relative speed = 20 + x To meet at Point M, bus and Man has covered the distance (AB) in 8 minutes with relative speed. And Same AB distance is covered by bus in 10 minutes. Thus, Distance covered in 8 minutes with relative speed (20 + x) kmph = distance covered by bus in 10 minuted with speed 20 kmph.",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "From two places, 60 km apart, A and B start towards each other at the same time and meet each other after 6 hour. If A traveled with $$\\frac{2}{3}$$ of his speed and B traveled with double of his speed, they would have met after 5 hours. The speed of A is:",
+        "options": [
+          "4 km/h",
+          "6 km/h",
+          "10 km/h",
+          "12 km/h"
+        ],
+        "correctAnswer": "B",
+        "explanation": "A →_______60Km_________← B Let the speed of A = x kmph and that of B = y kmph According to the question; x × 6 + y × 6 = 60 Or, x + y = 10 --------- (i) And, $$\\left( {\\frac{{2{\\text{x}}}}{3} \\times 5} \\right) + \\left( {2{\\text{y}} \\times 5} \\right) = 60$$ Or, 10x + 30y = 180 Or, x + 3y = 18 ---------- (ii) From equation (i) × 3 - (ii) 3x + 3y - x - 3y = 30 - 18 Or, 2x = 12 Hence, x = 6 kmph Alternate $$\\because $$ They meet after 6 hours if they walk towards each other i.e., their speed will be added. So, their relative speed in opposite direction $$ = \\frac{{{\\text{Distance }}}}{{{\\text{Time }}}} = \\frac{{60}}{6}$$ Relative speed in opposite direction : $$\\left( \\rightleftharpoons \\right) = 10{\\text{ km/h}}.....{\\text{(i)}}$$ According to the question, $$\\eqalign{ & \\Rightarrow \\frac{2}{3}A + 2B = \\frac{{60}}{5} \\cr & \\Rightarrow \\frac{2}{3}A + 2B = 12 \\cr & \\Rightarrow A + 3B = 18 \\cr & \\Rightarrow B's{\\text{ Speed = }}\\frac{{18 - A}}{3} \\cr & \\Rightarrow A + B = 10 \\cr & \\Rightarrow A + \\frac{{18 - A}}{3} = 10 \\cr & \\Rightarrow 3A + 18 - A = 30 \\cr & \\Rightarrow 2A = 12 \\cr & \\Rightarrow A{\\text{'s speed = 6 km/h}} \\cr} $$",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "How many different words can be formed using all the letters of the word ALLAHABAD? (a) When vowels occupy the even positions. (b) Both L do not occur together.",
+        "options": [
+          "7560,60,1680",
+          "7890,120,650",
+          "7650,200,4444",
+          "None of these"
+        ],
+        "correctAnswer": "D",
+        "explanation": "ALLAHABAD = 9 letters. Out of these 9 letters there is 4 A's and 2 L's are there. So, permutations = $$\\frac{{9!}}{{4!.2!}}$$ = 7560 (a) There are 4 vowels and all are alike i.e. 4A's. _2 nd _4 th _6 th _8 th _ These even places can be occupied by 4 vowels. In $$\\frac{{4!}}{{4!}}$$ = 1 Way. In other five places 5 other letter can be occupied of which two are alike i.e. 2L's. Number of ways = $$\\frac{{5!}}{{2!}}$$ Ways. Hence, total number of ways in which vowels occupy the even places = $$\\frac{{5!}}{{2!}}$$ × 1 = 60 ways. (b) Taking both L's together and treating them as one letter we have 8 letters out of which A repeats 4 times and others are distinct. These 8 letters can be arranged in $$\\frac{{8!}}{{4!}}$$ = 1680 ways. Also two L can be arranged themselves in 2! ways. So, Total no. of ways in which L are together = 1680 × 2 = 3360 ways. Now, Total arrangement in which L never occur together, = Total arrangement - Total no. of ways in which L occur together. = 7560 - 3360 = 4200 ways",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "In how many ways can 10 examination papers be arranged so that the best and the worst papers never come together?",
+        "options": [
+          "8 × 9!",
+          "8 × 8!",
+          "7 × 9!",
+          "9 × 8!"
+        ],
+        "correctAnswer": "A",
+        "explanation": "No. of ways in which 10 paper can arranged is 10! Ways. When the best and the worst papers come together, regarding the two as one paper, we have only 9 papers. These 9 papers can be arranged in 9! Ways. And two papers can be arranged themselves in 2! Ways. No. of arrangement when best and worst paper do not come together, = 10! - 9! × 2! = 9!(10 - 2) = 8 × 9!",
+        "estimatedTime": 60,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Two trains running in opposite directions cross a man standing on the platform in 27 seconds and 17 seconds respectively and they cross each other in 23 seconds. The ratio of their speeds is:",
+        "options": [
+          "1 : 3",
+          "3 : 2",
+          "3 : 4",
+          "None of these"
+        ],
+        "correctAnswer": "B",
+        "explanation": "$$\\eqalign{ & {\\text{Let}}\\,{\\text{the}}\\,{\\text{speeds}}\\,{\\text{of}}\\,{\\text{the}}\\,{\\text{two}}\\,{\\text{trains}}\\,{\\text{be}}\\,x\\,{\\text{m/sec}} \\cr & {\\text{and}}\\,y\\,{\\text{m/sec}}\\,{\\text{respectively}}. \\cr & {\\text{Then,}}\\,{\\text{length}}\\,{\\text{of}}\\,{\\text{the}}\\,{\\text{first}}\\,{\\text{train}} = 27x\\,{\\text{metres}}, \\cr & {\\text{and}}\\,{\\text{length}}\\,{\\text{of}}\\,{\\text{the}}\\,{\\text{second}}\\,{\\text{train}} = 17y\\,{\\text{metres}}. \\cr & \\therefore \\frac{{27x + 17y}}{{x + y}} = 23 \\cr & \\Rightarrow 27x + 17y = 23x + 23y \\cr & \\Rightarrow 4x = 6y \\cr & \\Rightarrow \\frac{x}{y} = \\frac{3}{2} \\cr} $$",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Two trains of equal length are running on parallel lines in the same direction at 46 km/hr and 36 km/hr. The faster train passes the slower train in 36 seconds. The length of each train is:",
+        "options": [
+          "50 m",
+          "72 m",
+          "80 m",
+          "82 m"
+        ],
+        "correctAnswer": "A",
+        "explanation": "$$\\eqalign{ & {\\text{Let}}\\,{\\text{the}}\\,{\\text{length}}\\,{\\text{of}}\\,{\\text{each}}\\,{\\text{train}}\\,{\\text{be}}\\,x\\,{\\text{metres}}. \\cr & {\\text{Then,}}\\,{\\text{distance}}\\,{\\text{covered}} = 2x\\,{\\text{metres}}. \\cr & {\\text{Relative}}\\,{\\text{speed}} \\cr & = \\left( {46 - 36} \\right)\\,{\\text{km/hr}} \\cr & = {10 \\times \\frac{5}{{18}}} \\,{\\text{m/sec}} \\cr & = {\\frac{{25}}{9}} \\,{\\text{m/sec}} \\cr & \\therefore \\frac{{2x}}{{36}} = \\frac{{25}}{9} \\cr & \\Rightarrow 2x = 100 \\cr & \\Rightarrow x = 50 \\cr} $$",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Two trains are moving in opposite directions @ 60 km/hr and 90 km/hr. Their lengths are 1.10 km and 0.9 km respectively. The time taken by the slower train to cross the faster train in seconds is:",
+        "options": [
+          "36",
+          "45",
+          "48",
+          "49"
+        ],
+        "correctAnswer": "C",
+        "explanation": "$$\\eqalign{ & {\\text{Relative}}\\,{\\text{speed}} = \\left( {60 + 90} \\right)\\,{\\text{km/hr}} \\cr & = {150 \\times \\frac{5}{{18}}} \\,{\\text{m/sec}} \\cr & = {\\frac{{125}}{3}} \\,{\\text{m/sec}} \\cr & {\\text{Distance}}\\,{\\text{covered}} \\cr & = \\left( {1.10 + 0.9} \\right)\\,km \\cr & = 2\\,km \\cr & = \\,2000\\,m \\cr & {\\text{Required}}\\,{\\text{time}} \\cr & = {2000 \\times \\frac{3}{{125}}} \\,{\\text{sec}} \\cr & = 48\\,sec \\cr} $$",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "A jogger running at 9 kmph alongside a railway track in 240 metres ahead of the engine of a 120 metres long train running at 45 kmph in the same direction. In how much time will the train pass the jogger?",
+        "options": [
+          "3.6 sec",
+          "18 sec",
+          "36 sec",
+          "72 sec"
+        ],
+        "correctAnswer": "C",
+        "explanation": "$$\\eqalign{ & {\\text{Speed}}\\,{\\text{of}}\\,{\\text{train}}\\,{\\text{relative}}\\,{\\text{to}}\\,{\\text{jogger}} \\cr & = \\left( {45 - 9} \\right)\\,{\\text{km/hr}} \\cr & = 36\\,{\\text{km/hr}} \\cr & {36 \\times \\frac{5}{{18}}} \\,{\\text{m/sec}} \\cr & = 10\\,{\\text{m/sec}} \\cr & {\\text{Distance}}\\,{\\text{to}}\\,{\\text{be}}\\,{\\text{covered}} \\cr & = \\left( {240 + 120} \\right)\\,m \\cr & = 360\\,m \\cr & \\therefore {\\text{Time}}\\,{\\text{taken}} \\cr & = {\\frac{{360}}{{10}}} \\,{\\text{sec}} \\cr & = 36\\,{\\text{sec}} \\cr} $$",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "The cascade amplifier is a multistage configuration of",
+        "options": [
+          "CC-CB",
+          "CE-CB",
+          "CB-CC",
+          "CE-CC"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Explanation of each option: Option A: CC-CB is incorrect because this configuration consists of a common collector (CC) stage followed by a common base (CB) stage. While this can be used in some amplifiers, it is not a typical configuration for a cascade amplifier. Option B: CE-CB is incorrect because this configuration consists of a common emitter (CE) stage followed by a common base (CB) stage. While this may be used in certain applications, it is not the standard configuration for a cascade amplifier. Option C: CB-CC is incorrect because this configuration starts with a common base (CB) stage followed by a common collector (CC) stage. This is also not a common arrangement for cascade amplifiers. Option D: CE-CC is correct because the typical cascade amplifier configuration uses a common emitter (CE) stage followed by a common collector (CC) stage. The CE stage provides high voltage gain, while the CC stage provides current gain and impedance matching, making this a common choice for multistage amplifiers. Conclusion: The correct answer is Option D: CE-CC because this is the standard multistage configuration for cascade amplifiers.",
+        "estimatedTime": 45,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "A low ratio of the ac to the dc load impedance of a diode detector results in",
+        "options": [
+          "Diagonal clipping",
+          "Poor AGC operation",
+          "Negative-peak clipping",
+          "Poor AF response"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Understanding Diode Detectors in Radio Receivers Diode detectors are used in radio receivers to extract the audio signal from the radio frequency (RF) signal. They work by rectifying the RF signal, meaning they convert the alternating current (AC) signal into a direct current (DC) signal. The detector's performance depends on the relationship between the AC load impedance (the impedance seen by the AC component of the signal) and the DC load impedance (the impedance seen by the DC component). A low ratio of AC to DC load impedance means the AC impedance is much smaller than the DC impedance. This impacts how well the detector can handle the signal. Imagine the detector trying to follow a quickly changing AC signal while also maintaining a steady DC level. If the AC impedance is too low, the detector struggles to accurately follow the rapid changes in the signal, which leads to distortion. The various options show different types of this distortion. Therefore, a low ratio of AC to DC load impedance will cause negative-peak clipping . This is because the detector can't efficiently follow the negative portions of the AC signal, causing those portions to be \"clipped\" off. The other options, while possible problems in a radio receiver, aren't the direct result of a low AC-to-DC impedance ratio in the diode detector itself.",
+        "estimatedTime": 60,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "If the ratio of long and short spans of a two way slab with corners held down is r, the actual reduction of B.M. is given by",
+        "options": [
+          "$$\\frac{5}{6}\\left( {\\frac{{\\text{r}}}{{1 + {{\\text{r}}^2}}}} \\right){\\text{M}}$$",
+          "$$\\frac{5}{6}\\left( {\\frac{{{{\\text{r}}^2}}}{{1 + {{\\text{r}}^2}}}} \\right){\\text{M}}$$",
+          "$$\\frac{5}{6}\\left( {\\frac{{{{\\text{r}}^2}}}{{1 + {{\\text{r}}^3}}}} \\right){\\text{M}}$$",
+          "$$\\frac{5}{6}\\left( {\\frac{{{{\\text{r}}^2}}}{{1 + {{\\text{r}}^4}}}} \\right){\\text{M}}$$"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The question is about two-way slabs in Reinforced Cement Concrete (RCC) structures. Two-way slabs are supported on all four sides and the load is carried in both directions (length and width). The ratio 'r' refers to the ratio of the longer span to the shorter span of the slab. When the corners of a two-way slab are held down (meaning they are prevented from lifting), it changes how the slab bends (its bending moment, or B.M.). Because the corners are held down, the bending moment is reduced . The question asks which formula correctly represents this reduction in bending moment. The correct formula, representing the reduction, is: $$\\frac{5}{6}\\left( {\\frac{{{{\\text{r}}^2}}}{{1 + {{\\text{r}}^2}}}} \\right){\\text{M}}$$ , where M is the original bending moment. So, the answer is Option B.",
+        "estimatedTime": 60,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "There are 10 seats around a circular table. If 8 men and 2 women have to seated around a circular table, such that no two women have to be separated by at least one man. If P and Q denote the respective number of ways of seating these people around a table when seats are numbered and unnumbered, then P : Q equals",
+        "options": [
+          "9 : 1",
+          "72 : 1",
+          "10 : 1",
+          "8 : 1"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Initially we look at the general case of the seats not numbered. The total number of cases of arranging 8 men and 2 women, so that women are together, ⇒ 8! ×2! The number of cases where in the women are not together, ⇒ 9! - (8! × 2!) = Q Now, when the seats are numbered, it can be considered to a linear arrangement and the number of ways of arranging the group such that no two women are together is, ⇒ 10! - (9! × 2!) But the arrangements where in the women occupy the first and the tenth chairs are not favorable as when the chairs which are assumed to be arranged in a row are arranged in a circle, the two women would be sitting next to each other. The number of ways the women can occupy the first and the tenth position, = 8! × 2! The value of P = 10! - (9! × 2!) - (8! × 2!) Thus P : Q = 10 : 1",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "If Rahim moves 20 metres in East direction and then turns to his left and then moves 15 metres and then he turns to his right and moves 25 metres. After this he turns to his right and moves 15 metres. Now, how far is he from starting point ?",
+        "options": [
+          "40 m",
+          "50 m",
+          "25 m",
+          "45 m"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Rahim's Movement Therefore, the distance of Rahim from his starting point, = 20 + 25 = 45 meters",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "A, B, C and D are standing on the four corners of a square field as shown in the figure below: A starts crossing the field diagonally. After walking half the distance, he turns right, walks some distance and turns left. Which direction is A facing now?",
+        "options": [
+          "North-East",
+          "South-West",
+          "South-East",
+          "North-West"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Movement of A : Finally A is facing in the direction of North-West.",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "FAG, GAF, HAI, IAH, ____",
+        "options": [
+          "JAK",
+          "HAL",
+          "HAK",
+          "JAI"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The middle letters are static, so concentrate on the first and third letters. The series involves an alphabetical order with a reversal of the letters. The first letters are in alphabetical order: F, G, H, I , J. The second and fourth segments are reversals of the first and third segments. The missing segment begins with a new letter.",
+        "estimatedTime": 45,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "If each of the digits in the number 92581473 is arranged in ascending order, what will be the difference between the digits which are fourth from the right and third from left in the new arrangement? The ascending order of the number is 123456789.",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The ascending order of the number is 123456789. Required difference, 6-3 = 3.",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "589654237, 89654237, 8965423, 965423, ?",
+        "options": [
+          "58965",
+          "65423",
+          "89654",
+          "96542"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The given series is: 589654237, 89654237, 8965423, 965423, ? Step 1: Observe the pattern in the series. Step 2: The first number 589654237 loses the first digit '5' to become 89654237 . Step 3: The second number 89654237 loses the last digit '7' to become 8965423 . Step 4: The third number 8965423 loses the first digit '8' to become 965423 . Step 5: The fourth number 965423 loses the last digit '3' to become 96542 . Pattern Observed: The series alternates between removing the first digit and the last digit. Final Step: Following this pattern, the next number after 965423 should be 96542 (removing the last digit '3' ). Thus, the correct answer is: 96542 (Option D).",
+        "estimatedTime": 45,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "What is the sum of all two digit numbers that gives a remainder of 3 when they are divided by 7?",
+        "options": [
+          "666",
+          "676",
+          "683",
+          "777"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The two digit number which gives a remainder of 3 when divided by 7 are: 10, 17, 24 ..... 94. Now, these number are in AP series with 1st Term, a = 10; Number of Terms, n = 13; Last term, L = 94 andCommon Difference, d = 7. Sum, $$\\eqalign{ & = \\left\\{ {{\\text{n}} \\times \\frac{{{\\text{a}} + {\\text{L}}}}{2}} \\right\\} \\cr & = 13 \\times 52 \\cr & = 676 \\cr} $$",
+        "estimatedTime": 60,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Given, N = 98765432109876543210 ..... up to 1000 digits, find the smallest natural number n such that N + n is divisible by 11.",
+        "options": [
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "correctAnswer": "D",
+        "explanation": "For a no. to be divisible by 11, Sum(odd digit nos) - Sum(even digit nos) = 0 or divisible by 11 If we look at 9876543210, the difference we get is 5 i.e. [(9 + 7 + 5 + 3 + 1) - (8 + 6 + 4 + 2 + 0) = 5] The series is up to 1000 digit, That means, we get $$\\frac{{1000}}{{10}}$$ = 100 time 5, then the difference will be 5 × 100 = 500 In order for the difference to be divisible by 11, we need to add 5 and the no will become 505 505 is divisible by 11",
+        "estimatedTime": 60,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "A man positioned at the origin of the coordinate system. the man can take steps of unit measure in the direction North, East, West or South. Find the number of ways of he can reach the point (5,6), covering the shortest possible distance.",
+        "options": [
+          "252",
+          "432",
+          "462",
+          "504"
+        ],
+        "correctAnswer": "C",
+        "explanation": "In order to reach (5,6) covering the shortest distance at the same time the man has to make 5 horizontal and 6 vertical steps. The number of ways in which these steps can be taken is given by, $$\\eqalign{ & = \\frac{{11!}}{{5! \\times 6!}} \\cr & = 462 \\cr} $$",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "In how many ways can the letters of the word EDUCATION be rearranged so that the relative position of the vowels and consonants remain the same as in the word EDUCATION ?",
+        "options": [
+          "9! × 4",
+          "9! × 4! × 5!",
+          "4! × 5!",
+          "None of these"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The word EDUCATION is a 9 letter word, with none of the letters repeating. The vowels occupy 3 rd , 5 th , 7 th and 8 th position in the word and the remaining 5 positions are occupied by consonants. As the relative position of the vowels and consonants in any arrangement should remain the same as in the word EDUCATION, the vowels can occupy only the before mentioned 4 places and the consonants can occupy 1 st , 2 nd , 4 th , 6 th and 9 th positions. The 4 vowels can be arranged in the 3 rd , 5 th , 7 th and 8 th position in 4! Ways. Similarly, the 5 consonants can be arranged in 1 st , 2 nd , 4 th , 6 th and 9 th",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "How many arrangements of four 0's (zeroes), two 1's and two 2's are there in which the first 1 occur before the first 2?",
+        "options": [
+          "420",
+          "360",
+          "320",
+          "210"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Total number of arrangements = $$\\frac{{8!}}{{4! \\times 2! \\times 2!}}$$ = 420 Since, there are two 1's and two 0's, the number of arrangements in which the first 1 is before the first 2 is same as the number of arrangement in which the first 2 is before the first 1 and they are each equal to half the total number of arrangements = 210",
+        "estimatedTime": 60,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "P and Q sit in a ring arrangement with 10 persons. What is the probability that P and Q will sit together?",
+        "options": [
+          "$$\\frac{{2}}{{11}}$$",
+          "$$\\frac{{3}}{{11}}$$",
+          "$$\\frac{{2}}{{9}}$$",
+          "$$\\frac{{4}}{{9}}$$"
+        ],
+        "correctAnswer": "A",
+        "explanation": "n(S)= number of ways of sitting 12 persons at round table: = (12 - 1)! = 11! Since two persons will be always together, then number of persons: = 10 + 1 = 11 So, 11 persons will be seated in (11 - 1)! = 10! ways at round table and 2 particular persons will be seated in 2! ways. n(A) = The number of ways in which two persons always sit together = 10! × 2 $$\\eqalign{ & P\\left( A \\right) = \\frac{{n\\left( A \\right)}}{{n\\left( S \\right)}} \\cr & = \\frac{{10!\\, \\times 2!}}{{11!}} \\cr & = \\frac{2}{{11}} \\cr} $$",
+        "estimatedTime": 60,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Find the probability that in a random arrangement of the letters of the word 'UNIVERSITY' the two I's come together.",
+        "options": [
+          "$$\\frac{1}{7}$$",
+          "$$\\frac{3}{5}$$",
+          "$$\\frac{5}{11}$$",
+          "$$\\frac{1}{5}$$"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The total number of words which can be formed by permuting the letters of the word 'UNIVERSITY' is $$\\frac{{10!}}{{2!}}$$ as there is two I's. Hence $$n(S) = \\frac{{10!}}{{2!}}$$ Taking two I's as one letter, number of ways of arrangement in which both I's are together = 9! $${\\text{So}}\\,n\\left( X \\right) = 9!$$ Hence required probability $$\\eqalign{ & = \\frac{{n(X)}}{{n(S)}} \\cr & = \\frac{{9!}}{{10!/2!}} \\cr & = \\frac{1}{5} \\cr} $$",
+        "estimatedTime": 60,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "From a point on a circular track 5km long A,B and C started running in the same direction at the same time with speed of $$2\\frac{1}{2}$$ km per hour, 3 km per hour and 2 km per hour respectively. Then on the starting point all three will meet again after ?",
+        "options": [
+          "30 hours",
+          "6 hours",
+          "10 hours",
+          "15 hours"
+        ],
+        "correctAnswer": "C",
+        "explanation": "$$\\eqalign{ & {\\text{Distance = 5 km}} \\cr & {\\text{Speed of A = 2}}\\frac{1}{2}{\\text{ km/hr}} \\cr & {\\text{Time taken by A}} \\cr & {\\text{ = }}\\frac{5}{5} \\times 2 = 5{\\text{hours}} \\cr & {\\text{Speed of B = 3 km/hr}} \\cr & {\\text{Time taken by B}} \\cr & {\\text{ = }}\\frac{5}{3}{\\text{hours}} \\cr & {\\text{Speed of C = 2 km/hr}} \\cr & {\\text{Time taken by C}} \\cr & {\\text{ = }}\\frac{5}{2}{\\text{hours}} \\cr & \\frac{{{\\text{LCM of numerator}}}}{{{\\text{HCF of denominator}}}} \\cr & = 2,\\,\\frac{5}{3},\\,\\frac{5}{2} \\cr & {\\text{LCM = }}\\frac{{10}}{1} = 10 \\cr} $$ They will meet again after 10 hours",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Two trains 140 m and 160 m long run at the speed of 60 km/hr and 40 km/hr respectively in opposite directions on parallel tracks. The time (in seconds) which they take to cross each other, is:",
+        "options": [
+          "9",
+          "9.6",
+          "10",
+          "10.8"
+        ],
+        "correctAnswer": "D",
+        "explanation": "$$\\eqalign{ & {\\text{Relative}}\\,{\\text{speed}} = \\left( {60 + 40} \\right)\\,{\\text{km/hr}} \\cr & = {100 \\times \\frac{5}{{18}}} \\,{\\text{m/sec}} \\cr & = {\\frac{{250}}{9}} \\,{\\text{m/sec}}. \\cr & {\\text{Distance}}\\,{\\text{covered}}\\,{\\text{in}}\\,{\\text{crossing}}\\,{\\text{each}}\\,{\\text{other}} \\cr & = \\left( {140 + 160} \\right)m = 300\\,m \\cr & {\\text{Required}}\\,{\\text{time}} \\cr & = {300 \\times \\frac{9}{{250}}} \\,{\\text{sec}} \\cr & = \\frac{{54}}{5}\\,{\\text{sec}} \\cr & = 10.8\\,{\\text{sec}} \\cr} $$",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Two goods train each 500 m long, are running in opposite directions on parallel tracks. Their speeds are 45 km/hr and 30 km/hr respectively. Find the time taken by the slower train to pass the driver of the faster one.",
+        "options": [
+          "12 sec",
+          "24 sec",
+          "48 sec",
+          "60 sec"
+        ],
+        "correctAnswer": "B",
+        "explanation": "$$\\eqalign{ & {\\text{Relative}}\\,{\\text{speed}} \\cr & = \\left( {45 + 30} \\right)\\,{\\text{km/hr}} \\cr & = \\left(75 \\times \\frac{5}{18} \\right)\\, \\text{m/sec} \\cr & = {\\frac{{125}}{6}} \\,{\\text{m/sec}} \\cr & {\\text{We}}\\,{\\text{have}}\\,{\\text{to}}\\,{\\text{find}}\\,{\\text{the}}\\,{\\text{time}}\\,{\\text{taken}}\\,{\\text{by}}\\,{\\text{the}} \\cr & {\\text{slower}}\\,{\\text{train}}\\,{\\text{to}}\\,{\\text{pass}}\\,{\\text{the}}\\,{\\text{DRIVER}}\\,{\\text{of}}\\, \\cr & {\\text{The}}\\,{\\text{faster}}\\,{\\text{train}}\\,{\\text{and}}\\,{\\text{not}}\\,{\\text{the}}\\,{\\text{complete}}\\,{\\text{train}}{\\text{.}} \\cr & \\cr & {\\text{So,}}\\,{\\text{distance}}\\,{\\text{covered = Length}}\\,{\\text{of}}\\,{\\text{the}}\\,{\\text{slower}}\\,{\\text{train}}. \\cr & {\\text{Therefore,}}\\,{\\text{Distance}}\\,{\\text{covered = 500}}\\,{\\text{m}}. \\cr & \\therefore {\\text{Required}}\\,{\\text{time}} \\cr & = {500 \\times \\frac{6}{{125}}} \\cr & = 24\\,\\sec \\cr} $$",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "A train 108 m long moving at a speed of 50 km/hr crosses a train 112 m long coming from opposite direction in 6 seconds. The speed of the second train is:",
+        "options": [
+          "48 km/hr",
+          "54 km/hr",
+          "66 km/hr",
+          "82 km/hr"
+        ],
+        "correctAnswer": "D",
+        "explanation": "$$\\eqalign{ & {\\text{Let}}\\,{\\text{the}}\\,{\\text{speed}}\\,{\\text{of}}\\,{\\text{the}}\\,{\\text{second}}\\,{\\text{train}}\\,{\\text{be}}\\,x\\,{\\text{km/hr}}. \\cr & {\\text{Relative}}\\,{\\text{speed}}\\, \\cr & = \\,\\left( {x + 50} \\right)\\,{\\text{km/hr}} \\cr & = \\left[ {\\left( {x + 50} \\right) \\times \\frac{5}{{18}}} \\right]\\,{\\text{m/sec}} \\cr & = {\\frac{{250 + 5x}}{{18}}} \\,{\\text{m/sec}} \\cr & {\\text{Distance}}\\,{\\text{covered}} \\cr & = \\left( {108 + 112} \\right) = 220\\,m \\cr & \\therefore \\frac{{220}}{{ {\\frac{{250 + 5x}}{{18}}} }} = 6 \\cr & \\Rightarrow 250 + 5x = 660 \\cr & \\Rightarrow x = 82\\,{\\text{km/hr}} \\cr} $$",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Two trains A and B start running together from the same point in the same direction, at the speed of 60 kmph and 72 kmph respectively. If the length of each of the trains is 240 meters, how long will it take for B to cross train A?",
+        "options": [
+          "1 min 12 sec",
+          "1 min 24 sec",
+          "2 min 12 sec",
+          "2 min 24 sec"
+        ],
+        "correctAnswer": "D",
+        "explanation": "$$\\eqalign{ & {\\text{Relative speed}} \\cr & {\\text{ = (72}} - {\\text{60) km/hr}} \\cr & {\\text{ = 12 km/hr}} \\cr & = \\left( {12 \\times \\frac{5}{{18}}} \\right)m/\\sec \\cr & = \\left( {\\frac{{10}}{3}} \\right)m/\\sec \\cr & {\\text{Total distance covered}} \\cr & {\\text{ = Sum of lengths of trains}} \\cr & {\\text{ = (240 + 240) m}} \\cr & {\\text{ = 480 m}} \\cr & {\\text{Time taken}} \\cr & {\\text{ = }}\\left( {480 \\times \\frac{3}{{10}}} \\right)\\sec \\cr & = 144\\sec \\cr & = 2\\min \\,24sec \\cr} $$",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Two trains are coming from opposite directions with speed of 75 km/hr and 100 km/hr on to parallel tracks. At some moment the distance between them is 100km. After T hours, distance between them is again 100 km. T is equal to?",
+        "options": [
+          "1 hr",
+          "$$1\\frac{1}{7}$$ hr",
+          "$$1\\frac{1}{2}$$ hr",
+          "2 hr"
+        ],
+        "correctAnswer": "B",
+        "explanation": "$$\\eqalign{ & {\\text{Relative speed}} \\cr & {\\text{ = (75 + 100)km/hr}} \\cr & {\\text{ = 175 km/hr}} \\cr & {\\text{Time taken to cover 175 km}} \\cr & {\\text{at relative speed = 1 hr}} \\cr & \\therefore {\\text{T = Time taken to cover 200 km}} \\cr & {\\text{ = }}\\left( {\\frac{1}{{175}} \\times 200} \\right)\\, \\text{hr} \\cr & = \\frac{8}{7}\\, \\text{hr} \\cr & = 1\\frac{1}{7}\\, \\text{hr} \\cr} $$",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "Two train 100 meters and 95 meters long respectively pass each other in 27 seconds, when they run in the same direction and in 9 seconds when they run in opposite directions. Speed of the two trains are?",
+        "options": [
+          "44 km/hr, 22 km/hr",
+          "52 km/hr, 26 km/hr",
+          "36 km/hr, 18 km/hr",
+          "40 km/hr, 20 km/hr"
+        ],
+        "correctAnswer": "B",
+        "explanation": "$$\\eqalign{ & {\\text{Let the speed of first train be }} \\cr & {{\\text{S}}_1}{\\text{ km/hr and speed of second train}} \\cr & {\\text{is }}{{\\text{S}}_2}{\\text{km/hr }} \\cr & {\\text{As we know,}} \\cr & {\\text{Time }} \\cr & {\\text{ = }}\\frac{{{\\text{total distance}}}}{{{\\text{relative speed in same/opposite direction}}}} \\cr & {\\text{In the same direction}} \\cr & \\Rightarrow {\\text{27 sec = }}\\frac{{\\left( {100 + 95} \\right)}}{{\\left( {{\\text{ }}{{\\text{S}}_1} - {\\text{ }}{{\\text{S}}_2}} \\right) \\times \\frac{5}{{18}}}} \\cr & \\Rightarrow 27 = \\frac{{195 \\times 18}}{{\\left( {{\\text{ }}{{\\text{S}}_1} - {\\text{ }}{{\\text{S}}_2}} \\right) \\times 5}} \\cr & \\Rightarrow {\\text{ }}{{\\text{S}}_1} - {\\text{ }}{{\\text{S}}_2} = 26.......................(i) \\cr & {\\text{In the opposite direction,}} \\cr & \\Rightarrow 9 = \\frac{{\\left( {100 + 95} \\right)}}{{\\left( {{\\text{ }}{{\\text{S}}_1}{\\text{ + }}{{\\text{S}}_2}} \\right) \\times \\frac{5}{{18}}}} \\cr & \\Rightarrow 9 = \\frac{{195 \\times 18}}{{\\left( {{\\text{ }}{{\\text{S}}_1}{\\text{ + }}{{\\text{S}}_2}} \\right) \\times 5}} \\cr & \\Rightarrow {\\text{ }}{{\\text{S}}_1}{\\text{ + }}{{\\text{S}}_2} = 39 \\times 2 \\cr & \\Rightarrow {\\text{ }}{{\\text{S}}_1}{\\text{ + }}{{\\text{S}}_2} = 78 \\cr & {\\text{From equation (i) and (ii)}} \\cr & \\Rightarrow {\\text{ }}{{\\text{S}}_1} - {\\text{ }}{{\\text{S}}_2} = 26 \\cr & \\Rightarrow {\\text{ }}{{\\text{S}}_1}{\\text{ + }}{{\\text{S}}_2} = 78 \\cr & \\Rightarrow {\\text{ }}{{\\text{S}}_1} = \\frac{{26 + 78}}{2} \\cr & \\Rightarrow {\\text{ }}{{\\text{S}}_1} = \\frac{{104}}{2} \\cr & \\Rightarrow {\\text{ }}{{\\text{S}}_1}{\\text{ = 52 km/hr and }} \\cr & \\,\\,\\,\\,\\,\\,\\,\\,\\,\\,{{\\text{S}}_2}{\\text{ = 26 km/hr}} \\cr} $$",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      },
+      {
+        "questionText": "A train running at the speed of 84 km/hr passes a man walking in opposite direction at the speed of 6 km/hr in 4 seconds. What is the length of train (in meter)?",
+        "options": [
+          "150 m",
+          "120 m",
+          "100 m",
+          "90 m"
+        ],
+        "correctAnswer": "C",
+        "explanation": "$$\\eqalign{ & {\\text{Let length of train }} \\cr & {\\text{ = }}l\\,{\\text{metre}} \\cr & \\Rightarrow {\\text{Time }} \\cr & {\\text{ = }}\\frac{{{\\text{total distance}}}}{{{\\text{relative speed in opposite direction}}}} \\cr & \\Rightarrow 4\\sec \\, = \\,\\frac{{l + 0}}{{\\left( {84 + 6} \\right) \\times \\frac{5}{{18}}{\\text{m/s}}}} \\cr & \\Rightarrow 4\\, = \\frac{l}{{90 \\times \\frac{5}{{18}}}} \\cr & \\Rightarrow \\,l\\, = \\,100\\,{\\text{m}} \\cr & \\therefore {\\text{ length of the train = 100 m}} \\cr} $$",
+        "estimatedTime": 75,
+        "subtopic": "Puzzles",
+        "tags": [
+          "logical",
+          "aptitude",
+          "puzzle",
+          "arrangement",
+          "scheduling"
+        ]
+      }
+    ]
+  },
+  "providerPayload": {
+    "mode": "offline",
+    "source": "existing_mock_tests",
+    "questionCount": 50
+  },
+  "offlineSource": true
+}

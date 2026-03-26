@@ -1,0 +1,1030 @@
+{
+  "provider": "claude",
+  "model": "claude-sonnet-4-offline",
+  "topic": "Data Structures - Trees",
+  "subject": "technical",
+  "category": "data-structures",
+  "difficulty": "hard",
+  "promptStyle": "analytical_structured",
+  "generatedAt": "2026-03-12T18:07:48.611Z",
+  "elapsedMs": 0,
+  "count": 50,
+  "cost": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "usd": 0,
+    "inr": 0
+  },
+  "prompt": "You are an expert question designer for Indian campus placement tests. Generate high-quality multiple-choice questions for engineering students preparing for companies like TCS, Infosys, and Wipro.\n\nTASK: Generate 50 questions on the topic: Data Structures - Trees\n\nSPECIFICATIONS:\n- Difficulty Level: hard\n- Time per question: 45-90 seconds\n\nOUTPUT FORMAT (JSON only, no markdown):\n{\n  \"questions\": [\n    {\n      \"questionText\": \"Full question text here\",\n      \"options\": [\"Option A\", \"Option B\", \"Option C\", \"Option D\"],\n      \"correctAnswer\": \"A\",\n      \"explanation\": \"Step-by-step solution showing why A is correct\",\n      \"estimatedTime\": 60,\n      \"subtopic\": \"Specific subtopic within main topic\",\n      \"tags\": [\"tag1\", \"tag2\"]\n    }\n  ]\n}\n\nQUALITY REQUIREMENTS:\n1. Questions must be unambiguous with exactly ONE correct answer\n2. All options should be plausible (no obviously wrong distractors)\n3. Use Indian English conventions (lakhs/crores for large numbers)\n4. Include complete explanations with step-by-step working\n5. Vary problem patterns within the topic\n6. Match actual campus placement difficulty\n7. NO questions copied from existing sources (create original problems)\n\nGenerate exactly 50 questions following these specifications. Output ONLY valid JSON, no additional text.",
+  "rawText": "{\"questions\":[{\"questionText\":\"In simple chaining, what data structure is appropriate? Data Structure MCQ on Abstract Data Types Multiple Choice Questions on Application of Stacks Data Structure MCQ on Arrays Types Data Structure MCQ on Types of Lists Multiple Choice Questions on Binary Trees Data Structure MCQs on B-Trees Data Structure MCQ on Trees MCQ on Heap Data Structure Multiple Choice Questions on Trie Data Structure MCQ on Hash Tables Data Structure MCQ on Graph\",\"options\":[\"Doubly linked list\",\"Circular linked list\",\"Singly linked list\",\"Binary trees Chapterwise Multiple Choice Questions on Data Structure Our 1000+ multiple choice questions and answers (MCQs) on “Data Structure – I” (along with 1000+ MCQs on “Data Structure – II (Algorithms)”) focuses on all chapters of Data Structure covering 200+ topics. You can find MCQs on Data Structure – II (Algorithms) here . This Data Structure MCQ will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. Abstract Data Types Application of Stacks Arrays Types Types of Lists Binary Trees B-Trees Trees Heap Trie Hash Tables Graph The section contains Data Structure multiple choice questions and answers on arrays, stacks, queues, single linked lists, doubly and circular linked lists, stacks using arrays and linked lists, queues using arrays, stacks and linked lists, priority queues and double ended queues. Array and Array Operations Stack Operations – 1 Stack Operations – 2 Stack Operations – 3 Queue Operations Singly Linked Lists Operations – 1 Singly Linked Lists Operations – 2 Singly Linked Lists Operations – 3 Singly Linked Lists Doubly Linked Lists Circular Linked Lists Stack using Array Stack using Linked List Queue using Array Queue using Linked List Priority Queue Double Ended Queue (Deque) Queue using Stacks Stack using Queues The section contains Data Structure questions and answers on decimal to binary using stacks, towers of hanoi, expression evaluation of infix, prefix and postfix, conversions like infix to postfix, postfix to infix, prefix to infix and infix to prefix conversions, reversing the word using stack and balanced parenthesis. Decimal to Binary using Stacks Evaluation of an Infix Expression (Not Parenthesized) Evaluation of a Prefix Expression Evaluation of a Postfix Expression Infix to Prefix Conversion Infix to Postfix Conversion Prefix to Infix Conversion Postfix to Infix Conversion Towers of Hanoi Reverse a Word using Stack Balanced Parenthesis The section contains Data Structure MCQs on bit array, dynamic and parallel array, count inversion, rotation and reversal array operations, end array operations, sparse and suffix array, matrix and sparse matrix. Bit Array Dynamic Array Variable Length Array Parallel Array Sparse Array Suffix Array Matrix Sparse Matrix Count Inversion Rotation Array Operation Reversal Array Operation Number of Jumps to Reach End-array Operation The section contains Data Structure multiple choice questions and answers on skip list, self organizing list, xor linked list and free list. Skip List Self Organizing List Unrolled Linked List Xor Linked List Free List Triply Linked List The section contains Data Structure questions and answers on binary trees using arrays and linked lists, preorder, postorder and inorder traversal, avl tree, binary tree properties and operations, cartesian tree, weight balanced tree, red black and splay trees, threaded binary tree and binary search trees, aa tree, top tree, treap, tango tree and rope. Binary Trees using Array Binary Trees using Linked Lists Binary Tree Operations Preorder Traversal Postorder Traversal Inorder Traversal Binary Tree Properties Binary Search Tree Balanced Binary Tree Self Balancing Binary Search Tree Randomized Binary Search Tree AA Tree AVL Tree Cartesian Tree Weight Balanced Tree Red Black Tree Top Tree Splay Tree Treap Threaded Binary Tree Tango Tree Rope The section contains Data Structure MCQs on b tree, b+ tree and 2-3 tree. B-Tree B+ Tree 2-3 Tree The section contains Data Structure multiple choice questions and answers on trees like ternary tree, k-ary tree, kd tree, expression tree, bin, van emde boas tree and disjoint set data structure. Ternary Tree – 1 Ternary Tree – 2 K-ary Tree – 1 K-ary Tree – 2 Van Emde Boas Tree Disjoint-Set Data Structure Bin KD Tree Abstract Syntax Tree Parse Tree Expression Tree The section contains Data Structure questions and answers on heap, binary and weak heap, binomial and fibonacci heap, d ary heap, ternary heap, pairing and leftlist heap, skew heap, min and max heap. Heap Binary Heap Weak Heap Binomial and Fibonacci Heap D-ary Heap Ternary Heap – 1 Ternary Heap – 2 Pairing Heap Leftlist Heap Skew Heap Min/Max Heap The section contains Data Structure MCQs on trie and suffix tree. Trie Suffix Tree – 1 Suffix Tree – 2 The section contains Data Structure multiple choice questions and answers on hash tables, direct addressing tables, hash tables chaining using linked lists, doubly linked lists, binary trees and list heads, hash tables with linear and quadratic probing, hashing functions, hash tree, min hash and double hashing. Hash Tables Hash Tables Chaining using Linked Lists Hash Tables Chaining using Doubly Linked Lists Hash Tables Chaining with Binary Trees Hash Tables Chaining with List Heads Hash Tables with Linear Probing Hash Tables with Quadratic Probing Hashing Functions Double Hashing Hash Tree Min Hash Direct Addressing Tables The section contains Data Structure questions and answers on graph, adjacency matrix, incidence matrix, adjacency list, directed and undirected graph, directed acyclic graphs, multigraph and hypergraph, binary decision diagrams & and-inverter graph. Graph Adjacency Matrix Incidence Matrix and Graph Structured Stack Adjacency List Undirected Graph Directed Graph Directed Acyclic Graph Propositional and Directed Acyclic Word Graph Multigraph and Hypergraph Binary Decision Diagrams & and Inverter Graph To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. Important Links: Design & Analysis of Algorithms Multiple Choice Questions C Multiple Choice Questions C++ Multiple Choice Questions Java Multiple Choice Questions Python Multiple Choice Questions C# Multiple Choice Questions Computer Science Multiple Choice Questions Data Structure and Algorithms Books Data Structure Online Test\"],\"correctAnswer\":\"A\",\"explanation\":\"Deletion becomes easier with doubly linked list, hence it is appropriate.\",\"estimatedTime\":75,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"The data structure required for Breadth First Traversal on a graph is?\",\"options\":[\"Array\",\"Stack\",\"Tree\",\"Queue\"],\"correctAnswer\":\"D\",\"explanation\":\"In Breadth First Search Traversal, BFS, starting vertex is first taken and adjacent vertices which are unvisited are also taken. Again, the first vertex which was added as an unvisited adjacent vertex list will be considered to add further unvisited vertices of the graph. To get the first unvisited vertex we need to follows First In First Out principle. Queue uses FIFO principle.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"Checked – Compile time) Checked exception can be handled using throws and try-catch public class CheckedExceptions { public static void main(String[] args) throws IOException { System.out.println(\\\"Program is started..\\\"); System.out.println(\\\"Program is progress..\\\"); // try { FileInputStream file=new FileInputStream(\\\"C:\\\\\\\\file.txt\\\"); } catch (FileNotFoundException e) { e.printStackTrace(); } // FileInputStream file=new FileInputStream(\\\"C:\\\\\\\\file.txt\\\"); System.out.println(file.read()); System.out.println(\\\"Program is completed..\\\"); try-catch throws Collections: The Collections Framework in Java provides a set of interfaces and classes to store and manage objects efficiently. Collection (Interface) List (I) Set (I) Map (I) Ordered, allows duplicates Unordered, no duplicates stored in the form of key, value pairs ArrayList (C)→ Dynamic array, fast access HashSet (C) → Uses HashMap internally, no order HashMap (C) LinkedList (C)→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {\",\"options\":[\"→ Dynamic array, fast access HashSet\",\"→ Uses HashMap internally, no order HashMap\",\"LinkedList\",\"→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {\"],\"correctAnswer\":\"A\",\"explanation\":\"This question is mapped to Data Structures - Trees. The correct answer is A based on the original source question.\",\"estimatedTime\":75,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"Which of the following is also known as Rope data structure?\",\"options\":[\"Linked List\",\"Array\",\"String\",\"Cord\"],\"correctAnswer\":\"D\",\"explanation\":\"Array is a linear data structure. Strings are a collection and sequence of codes, alphabets or characters. Linked List is a linear data structure having a node containing data input and the address of the next node. The cord is also known as the rope data structure.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"Which of the following data structure can provide efficient searching of the elements?\",\"options\":[\"binary search tree\",\"unordered lists\",\"2-3 tree\",\"treap\"],\"correctAnswer\":\"C\",\"explanation\":\"The average case time for lookup in a binary search tree, treap and 2-3 tree is O(log n) and in unordered lists it is O(n). But in the worst case, only the 2-3 trees perform lookup efficiently as it takes O(log n), while others take O(n).\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"Which graph represents relation between whole and its parts?\",\"options\":[\"Histogram\",\"Pie graph\",\"Line graph\",\"Stacked bar graph\"],\"correctAnswer\":\"B\",\"explanation\":\"The correct answer is pie graph as pie graph represents relationship between whole and its parts. Histogram is represented with bars of equal width with no gap between adjacent bars. The height of the bar represents the number of data items in the given data range called frequency. Line graph is a line joining all the data points. A stacked bar graph is a chart that uses bars to show comparisons between categories of data with ability to break down and compare parts of a whole.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"In a binary search tree which traversal visits the nodes in ascending order?\",\"options\":[\"Preorder\",\"Inorder\",\"Postorder\",\"Levelorder\"],\"correctAnswer\":\"B\",\"explanation\":\"This question is mapped to Data Structures - Trees. The correct answer is B based on the original source question.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"Which of the following is not the application of stack?\",\"options\":[\"Data Transfer between two asynchronous process\",\"Compiler Syntax Analyzer\",\"Tracking of local variables at run time\",\"A parentheses balancing program\"],\"correctAnswer\":\"A\",\"explanation\":\"Data transfer between the two asynchronous process uses the queue data structure for synchronisation. The rest are all stack applications.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"Which of the following tree data structures is not a balanced binary tree?\",\"options\":[\"Splay tree\",\"B-tree\",\"AVL tree\",\"Red-black tree\"],\"correctAnswer\":\"B\",\"explanation\":\"All the tree data structures given in options are balanced, but B-tree can have more than two children.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"Which algorithm is used in the top tree data structure?\",\"options\":[\"Backtracking\",\"Divide and Conquer\",\"Branch\",\"Greedy\"],\"correctAnswer\":\"B\",\"explanation\":\"Top tree is a type of data structure which is based on unrooted dynamic binary tree and is used to solve path related problems. It allows an algorithm called divide and conquer.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"Which process of water treatment is done to avoid floating debris, branches, trees, or other large particles suspended in water?\",\"options\":[\"Primary sedimentation\",\"Secondary sedimentation\",\"Screening\",\"Aeration\"],\"correctAnswer\":\"C\",\"explanation\":\"Screens are used as a pretreatment process for purification of water to avoid large size suspended materials from water.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"In which of the following trusses, the method of substitution is required for determining the forces in all the members of the truss by graphic statics?\",\"options\":[\"Howe truss\",\"King post truss\",\"Fink truss\",\"Warren truss\"],\"correctAnswer\":\"C\",\"explanation\":\"* Truss: A structure made of connected straight members forming triangles. * Graphic Statics: A visual way to analyze forces in trusses using diagrams. * Method of Substitution: A technique where you temporarily remove a member and replace it with an equivalent force to solve for unknowns, then put the member back in and adjust calculations. Now, let's look at the options: * A: Howe Truss: These are generally straightforward to solve with basic graphic statics, without needing substitution. * B: King Post Truss: Also usually simple and solvable without substitution. * C: Fink Truss: This type of truss often has complex geometry, making it statically indeterminate . This means you *cannot* solve for all the forces using just simple equilibrium equations at each joint with graphic statics alone initially. The method of substitution is often required to determine the forces in all the members. * D: Warren Truss: Warren trusses are often solvable using standard graphic statics methods. Therefore, the answer is C: Fink truss . Fink trusses commonly require the method of substitution due to their geometry.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"Which of the following points is/are not true about Linked List data structure when it is compared with an array?\",\"options\":[\"Random access is not allowed in a typical implementation of Linked Lists\",\"Access of elements in linked list takes less time than compared to arrays\",\"Arrays have better cache locality that can make them better in terms of performance\",\"It is easy to insert and delete elements in Linked List\"],\"correctAnswer\":\"B\",\"explanation\":\"To access an element in a linked list, we need to traverse every element until we reach the desired element. This will take more time than arrays as arrays provide random access to its elements.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"Which of the following application makes use of a circular linked list?\",\"options\":[\"Recursive function calls\",\"Undo operation in a text editor\",\"Implement Hash Tables\",\"Allocating CPU to resources\"],\"correctAnswer\":\"D\",\"explanation\":\"Generally, round robin fashion is employed to allocate CPU time to resources which makes use of the circular linked list data structure. Recursive function calls use stack data structure. Undo Operation in text editor uses doubly linked lists. Hash tables uses singly linked lists.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"What is the need for a circular queue?\",\"options\":[\"easier computations\",\"implement LIFO principle in queues\",\"effective usage of memory\",\"to delete elements based on priority\"],\"correctAnswer\":\"C\",\"explanation\":\"In a linear queue, dequeue operation causes the starting elements of the array to be empty, and there is no way you can use that space, while in a circular queue, you can effectively use that space. Priority queue is used to delete the elements based on their priority. Higher priority elements will be deleted first whereas lower priority elements will be deleted next. Queue data structure always follows FIFO principle.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"A distributed database has which of the following advantages over a centralized database?\",\"options\":[\"Software cost\",\"Software complexity\",\"Slow Response\",\"Modular growth\"],\"correctAnswer\":\"D\",\"explanation\":\"A distributed database offers several advantages over a centralized database architecture. Option A: Software cost This option is not typically considered an advantage of distributed databases over centralized databases. The cost of software can vary based on factors such as licensing models, vendor pricing, and the specific requirements of the database system. Both distributed and centralized databases may incur software costs depending on the technologies used and the scale of deployment. Option B: Software complexity While distributed databases may introduce additional complexity compared to centralized databases due to factors such as network communication, data replication, and synchronization mechanisms, this complexity is often outweighed by the benefits they offer, such as improved scalability, fault tolerance, and performance. Additionally, advancements in distributed database technologies have led to the development of tools and frameworks that help manage and mitigate the complexity associated with distributed systems. Option C: Slow Response Distributed databases are designed to enhance responsiveness and performance by distributing data across multiple sites and allowing parallel processing of queries. While network latency and communication overhead can affect response times in distributed systems, proper design, optimization, and caching mechanisms can mitigate these issues. In many cases, distributed databases can provide faster response times compared to centralized databases, especially for geographically dispersed users. Option D: Modular growth One of the significant advantages of distributed databases is their ability to support modular growth. Distributed architectures allow organizations to scale their database systems by adding or removing nodes (servers) as needed without significant disruptions to operations. This modular scalability enables organizations to adapt their database infrastructure to changing demands, such as increasing data volumes, user concurrency, or geographic expansion, without the need for costly and time-consuming migrations or overhauls. Therefore, in the context of advantages of distributed databases over centralized databases, the correct option is Modular growth (Option D).\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"Which programming language is commonly used for Data Science tasks?\",\"options\":[\"Java\",\"Python\",\"C++\",\"JavaScript\"],\"correctAnswer\":\"B\",\"explanation\":\"Let's look at why Python is the correct answer and why the others are not as commonly used for these specific tasks. Option B: Python (Correct Answer) Python is by far the most popular and widely used programming language for Data Science. Here's why it's the top choice: 1. Easy to Learn: Python has a simple and readable structure (syntax), which makes it easy for beginners to understand and write code. 2. Rich Libraries: Python has an amazing collection of specialized tools, called \\\"libraries,\\\" that are specifically designed for Data Science tasks. Some very important ones include: - NumPy: Great for working with numbers and large datasets efficiently. - Pandas: Used for cleaning, analyzing, and manipulating data, similar to working with advanced spreadsheets. - Scikit-learn: Essential for building machine learning models (like algorithms that learn from data to make predictions). - Matplotlib and Seaborn: Used for creating clear and beautiful charts and graphs to visualize data. 3. Versatility: Besides Data Science, Python is also used for web development, automation, and many other areas, making it a very powerful and useful language to know. Option A: Java Java is a powerful and robust language, often used in large enterprise systems and for building big data processing frameworks (like Apache Hadoop or Apache Spark). However, for the everyday tasks of data analysis, writing scripts for quick insights, or directly building machine learning models, Python is generally preferred because of its simpler code and specialized Data Science libraries. Option C: C++ C++ is known for its speed and efficiency. While some very performance-critical parts of Data Science libraries (especially those in Python) might be written in C++ \\\"behind the scenes\\\" to make them run faster, C++ itself is rarely used directly by Data Scientists for their daily coding tasks. It's much more complex and takes more time to write code in C++ compared to Python for data analysis. Option D: JavaScript JavaScript is mainly the language of the internet. It's used to make websites interactive and for developing web applications (both front-end and back-end with Node.js). While you can use JavaScript libraries (like D3.js) for some interactive data visualizations on the web, it is not the primary language for general data cleaning, statistical analysis, or building machine learning models in Data Science. In summary, when you start learning Data Science, Python is the first language you should focus on because of its ease of use, powerful libraries, and a large supportive community.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"\\\"Cloud\\\" in cloud computing represents what?\",\"options\":[\"Wireless\",\"Hard drives\",\"People\",\"Internet\"],\"correctAnswer\":\"D\",\"explanation\":\"In the realm of cloud computing , the term \\\" Cloud \\\" is emblematic of the Option D: Internet itself. Let's delve into it: Option A: Wireless refers to the mode of connectivity that allows data transmission without physical cables. While wireless technologies are essential for cloud access, they don't encapsulate the full essence of the term \\\" Cloud .\\\" Option B: Hard drives represent the physical storage devices that have been a cornerstone of computing for decades. However, the \\\" Cloud \\\" pertains to virtualized and distributed resources rather than specific hardware components. Option C: People might interact with cloud services, but the term \\\" Cloud \\\" doesn't directly represent individuals. Instead, it's an abstraction that symbolizes the underlying infrastructure. Option D: Internet is where the magic lies. The \\\" Cloud \\\" metaphorically stands for the vast, interconnected network of servers, databases, and services accessible over the Internet . Cloud computing involves delivering various resources and services over the Internet , allowing users to access and utilize them remotely without needing local infrastructure. So, in the context of \\\" Cloud \\\" in cloud computing, the answer is indeed Option D: Internet . This term encapsulates the notion of accessing and utilizing computing resources as if they were floating ubiquitously in the virtual skies of the Internet.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"The BEST way to define Virtualization in cloud computing is\",\"options\":[\"virtualization enables simulating compute, network, and storage service platforms from the underlying virtual hardware\",\"virtualization enables abstracting compute, network, and storage service platforms from the underlying physical hardware\",\"virtualization enables realization of compute, network, and storage service platforms from the underlying virtual hardware\",\"virtualization enables emulating compute, network, and storage service platforms from the underlying virtual hardware\"],\"correctAnswer\":\"B\",\"explanation\":\"In the realm of cloud computing , the most accurate way to define Virtualization is represented by Option B: virtualization enables abstracting compute, network, and storage service platforms from the underlying physical hardware . Let's break down the definition: Option A: virtualization enables simulating compute, network, and storage service platforms from the underlying virtual hardware has the concept correct, but the terminology is not quite aligned with the common understanding of virtualization. Virtualization doesn't necessarily \\\"simulate\\\" but rather \\\"abstracts\\\" the service platforms. Option C: virtualization enables realization of compute, network, and storage service platforms from the underlying virtual hardware uses the term \\\"realization,\\\" which doesn't precisely capture the abstraction that virtualization achieves. Option D: virtualization enables emulating compute, network, and storage service platforms from the underlying virtual hardware uses \\\"emulating,\\\" which might be interpreted as imitating rather than abstracting. Option B: virtualization enables abstracting compute, network, and storage service platforms from the underlying physical hardware encapsulates the essence of virtualization. It involves creating virtual instances of compute, network, and storage resources that appear and function as if they were separate from the underlying physical hardware. This abstraction allows for improved resource utilization, flexibility, and isolation in cloud computing environments. Hence, the most accurate definition of Virtualization in the context of cloud computing is Option B: virtualization enables abstracting compute, network, and storage service platforms from the underlying physical hardware . This option captures the core concept and terminology of virtualization.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"Which of the following is a value type in C#?\",\"options\":[\"int\",\"string\",\"class\",\"object\"],\"correctAnswer\":\"A\",\"explanation\":\"Explanation: The correct answer is A: int . Value Types vs. Reference Types: In C#, data types are categorized into two main groups: value types and reference types. Value Types: * Value types directly store the data within their own memory space. * When you copy a value type variable, you are creating a completely independent copy of the data. * Examples of value types include: int , float , bool , char , struct , and enum . Reference Types: * Reference types store a *reference* (or pointer) to the memory location where the actual data is stored. * When you copy a reference type variable, you are only copying the reference, not the data itself. Both variables will then point to the same location in memory. * Examples of reference types include: string , class , object , arrays , and interfaces . Why the other options are incorrect: * B: string - Strings are reference types in C#. * C: class - Classes are used to define objects, and they are reference types . * D: object - 'object' is the base class for all types in C#, and it is a reference type .\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"A/An . . . . . . . . contains programs that can be selected.\",\"options\":[\"pointer\",\"menu\",\"icon\",\"button\"],\"correctAnswer\":\"B\",\"explanation\":\"Option A: pointer This option suggests that a pointer contains programs that can be selected. This statement is incorrect. In computing, a pointer refers to a graphical symbol on the screen that indicates the position where the next action will take place, such as clicking or selecting items, but it does not contain programs that can be selected. Option B: menu This option suggests that a menu contains programs that can be selected. This statement is correct. In graphical user interfaces (GUIs) like Microsoft Windows, a menu is a list of commands or options displayed on the screen that users can select to perform actions. Menus typically contain various programs, commands, or settings that users can choose from to interact with applications and the operating system. Option C: icon This option suggests that an icon contains programs that can be selected. This statement is incorrect. Icons are graphical representations or symbols displayed on the screen that represent files, folders, applications, or functions. Clicking on an icon typically opens the associated file or starts the corresponding program, but icons themselves do not contain programs. Option D: button This option suggests that a button contains programs that can be selected. This statement is incorrect. Buttons in a graphical user interface (GUI) are interactive elements that users can click on to trigger specific actions or commands within applications or the operating system. However, buttons do not contain programs themselves; they execute predefined functions when clicked. Conclusion: The correct answer is Option B: menu because in computing and Microsoft Windows, a menu is a list of options or commands that users can select from to perform actions, such as opening programs, accessing settings, or executing commands. Menus are integral components of GUIs that provide users with a structured way to interact with software and operating systems.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"What is gutter margin?\",\"options\":[\"Margin that is added to the left margin when printing\",\"Margin that is added to right margin when printing\",\"Margin that is added to the binding side of page when printing\",\"Margin that is added to the outside of the page when printing\"],\"correctAnswer\":\"C\",\"explanation\":\"The gutter margin is a typographical term used to designate an additional margin added to a page layout to compensate for the part of the paper made unusable by the binding process. In a facing pages layout (Word refers to this type of layout as \\\"mirror margins\\\"), the gutter margin is on the very inside of both pages.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"In distributed systems, link and site failure is detected by . . . . . . . .\",\"options\":[\"polling\",\"handshaking\",\"token passing\",\"none of the mentioned\"],\"correctAnswer\":\"B\",\"explanation\":\"Option A: Polling refers to a mechanism where a central node periodically checks other nodes to see if they are functioning properly. While this can detect failure, it is not the most efficient or commonly used method in distributed systems for detecting link and site failures. Option B: Handshaking is a method where two nodes communicate with each other to confirm the status of the connection. In distributed systems, handshaking is a more common way of detecting failures because it allows both ends of the communication to verify the connection is still active, making it effective for detecting link and site failures. Option C: Token Passing is typically used in network protocols where nodes pass a token to each other to control access to a shared resource. While token passing ensures proper coordination between nodes, it is not primarily used for failure detection in distributed systems. Option D: None of the mentioned is incorrect, as both polling and handshaking could be used for failure detection, but handshaking is the most suitable answer for distributed systems. Conclusion: The correct answer is Option B: Handshaking , as it is the most reliable and commonly used method in distributed systems for detecting link and site failures.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"What data structure would you mostly likely see in non recursive implementation of a recursive algorithm?\",\"options\":[\"Stack\",\"Linked List\",\"Tree\",\"Queue\"],\"correctAnswer\":\"A\",\"explanation\":\"In recursive algorithms, the order in which the recursive process comes back is the reverse of the order in which it goes forward during execution. The compiler uses the stack data structure to implement recursion. In the forwarding phase, the values of local variables, parameters and the return address are pushed into the stack at each recursion level. In the backing-out phase, the stacked address is popped and used to execute the rest of the code.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"Which of the following is defined as the process of elimination of parts of a scene outside a window or a viewport?\",\"options\":[\"editing\",\"cutting\",\"plucking\",\"clipping\"],\"correctAnswer\":\"D\",\"explanation\":\"Clipping is the process of removing excess content from a project. Clipping is a way of selectively enabling or disabling rendering activities within a defined region of interest in computer graphics.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"Among the following process, which process is known as the elimination of parts of a scene outside a window or a viewport?\",\"options\":[\"editing\",\"plucking\",\"cutting\",\"clipping\"],\"correctAnswer\":\"D\",\"explanation\":\"Clipping is the process of removing excess content from a project. Clipping is a way of selectively enabling or disabling rendering activities within a defined region of interest in computer graphics.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"Which of the following is defined as the drawing of number of copies of the same image in rows and columns across the interface window so that they cover the entire window?\",\"options\":[\"Zooming\",\"Panning\",\"Tiling\",\"Roaming\"],\"correctAnswer\":\"C\",\"explanation\":\"‘Tilling’ is the process of drawing several copies of the same image in rows and columns across the interface window until the entire window is covered. In computer graphics, the window remains static while the viewpoint is modified multiple times to accomplish tiling.\",\"estimatedTime\":75,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"What is the purpose of memory refresh register of Z80?\",\"options\":[\"To control on-chip SRAM\",\"To control on-chip DRAM\",\"To clear cache\",\"To control ROM\"],\"correctAnswer\":\"B\",\"explanation\":\"In addition to the general purpose registers, a stack pointer, program counter, and two index registers are included in Z80. It was also used in many embedded designs because of its high-quality performance and for its in-built refresh circuitry for DRAMs.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"The initial alignments used to produce the guide tree may be obtained by various methods. Which of the following is not one of them?\",\"options\":[\"pattern-finding approach similar\",\"FASTA\",\"Faster, full dynamic programming method\",\"Fast k-tuple\"],\"correctAnswer\":\"C\",\"explanation\":\"The methods used, might be fast k-tuple or pattern-finding approach similar to FASTA that is useful for many sequences and the full dynamic programming method as well. But the option d becomes incorrect as full dynamic programming method is slower as compared to rest of the methods in options.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"In Genetic Algorithm, in the mutation process _______\",\"options\":[\"sequence is not changed\",\"sequence is changed\",\"gaps are not rearranged\",\"gaps are not inserted\"],\"correctAnswer\":\"A\",\"explanation\":\"In the mutation process, the sequence is not changed (else it would no longer be an alignment), but gaps are inserted and rearranged in an attempt to create a better-scoring MSA. In the gap insertion process, the sequences in a given MSA are divided into two groups based on an estimated phylogenetic tree, and gaps of random length are inserted into random positions in the alignment.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"4. Below is the pie graph showing mode of transport used by students of a class. Which is the most heavily used mode of transport?\",\"options\":[\"Bike\",\"Train\",\"Bus\",\"Walk\"],\"correctAnswer\":\"B\",\"explanation\":\"Pie graph shows relation between whole and its parts. 37% of class uses train as a mode of transport. Percentages of students using other mode of transport is lower than those using train.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"5. Below is the pie graph showing mode of transport used by students of a class. Which is the least used mode of transport?\",\"options\":[\"Bike\",\"Train\",\"Bus\",\"Walk 🎓 Register Today for Free C++ Certification - March 2026\"],\"correctAnswer\":\"A\",\"explanation\":\"Pie graph shows relation between whole and its parts. 11% of class uses bike as a mode of transport. Percentages of students using other mode of transport is higher than those using bike.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"6. Below is the pie graph showing mode of transport used by students of a class. 22% of class use which mode of transport?\",\"options\":[\"Bike\",\"Train\",\"Bus\",\"Walk\"],\"correctAnswer\":\"C\",\"explanation\":\"Pie graph shows relation between whole and its parts. According to the pie chart, 22% of class uses bus as a mode of transport. 37% use train, 30% use walk and 11% use bike as a mode of transport.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"7. Below is the pie graph showing mode of transport used by students of a class. Which mode of transport is used by more than 25% of class?\",\"options\":[\"Train and bike\",\"Bus and walk\",\"Bike and walk\",\"Walk and train\"],\"correctAnswer\":\"D\",\"explanation\":\"Pie graph shows relation between whole and its parts. According to the pie chart, 22% uses bus, 37% use train, 30% use walk and 11% use bike as a mode of transport. Thus, walk and train is used by more than 25% of class as mode of transport.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"8. Below is the pie graph showing mother tongue of people in a society. Which is the most spoken mother tongue of that society?\",\"options\":[\"Hindi\",\"Marathi\",\"Gujarati\",\"Telugu\"],\"correctAnswer\":\"C\",\"explanation\":\"Pie graph shows relation between whole and its parts. According to the pie chart, 38% of people in the society speak gujarati as their mother tongue. Percentage of people speaking other languages are lesser than 38%. Hence, gujarati is the most spoken mother tongue of the society.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"9. Below is the pie graph showing mother tongue of people in a society. Which is the least spoken mother tongue of that society?\",\"options\":[\"Hindi\",\"Marathi\",\"Gujarati\",\"Telugu\"],\"correctAnswer\":\"D\",\"explanation\":\"Pie graph shows relation between whole and its parts. According to the pie chart, 13% of people in the society speak telugu as their mother tongue. Percentage of people speaking other languages are greater than 13%. Hence, telugu is the least spoken mother tongue of the society.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"10. Below is the pie graph showing mother tongue of people in a society. Which language is spoken as mother tongue by 20% of people of that society?\",\"options\":[\"Hindi\",\"Marathi\",\"Gujarati\",\"Telugu Sanfoundry Global Education & Learning Series – Mathematics – Class 8 . To practice all chapters and topics of class 8 Mathematics, here is complete set of 1000+ Multiple Choice Questions and Answers . 👉 For weekly school and board exam practice updates, join Sanfoundry’s official WhatsApp & Telegram channels « Prev - Class 8 Maths MCQ – Data Handling – Bars with a Difference » Next - Class 8 Maths MCQ – Data Handling – Drawing a Pie Chart\"],\"correctAnswer\":\"A\",\"explanation\":\"Pie graph shows relation between whole and its parts. According to the pie chart, 20% of people in the society speak hindi as their mother tongue. 13% speak telugu, 29% speak marathi and 38% speak gujarati as mother tongue.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"4. Below is the pie graph showing sales of different items in first quarter of the year. If total sales of company are Rs 600000, how much is the sales of food in Rs.?\",\"options\":[\"96000\",\"120000\",\"240000\",\"144000\"],\"correctAnswer\":\"B\",\"explanation\":\"Pie graph shows relation between whole and its parts. 20% of sales of company is from food department. Total sales of company is Rs. 600000. Thus, sales of food department is Rs. 120000.\",\"estimatedTime\":75,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"5. Below is the pie graph showing sales of different items in first quarter of the year. If total sales of company are Rs 1000000, how much is the sales of electronics in Rs.?\",\"options\":[\"160000\",\"200000\",\"400000\",\"240000\"],\"correctAnswer\":\"A\",\"explanation\":\"Pie graph shows relation between whole and its parts. 16% of sales of company is from electronics department. Total sales of company is Rs. 1000000. Thus, sales of electronics department is Rs. 160000.\",\"estimatedTime\":75,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"7. Below is the pie graph showing colors picked by students of a class. If total students of class are 200, how many students picked red color?\",\"options\":[\"11\",\"44\",\"22\",\"66\"],\"correctAnswer\":\"C\",\"explanation\":\"Pie graph shows relation between whole and its parts. According to the pie chart, 11% of students picked red color. Total number of students of a class is 200. Thus, number of students who picked red color is 22.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"8. Below is the pie graph showing colors picked by students of a class. Number of students who picked blue color are 111. How many students were there in that class?\",\"options\":[\"200\",\"300\",\"100\",\"400\"],\"correctAnswer\":\"B\",\"explanation\":\"Pie graph shows relation between whole and its parts. According to the pie chart, 37% of students picked blue color. Total number of students who picked blue color is 111. Thus, total number of students of that class is 300.\",\"estimatedTime\":75,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"What will be the nature of the graph lines of the equations 5x-2y+9 and 15x-6y+1?\",\"options\":[\"Parallel\",\"Coincident\",\"Intersecting\",\"Perpendicular to each other\"],\"correctAnswer\":\"A\",\"explanation\":\"The given equations are 5x-2y+9 and 15x-6y+1. Here, a 1 =5, b 1 =-2, c 1 =9 and a 2 =15, b 2 =-6, c 2 =1 Now, \\\\(\\\\frac {a_1}{a_2} = \\\\frac {5}{15} = \\\\frac {1}{3}, \\\\frac {b_1}{b_2} = \\\\frac {-2 }{-6}=\\\\frac {1}{3}, \\\\frac {c_1}{c_2} = \\\\frac {9}{1} \\\\) Clearly, \\\\(\\\\frac {a_1}{a_2} =\\\\frac {b_1}{b_2} \\\\ne \\\\frac {c_1}{c_2} \\\\) Therefore, the graph lines of the equations will be parallel.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"What will be the velocity v/s time graph of a ball falling from a height before hitting the ground look like?\",\"options\":[\"A straight line with positive slope\",\"A straight line with negative slope\",\"A straight line with zero slope\",\"A parabola\"],\"correctAnswer\":\"A\",\"explanation\":\"As the ball falls down, its velocity increases. This is because of the acceleration due to gravity. Hence the graph looks like a straight line with positive slope. The first equation of motion verifies this.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"In the given diagram, one graph is of an ideal gas and another is of a real gas. Select the correct option.\",\"options\":[\"1-real gas, 2-ideal gas\",\"1-ideal gas, 2-real gas\",\"Both are for an ideal gas at different temperatures\",\"Their graphs cannot intersect More MCQs on Class 11 Physics Chapter 13: Chapter 13 – Kinetic Theory MCQ (Set 2) Chapter 13 – Kinetic Theory MCQ (Set 3) Chapter 13 – Kinetic Theory MCQ (Set 4) To practice all chapters and topics of class 11 Physics, here is complete set of 1000+ Multiple Choice Questions and Answers . 👉 For weekly school and board exam practice updates, join Sanfoundry’s official WhatsApp & Telegram channels « Prev - Class 11 Physics MCQ – Kinetic Theory – Molecular Nature of Matter » Next - Class 11 Physics MCQ – Kinetic Theory of an Ideal Gas Related Posts: Practice Class 11 - Mathematics MCQs Practice Class 11 - Biology MCQs Practice Class 11 - Chemistry MCQs Practice Class 12 - Physics MCQs Check Class 11 - Physics Books\"],\"correctAnswer\":\"B\",\"explanation\":\"Real gases, unlike ideal gases, consider volume taken up by molecules because of which mean free path decreases or collisions increase and hence pressure increases. So, at low volumes this factor will play a big role and thus for a particular volume in the low volume range, pressure of real gases will be higher. To see which graph belongs to whom we can draw a line parallel to the pressure axis at very low volume. The one having higher pressure will be that of real gases. Therefore, 2-real gas & 1-ideal gas.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"The displacement vs time graphs of 2 SHMs are given below. Which parameter is the same for both of them?\",\"options\":[\"Angular frequency\",\"Amplitude\",\"Maximum speed\",\"Phase constant\"],\"correctAnswer\":\"D\",\"explanation\":\"The time period is different for both as they both complete one cycle at different times. So, their angular frequencies will be different. The maximum displacement, as seen from the graph, is different for both so their amplitudes are different. SHMs have maximum speed at their mean positions. Both the curves have different slopes at their mean positions so their maximum velocities are different. At t=0, both are at their mean positions and going towards their positive extremes, therefore their phase constants will be the same.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"The graph given below represents energy as a function of position. What is the energy of the particle in SHM at x = +1? Given mass of the particle is 2kg, time period =2s, A=1m.\",\"options\":[\"4.87J\",\"-5J\",\"9.87J\",\"5J\"],\"correctAnswer\":\"A\",\"explanation\":\"w = 2π/T = π. Maximum kinetic energy = 1/2mA 2 w 2 , which will be at x=0. Total energy will be constant, therefore energy at x=0 is the same as the energy at x = +1. Thus, energy = 1/2mA 2 w 2 – 5 = (0.5*2*1*9.87) – 5 = 4.87J.\",\"estimatedTime\":75,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"Note the merging part has been written to show what’s going on here. If you were to actually use merge sort (or a similar algorithm) in Python, you would probably use heapq.merge to do the merging. BLACK BOX: TIMSORT The algorithm hiding in list.sort is one invented (and implemented) by Tim Peters, one of the big names in the Python community.7 The algorithm, aptly named timsort, replaces an earlier algorithm that had lots of tweaks to handle special cases such as segments of ascending and descending values, and the like. In timsort, these cases are handled by the general mechanism, so the performance is still there (and in some cases, it’s much improved), but the algorithm is cleaner and simpler. The algorithm is still a bit too involved to explain in detail here; I’ll try to give you a quick overview. For more details, take a look at the source.8 Timsort is a close relative to merge sort. It’s an in-place algorithm, in that it merges segments and leaves the result in the original array (although it uses some auxiliary memory during the merging). Instead of simply sorting the array half-and-half and then merging those, though, it starts at the beginning, looking for segments that are already sorted (possibly in reverse), called runs. In random arrays, there won’t be many, but in many kinds of real data, there may be a lot—giving the algorithm a clear edge over a plain merge sort and a linear running time in the best case (and that covers a lot of cases beyond simply getting a sequence that’s already sorted). As timsort iterates over the sequence, identifying runs and pushing their bounds onto a stack, it uses some heuristics to decide which runs are to be merged when. The idea is to avoid the kind of merge imbalance that would give you a quadratic running time while still exploiting the structure in the data (that is, the runs). First, any really short runs are artificially extended and sorted (using a stable insertion sort). Second, the following invariants are maintained for the three topmost runs on the stack, A, B, and C (with A on top): len(A) > len(B) + len(C) and len(B) > len(C). If the first invariant is violated, the smaller of A and C is merged with B, and the result replaces the merged runs in the stack. The second invariant may still not hold, and the merging continues until both invariants hold. The algorithm uses some other tricks as well, to get as much speed as possible. If you’re interested, I recommend you check out the source.9 If you’d rather not read C code, you could also take a look at the pure Python version of timsort, available as part of the PyPy project.10 Their implementation has excellent comments and is clearly written. (The PyPy project is discussed in Appendix A.) 7Timsort is, in fact, also used in Java SE 7, for sorting arrays. 8See, for example, the file listsort.txt in the source code (or online, http://svn.python.org/projects/python/trunk/ Objects/listsort.txt). 9You can find the actual C code at http://svn.python.org/projects/python/trunk/Objects/listobject.c. 10See https://bitbucket.org/pypy/pypy/src/default/rpython/rlib/listsort.py. Chapter 6 ■ Divide, Combine, and Conquer 127 How Fast Can We Sort? One important result about sorting is that divide-and-conquer algorithms such as merge sort are optimal; for arbitrary values (where we can figure out which is bigger) it’s impossible, in the worst case, to do any better than W(n lg n). An important case where this holds is when we sort arbitrary real numbers.11 Note ■ ■ Counting sort and its relatives (discussed in Chapter 4) seem to break this rule. Note that there we can’t sort arbitrary values—we need to be able to count occurrences, which means that the objects must be hashable, and we need to be able to iterate over the value range in linear time. How do we know this? The reasoning is actually quite simple. First insight: Because the values are arbitrary and we’re assuming that we can figure out only whether one of them is greater than another, each object comparison boils down to a yes/no question. Second insight: The number of orderings of n elements is n!, and we’re looking for exactly one of them. Where does that get us? We’re back to “think of a particle,” or, in this case, “think of a permutation.” This means that the best we can do is to use W(lg n!) yes/no questions (the comparisons) to get the right permutation (that is, to sort the numbers). And it just so happens that lg n! is asymptotically equivalent to n lg n.12 In other words, the running time in the worst case is W(lg n!) = W(n lg n). How, you say, do we arrive at this equivalence? The easiest way is to just use Stirling’s approximation, which says that n! is Q(nn). Take the logarithm and Bob’s your uncle.13 Now, we derived the bound for the worst case; using information theory (which I won’t go into here), it is, in fact, possible to show that this bound holds also in the average case. In other words, in a very real sense, unless we know something substantial about the value range or distribution of our data, loglinear is the best we can do. Three More Examples Before wrapping up this chapter with a slightly advanced (and optional) section, here are three examples for the road. The first two deal with computational geometry (where the divide-and-conquer strategy is frequently useful), while the last one is a relatively simple problem (with some interesting twists) on a sequence of numbers. I have only sketched the solutions, because the point is mainly to illustrate the design principle. Closest Pair The problem: You have a set of points in the plane, and you want to find the two that are closest to each other. The first idea that springs to mind is, perhaps, to use brute force: For each point, check all the others, or, at least, the ones we haven’t looked at yet. This is, by the handshake sum, a quadratic algorithm, of course. Using divide and conquer, we can get that down to loglinear. This is a rather nifty problem, so if you’re into puzzle-solving, you might want to try to solve it for yourself before reading my explanation. The fact that you should use divide and conquer (and that the resulting algorithm is loglinear) is a strong hint, but the solution is by no means obvious. 11Real numbers usually aren’t all that arbitrary, of course. As long as your numbers use a fixed number of bits, you can use radix sort (mentioned in Chapter 4) and sort the values in linear time. 12I think that’s so cool, I wanted to add an exclamation mark after the sentence ... but I guess that might have been a bit confusing, given the subject matter. 13Actually, the approximation isn’t asymptotic in nature. If you want the details, you’ll find them in any good mathematics reference. Chapter 6 ■ Divide, Combine, and Conquer 128 The structure of the algorithm follows almost directly from the (merge sort-like) loglinear divide-and-conquer schema: We’ll divide the points into two subsets, recursively find the closest pair in each, and then—in linear time—merge the results. By the power of induction/recursion (and the divide-and-conquer schema), we have now reduce the problem to this merging operation. But we can peel away even a bit more before we engage our creativity: The result of the merge must be either (1) the closest pair from the left side, (2) the closest pair on the right side, or (3) a pair consisting of one point from either side. In other words, what we need to do is find the closest pair “straddling” the division line. While doing this, we also have an upper limit to the distance involved (the minimum of the closest pairs from the left and right sides). Having drilled down to the essence of the problem, let’s look at how bad things can get. Let’s say, for the moment, that we have sorted all points in the middle region (of width 2d) by their y-coordinate. We then want to go through them in order, considering other points to see whether we find any points closer than d (the smallest distance found so far). For each point, how many other “neighbors” must we consider? This is where the crucial insight of the solution enters the picture: on either side of the midline, we know that all points are at least a distance of d apart. Because what we’re looking for is a pair at most a distance apart, straddling the midline, we need to consider only a vertical slice of height d (and width 2d) at any one time. And how many points can fit inside this region? Figure 6-7 illustrates the situation. We have no lower bounds on the distances between left and right, so in the worst case, we may have coinciding points on the middle line (highlighted). Beyond that, it’s quite easy to show that at most four points with a minimum distance of d can fit inside a d×d square, which we have on either side; see Exercise 6\",\"options\":[\"> len\",\"+ len\",\"and len\",\". If the first invariant is violated, the smaller of A and C is merged with B, and the result replaces the merged runs in the stack. The second invariant may still not hold, and the merging continues until both invariants hold. The algorithm uses some other tricks as well, to get as much speed as possible. If you’re interested, I recommend you check out the source.9 If you’d rather not read C code, you could also take a look at the pure Python version of timsort, available as part of the PyPy project.10 Their implementation has excellent comments and is clearly written. (The PyPy project is discussed in Appendix A.) 7Timsort is, in fact, also used in Java SE 7, for sorting arrays. 8See, for example, the file listsort.txt in the source code (or online, http://svn.python.org/projects/python/trunk/ Objects/listsort.txt). 9You can find the actual C code at http://svn.python.org/projects/python/trunk/Objects/listobject.c. 10See https://bitbucket.org/pypy/pypy/src/default/rpython/rlib/listsort.py. Chapter 6 ■ Divide, Combine, and Conquer 127 How Fast Can We Sort? One important result about sorting is that divide-and-conquer algorithms such as merge sort are optimal; for arbitrary values (where we can figure out which is bigger) it’s impossible, in the worst case, to do any better than W(n lg n). An important case where this holds is when we sort arbitrary real numbers.11 Note ■ ■ Counting sort and its relatives (discussed in Chapter 4) seem to break this rule. Note that there we can’t sort arbitrary values—we need to be able to count occurrences, which means that the objects must be hashable, and we need to be able to iterate over the value range in linear time. How do we know this? The reasoning is actually quite simple. First insight: Because the values are arbitrary and we’re assuming that we can figure out only whether one of them is greater than another, each object comparison boils down to a yes/no question. Second insight: The number of orderings of n elements is n!, and we’re looking for exactly one of them. Where does that get us? We’re back to “think of a particle,” or, in this case, “think of a permutation.” This means that the best we can do is to use W(lg n!) yes/no questions (the comparisons) to get the right permutation (that is, to sort the numbers). And it just so happens that lg n! is asymptotically equivalent to n lg n.12 In other words, the running time in the worst case is W(lg n!) = W(n lg n). How, you say, do we arrive at this equivalence? The easiest way is to just use Stirling’s approximation, which says that n! is Q(nn). Take the logarithm and Bob’s your uncle.13 Now, we derived the bound for the worst case; using information theory (which I won’t go into here), it is, in fact, possible to show that this bound holds also in the average case. In other words, in a very real sense, unless we know something substantial about the value range or distribution of our data, loglinear is the best we can do. Three More Examples Before wrapping up this chapter with a slightly advanced (and optional) section, here are three examples for the road. The first two deal with computational geometry (where the divide-and-conquer strategy is frequently useful), while the last one is a relatively simple problem (with some interesting twists) on a sequence of numbers. I have only sketched the solutions, because the point is mainly to illustrate the design principle. Closest Pair The problem: You have a set of points in the plane, and you want to find the two that are closest to each other. The first idea that springs to mind is, perhaps, to use brute force: For each point, check all the others, or, at least, the ones we haven’t looked at yet. This is, by the handshake sum, a quadratic algorithm, of course. Using divide and conquer, we can get that down to loglinear. This is a rather nifty problem, so if you’re into puzzle-solving, you might want to try to solve it for yourself before reading my explanation. The fact that you should use divide and conquer (and that the resulting algorithm is loglinear) is a strong hint, but the solution is by no means obvious. 11Real numbers usually aren’t all that arbitrary, of course. As long as your numbers use a fixed number of bits, you can use radix sort (mentioned in Chapter 4) and sort the values in linear time. 12I think that’s so cool, I wanted to add an exclamation mark after the sentence ... but I guess that might have been a bit confusing, given the subject matter. 13Actually, the approximation isn’t asymptotic in nature. If you want the details, you’ll find them in any good mathematics reference. Chapter 6 ■ Divide, Combine, and Conquer 128 The structure of the algorithm follows almost directly from the (merge sort-like) loglinear divide-and-conquer schema: We’ll divide the points into two subsets, recursively find the closest pair in each, and then—in linear time—merge the results. By the power of induction/recursion (and the divide-and-conquer schema), we have now reduce the problem to this merging operation. But we can peel away even a bit more before we engage our creativity: The result of the merge must be either (1) the closest pair from the left side, (2) the closest pair on the right side, or (3) a pair consisting of one point from either side. In other words, what we need to do is find the closest pair “straddling” the division line. While doing this, we also have an upper limit to the distance involved (the minimum of the closest pairs from the left and right sides). Having drilled down to the essence of the problem, let’s look at how bad things can get. Let’s say, for the moment, that we have sorted all points in the middle region (of width 2d) by their y-coordinate. We then want to go through them in order, considering other points to see whether we find any points closer than d (the smallest distance found so far). For each point, how many other “neighbors” must we consider? This is where the crucial insight of the solution enters the picture: on either side of the midline, we know that all points are at least a distance of d apart. Because what we’re looking for is a pair at most a distance apart, straddling the midline, we need to consider only a vertical slice of height d (and width 2d) at any one time. And how many points can fit inside this region? Figure 6-7 illustrates the situation. We have no lower bounds on the distances between left and right, so in the worst case, we may have coinciding points on the middle line (highlighted). Beyond that, it’s quite easy to show that at most four points with a minimum distance of d can fit inside a d×d square, which we have on either side; see Exercise 6\"],\"correctAnswer\":\"A\",\"explanation\":\"This question is mapped to Data Structures - Trees. The correct answer is A based on the original source question.\",\"estimatedTime\":75,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"The optimal data structure used to solve Tower of Hanoi is _________\",\"options\":[\"Tree\",\"Heap\",\"Priority queue\",\"Stack\"],\"correctAnswer\":\"D\",\"explanation\":\"The Tower of Hanoi involves moving of disks ‘stacked’ at one peg to another peg with respect to the size constraint. It is conveniently done using stacks and priority queues. Stack approach is widely used to solve Tower of Hanoi.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"Which of the following is the simplest data structure that supports range searching?\",\"options\":[\"AA-trees\",\"K-d trees\",\"Heaps\",\"binary search trees\"],\"correctAnswer\":\"B\",\"explanation\":\"K-d trees are the simplest data structure that supports range searching and also it achieves the respectable running time.\",\"estimatedTime\":45,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]},{\"questionText\":\"In a graphical system, an array of pixels in the picture are stored in which of the following locations?\",\"options\":[\"Frame buffer\",\"Processor\",\"Memory\",\"All of the mentioned\"],\"correctAnswer\":\"A\",\"explanation\":\"The main purpose of using a framer buffer is to store pixels.\",\"estimatedTime\":60,\"subtopic\":\"Data Structures - Trees\",\"tags\":[\"data-structures\",\"technical\",\"tree\",\"binary tree\",\"bst\"]}]}",
+  "parsed": {
+    "questions": [
+      {
+        "questionText": "In simple chaining, what data structure is appropriate? Data Structure MCQ on Abstract Data Types Multiple Choice Questions on Application of Stacks Data Structure MCQ on Arrays Types Data Structure MCQ on Types of Lists Multiple Choice Questions on Binary Trees Data Structure MCQs on B-Trees Data Structure MCQ on Trees MCQ on Heap Data Structure Multiple Choice Questions on Trie Data Structure MCQ on Hash Tables Data Structure MCQ on Graph",
+        "options": [
+          "Doubly linked list",
+          "Circular linked list",
+          "Singly linked list",
+          "Binary trees Chapterwise Multiple Choice Questions on Data Structure Our 1000+ multiple choice questions and answers (MCQs) on “Data Structure – I” (along with 1000+ MCQs on “Data Structure – II (Algorithms)”) focuses on all chapters of Data Structure covering 200+ topics. You can find MCQs on Data Structure – II (Algorithms) here . This Data Structure MCQ will help you to prepare for exams, contests, online tests, quizzes, viva-voce, interviews, and certifications. You can practice these MCQs chapter by chapter starting from the 1st chapter or you can jump to any chapter of your choice. Abstract Data Types Application of Stacks Arrays Types Types of Lists Binary Trees B-Trees Trees Heap Trie Hash Tables Graph The section contains Data Structure multiple choice questions and answers on arrays, stacks, queues, single linked lists, doubly and circular linked lists, stacks using arrays and linked lists, queues using arrays, stacks and linked lists, priority queues and double ended queues. Array and Array Operations Stack Operations – 1 Stack Operations – 2 Stack Operations – 3 Queue Operations Singly Linked Lists Operations – 1 Singly Linked Lists Operations – 2 Singly Linked Lists Operations – 3 Singly Linked Lists Doubly Linked Lists Circular Linked Lists Stack using Array Stack using Linked List Queue using Array Queue using Linked List Priority Queue Double Ended Queue (Deque) Queue using Stacks Stack using Queues The section contains Data Structure questions and answers on decimal to binary using stacks, towers of hanoi, expression evaluation of infix, prefix and postfix, conversions like infix to postfix, postfix to infix, prefix to infix and infix to prefix conversions, reversing the word using stack and balanced parenthesis. Decimal to Binary using Stacks Evaluation of an Infix Expression (Not Parenthesized) Evaluation of a Prefix Expression Evaluation of a Postfix Expression Infix to Prefix Conversion Infix to Postfix Conversion Prefix to Infix Conversion Postfix to Infix Conversion Towers of Hanoi Reverse a Word using Stack Balanced Parenthesis The section contains Data Structure MCQs on bit array, dynamic and parallel array, count inversion, rotation and reversal array operations, end array operations, sparse and suffix array, matrix and sparse matrix. Bit Array Dynamic Array Variable Length Array Parallel Array Sparse Array Suffix Array Matrix Sparse Matrix Count Inversion Rotation Array Operation Reversal Array Operation Number of Jumps to Reach End-array Operation The section contains Data Structure multiple choice questions and answers on skip list, self organizing list, xor linked list and free list. Skip List Self Organizing List Unrolled Linked List Xor Linked List Free List Triply Linked List The section contains Data Structure questions and answers on binary trees using arrays and linked lists, preorder, postorder and inorder traversal, avl tree, binary tree properties and operations, cartesian tree, weight balanced tree, red black and splay trees, threaded binary tree and binary search trees, aa tree, top tree, treap, tango tree and rope. Binary Trees using Array Binary Trees using Linked Lists Binary Tree Operations Preorder Traversal Postorder Traversal Inorder Traversal Binary Tree Properties Binary Search Tree Balanced Binary Tree Self Balancing Binary Search Tree Randomized Binary Search Tree AA Tree AVL Tree Cartesian Tree Weight Balanced Tree Red Black Tree Top Tree Splay Tree Treap Threaded Binary Tree Tango Tree Rope The section contains Data Structure MCQs on b tree, b+ tree and 2-3 tree. B-Tree B+ Tree 2-3 Tree The section contains Data Structure multiple choice questions and answers on trees like ternary tree, k-ary tree, kd tree, expression tree, bin, van emde boas tree and disjoint set data structure. Ternary Tree – 1 Ternary Tree – 2 K-ary Tree – 1 K-ary Tree – 2 Van Emde Boas Tree Disjoint-Set Data Structure Bin KD Tree Abstract Syntax Tree Parse Tree Expression Tree The section contains Data Structure questions and answers on heap, binary and weak heap, binomial and fibonacci heap, d ary heap, ternary heap, pairing and leftlist heap, skew heap, min and max heap. Heap Binary Heap Weak Heap Binomial and Fibonacci Heap D-ary Heap Ternary Heap – 1 Ternary Heap – 2 Pairing Heap Leftlist Heap Skew Heap Min/Max Heap The section contains Data Structure MCQs on trie and suffix tree. Trie Suffix Tree – 1 Suffix Tree – 2 The section contains Data Structure multiple choice questions and answers on hash tables, direct addressing tables, hash tables chaining using linked lists, doubly linked lists, binary trees and list heads, hash tables with linear and quadratic probing, hashing functions, hash tree, min hash and double hashing. Hash Tables Hash Tables Chaining using Linked Lists Hash Tables Chaining using Doubly Linked Lists Hash Tables Chaining with Binary Trees Hash Tables Chaining with List Heads Hash Tables with Linear Probing Hash Tables with Quadratic Probing Hashing Functions Double Hashing Hash Tree Min Hash Direct Addressing Tables The section contains Data Structure questions and answers on graph, adjacency matrix, incidence matrix, adjacency list, directed and undirected graph, directed acyclic graphs, multigraph and hypergraph, binary decision diagrams & and-inverter graph. Graph Adjacency Matrix Incidence Matrix and Graph Structured Stack Adjacency List Undirected Graph Directed Graph Directed Acyclic Graph Propositional and Directed Acyclic Word Graph Multigraph and Hypergraph Binary Decision Diagrams & and Inverter Graph To build strong practical confidence, work through the complete set of 1000+ MCQs listed above, which is especially useful for candidates preparing for exams and interviews. Important Links: Design & Analysis of Algorithms Multiple Choice Questions C Multiple Choice Questions C++ Multiple Choice Questions Java Multiple Choice Questions Python Multiple Choice Questions C# Multiple Choice Questions Computer Science Multiple Choice Questions Data Structure and Algorithms Books Data Structure Online Test"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Deletion becomes easier with doubly linked list, hence it is appropriate.",
+        "estimatedTime": 75,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "The data structure required for Breadth First Traversal on a graph is?",
+        "options": [
+          "Array",
+          "Stack",
+          "Tree",
+          "Queue"
+        ],
+        "correctAnswer": "D",
+        "explanation": "In Breadth First Search Traversal, BFS, starting vertex is first taken and adjacent vertices which are unvisited are also taken. Again, the first vertex which was added as an unvisited adjacent vertex list will be considered to add further unvisited vertices of the graph. To get the first unvisited vertex we need to follows First In First Out principle. Queue uses FIFO principle.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "Checked – Compile time) Checked exception can be handled using throws and try-catch public class CheckedExceptions { public static void main(String[] args) throws IOException { System.out.println(\"Program is started..\"); System.out.println(\"Program is progress..\"); // try { FileInputStream file=new FileInputStream(\"C:\\\\file.txt\"); } catch (FileNotFoundException e) { e.printStackTrace(); } // FileInputStream file=new FileInputStream(\"C:\\\\file.txt\"); System.out.println(file.read()); System.out.println(\"Program is completed..\"); try-catch throws Collections: The Collections Framework in Java provides a set of interfaces and classes to store and manage objects efficiently. Collection (Interface) List (I) Set (I) Map (I) Ordered, allows duplicates Unordered, no duplicates stored in the form of key, value pairs ArrayList (C)→ Dynamic array, fast access HashSet (C) → Uses HashMap internally, no order HashMap (C) LinkedList (C)→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {",
+        "options": [
+          "→ Dynamic array, fast access HashSet",
+          "→ Uses HashMap internally, no order HashMap",
+          "LinkedList",
+          "→ Doubly linked list, fast insert/delete Unordered, allows one null key, fast lookup ArrayList: ArrayList is a class in Java that implements the List interface, which is part of the java.util package. An ArrayList in Java is a resizable array that is part of the java.util package. Unlike a normal array, which has a fixed size, an ArrayList can grow and shrink dynamically. Key Features: • Heterogeneous data - allowed • Insertion order- preserved (Index) • Duplicate elements - allowed • Multiple nulls - allowed Important Methods: • add(), add(index, element), get(), set(), remove(), contains(), size(), isEmpty(), clear() • Iterating using for-loop, foreach-loop, Iterator HashSet: HashSet is a class in Java that implements the Set interface, which is part of the java.util package. Key Features: • Heterogeneous data - allowed • Insertion order - Not preserved (Index not supported) • Duplicate elements - Not Allowed • Multiple nulls - Not allowed / only single null is allowed HashMap: HashMap is a class in Java that implements the Map interface and is used to store key-value pairs. Key Features: • Heterogeneous data - allowed • Data can be stored in the form of key, value pairs. • Key is unique. But we can have duplicate values. • Insertion order not preserved (Index not followed) • Allows one null key but multiple null values ArrayList Example : import java.util.ArrayList; import java.util.Iterator; public class ArrayListExample { public static void main(String[] args) {"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question is mapped to Data Structures - Trees. The correct answer is A based on the original source question.",
+        "estimatedTime": 75,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "Which of the following is also known as Rope data structure?",
+        "options": [
+          "Linked List",
+          "Array",
+          "String",
+          "Cord"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Array is a linear data structure. Strings are a collection and sequence of codes, alphabets or characters. Linked List is a linear data structure having a node containing data input and the address of the next node. The cord is also known as the rope data structure.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "Which of the following data structure can provide efficient searching of the elements?",
+        "options": [
+          "binary search tree",
+          "unordered lists",
+          "2-3 tree",
+          "treap"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The average case time for lookup in a binary search tree, treap and 2-3 tree is O(log n) and in unordered lists it is O(n). But in the worst case, only the 2-3 trees perform lookup efficiently as it takes O(log n), while others take O(n).",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "Which graph represents relation between whole and its parts?",
+        "options": [
+          "Histogram",
+          "Pie graph",
+          "Line graph",
+          "Stacked bar graph"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The correct answer is pie graph as pie graph represents relationship between whole and its parts. Histogram is represented with bars of equal width with no gap between adjacent bars. The height of the bar represents the number of data items in the given data range called frequency. Line graph is a line joining all the data points. A stacked bar graph is a chart that uses bars to show comparisons between categories of data with ability to break down and compare parts of a whole.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "In a binary search tree which traversal visits the nodes in ascending order?",
+        "options": [
+          "Preorder",
+          "Inorder",
+          "Postorder",
+          "Levelorder"
+        ],
+        "correctAnswer": "B",
+        "explanation": "This question is mapped to Data Structures - Trees. The correct answer is B based on the original source question.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "Which of the following is not the application of stack?",
+        "options": [
+          "Data Transfer between two asynchronous process",
+          "Compiler Syntax Analyzer",
+          "Tracking of local variables at run time",
+          "A parentheses balancing program"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Data transfer between the two asynchronous process uses the queue data structure for synchronisation. The rest are all stack applications.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "Which of the following tree data structures is not a balanced binary tree?",
+        "options": [
+          "Splay tree",
+          "B-tree",
+          "AVL tree",
+          "Red-black tree"
+        ],
+        "correctAnswer": "B",
+        "explanation": "All the tree data structures given in options are balanced, but B-tree can have more than two children.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "Which algorithm is used in the top tree data structure?",
+        "options": [
+          "Backtracking",
+          "Divide and Conquer",
+          "Branch",
+          "Greedy"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Top tree is a type of data structure which is based on unrooted dynamic binary tree and is used to solve path related problems. It allows an algorithm called divide and conquer.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "Which process of water treatment is done to avoid floating debris, branches, trees, or other large particles suspended in water?",
+        "options": [
+          "Primary sedimentation",
+          "Secondary sedimentation",
+          "Screening",
+          "Aeration"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Screens are used as a pretreatment process for purification of water to avoid large size suspended materials from water.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "In which of the following trusses, the method of substitution is required for determining the forces in all the members of the truss by graphic statics?",
+        "options": [
+          "Howe truss",
+          "King post truss",
+          "Fink truss",
+          "Warren truss"
+        ],
+        "correctAnswer": "C",
+        "explanation": "* Truss: A structure made of connected straight members forming triangles. * Graphic Statics: A visual way to analyze forces in trusses using diagrams. * Method of Substitution: A technique where you temporarily remove a member and replace it with an equivalent force to solve for unknowns, then put the member back in and adjust calculations. Now, let's look at the options: * A: Howe Truss: These are generally straightforward to solve with basic graphic statics, without needing substitution. * B: King Post Truss: Also usually simple and solvable without substitution. * C: Fink Truss: This type of truss often has complex geometry, making it statically indeterminate . This means you *cannot* solve for all the forces using just simple equilibrium equations at each joint with graphic statics alone initially. The method of substitution is often required to determine the forces in all the members. * D: Warren Truss: Warren trusses are often solvable using standard graphic statics methods. Therefore, the answer is C: Fink truss . Fink trusses commonly require the method of substitution due to their geometry.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "Which of the following points is/are not true about Linked List data structure when it is compared with an array?",
+        "options": [
+          "Random access is not allowed in a typical implementation of Linked Lists",
+          "Access of elements in linked list takes less time than compared to arrays",
+          "Arrays have better cache locality that can make them better in terms of performance",
+          "It is easy to insert and delete elements in Linked List"
+        ],
+        "correctAnswer": "B",
+        "explanation": "To access an element in a linked list, we need to traverse every element until we reach the desired element. This will take more time than arrays as arrays provide random access to its elements.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "Which of the following application makes use of a circular linked list?",
+        "options": [
+          "Recursive function calls",
+          "Undo operation in a text editor",
+          "Implement Hash Tables",
+          "Allocating CPU to resources"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Generally, round robin fashion is employed to allocate CPU time to resources which makes use of the circular linked list data structure. Recursive function calls use stack data structure. Undo Operation in text editor uses doubly linked lists. Hash tables uses singly linked lists.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "What is the need for a circular queue?",
+        "options": [
+          "easier computations",
+          "implement LIFO principle in queues",
+          "effective usage of memory",
+          "to delete elements based on priority"
+        ],
+        "correctAnswer": "C",
+        "explanation": "In a linear queue, dequeue operation causes the starting elements of the array to be empty, and there is no way you can use that space, while in a circular queue, you can effectively use that space. Priority queue is used to delete the elements based on their priority. Higher priority elements will be deleted first whereas lower priority elements will be deleted next. Queue data structure always follows FIFO principle.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "A distributed database has which of the following advantages over a centralized database?",
+        "options": [
+          "Software cost",
+          "Software complexity",
+          "Slow Response",
+          "Modular growth"
+        ],
+        "correctAnswer": "D",
+        "explanation": "A distributed database offers several advantages over a centralized database architecture. Option A: Software cost This option is not typically considered an advantage of distributed databases over centralized databases. The cost of software can vary based on factors such as licensing models, vendor pricing, and the specific requirements of the database system. Both distributed and centralized databases may incur software costs depending on the technologies used and the scale of deployment. Option B: Software complexity While distributed databases may introduce additional complexity compared to centralized databases due to factors such as network communication, data replication, and synchronization mechanisms, this complexity is often outweighed by the benefits they offer, such as improved scalability, fault tolerance, and performance. Additionally, advancements in distributed database technologies have led to the development of tools and frameworks that help manage and mitigate the complexity associated with distributed systems. Option C: Slow Response Distributed databases are designed to enhance responsiveness and performance by distributing data across multiple sites and allowing parallel processing of queries. While network latency and communication overhead can affect response times in distributed systems, proper design, optimization, and caching mechanisms can mitigate these issues. In many cases, distributed databases can provide faster response times compared to centralized databases, especially for geographically dispersed users. Option D: Modular growth One of the significant advantages of distributed databases is their ability to support modular growth. Distributed architectures allow organizations to scale their database systems by adding or removing nodes (servers) as needed without significant disruptions to operations. This modular scalability enables organizations to adapt their database infrastructure to changing demands, such as increasing data volumes, user concurrency, or geographic expansion, without the need for costly and time-consuming migrations or overhauls. Therefore, in the context of advantages of distributed databases over centralized databases, the correct option is Modular growth (Option D).",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "Which programming language is commonly used for Data Science tasks?",
+        "options": [
+          "Java",
+          "Python",
+          "C++",
+          "JavaScript"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Let's look at why Python is the correct answer and why the others are not as commonly used for these specific tasks. Option B: Python (Correct Answer) Python is by far the most popular and widely used programming language for Data Science. Here's why it's the top choice: 1. Easy to Learn: Python has a simple and readable structure (syntax), which makes it easy for beginners to understand and write code. 2. Rich Libraries: Python has an amazing collection of specialized tools, called \"libraries,\" that are specifically designed for Data Science tasks. Some very important ones include: - NumPy: Great for working with numbers and large datasets efficiently. - Pandas: Used for cleaning, analyzing, and manipulating data, similar to working with advanced spreadsheets. - Scikit-learn: Essential for building machine learning models (like algorithms that learn from data to make predictions). - Matplotlib and Seaborn: Used for creating clear and beautiful charts and graphs to visualize data. 3. Versatility: Besides Data Science, Python is also used for web development, automation, and many other areas, making it a very powerful and useful language to know. Option A: Java Java is a powerful and robust language, often used in large enterprise systems and for building big data processing frameworks (like Apache Hadoop or Apache Spark). However, for the everyday tasks of data analysis, writing scripts for quick insights, or directly building machine learning models, Python is generally preferred because of its simpler code and specialized Data Science libraries. Option C: C++ C++ is known for its speed and efficiency. While some very performance-critical parts of Data Science libraries (especially those in Python) might be written in C++ \"behind the scenes\" to make them run faster, C++ itself is rarely used directly by Data Scientists for their daily coding tasks. It's much more complex and takes more time to write code in C++ compared to Python for data analysis. Option D: JavaScript JavaScript is mainly the language of the internet. It's used to make websites interactive and for developing web applications (both front-end and back-end with Node.js). While you can use JavaScript libraries (like D3.js) for some interactive data visualizations on the web, it is not the primary language for general data cleaning, statistical analysis, or building machine learning models in Data Science. In summary, when you start learning Data Science, Python is the first language you should focus on because of its ease of use, powerful libraries, and a large supportive community.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "\"Cloud\" in cloud computing represents what?",
+        "options": [
+          "Wireless",
+          "Hard drives",
+          "People",
+          "Internet"
+        ],
+        "correctAnswer": "D",
+        "explanation": "In the realm of cloud computing , the term \" Cloud \" is emblematic of the Option D: Internet itself. Let's delve into it: Option A: Wireless refers to the mode of connectivity that allows data transmission without physical cables. While wireless technologies are essential for cloud access, they don't encapsulate the full essence of the term \" Cloud .\" Option B: Hard drives represent the physical storage devices that have been a cornerstone of computing for decades. However, the \" Cloud \" pertains to virtualized and distributed resources rather than specific hardware components. Option C: People might interact with cloud services, but the term \" Cloud \" doesn't directly represent individuals. Instead, it's an abstraction that symbolizes the underlying infrastructure. Option D: Internet is where the magic lies. The \" Cloud \" metaphorically stands for the vast, interconnected network of servers, databases, and services accessible over the Internet . Cloud computing involves delivering various resources and services over the Internet , allowing users to access and utilize them remotely without needing local infrastructure. So, in the context of \" Cloud \" in cloud computing, the answer is indeed Option D: Internet . This term encapsulates the notion of accessing and utilizing computing resources as if they were floating ubiquitously in the virtual skies of the Internet.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "The BEST way to define Virtualization in cloud computing is",
+        "options": [
+          "virtualization enables simulating compute, network, and storage service platforms from the underlying virtual hardware",
+          "virtualization enables abstracting compute, network, and storage service platforms from the underlying physical hardware",
+          "virtualization enables realization of compute, network, and storage service platforms from the underlying virtual hardware",
+          "virtualization enables emulating compute, network, and storage service platforms from the underlying virtual hardware"
+        ],
+        "correctAnswer": "B",
+        "explanation": "In the realm of cloud computing , the most accurate way to define Virtualization is represented by Option B: virtualization enables abstracting compute, network, and storage service platforms from the underlying physical hardware . Let's break down the definition: Option A: virtualization enables simulating compute, network, and storage service platforms from the underlying virtual hardware has the concept correct, but the terminology is not quite aligned with the common understanding of virtualization. Virtualization doesn't necessarily \"simulate\" but rather \"abstracts\" the service platforms. Option C: virtualization enables realization of compute, network, and storage service platforms from the underlying virtual hardware uses the term \"realization,\" which doesn't precisely capture the abstraction that virtualization achieves. Option D: virtualization enables emulating compute, network, and storage service platforms from the underlying virtual hardware uses \"emulating,\" which might be interpreted as imitating rather than abstracting. Option B: virtualization enables abstracting compute, network, and storage service platforms from the underlying physical hardware encapsulates the essence of virtualization. It involves creating virtual instances of compute, network, and storage resources that appear and function as if they were separate from the underlying physical hardware. This abstraction allows for improved resource utilization, flexibility, and isolation in cloud computing environments. Hence, the most accurate definition of Virtualization in the context of cloud computing is Option B: virtualization enables abstracting compute, network, and storage service platforms from the underlying physical hardware . This option captures the core concept and terminology of virtualization.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "Which of the following is a value type in C#?",
+        "options": [
+          "int",
+          "string",
+          "class",
+          "object"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Explanation: The correct answer is A: int . Value Types vs. Reference Types: In C#, data types are categorized into two main groups: value types and reference types. Value Types: * Value types directly store the data within their own memory space. * When you copy a value type variable, you are creating a completely independent copy of the data. * Examples of value types include: int , float , bool , char , struct , and enum . Reference Types: * Reference types store a *reference* (or pointer) to the memory location where the actual data is stored. * When you copy a reference type variable, you are only copying the reference, not the data itself. Both variables will then point to the same location in memory. * Examples of reference types include: string , class , object , arrays , and interfaces . Why the other options are incorrect: * B: string - Strings are reference types in C#. * C: class - Classes are used to define objects, and they are reference types . * D: object - 'object' is the base class for all types in C#, and it is a reference type .",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "A/An . . . . . . . . contains programs that can be selected.",
+        "options": [
+          "pointer",
+          "menu",
+          "icon",
+          "button"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Option A: pointer This option suggests that a pointer contains programs that can be selected. This statement is incorrect. In computing, a pointer refers to a graphical symbol on the screen that indicates the position where the next action will take place, such as clicking or selecting items, but it does not contain programs that can be selected. Option B: menu This option suggests that a menu contains programs that can be selected. This statement is correct. In graphical user interfaces (GUIs) like Microsoft Windows, a menu is a list of commands or options displayed on the screen that users can select to perform actions. Menus typically contain various programs, commands, or settings that users can choose from to interact with applications and the operating system. Option C: icon This option suggests that an icon contains programs that can be selected. This statement is incorrect. Icons are graphical representations or symbols displayed on the screen that represent files, folders, applications, or functions. Clicking on an icon typically opens the associated file or starts the corresponding program, but icons themselves do not contain programs. Option D: button This option suggests that a button contains programs that can be selected. This statement is incorrect. Buttons in a graphical user interface (GUI) are interactive elements that users can click on to trigger specific actions or commands within applications or the operating system. However, buttons do not contain programs themselves; they execute predefined functions when clicked. Conclusion: The correct answer is Option B: menu because in computing and Microsoft Windows, a menu is a list of options or commands that users can select from to perform actions, such as opening programs, accessing settings, or executing commands. Menus are integral components of GUIs that provide users with a structured way to interact with software and operating systems.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "What is gutter margin?",
+        "options": [
+          "Margin that is added to the left margin when printing",
+          "Margin that is added to right margin when printing",
+          "Margin that is added to the binding side of page when printing",
+          "Margin that is added to the outside of the page when printing"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The gutter margin is a typographical term used to designate an additional margin added to a page layout to compensate for the part of the paper made unusable by the binding process. In a facing pages layout (Word refers to this type of layout as \"mirror margins\"), the gutter margin is on the very inside of both pages.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "In distributed systems, link and site failure is detected by . . . . . . . .",
+        "options": [
+          "polling",
+          "handshaking",
+          "token passing",
+          "none of the mentioned"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Option A: Polling refers to a mechanism where a central node periodically checks other nodes to see if they are functioning properly. While this can detect failure, it is not the most efficient or commonly used method in distributed systems for detecting link and site failures. Option B: Handshaking is a method where two nodes communicate with each other to confirm the status of the connection. In distributed systems, handshaking is a more common way of detecting failures because it allows both ends of the communication to verify the connection is still active, making it effective for detecting link and site failures. Option C: Token Passing is typically used in network protocols where nodes pass a token to each other to control access to a shared resource. While token passing ensures proper coordination between nodes, it is not primarily used for failure detection in distributed systems. Option D: None of the mentioned is incorrect, as both polling and handshaking could be used for failure detection, but handshaking is the most suitable answer for distributed systems. Conclusion: The correct answer is Option B: Handshaking , as it is the most reliable and commonly used method in distributed systems for detecting link and site failures.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "What data structure would you mostly likely see in non recursive implementation of a recursive algorithm?",
+        "options": [
+          "Stack",
+          "Linked List",
+          "Tree",
+          "Queue"
+        ],
+        "correctAnswer": "A",
+        "explanation": "In recursive algorithms, the order in which the recursive process comes back is the reverse of the order in which it goes forward during execution. The compiler uses the stack data structure to implement recursion. In the forwarding phase, the values of local variables, parameters and the return address are pushed into the stack at each recursion level. In the backing-out phase, the stacked address is popped and used to execute the rest of the code.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "Which of the following is defined as the process of elimination of parts of a scene outside a window or a viewport?",
+        "options": [
+          "editing",
+          "cutting",
+          "plucking",
+          "clipping"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Clipping is the process of removing excess content from a project. Clipping is a way of selectively enabling or disabling rendering activities within a defined region of interest in computer graphics.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "Among the following process, which process is known as the elimination of parts of a scene outside a window or a viewport?",
+        "options": [
+          "editing",
+          "plucking",
+          "cutting",
+          "clipping"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Clipping is the process of removing excess content from a project. Clipping is a way of selectively enabling or disabling rendering activities within a defined region of interest in computer graphics.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "Which of the following is defined as the drawing of number of copies of the same image in rows and columns across the interface window so that they cover the entire window?",
+        "options": [
+          "Zooming",
+          "Panning",
+          "Tiling",
+          "Roaming"
+        ],
+        "correctAnswer": "C",
+        "explanation": "‘Tilling’ is the process of drawing several copies of the same image in rows and columns across the interface window until the entire window is covered. In computer graphics, the window remains static while the viewpoint is modified multiple times to accomplish tiling.",
+        "estimatedTime": 75,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "What is the purpose of memory refresh register of Z80?",
+        "options": [
+          "To control on-chip SRAM",
+          "To control on-chip DRAM",
+          "To clear cache",
+          "To control ROM"
+        ],
+        "correctAnswer": "B",
+        "explanation": "In addition to the general purpose registers, a stack pointer, program counter, and two index registers are included in Z80. It was also used in many embedded designs because of its high-quality performance and for its in-built refresh circuitry for DRAMs.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "The initial alignments used to produce the guide tree may be obtained by various methods. Which of the following is not one of them?",
+        "options": [
+          "pattern-finding approach similar",
+          "FASTA",
+          "Faster, full dynamic programming method",
+          "Fast k-tuple"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The methods used, might be fast k-tuple or pattern-finding approach similar to FASTA that is useful for many sequences and the full dynamic programming method as well. But the option d becomes incorrect as full dynamic programming method is slower as compared to rest of the methods in options.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "In Genetic Algorithm, in the mutation process _______",
+        "options": [
+          "sequence is not changed",
+          "sequence is changed",
+          "gaps are not rearranged",
+          "gaps are not inserted"
+        ],
+        "correctAnswer": "A",
+        "explanation": "In the mutation process, the sequence is not changed (else it would no longer be an alignment), but gaps are inserted and rearranged in an attempt to create a better-scoring MSA. In the gap insertion process, the sequences in a given MSA are divided into two groups based on an estimated phylogenetic tree, and gaps of random length are inserted into random positions in the alignment.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "4. Below is the pie graph showing mode of transport used by students of a class. Which is the most heavily used mode of transport?",
+        "options": [
+          "Bike",
+          "Train",
+          "Bus",
+          "Walk"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Pie graph shows relation between whole and its parts. 37% of class uses train as a mode of transport. Percentages of students using other mode of transport is lower than those using train.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "5. Below is the pie graph showing mode of transport used by students of a class. Which is the least used mode of transport?",
+        "options": [
+          "Bike",
+          "Train",
+          "Bus",
+          "Walk 🎓 Register Today for Free C++ Certification - March 2026"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Pie graph shows relation between whole and its parts. 11% of class uses bike as a mode of transport. Percentages of students using other mode of transport is higher than those using bike.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "6. Below is the pie graph showing mode of transport used by students of a class. 22% of class use which mode of transport?",
+        "options": [
+          "Bike",
+          "Train",
+          "Bus",
+          "Walk"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Pie graph shows relation between whole and its parts. According to the pie chart, 22% of class uses bus as a mode of transport. 37% use train, 30% use walk and 11% use bike as a mode of transport.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "7. Below is the pie graph showing mode of transport used by students of a class. Which mode of transport is used by more than 25% of class?",
+        "options": [
+          "Train and bike",
+          "Bus and walk",
+          "Bike and walk",
+          "Walk and train"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Pie graph shows relation between whole and its parts. According to the pie chart, 22% uses bus, 37% use train, 30% use walk and 11% use bike as a mode of transport. Thus, walk and train is used by more than 25% of class as mode of transport.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "8. Below is the pie graph showing mother tongue of people in a society. Which is the most spoken mother tongue of that society?",
+        "options": [
+          "Hindi",
+          "Marathi",
+          "Gujarati",
+          "Telugu"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Pie graph shows relation between whole and its parts. According to the pie chart, 38% of people in the society speak gujarati as their mother tongue. Percentage of people speaking other languages are lesser than 38%. Hence, gujarati is the most spoken mother tongue of the society.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "9. Below is the pie graph showing mother tongue of people in a society. Which is the least spoken mother tongue of that society?",
+        "options": [
+          "Hindi",
+          "Marathi",
+          "Gujarati",
+          "Telugu"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Pie graph shows relation between whole and its parts. According to the pie chart, 13% of people in the society speak telugu as their mother tongue. Percentage of people speaking other languages are greater than 13%. Hence, telugu is the least spoken mother tongue of the society.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "10. Below is the pie graph showing mother tongue of people in a society. Which language is spoken as mother tongue by 20% of people of that society?",
+        "options": [
+          "Hindi",
+          "Marathi",
+          "Gujarati",
+          "Telugu Sanfoundry Global Education & Learning Series – Mathematics – Class 8 . To practice all chapters and topics of class 8 Mathematics, here is complete set of 1000+ Multiple Choice Questions and Answers . 👉 For weekly school and board exam practice updates, join Sanfoundry’s official WhatsApp & Telegram channels « Prev - Class 8 Maths MCQ – Data Handling – Bars with a Difference » Next - Class 8 Maths MCQ – Data Handling – Drawing a Pie Chart"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Pie graph shows relation between whole and its parts. According to the pie chart, 20% of people in the society speak hindi as their mother tongue. 13% speak telugu, 29% speak marathi and 38% speak gujarati as mother tongue.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "4. Below is the pie graph showing sales of different items in first quarter of the year. If total sales of company are Rs 600000, how much is the sales of food in Rs.?",
+        "options": [
+          "96000",
+          "120000",
+          "240000",
+          "144000"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Pie graph shows relation between whole and its parts. 20% of sales of company is from food department. Total sales of company is Rs. 600000. Thus, sales of food department is Rs. 120000.",
+        "estimatedTime": 75,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "5. Below is the pie graph showing sales of different items in first quarter of the year. If total sales of company are Rs 1000000, how much is the sales of electronics in Rs.?",
+        "options": [
+          "160000",
+          "200000",
+          "400000",
+          "240000"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Pie graph shows relation between whole and its parts. 16% of sales of company is from electronics department. Total sales of company is Rs. 1000000. Thus, sales of electronics department is Rs. 160000.",
+        "estimatedTime": 75,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "7. Below is the pie graph showing colors picked by students of a class. If total students of class are 200, how many students picked red color?",
+        "options": [
+          "11",
+          "44",
+          "22",
+          "66"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Pie graph shows relation between whole and its parts. According to the pie chart, 11% of students picked red color. Total number of students of a class is 200. Thus, number of students who picked red color is 22.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "8. Below is the pie graph showing colors picked by students of a class. Number of students who picked blue color are 111. How many students were there in that class?",
+        "options": [
+          "200",
+          "300",
+          "100",
+          "400"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Pie graph shows relation between whole and its parts. According to the pie chart, 37% of students picked blue color. Total number of students who picked blue color is 111. Thus, total number of students of that class is 300.",
+        "estimatedTime": 75,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "What will be the nature of the graph lines of the equations 5x-2y+9 and 15x-6y+1?",
+        "options": [
+          "Parallel",
+          "Coincident",
+          "Intersecting",
+          "Perpendicular to each other"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The given equations are 5x-2y+9 and 15x-6y+1. Here, a 1 =5, b 1 =-2, c 1 =9 and a 2 =15, b 2 =-6, c 2 =1 Now, \\(\\frac {a_1}{a_2} = \\frac {5}{15} = \\frac {1}{3}, \\frac {b_1}{b_2} = \\frac {-2 }{-6}=\\frac {1}{3}, \\frac {c_1}{c_2} = \\frac {9}{1} \\) Clearly, \\(\\frac {a_1}{a_2} =\\frac {b_1}{b_2} \\ne \\frac {c_1}{c_2} \\) Therefore, the graph lines of the equations will be parallel.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "What will be the velocity v/s time graph of a ball falling from a height before hitting the ground look like?",
+        "options": [
+          "A straight line with positive slope",
+          "A straight line with negative slope",
+          "A straight line with zero slope",
+          "A parabola"
+        ],
+        "correctAnswer": "A",
+        "explanation": "As the ball falls down, its velocity increases. This is because of the acceleration due to gravity. Hence the graph looks like a straight line with positive slope. The first equation of motion verifies this.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "In the given diagram, one graph is of an ideal gas and another is of a real gas. Select the correct option.",
+        "options": [
+          "1-real gas, 2-ideal gas",
+          "1-ideal gas, 2-real gas",
+          "Both are for an ideal gas at different temperatures",
+          "Their graphs cannot intersect More MCQs on Class 11 Physics Chapter 13: Chapter 13 – Kinetic Theory MCQ (Set 2) Chapter 13 – Kinetic Theory MCQ (Set 3) Chapter 13 – Kinetic Theory MCQ (Set 4) To practice all chapters and topics of class 11 Physics, here is complete set of 1000+ Multiple Choice Questions and Answers . 👉 For weekly school and board exam practice updates, join Sanfoundry’s official WhatsApp & Telegram channels « Prev - Class 11 Physics MCQ – Kinetic Theory – Molecular Nature of Matter » Next - Class 11 Physics MCQ – Kinetic Theory of an Ideal Gas Related Posts: Practice Class 11 - Mathematics MCQs Practice Class 11 - Biology MCQs Practice Class 11 - Chemistry MCQs Practice Class 12 - Physics MCQs Check Class 11 - Physics Books"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Real gases, unlike ideal gases, consider volume taken up by molecules because of which mean free path decreases or collisions increase and hence pressure increases. So, at low volumes this factor will play a big role and thus for a particular volume in the low volume range, pressure of real gases will be higher. To see which graph belongs to whom we can draw a line parallel to the pressure axis at very low volume. The one having higher pressure will be that of real gases. Therefore, 2-real gas & 1-ideal gas.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "The displacement vs time graphs of 2 SHMs are given below. Which parameter is the same for both of them?",
+        "options": [
+          "Angular frequency",
+          "Amplitude",
+          "Maximum speed",
+          "Phase constant"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The time period is different for both as they both complete one cycle at different times. So, their angular frequencies will be different. The maximum displacement, as seen from the graph, is different for both so their amplitudes are different. SHMs have maximum speed at their mean positions. Both the curves have different slopes at their mean positions so their maximum velocities are different. At t=0, both are at their mean positions and going towards their positive extremes, therefore their phase constants will be the same.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "The graph given below represents energy as a function of position. What is the energy of the particle in SHM at x = +1? Given mass of the particle is 2kg, time period =2s, A=1m.",
+        "options": [
+          "4.87J",
+          "-5J",
+          "9.87J",
+          "5J"
+        ],
+        "correctAnswer": "A",
+        "explanation": "w = 2π/T = π. Maximum kinetic energy = 1/2mA 2 w 2 , which will be at x=0. Total energy will be constant, therefore energy at x=0 is the same as the energy at x = +1. Thus, energy = 1/2mA 2 w 2 – 5 = (0.5*2*1*9.87) – 5 = 4.87J.",
+        "estimatedTime": 75,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "Note the merging part has been written to show what’s going on here. If you were to actually use merge sort (or a similar algorithm) in Python, you would probably use heapq.merge to do the merging. BLACK BOX: TIMSORT The algorithm hiding in list.sort is one invented (and implemented) by Tim Peters, one of the big names in the Python community.7 The algorithm, aptly named timsort, replaces an earlier algorithm that had lots of tweaks to handle special cases such as segments of ascending and descending values, and the like. In timsort, these cases are handled by the general mechanism, so the performance is still there (and in some cases, it’s much improved), but the algorithm is cleaner and simpler. The algorithm is still a bit too involved to explain in detail here; I’ll try to give you a quick overview. For more details, take a look at the source.8 Timsort is a close relative to merge sort. It’s an in-place algorithm, in that it merges segments and leaves the result in the original array (although it uses some auxiliary memory during the merging). Instead of simply sorting the array half-and-half and then merging those, though, it starts at the beginning, looking for segments that are already sorted (possibly in reverse), called runs. In random arrays, there won’t be many, but in many kinds of real data, there may be a lot—giving the algorithm a clear edge over a plain merge sort and a linear running time in the best case (and that covers a lot of cases beyond simply getting a sequence that’s already sorted). As timsort iterates over the sequence, identifying runs and pushing their bounds onto a stack, it uses some heuristics to decide which runs are to be merged when. The idea is to avoid the kind of merge imbalance that would give you a quadratic running time while still exploiting the structure in the data (that is, the runs). First, any really short runs are artificially extended and sorted (using a stable insertion sort). Second, the following invariants are maintained for the three topmost runs on the stack, A, B, and C (with A on top): len(A) > len(B) + len(C) and len(B) > len(C). If the first invariant is violated, the smaller of A and C is merged with B, and the result replaces the merged runs in the stack. The second invariant may still not hold, and the merging continues until both invariants hold. The algorithm uses some other tricks as well, to get as much speed as possible. If you’re interested, I recommend you check out the source.9 If you’d rather not read C code, you could also take a look at the pure Python version of timsort, available as part of the PyPy project.10 Their implementation has excellent comments and is clearly written. (The PyPy project is discussed in Appendix A.) 7Timsort is, in fact, also used in Java SE 7, for sorting arrays. 8See, for example, the file listsort.txt in the source code (or online, http://svn.python.org/projects/python/trunk/ Objects/listsort.txt). 9You can find the actual C code at http://svn.python.org/projects/python/trunk/Objects/listobject.c. 10See https://bitbucket.org/pypy/pypy/src/default/rpython/rlib/listsort.py. Chapter 6 ■ Divide, Combine, and Conquer 127 How Fast Can We Sort? One important result about sorting is that divide-and-conquer algorithms such as merge sort are optimal; for arbitrary values (where we can figure out which is bigger) it’s impossible, in the worst case, to do any better than W(n lg n). An important case where this holds is when we sort arbitrary real numbers.11 Note ■ ■ Counting sort and its relatives (discussed in Chapter 4) seem to break this rule. Note that there we can’t sort arbitrary values—we need to be able to count occurrences, which means that the objects must be hashable, and we need to be able to iterate over the value range in linear time. How do we know this? The reasoning is actually quite simple. First insight: Because the values are arbitrary and we’re assuming that we can figure out only whether one of them is greater than another, each object comparison boils down to a yes/no question. Second insight: The number of orderings of n elements is n!, and we’re looking for exactly one of them. Where does that get us? We’re back to “think of a particle,” or, in this case, “think of a permutation.” This means that the best we can do is to use W(lg n!) yes/no questions (the comparisons) to get the right permutation (that is, to sort the numbers). And it just so happens that lg n! is asymptotically equivalent to n lg n.12 In other words, the running time in the worst case is W(lg n!) = W(n lg n). How, you say, do we arrive at this equivalence? The easiest way is to just use Stirling’s approximation, which says that n! is Q(nn). Take the logarithm and Bob’s your uncle.13 Now, we derived the bound for the worst case; using information theory (which I won’t go into here), it is, in fact, possible to show that this bound holds also in the average case. In other words, in a very real sense, unless we know something substantial about the value range or distribution of our data, loglinear is the best we can do. Three More Examples Before wrapping up this chapter with a slightly advanced (and optional) section, here are three examples for the road. The first two deal with computational geometry (where the divide-and-conquer strategy is frequently useful), while the last one is a relatively simple problem (with some interesting twists) on a sequence of numbers. I have only sketched the solutions, because the point is mainly to illustrate the design principle. Closest Pair The problem: You have a set of points in the plane, and you want to find the two that are closest to each other. The first idea that springs to mind is, perhaps, to use brute force: For each point, check all the others, or, at least, the ones we haven’t looked at yet. This is, by the handshake sum, a quadratic algorithm, of course. Using divide and conquer, we can get that down to loglinear. This is a rather nifty problem, so if you’re into puzzle-solving, you might want to try to solve it for yourself before reading my explanation. The fact that you should use divide and conquer (and that the resulting algorithm is loglinear) is a strong hint, but the solution is by no means obvious. 11Real numbers usually aren’t all that arbitrary, of course. As long as your numbers use a fixed number of bits, you can use radix sort (mentioned in Chapter 4) and sort the values in linear time. 12I think that’s so cool, I wanted to add an exclamation mark after the sentence ... but I guess that might have been a bit confusing, given the subject matter. 13Actually, the approximation isn’t asymptotic in nature. If you want the details, you’ll find them in any good mathematics reference. Chapter 6 ■ Divide, Combine, and Conquer 128 The structure of the algorithm follows almost directly from the (merge sort-like) loglinear divide-and-conquer schema: We’ll divide the points into two subsets, recursively find the closest pair in each, and then—in linear time—merge the results. By the power of induction/recursion (and the divide-and-conquer schema), we have now reduce the problem to this merging operation. But we can peel away even a bit more before we engage our creativity: The result of the merge must be either (1) the closest pair from the left side, (2) the closest pair on the right side, or (3) a pair consisting of one point from either side. In other words, what we need to do is find the closest pair “straddling” the division line. While doing this, we also have an upper limit to the distance involved (the minimum of the closest pairs from the left and right sides). Having drilled down to the essence of the problem, let’s look at how bad things can get. Let’s say, for the moment, that we have sorted all points in the middle region (of width 2d) by their y-coordinate. We then want to go through them in order, considering other points to see whether we find any points closer than d (the smallest distance found so far). For each point, how many other “neighbors” must we consider? This is where the crucial insight of the solution enters the picture: on either side of the midline, we know that all points are at least a distance of d apart. Because what we’re looking for is a pair at most a distance apart, straddling the midline, we need to consider only a vertical slice of height d (and width 2d) at any one time. And how many points can fit inside this region? Figure 6-7 illustrates the situation. We have no lower bounds on the distances between left and right, so in the worst case, we may have coinciding points on the middle line (highlighted). Beyond that, it’s quite easy to show that at most four points with a minimum distance of d can fit inside a d×d square, which we have on either side; see Exercise 6",
+        "options": [
+          "> len",
+          "+ len",
+          "and len",
+          ". If the first invariant is violated, the smaller of A and C is merged with B, and the result replaces the merged runs in the stack. The second invariant may still not hold, and the merging continues until both invariants hold. The algorithm uses some other tricks as well, to get as much speed as possible. If you’re interested, I recommend you check out the source.9 If you’d rather not read C code, you could also take a look at the pure Python version of timsort, available as part of the PyPy project.10 Their implementation has excellent comments and is clearly written. (The PyPy project is discussed in Appendix A.) 7Timsort is, in fact, also used in Java SE 7, for sorting arrays. 8See, for example, the file listsort.txt in the source code (or online, http://svn.python.org/projects/python/trunk/ Objects/listsort.txt). 9You can find the actual C code at http://svn.python.org/projects/python/trunk/Objects/listobject.c. 10See https://bitbucket.org/pypy/pypy/src/default/rpython/rlib/listsort.py. Chapter 6 ■ Divide, Combine, and Conquer 127 How Fast Can We Sort? One important result about sorting is that divide-and-conquer algorithms such as merge sort are optimal; for arbitrary values (where we can figure out which is bigger) it’s impossible, in the worst case, to do any better than W(n lg n). An important case where this holds is when we sort arbitrary real numbers.11 Note ■ ■ Counting sort and its relatives (discussed in Chapter 4) seem to break this rule. Note that there we can’t sort arbitrary values—we need to be able to count occurrences, which means that the objects must be hashable, and we need to be able to iterate over the value range in linear time. How do we know this? The reasoning is actually quite simple. First insight: Because the values are arbitrary and we’re assuming that we can figure out only whether one of them is greater than another, each object comparison boils down to a yes/no question. Second insight: The number of orderings of n elements is n!, and we’re looking for exactly one of them. Where does that get us? We’re back to “think of a particle,” or, in this case, “think of a permutation.” This means that the best we can do is to use W(lg n!) yes/no questions (the comparisons) to get the right permutation (that is, to sort the numbers). And it just so happens that lg n! is asymptotically equivalent to n lg n.12 In other words, the running time in the worst case is W(lg n!) = W(n lg n). How, you say, do we arrive at this equivalence? The easiest way is to just use Stirling’s approximation, which says that n! is Q(nn). Take the logarithm and Bob’s your uncle.13 Now, we derived the bound for the worst case; using information theory (which I won’t go into here), it is, in fact, possible to show that this bound holds also in the average case. In other words, in a very real sense, unless we know something substantial about the value range or distribution of our data, loglinear is the best we can do. Three More Examples Before wrapping up this chapter with a slightly advanced (and optional) section, here are three examples for the road. The first two deal with computational geometry (where the divide-and-conquer strategy is frequently useful), while the last one is a relatively simple problem (with some interesting twists) on a sequence of numbers. I have only sketched the solutions, because the point is mainly to illustrate the design principle. Closest Pair The problem: You have a set of points in the plane, and you want to find the two that are closest to each other. The first idea that springs to mind is, perhaps, to use brute force: For each point, check all the others, or, at least, the ones we haven’t looked at yet. This is, by the handshake sum, a quadratic algorithm, of course. Using divide and conquer, we can get that down to loglinear. This is a rather nifty problem, so if you’re into puzzle-solving, you might want to try to solve it for yourself before reading my explanation. The fact that you should use divide and conquer (and that the resulting algorithm is loglinear) is a strong hint, but the solution is by no means obvious. 11Real numbers usually aren’t all that arbitrary, of course. As long as your numbers use a fixed number of bits, you can use radix sort (mentioned in Chapter 4) and sort the values in linear time. 12I think that’s so cool, I wanted to add an exclamation mark after the sentence ... but I guess that might have been a bit confusing, given the subject matter. 13Actually, the approximation isn’t asymptotic in nature. If you want the details, you’ll find them in any good mathematics reference. Chapter 6 ■ Divide, Combine, and Conquer 128 The structure of the algorithm follows almost directly from the (merge sort-like) loglinear divide-and-conquer schema: We’ll divide the points into two subsets, recursively find the closest pair in each, and then—in linear time—merge the results. By the power of induction/recursion (and the divide-and-conquer schema), we have now reduce the problem to this merging operation. But we can peel away even a bit more before we engage our creativity: The result of the merge must be either (1) the closest pair from the left side, (2) the closest pair on the right side, or (3) a pair consisting of one point from either side. In other words, what we need to do is find the closest pair “straddling” the division line. While doing this, we also have an upper limit to the distance involved (the minimum of the closest pairs from the left and right sides). Having drilled down to the essence of the problem, let’s look at how bad things can get. Let’s say, for the moment, that we have sorted all points in the middle region (of width 2d) by their y-coordinate. We then want to go through them in order, considering other points to see whether we find any points closer than d (the smallest distance found so far). For each point, how many other “neighbors” must we consider? This is where the crucial insight of the solution enters the picture: on either side of the midline, we know that all points are at least a distance of d apart. Because what we’re looking for is a pair at most a distance apart, straddling the midline, we need to consider only a vertical slice of height d (and width 2d) at any one time. And how many points can fit inside this region? Figure 6-7 illustrates the situation. We have no lower bounds on the distances between left and right, so in the worst case, we may have coinciding points on the middle line (highlighted). Beyond that, it’s quite easy to show that at most four points with a minimum distance of d can fit inside a d×d square, which we have on either side; see Exercise 6"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question is mapped to Data Structures - Trees. The correct answer is A based on the original source question.",
+        "estimatedTime": 75,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "The optimal data structure used to solve Tower of Hanoi is _________",
+        "options": [
+          "Tree",
+          "Heap",
+          "Priority queue",
+          "Stack"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The Tower of Hanoi involves moving of disks ‘stacked’ at one peg to another peg with respect to the size constraint. It is conveniently done using stacks and priority queues. Stack approach is widely used to solve Tower of Hanoi.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "Which of the following is the simplest data structure that supports range searching?",
+        "options": [
+          "AA-trees",
+          "K-d trees",
+          "Heaps",
+          "binary search trees"
+        ],
+        "correctAnswer": "B",
+        "explanation": "K-d trees are the simplest data structure that supports range searching and also it achieves the respectable running time.",
+        "estimatedTime": 45,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      },
+      {
+        "questionText": "In a graphical system, an array of pixels in the picture are stored in which of the following locations?",
+        "options": [
+          "Frame buffer",
+          "Processor",
+          "Memory",
+          "All of the mentioned"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The main purpose of using a framer buffer is to store pixels.",
+        "estimatedTime": 60,
+        "subtopic": "Data Structures - Trees",
+        "tags": [
+          "data-structures",
+          "technical",
+          "tree",
+          "binary tree",
+          "bst"
+        ]
+      }
+    ]
+  },
+  "providerPayload": {
+    "mode": "offline",
+    "source": "existing_mock_tests",
+    "questionCount": 50
+  },
+  "offlineSource": true
+}

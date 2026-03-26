@@ -1,0 +1,253 @@
+{
+  "version": "1.0",
+  "lastRun": "2026-03-12T18:08:38.074Z",
+  "totalGenerated": 1250,
+  "totalCost": 0,
+  "providers": {
+    "claude": {
+      "topics": {
+        "Time & Distance": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:07:41.402Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\claude\\time-distance.json",
+          "error": null
+        },
+        "Permutations & Combinations": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:07:43.823Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\claude\\permutations-combinations.json",
+          "error": null
+        },
+        "Probability": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:07:46.238Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\claude\\probability.json",
+          "error": null
+        },
+        "Data Structures - Trees": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:07:48.617Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\claude\\data-structures-trees.json",
+          "error": null
+        },
+        "Algorithms - Dynamic Programming": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:07:50.961Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\claude\\algorithms-dynamic-programming.json",
+          "error": null
+        }
+      }
+    },
+    "gpt4": {
+      "topics": {
+        "Profit & Loss": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:07:53.351Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gpt4\\profit-loss.json",
+          "error": null
+        },
+        "Simple Interest & Compound Interest": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:07:55.816Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gpt4\\simple-interest-compound-interest.json",
+          "error": null
+        },
+        "Blood Relations": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:07:58.231Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gpt4\\blood-relations.json",
+          "error": null
+        },
+        "Seating Arrangement": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:08:00.653Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gpt4\\seating-arrangement.json",
+          "error": null
+        },
+        "Puzzles": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:08:03.008Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gpt4\\puzzles.json",
+          "error": null
+        }
+      }
+    },
+    "gemini": {
+      "topics": {
+        "DBMS - SQL Queries": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:08:05.253Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gemini\\dbms-sql-queries.json",
+          "error": null
+        },
+        "Operating Systems - Process Management": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:08:07.573Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gemini\\operating-systems-process-management.json",
+          "error": null
+        },
+        "Computer Networks - TCP/IP": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:08:09.910Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gemini\\computer-networks-tcp-ip.json",
+          "error": null
+        },
+        "Data Structures - Graphs": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:08:12.318Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gemini\\data-structures-graphs.json",
+          "error": null
+        },
+        "Number Series": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:08:14.688Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gemini\\number-series.json",
+          "error": null
+        }
+      }
+    },
+    "llama": {
+      "topics": {
+        "C Pointers": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:08:16.994Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\llama\\c-pointers.json",
+          "error": null
+        },
+        "Java OOP Concepts": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:08:19.346Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\llama\\java-oop-concepts.json",
+          "error": null
+        },
+        "Python Data Structures": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:08:21.666Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\llama\\python-data-structures.json",
+          "error": null
+        },
+        "Data Structures - Arrays": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:08:24.060Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\llama\\data-structures-arrays.json",
+          "error": null
+        },
+        "Data Structures - Linked Lists": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:08:26.441Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\llama\\data-structures-linked-lists.json",
+          "error": null
+        }
+      }
+    },
+    "mistral": {
+      "topics": {
+        "Percentage": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:08:28.905Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\mistral\\percentage.json",
+          "error": null
+        },
+        "Ratio & Proportion": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:08:31.333Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\mistral\\ratio-proportion.json",
+          "error": null
+        },
+        "Averages": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:08:33.600Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\mistral\\averages.json",
+          "error": null
+        },
+        "Coding-Decoding": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:08:35.805Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\mistral\\coding-decoding.json",
+          "error": null
+        },
+        "Syllogisms": {
+          "status": "completed",
+          "attempts": 1,
+          "lastAttempt": "2026-03-12T18:08:38.074Z",
+          "generatedCount": 50,
+          "cost": 0,
+          "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\mistral\\syllogisms.json",
+          "error": null
+        }
+      }
+    }
+  }
+}

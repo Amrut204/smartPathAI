@@ -1,0 +1,1080 @@
+{
+  "provider": "mistral",
+  "model": "mistralai/Mixtral-8x7B-Instruct-v0.1-offline",
+  "topic": "Coding-Decoding",
+  "subject": "aptitude",
+  "category": "logical",
+  "difficulty": "medium",
+  "promptStyle": "pattern_efficient",
+  "generatedAt": "2026-03-12T18:08:35.803Z",
+  "elapsedMs": 0,
+  "count": 50,
+  "cost": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "usd": 0,
+    "inr": 0
+  },
+  "prompt": "Generate 50 high-quality multiple-choice questions for campus placement preparation.\n\nTOPIC: Coding-Decoding\nDIFFICULTY: medium\n\nOUTPUT FORMAT (JSON only):\n{\n  \"questions\": [\n    {\n      \"questionText\": \"Question text\",\n      \"options\": [\"A\", \"B\", \"C\", \"D\"],\n      \"correctAnswer\": \"A\",\n      \"explanation\": \"Step-by-step solution\",\n      \"estimatedTime\": 60,\n      \"pattern\": \"problem_type\",\n      \"tags\": [\"tag1\", \"tag2\"]\n    }\n  ]\n}\n\nQUESTION PATTERNS:\n- 40% Direct application (straightforward formula use)\n- 30% Multi-step problems (combine 2-3 concepts)\n- 20% Applied scenarios (word problems)\n- 10% Analysis questions (compare approaches, identify errors)\n\nOPTION DESIGN:\n- Use graduated values (if answer is 50: options are [40, 45, 50, 55])\n- Include results from common mistakes\n- Include result if units not converted\n- Avoid patterns in correct answers\n\nEFFICIENCY:\n- Questions solvable in 45-90 seconds\n- Use round numbers when possible\n- Concise wording\n- All calculations verified\n\nGenerate exactly 50 questions. Output ONLY valid JSON.",
+  "rawText": "{\"questions\":[{\"questionText\":\"Ankita’s younger brother Bobby is older than Nilu. Shweta is younger than Rahul but elder than Ankita. Who is the eldest? Logical Reasoning Questions on Odd Man Out Logical Reasoning Questions on Coding and Decoding Verbal Reasoning Questions on Blood Relation Verbal Reasoning Questions and Answers on Analogy Reasoning Questions on Venn Diagram Verbal Reasoning Questions on Logical Sequence of Words Non-Verbal Reasoning Questions on Dot Situation Analysis Non-Verbal Reasoning Questions and Answers on Missing Figures Reasoning Questions on Figure Classification Non-Verbal Questions on Pattern Completion Data Interpretation Quantitative Aptitude\",\"options\":[\"Rahul\",\"Shweta\",\"Ankita\",\"Bobby Topic Wise Questions and Answers on Logical Reasoning Our 1000+ Questions and Answers focus on various topics of Logical Reasoning, covering 20+ topics. This resource will help you prepare for competitive exams such as SSC, CAT, GRE, UPSC, GMAT, Bank Exams, Defense Exams, Railway Exams, and Job placements. You can practice these Logical Reasoning Questions topic by topic, starting from the 1st or you can jump to any topic of your choice. Logical Reasoning: Odd Man Out Coding and Decoding Logical Deduction Verbal Reasoning: Blood Relation Analogy Venn Diagram Logical Sequence of Words Syllogisms Non-Verbal Reasoning: Dot Situation Analysis Missing Figures Figure Classification Pattern Completion Data Interpretation: Data Interpretation Questions Quantitative Aptitude: Quantitative Aptitude Questions The section includes reasoning questions and answers on odd man out series. Odd Man Out – Set 1 Odd Man Out – Set 2 Odd Man Out – Set 3 Odd Man Out – Set 4 Odd Man Out – Set 5 Odd Man Out – Set 6 Odd Man Out – Set 7 Odd Man Out – Set 8 Odd Man Out – Set 9 Odd Man Out – Set 10 The section contains logical reasoning questions and answers on coding and decoding. Coding and Decoding – Set 1 Coding and Decoding – Set 2 Coding and Decoding – Set 3 Coding and Decoding – Set 4 Coding and Decoding – Set 5 Coding and Decoding – Set 6 Coding and Decoding – Set 7 Coding and Decoding – Set 8 Coding and Decoding – Set 9 Coding and Decoding – Set 10 The section contains verbal reasoning questions and answers on blood relation. Blood Relation – Set 1 Blood Relation – Set 2 Blood Relation – Set 3 Blood Relation – Set 4 Blood Relation – Set 5 Blood Relation – Set 6 Blood Relation – Set 7 Blood Relation – Set 8 Blood Relation – Set 9 Blood Relation – Set 10 The section contains verbal reasoning practice questions on analogy. Analogy – Set 1 Analogy – Set 2 Analogy – Set 3 Analogy – Set 4 Analogy – Set 5 Analogy – Set 6 Analogy – Set 7 Analogy – Set 8 Analogy – Set 9 Analogy – Set 10 The section includes verbal reasoning questions and answers on venn diagram. Venn Diagram – Set 1 Venn Diagram – Set 2 Venn Diagram – Set 3 Venn Diagram – Set 4 Venn Diagram – Set 5 Venn Diagram – Set 6 Venn Diagram – Set 7 Venn Diagram – Set 8 Venn Diagram – Set 9 Venn Diagram – Set 10 The section contains logical reasoning questions on sequencing Sequencing – Set 1 Sequencing – Set 2 Sequencing – Set 3 Sequencing – Set 4 Sequencing – Set 5 Sequencing – Set 6 Sequencing – Set 7 Sequencing – Set 8 Sequencing – Set 9 Sequencing – Set 10 The section contains questions and answers on dot situation analysis. Dot Situation Analysis – Set 1 Dot Situation Analysis – Set 2 Dot Situation Analysis – Set 3 Dot Situation Analysis – Set 4 Dot Situation Analysis – Set 5 Dot Situation Analysis – Set 6 Dot Situation Analysis – Set 7 Dot Situation Analysis – Set 8 Dot Situation Analysis – Set 9 Dot Situation Analysis – Set 10 The section contains non verbal reasoning questions on missing figures. Missing Figures – Set 1 Missing Figures – Set 2 Missing Figures – Set 3 Missing Figures – Set 4 Missing Figures – Set 5 Missing Figures – Set 6 Missing Figures – Set 7 Missing Figures – Set 8 Missing Figures – Set 9 Missing Figures – Set 10 The section contains non verbal questions and answers on figure classification. Figure Classification – Set 1 Figure Classification – Set 2 Figure Classification – Set 3 Figure Classification – Set 4 Figure Classification – Set 5 Figure Classification – Set 6 Figure Classification – Set 7 Figure Classification – Set 8 Figure Classification – Set 9 Figure Classification – Set 10 The section contains non verbal reasoning questions and answers on pattern completion. Pattern Completion – Set 1 Pattern Completion – Set 2 Pattern Completion – Set 3 Pattern Completion – Set 4 Pattern Completion – Set 5 Pattern Completion – Set 6 Pattern Completion – Set 7 Pattern Completion – Set 8 Pattern Completion – Set 9 Pattern Completion – Set 10 The section contains questions and answers on data interpretation. Tabulation Bar Graphs Pie Chart Line Graphs The section contains questions and answers on quantitative aptitude. Quantitative Aptitude Questions and Answers If you would like to learn “Logical Reasoning” thoroughly, you should attempt to work on the complete set of questions and answers mentioned above. It will immensely help anyone trying to crack an exam or an interview. Wish you the best in your endeavor to learn and master Logical Reasoning! 👉 For weekly logical reasoning practice, exam, and certification updates, join Sanfoundry’s official WhatsApp & Telegram channels » Next - Odd Man Out Questions and Answers\"],\"correctAnswer\":\"A\",\"explanation\":\"Here, according to question Nilu < Bobby < Ankita < Shweta < Rahul. Therefore, the eldest is Rahul. Hence the answer is Rahul.\",\"estimatedTime\":75,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Each vowel of the GLADIOLUS word is substituted with the next letter of the English alphabetical series and each consonant is substituted with the letters preceding it. How many vowels will be present in the new arrangement?\",\"options\":[\"One\",\"Two\",\"Three\",\"No Vowel\"],\"correctAnswer\":\"D\",\"explanation\":\"G → F L → K A → B D → C I → J O → P L → K U → V S → R Thus, GLADIOLUS = FKBCJPKVR.\",\"estimatedTime\":75,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Current transformers are __________________\",\"options\":[\"parallel connected type of instrument transformers\",\"series connected type of instrument transformers\",\"parallel connected normal transformers\",\"series-parallel connected type of instrument transformers\"],\"correctAnswer\":\"B\",\"explanation\":\"Current transformer (CT) is a series connected type of instrument transformer. They are designed to present negligible load to the supply which is being measured and also have an accurate current ratio and phase relationship to enable accurate secondary connected metering.\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Leela, who is Sohan's daughter, says to Latika, \\\"Your mother Alka is the younger sister of my father who is the third child of Gajanan.\\\" What is the relation of Gajanan to Latika ?\",\"options\":[\"Father\",\"Uncle\",\"Grandfather\",\"Father-in-law\"],\"correctAnswer\":\"C\",\"explanation\":\"The correct answer is C: Grandfather . Let's break down the relationships step by step: 1. Leela's statement: \\\"Your mother Alka is the younger sister of my father who is the third child of Gajanan.\\\" 2. Decoding: * Leela's father is Sohan. * Alka is Latika's mother. * Alka is Sohan's younger sister. * Sohan is the third child of Gajanan. 3. Putting it together: * Sohan and Alka are siblings (brother and sister). * Gajanan is the father of both Sohan and Alka. * Therefore, Gajanan is the father of Latika's mother (Alka). 4. Conclusion: Since Gajanan is the father of Latika's mother, Gajanan is Latika's grandfather .\",\"estimatedTime\":75,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"It was on the behest of the officer that he made those improvements.\",\"options\":[\"suggestion\",\"orders\",\"recommendation\",\"request\"],\"correctAnswer\":\"B\",\"explanation\":\"Suggestion : an idea or plan put forward for consideration. Orders : the arrangement or disposition of people or things in relation to each other according to a particular sequence, pattern, or method. Recommendation : a suggestion or proposal as to the best course of action, especially one put forward by an authoritative body. Request : an act of asking politely or formally for something. Behest : a person's orders or command. Synonym of Behest is Orders\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Study of the evolution of man as an animal\",\"options\":[\"Archaeology\",\"Anthropology\",\"Chronology\",\"Ethnology\"],\"correctAnswer\":\"B\",\"explanation\":\"One word substitute is Anthropology . Archaeology: the study of human history and prehistory through the excavation of sites and the analysis of artefacts and other physical remains. Anthropology: the study of human biological and physiological characteristics and their evolution. Chronology: the arrangement of events or dates in the order of their occurrence. Ethnology: the study of the characteristics of different peoples and the differences and relationships between them.\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"What is the primary purpose of a scatter plot in EDA?\",\"options\":[\"To show the distribution of a single variable\",\"To visualize relationships between variables\",\"To display categorical data\",\"To represent time series data\"],\"correctAnswer\":\"B\",\"explanation\":\"Option A: To show the distribution of a single variable : This is usually done with histograms or box plots, not scatter plots. Option B: To visualize relationships between variables : This is the main point of a scatter plot! Each point on the plot represents a pair of values for two different variables. By looking at the pattern of points, we can see if there's a correlation or relationship between them. For example, if as one variable increases, the other also tends to increase, that shows a positive relationship. Option C: To display categorical data : Categorical data is better shown with bar charts or pie charts, not scatter plots. Option D: To represent time series data : Time series data is usually displayed using line charts. In simple terms: A scatter plot helps us see if two things are connected. If we plot \\\"ice cream sales\\\" versus \\\"temperature,\\\" we might see that as the temperature goes up, ice cream sales also go up. The scatter plot lets us see that relationship.\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"In time series analysis, what does the \\\"autocorrelation function\\\" (ACF) measure?\",\"options\":[\"Seasonal patterns\",\"Trend patterns\",\"Correlation between lagged values\",\"Random noise\"],\"correctAnswer\":\"C\",\"explanation\":\"This question is mapped to Coding-Decoding. The correct answer is C based on the original source question.\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Inter division dynamics across the subsidiaries Due Diligence |E-Commerce Sector| Investment | Challenging 2022-2023 (C) Consult Club, IIM Ahmedabad Private Equity firm – Interview Transcript Due Diligence |Social Impact| Challenging Sure, I would like to now look at the various synergies that we can draw from the previous investments. I would like to look at revenue synergies, cost synergies and efficiency synergies. In terms of the revenue synergies, based on our other investments in home services sector we can drive demand for the company and identify skill training opportunities. The client can draw cost and efficiency synergies from similar foreign-based startups in our portfolio by means of technology transfer. Good points. Lets talk about the equity holding and investment amount that we should look at. What factors would influence this decision? Firstly, I would like to understand the nature of the investment – are we looking at a strategic investment with a majority stake or are we looking at a financial investment. As I mentioned, we plan to exit in 5-6 years, so it is a financial investment. I can take population growth as a proxy for the growth in the number of candidates. Similarly, the commissions will be based on the number of employees that we could place. Knowing 15% profit margins, we can discount the cash flows to get the present value of the firm. Good, let’s move on and look at the other factors. Since we are looking at skill programs, we should be looking at only the unemployed youth and students. We can use the labour participation rate and unemployment levels to get a figure. I can then multiply the market with the average fees to get the revenue. To further understand the revenues from commissions, I would like to know the commission rate and the number of companies that we are catering to currently and how is the demand expected to change. Let’s assume that there is enough demand. How would you get the projected revenues for the next 6 years to estimate the value of the firm. Right, so if we are looking at a minority stake in the company, the investment would depend on the valuation of the company and other possible PE firms who are looking to invest in the same company. We should also look at the willingness of the founders about the extent of dilution of their shares. Good points. There are in fact 2 other firms looking to invest in the same company. Let’s quickly now look at the various risks and exit options before the client. Sure. First and foremost, I would like to do a legal due diligence to see if there are any litigations, tax liabilities or regulatory compliance issues with the company, which can contribute to legal risks. I would look at the debt structure as well as the employee contracts of the company. In terms of technological risks, there are chances of obsolesce of some of these skills and need to adapt quickly to changing demands. There are economic risks, with respect to getting fees from the underprivileged in cases where sufficient government scholarships are absent. There is also high competition in the sector and threats from competition who can eat up the market share. In terms of exit options, the company can look to sell its stake back to the the initial promoters or another PE firm since there are existing competition. Alright, I think that’s a comprehensive analysis. Any final recommendation? That sounds like a fair approach. Explain me your approach to estimate the total market size. Good question. There hasn’t been any prior investments and the equity is split equally between the 3 brothers. At this point, I feel I have enough information to proceed. I’ll take a moment to structure my thoughts to produce an overall approach to analyse the feasibility of the investment. Sounds good, please go ahead. Okay, I would like to divide the analysis into 3 buckets – firstly estimating the market attractiveness and coming up with the valuation of the company. Next, I would like to investigate the synergies that we draw from the investments. Lastly, I would like to look at the various risks associated with the company. I would also know about the company’s founders and their vision. That’s interesting. And how is the competitive landscape in the sector where the client operates? It is a fragmented market and there is high competition from some similar early-stage start-ups. Do we have any information about the profitability of our client ? Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Sounds good. Firstly, I would like to understand our client’s motivation behind the investment. There are two motivations primarily, financials gains and driving social impact. Okay, does the client have any number about the quantum of investment that it wants to make? There is no restriction as such. We would like to help in analyzing various factors to decide this. Okay, and is there any exit multiple that you have in mind or any return that you are expecting from this investment? Yes the client has invested in similar companies before but none of them are based out of India. To answer your 2nd question, our current portfolio consists of growth stage startups from the healthcare, services and ed-tech sectors based out of India and other south-east Asian countries. Great. Now that I have information about our client, I would like to know more about the company in which we plan to invest. Can you tell me more about the company and their business model? Yes sure. It is a family run company started by 3-brothers. They work with the underprivileged students from Eastern-Indian states of Orissa, Bihar and West Bengal. Their business model is to upskill students in theoretical and vocational skills and help them provide employment. They get revenue sources include fees from the students at a subsidized amount and commissions from the companies where the students are employed. Thanks for this. Are their specific skills or sectors in which the students are trained. The students are unemployed youth who are provided training as beauticians, cutting and stitching jobs and as baristas for coffee shops. They are continuously expanding the the range of their skill program. Good question. So, we are looking at a 16% CAGR on the investment over a horizon of 6 years after which we plan to exit. That’s helpful. I would now want to get some information about the existing portfolio of the client. Has the client invested in similar companies previously? How does its portfolio look like? So currently the client operated at 15% net margin while the industry operated at 16% margins. Is their any other differentiation that the company has? The company has invested heavily in technology to continuously identify the gap in demand for the required skills in the industry. It also uses helps to identify prospects and incentives them to join the program by identifying government schemes to avail scholarships and get skilled. 2022-2023 Page 154 Lastly, what’s the equity structure of the company and has there been any prior investments? I’ll start by estimating the population of West Bengal, Orissa and Bihar which should be 20% of the total population. Next, I would segment the population by age(18-25 years which is 20% roughly). We can further look at urban and rural segments and then look at the low- and middle- income category. Does that sound like a good approach? Do you think you are missing any other criteria? Given the demand and good profit margins of the company, the investment looks lucrative, and the client should go ahead with it, Alright, thank you for the recommendation. (C) Consult Club, IIM Ahmedabad Recommendations (Beyond the transcript) • a) Do a proper analysis of the competitive landscape to gauge the competitive edge of the target company and also look into the threats of new entrant specially a big player. • b) Understand the operating model and the technology used of the target company to gauge the scalability of the business model. Key Learnings • In cases of due diligence and M&A, the preliminary questions are the most important and adequate time should be given to get relevant case facts. • The question about financial and strategic investment should have been asked in the beginning. Again, since time horizon was known beforehand, here case facts could have been linked better • It is important to think of synergies even between existing portfolio of the PE firm to the target company like potential technology transfer from companies in the portfolio operating abroad • In the guesstimate, it is essential to first lay down the approach the validate from the interviewer if something else is missing Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Approach/ Framework Interviewee Notes • It is important to understand the rationale for the investment • The preliminary questions should cover questions about the client and the target company to get important case facts. • It is essential to have a basic understand of the private equity industry and the process of due diligence, • It is important for the interviewee to link important case facts to subsequent answers. • Guesstimates can be qualitative or quantitative depending upon the interviewer. The approach should be laid out clearly. If numbers are required, reasonable assumptions can be taken. (For example, slightly higher unemployment levels in eastern India) Case Facts • Objective for investment is both social impact and financial gain. • 16% CAGR and a time horizon of 6 years. • No issues on cost side. • No poaching of customers by competitors. • The existing portfolio of the client and prior investments • The industries that the target company caters to currently • The ownership structure of the target company • Profit margins and industry competitiveness Commercial Due Diligence Valuation and financial feasibility Intrinsic Value Private Equity firm Page 155 Business Model P E S T E L Market Size 2022-2023 Due Diligence |Social Impact| Challenging Synergies and Business Model Exit Options and Risks Synergies Acquirer’s Value Customers Operations Differentiation Efficiency Synergies Financials Revenue Synergies Growth Rate Profitability Competition Equity Structure Cost Synergies Risks Exit Options Total Exit Partial Exit IPO Guesstimate Approach: Market size of underprivileged youth seeking jobs Segment total population to get population of Bihar, Orissa and WB (~20% of total – 25 crores) Segment further by age groups (18-30 years ~ 20% of 25 crore – 5 crore) Rural (70%) Urban (30%) Covered in this case Not covered in this case Lower Income group (80%) Lower Income group (40%) % unemployed and seeking jobs(10%) % unemployed and seeking jobs(15%) Total number of unemployed youth seeking jobs in the 3 states ~ 30 lacs Unconventional (C) Consult Club, IIM Ahmedabad Easy wins • Breakdown into a mathematical formula • Always remember Demand and Supply • Any problem can have an internal cause (in control of company) or external cause. For external cause, use PESTEL to analyze possible issues Unconventional - Tips & Tricks Page 157 Pointers to Remember • Never try to force fit a framework • Understand the problem really really well • Ask the interviewer if you’re unfamiliar with a particular industry, do not hesitate to ask question • If the industry is familiar, comparisons with companies you know about would help in providing recommendations • Be as comprehensive as possible and hence bucketing the problems into different sections will help in structured thinking • Can be looked at through 2 lenses – qualitative & quantitative (as a mathematical problem) • Using the 3CP i.e., of Company, Customer, Competitor and Product approach works in certain cases, but focus on keeping the approach MECE • In certain cases when the scope of the cases is broad, the interviewee should ask if the focus needs to be on a specific aspect to structure thoughts in that direction • While scoping the problem, the interviewee can consider if there are competitors in the same industry and the strategies, they follow 2022-2023 (C) Consult Club, IIM Ahmedabad You can go ahead with the ad model assumption. However, X doesn’t have any merchandising rights for GOT. What information do you need from me to calculate X’s revenues? I would need the following: (i) X’s monthly Subscription fee (ii) No. of episodes in GOT S8 (iii) GOT viewers not currently on X (iv) Average ad rate per slot per episode (v) No. of slots auctioned per episode Glad that you asked. I have the following data sheet with me. This should help you calculate revenues for X (Data sheet provided in table I). Thank you. From my calculations, X’s revenue from Subscriptions and Advertisements comes out to be $6 Mn (table II). However, I think there are some synergistic benefits to adding GOT on our platform. These can be attributed to following factors: • Customer Stickiness: Some of the additional customers would stick around after GOT ends increasing their CLV for X. These benefits need to be added to our revenue calculations • Additional ad revenues for existing programmes: X can leverage its added user base to charge a premium for ad slots in its existing shows during GOT‘s 3-month on-air run-time These are some very good points, and you can assume an additional benefit of $1 Mn from Synergy. Can you please now list down the cost heads for X? I have divided X’s costs into two buckets (Framework 1): • Direct Costs: This header would include the Bid amount, Streaming costs, Marketing costs • Overheads: This would include incremental legal costs, regulatory costs, customer service costs Apart from this, there would be Costs of capital (which would include costs of financing the investment and opportunity costs of not putting the money elsewhere), Assume that X expects to incur additional costs of $1 Mn apart from the bid amount. X has expected an ROI of 20% to incorporate for the cost of capital. Oh, I think I have all the data now. Based on my calculations, the bid amount for GOT season 8 cannot exceed $5 Mn to get the desired ROI of 20%. Now, I’d like to focus on the Strategic feasibility. Adding GOT would affect the way subscribers interact with the platform. Given the adult nature of content, some of the family-centric subscribers might get dissuaded from continuing. Also, this would affect our tie-ups with existing content providers which infer HBO as their competitor or substitute. These points are valid, but we can safely assume that X is strategically aligned with getting HBO onboard. Can you please now identify three potential risks that X needs to be aware of? Sure. I have collated the risks into the following categories: • Customer centric: X might not attract enough new customers on the platform given the subscription price and the presence of alternate channels of piracy like torrents, illegal streaming • Content centric: The content is not up to the mark increasing mid-season customer and advertiser drop-outs. Given the explicit content, X could also face added regulatory pressures • Platform centric: Focus on GOT might lead to self- cannibalization with decreased viewership for the platform’s existing content. Plus, X needs to minimize platform glitches such as that could inhibit user watching experience, leaving the new viewers unsatisfied with the platform I think we can stop here. Thank you. Bid Strategy for GOT Season 8– Interview Transcript Unconventional | Bid strategy | Challenging | Entertainment Page 158 Your client is Company X. They have been approached by HBO to bid for the eighth season of GOT. They want your help to evaluate the opportunity and determine the correct bidding strategy. I would like to ask a few clarifying questions to get an understanding about the case. Could you please elaborate on X’s business model and current product offerings? X is an OTT platform operating in India. The company has a website and an app where customers can access media content by paying a monthly subscription fee. X has its own content as well as tie- ups with other providers to provide a curated list of Movies, TV Shows, News Channels and Sporting Events on its platform for its subscribers. What is X’s objective for this bid? Is it to increase user base, or revenues or profits? And what makes GOT so attractive for X? X wants to maximise their profits and this bid should account for that. As for GOT, it is the most watched English TV Series in India. I would like to now understand the bidding terms. Will this bid be for the eighth season only? Also, will X have exclusive rights for this and till when is the bid valid? The bid will be for exclusive rights to stream GOT’s eighth and final season, and valid only for the duration that the show is on-air. Has X bid previously for GOT and if so, do we have any information regarding the bidding process? Also, is it okay to assume that the offer has been made to X’s competitors as well? It’s a closed bidding process that HBO extends to X and its four other competitors. The client had bid for GOT’s seventh season but did not win the bid. They were informed that they were close second and had bid $3 Mn for Season\",\"options\":[\"Consult Club, IIM Ahmedabad Private Equity firm – Interview Transcript Due Diligence |Social Impact| Challenging Sure, I would like to now look at the various synergies that we can draw from the previous investments. I would like to look at revenue synergies, cost synergies and efficiency synergies. In terms of the revenue synergies, based on our other investments in home services sector we can drive demand for the company and identify skill training opportunities. The client can draw cost and efficiency synergies from similar foreign-based startups in our portfolio by means of technology transfer. Good points. Lets talk about the equity holding and investment amount that we should look at. What factors would influence this decision? Firstly, I would like to understand the nature of the investment – are we looking at a strategic investment with a majority stake or are we looking at a financial investment. As I mentioned, we plan to exit in 5-6 years, so it is a financial investment. I can take population growth as a proxy for the growth in the number of candidates. Similarly, the commissions will be based on the number of employees that we could place. Knowing 15% profit margins, we can discount the cash flows to get the present value of the firm. Good, let’s move on and look at the other factors. Since we are looking at skill programs, we should be looking at only the unemployed youth and students. We can use the labour participation rate and unemployment levels to get a figure. I can then multiply the market with the average fees to get the revenue. To further understand the revenues from commissions, I would like to know the commission rate and the number of companies that we are catering to currently and how is the demand expected to change. Let’s assume that there is enough demand. How would you get the projected revenues for the next 6 years to estimate the value of the firm. Right, so if we are looking at a minority stake in the company, the investment would depend on the valuation of the company and other possible PE firms who are looking to invest in the same company. We should also look at the willingness of the founders about the extent of dilution of their shares. Good points. There are in fact 2 other firms looking to invest in the same company. Let’s quickly now look at the various risks and exit options before the client. Sure. First and foremost, I would like to do a legal due diligence to see if there are any litigations, tax liabilities or regulatory compliance issues with the company, which can contribute to legal risks. I would look at the debt structure as well as the employee contracts of the company. In terms of technological risks, there are chances of obsolesce of some of these skills and need to adapt quickly to changing demands. There are economic risks, with respect to getting fees from the underprivileged in cases where sufficient government scholarships are absent. There is also high competition in the sector and threats from competition who can eat up the market share. In terms of exit options, the company can look to sell its stake back to the the initial promoters or another PE firm since there are existing competition. Alright, I think that’s a comprehensive analysis. Any final recommendation? That sounds like a fair approach. Explain me your approach to estimate the total market size. Good question. There hasn’t been any prior investments and the equity is split equally between the 3 brothers. At this point, I feel I have enough information to proceed. I’ll take a moment to structure my thoughts to produce an overall approach to analyse the feasibility of the investment. Sounds good, please go ahead. Okay, I would like to divide the analysis into 3 buckets – firstly estimating the market attractiveness and coming up with the valuation of the company. Next, I would like to investigate the synergies that we draw from the investments. Lastly, I would like to look at the various risks associated with the company. I would also know about the company’s founders and their vision. That’s interesting. And how is the competitive landscape in the sector where the client operates? It is a fragmented market and there is high competition from some similar early-stage start-ups. Do we have any information about the profitability of our client ? Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Sounds good. Firstly, I would like to understand our client’s motivation behind the investment. There are two motivations primarily, financials gains and driving social impact. Okay, does the client have any number about the quantum of investment that it wants to make? There is no restriction as such. We would like to help in analyzing various factors to decide this. Okay, and is there any exit multiple that you have in mind or any return that you are expecting from this investment? Yes the client has invested in similar companies before but none of them are based out of India. To answer your 2nd question, our current portfolio consists of growth stage startups from the healthcare, services and ed-tech sectors based out of India and other south-east Asian countries. Great. Now that I have information about our client, I would like to know more about the company in which we plan to invest. Can you tell me more about the company and their business model? Yes sure. It is a family run company started by 3-brothers. They work with the underprivileged students from Eastern-Indian states of Orissa, Bihar and West Bengal. Their business model is to upskill students in theoretical and vocational skills and help them provide employment. They get revenue sources include fees from the students at a subsidized amount and commissions from the companies where the students are employed. Thanks for this. Are their specific skills or sectors in which the students are trained. The students are unemployed youth who are provided training as beauticians, cutting and stitching jobs and as baristas for coffee shops. They are continuously expanding the the range of their skill program. Good question. So, we are looking at a 16% CAGR on the investment over a horizon of 6 years after which we plan to exit. That’s helpful. I would now want to get some information about the existing portfolio of the client. Has the client invested in similar companies previously? How does its portfolio look like? So currently the client operated at 15% net margin while the industry operated at 16% margins. Is their any other differentiation that the company has? The company has invested heavily in technology to continuously identify the gap in demand for the required skills in the industry. It also uses helps to identify prospects and incentives them to join the program by identifying government schemes to avail scholarships and get skilled. 2022-2023 Page 154 Lastly, what’s the equity structure of the company and has there been any prior investments? I’ll start by estimating the population of West Bengal, Orissa and Bihar which should be 20% of the total population. Next, I would segment the population by age(18-25 years which is 20% roughly). We can further look at urban and rural segments and then look at the low- and middle- income category. Does that sound like a good approach? Do you think you are missing any other criteria? Given the demand and good profit margins of the company, the investment looks lucrative, and the client should go ahead with it, Alright, thank you for the recommendation.\",\"Consult Club, IIM Ahmedabad Recommendations (Beyond the transcript) • a) Do a proper analysis of the competitive landscape to gauge the competitive edge of the target company and also look into the threats of new entrant specially a big player. • b) Understand the operating model and the technology used of the target company to gauge the scalability of the business model. Key Learnings • In cases of due diligence and M&A, the preliminary questions are the most important and adequate time should be given to get relevant case facts. • The question about financial and strategic investment should have been asked in the beginning. Again, since time horizon was known beforehand, here case facts could have been linked better • It is important to think of synergies even between existing portfolio of the PE firm to the target company like potential technology transfer from companies in the portfolio operating abroad • In the guesstimate, it is essential to first lay down the approach the validate from the interviewer if something else is missing Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Approach/ Framework Interviewee Notes • It is important to understand the rationale for the investment • The preliminary questions should cover questions about the client and the target company to get important case facts. • It is essential to have a basic understand of the private equity industry and the process of due diligence, • It is important for the interviewee to link important case facts to subsequent answers. • Guesstimates can be qualitative or quantitative depending upon the interviewer. The approach should be laid out clearly. If numbers are required, reasonable assumptions can be taken. (For example, slightly higher unemployment levels in eastern India) Case Facts • Objective for investment is both social impact and financial gain. • 16% CAGR and a time horizon of 6 years. • No issues on cost side. • No poaching of customers by competitors. • The existing portfolio of the client and prior investments • The industries that the target company caters to currently • The ownership structure of the target company • Profit margins and industry competitiveness Commercial Due Diligence Valuation and financial feasibility Intrinsic Value Private Equity firm Page 155 Business Model P E S T E L Market Size 2022-2023 Due Diligence |Social Impact| Challenging Synergies and Business Model Exit Options and Risks Synergies Acquirer’s Value Customers Operations Differentiation Efficiency Synergies Financials Revenue Synergies Growth Rate Profitability Competition Equity Structure Cost Synergies Risks Exit Options Total Exit Partial Exit IPO Guesstimate Approach: Market size of underprivileged youth seeking jobs Segment total population to get population of Bihar, Orissa and WB (~20% of total – 25 crores) Segment further by age groups (18-30 years ~ 20% of 25 crore – 5 crore) Rural (70%) Urban (30%) Covered in this case Not covered in this case Lower Income group (80%) Lower Income group (40%) % unemployed and seeking jobs(10%) % unemployed and seeking jobs(15%) Total number of unemployed youth seeking jobs in the 3 states ~ 30 lacs Unconventional\",\"Consult Club, IIM Ahmedabad Easy wins • Breakdown into a mathematical formula • Always remember Demand and Supply • Any problem can have an internal cause (in control of company) or external cause. For external cause, use PESTEL to analyze possible issues Unconventional - Tips & Tricks Page 157 Pointers to Remember • Never try to force fit a framework • Understand the problem really really well • Ask the interviewer if you’re unfamiliar with a particular industry, do not hesitate to ask question • If the industry is familiar, comparisons with companies you know about would help in providing recommendations • Be as comprehensive as possible and hence bucketing the problems into different sections will help in structured thinking • Can be looked at through 2 lenses – qualitative & quantitative (as a mathematical problem) • Using the 3CP i.e., of Company, Customer, Competitor and Product approach works in certain cases, but focus on keeping the approach MECE • In certain cases when the scope of the cases is broad, the interviewee should ask if the focus needs to be on a specific aspect to structure thoughts in that direction • While scoping the problem, the interviewee can consider if there are competitors in the same industry and the strategies, they follow 2022-2023\",\"Consult Club, IIM Ahmedabad You can go ahead with the ad model assumption. However, X doesn’t have any merchandising rights for GOT. What information do you need from me to calculate X’s revenues? I would need the following: (i) X’s monthly Subscription fee (ii) No. of episodes in GOT S8 (iii) GOT viewers not currently on X (iv) Average ad rate per slot per episode (v) No. of slots auctioned per episode Glad that you asked. I have the following data sheet with me. This should help you calculate revenues for X (Data sheet provided in table I). Thank you. From my calculations, X’s revenue from Subscriptions and Advertisements comes out to be $6 Mn (table II). However, I think there are some synergistic benefits to adding GOT on our platform. These can be attributed to following factors: • Customer Stickiness: Some of the additional customers would stick around after GOT ends increasing their CLV for X. These benefits need to be added to our revenue calculations • Additional ad revenues for existing programmes: X can leverage its added user base to charge a premium for ad slots in its existing shows during GOT‘s 3-month on-air run-time These are some very good points, and you can assume an additional benefit of $1 Mn from Synergy. Can you please now list down the cost heads for X? I have divided X’s costs into two buckets (Framework 1): • Direct Costs: This header would include the Bid amount, Streaming costs, Marketing costs • Overheads: This would include incremental legal costs, regulatory costs, customer service costs Apart from this, there would be Costs of capital (which would include costs of financing the investment and opportunity costs of not putting the money elsewhere), Assume that X expects to incur additional costs of $1 Mn apart from the bid amount. X has expected an ROI of 20% to incorporate for the cost of capital. Oh, I think I have all the data now. Based on my calculations, the bid amount for GOT season 8 cannot exceed $5 Mn to get the desired ROI of 20%. Now, I’d like to focus on the Strategic feasibility. Adding GOT would affect the way subscribers interact with the platform. Given the adult nature of content, some of the family-centric subscribers might get dissuaded from continuing. Also, this would affect our tie-ups with existing content providers which infer HBO as their competitor or substitute. These points are valid, but we can safely assume that X is strategically aligned with getting HBO onboard. Can you please now identify three potential risks that X needs to be aware of? Sure. I have collated the risks into the following categories: • Customer centric: X might not attract enough new customers on the platform given the subscription price and the presence of alternate channels of piracy like torrents, illegal streaming • Content centric: The content is not up to the mark increasing mid-season customer and advertiser drop-outs. Given the explicit content, X could also face added regulatory pressures • Platform centric: Focus on GOT might lead to self- cannibalization with decreased viewership for the platform’s existing content. Plus, X needs to minimize platform glitches such as that could inhibit user watching experience, leaving the new viewers unsatisfied with the platform I think we can stop here. Thank you. Bid Strategy for GOT Season 8– Interview Transcript Unconventional | Bid strategy | Challenging | Entertainment Page 158 Your client is Company X. They have been approached by HBO to bid for the eighth season of GOT. They want your help to evaluate the opportunity and determine the correct bidding strategy. I would like to ask a few clarifying questions to get an understanding about the case. Could you please elaborate on X’s business model and current product offerings? X is an OTT platform operating in India. The company has a website and an app where customers can access media content by paying a monthly subscription fee. X has its own content as well as tie- ups with other providers to provide a curated list of Movies, TV Shows, News Channels and Sporting Events on its platform for its subscribers. What is X’s objective for this bid? Is it to increase user base, or revenues or profits? And what makes GOT so attractive for X? X wants to maximise their profits and this bid should account for that. As for GOT, it is the most watched English TV Series in India. I would like to now understand the bidding terms. Will this bid be for the eighth season only? Also, will X have exclusive rights for this and till when is the bid valid? The bid will be for exclusive rights to stream GOT’s eighth and final season, and valid only for the duration that the show is on-air. Has X bid previously for GOT and if so, do we have any information regarding the bidding process? Also, is it okay to assume that the offer has been made to X’s competitors as well? It’s a closed bidding process that HBO extends to X and its four other competitors. The client had bid for GOT’s seventh season but did not win the bid. They were informed that they were close second and had bid $3 Mn for Season\"],\"correctAnswer\":\"A\",\"explanation\":\"This question is mapped to Coding-Decoding. The correct answer is A based on the original source question.\",\"estimatedTime\":75,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Which of the following register is not used in opcode fetch operations?\",\"options\":[\"Program counter\",\"Memory address register\",\"Memory data register\",\"Flag register\"],\"correctAnswer\":\"D\",\"explanation\":\"Flag register is not used in opcode fetch operations. It is used to represent the status of ALU operation which is performed after decoding of the opcode.\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"What does a microprocessor understand after decoding opcode?\",\"options\":[\"Perform ALU operation\",\"Go to memory\",\"Length of the instruction and number of operations\",\"Go to the output device\"],\"correctAnswer\":\"C\",\"explanation\":\"After decoding the opcode of the instruction, a microprocessor understands the length of the instruction and the total number of operations to be performed.\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"For how many times per instruction, the content of the program counter is placed on the address bus?\",\"options\":[\"One time\",\"Two times\",\"Depends on the memory capacity of the processor\",\"Depends on the length of the instruction\"],\"correctAnswer\":\"D\",\"explanation\":\"After decoding an opcode the microprocessor understands the length of the instruction. So, the content of the program counter is placed on the address bus as many times as the length of the instruction.\",\"estimatedTime\":60,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Which of the following is not a property of block code?\",\"options\":[\"Cyclic\",\"Non linearity\",\"Linearity\",\"Systematic\"],\"correctAnswer\":\"B\",\"explanation\":\"Block codes are linear, systematic and cyclic in nature. Encoding and decoding techniques make use of mathematical constructs known as finite fields.\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"In how many ways 4 boys and 3 girls can be seated in a row so that they are alternate.\",\"options\":[\"144\",\"288\",\"12\",\"256\"],\"correctAnswer\":\"A\",\"explanation\":\"Let the Arrangement be, B G B G B G B 4 boys can be seated in 4! Ways Girl can be seated in 3! Ways Required number of ways, = 4! × 3! = 144\",\"estimatedTime\":60,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Arrangement of the fractions $$\\\\frac{4}{3},\\\\, - \\\\frac{2}{9},\\\\, - \\\\frac{7}{8},\\\\,\\\\frac{5}{{12}}$$ into ascending order:\",\"options\":[\"$$ - \\\\frac{2}{9},\\\\, - \\\\frac{7}{8},\\\\,\\\\frac{4}{3},\\\\,\\\\frac{5}{{12}}$$\",\"$$ - \\\\frac{7}{8},\\\\, - \\\\frac{2}{9},\\\\,\\\\frac{5}{{12}},\\\\,\\\\frac{4}{3}$$\",\"$$ - \\\\frac{7}{8},\\\\, - \\\\frac{2}{9},\\\\,\\\\frac{4}{3},\\\\,\\\\frac{5}{{12}}$$\",\"$$ - \\\\frac{2}{9},\\\\, - \\\\frac{7}{8},\\\\,\\\\frac{5}{{12}},\\\\,\\\\frac{4}{3}$$\"],\"correctAnswer\":\"B\",\"explanation\":\"$$\\\\eqalign{ & \\\\frac{4}{3},\\\\,\\\\frac{{ - 2}}{9},\\\\,\\\\frac{{ - 7}}{8},\\\\,\\\\frac{5}{{12}} \\\\cr & \\\\frac{4}{3} = 1.33 \\\\cr & \\\\frac{{ - 2}}{9} = - 0.22 \\\\cr & \\\\frac{{ - 7}}{8} = - 0.875 \\\\cr & \\\\frac{5}{{12}} = 0.416 \\\\cr & {\\\\text{So, }}\\\\frac{{ - 7}}{8},\\\\,\\\\frac{{ - 2}}{9},\\\\,\\\\frac{5}{{12}},\\\\,\\\\frac{4}{3} \\\\cr} $$\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Which one set of letters when sequentially placed at the gaps in the given letter series shall complete it ? a_bbc_aab_cca_bbcc\",\"options\":[\"bacb\",\"acba\",\"caba\",\"abba\"],\"correctAnswer\":\"B\",\"explanation\":\"The pattern is, a a bbc c aab b cca a bbcc. The pattern aabbcc is repeated.\",\"estimatedTime\":60,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"SCD, TEF, UGH, ____, WKL\",\"options\":[\"CMN\",\"UJI\",\"VIJ\",\"IJT\"],\"correctAnswer\":\"C\",\"explanation\":\"There are two alphabetical series here. The first series is with the first letters only: STUVW. The second series involves the remaining letters: CD, EF, GH, IJ, KL.\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"ELFA, GLHA, ILJA, _____, MLNA\",\"options\":[\"OLPA\",\"KLMA\",\"LLMA\",\"KLLA\"],\"correctAnswer\":\"D\",\"explanation\":\"The second and forth letters in the series, L and A, are static. The first and third letters consist of an alphabetical order beginning with the letter E.\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"ZA 5 , Y 4 B, XC 6 , W 3 D, _____\",\"options\":[\"E 7 V\",\"V 2 E\",\"VE 5\",\"VE 7\"],\"correctAnswer\":\"D\",\"explanation\":\"There are three series to look for here. The first letters are alphabetical in reverse: Z, Y, X, W, V. The second letters are in alphabetical order, beginning with A. The number series is as follows: 5, 4, 6, 3, 7.\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"JAK, KBL, LCM, MDN, _____\",\"options\":[\"OEP\",\"NEO\",\"MEN\",\"PFQ\"],\"correctAnswer\":\"B\",\"explanation\":\"This is an alternating series in alphabetical order. The middle letters follow the order ABCDE. The first and third letters are alphabetical beginning with J. The third letter is repeated as a first letter in each subsequent three-letter segment.\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"BCB, DED, FGF, HIH, ___\",\"options\":[\"JKJ\",\"HJH\",\"IJI\",\"JHJ\"],\"correctAnswer\":\"A\",\"explanation\":\"This series consists of a simple alphabetical order with the first two letters of all segments: B, C, D, E, F, G, H, I, J, K. The third letter of each segment is a repetition of the first letter.\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"P 5 QR, P 4 QS, P 3 QT, _____, P 1 QV\",\"options\":[\"PQW\",\"PQV 2\",\"P 2 QU\",\"PQ 3 U\"],\"correctAnswer\":\"C\",\"explanation\":\"The first two letters, PQ, are static. The third letter is in alphabetical order, beginning with R. The number series is in descending order beginning with 5.\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"What will come at the place of question mark ? 7, 26, 63, 124, 215, 342, ?\",\"options\":[\"391\",\"511\",\"481\",\"421\"],\"correctAnswer\":\"B\",\"explanation\":\"The terms are given in a series (2 3 -1) = 7 (3 3 -1) = 26 (4 3 -1) = 63 (5 3 -1) = 124 (6 3 -1) = 215 (7 3 -1) = 342 So, the missing term is, (8 3 -1) = 511.\",\"estimatedTime\":60,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"What will come at the place of question mark ? 3, 2, 7, 6, 11, ?\",\"options\":[\"8\",\"10\",\"4\",\"2\"],\"correctAnswer\":\"B\",\"explanation\":\"2 nd number is less by 1 than the 1 st number and 3 rd number is more by 5 than the 2 nd number. The same rule follows in other numbers of the series.\",\"estimatedTime\":60,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"In the series 2, 6, 18, 54, ...... what will be the 8th term ?\",\"options\":[\"4370\",\"4374\",\"7443\",\"7434\"],\"correctAnswer\":\"B\",\"explanation\":\"Clearly, 2 x 3 = 6, 6 x 3 = 18, 18 x 3 = 54,..... So, the series is a G.P. in which a = 2, r = 3. Therefore 8th term = ar 8-1 = ar 7 = 2 x 3 7 = (2 x 2187) = 4374.\",\"estimatedTime\":60,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"The arrangement of rational numbers, $$\\\\frac{- 7}{10}$$, $$\\\\frac{5}{- 8}$$, $$\\\\frac{2}{- 3}$$ in ascending order is :\",\"options\":[\"$$\\\\frac{2}{{ - 3}},\\\\frac{5}{{ - 8}},\\\\frac{{ - 7}}{{10}}$$\",\"$$\\\\frac{5}{{ - 8}},\\\\frac{{ - 7}}{{10}},\\\\frac{2}{{ - 3}}$$\",\"$$\\\\frac{{ - 7}}{{10}},\\\\frac{5}{{ - 8}},\\\\frac{2}{{ - 3}}$$\",\"$$\\\\frac{{ - 7}}{{10}},\\\\frac{2}{{ - 3}},\\\\frac{5}{{ - 8}}$$\"],\"correctAnswer\":\"D\",\"explanation\":\"$$\\\\frac{- 7}{10}$$ = - 0.7 $$\\\\frac{5}{- 8}$$ = - $$\\\\frac{5}{8}$$ = - 0.625, $$\\\\frac{2}{- 3}$$ = - $$\\\\frac{2}{3}$$ = - 0.66 Since, -0.7 < -0.66 < -0.625 So, $$\\\\frac{- 7}{10}$$ < $$\\\\frac{2}{- 3}$$ < $$\\\\frac{5}{- 8}$$\",\"estimatedTime\":60,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"A single discount equivalent to discount series 20% , 20% and 10% is = ?\",\"options\":[\"50%\",\"48.4%\",\"42.4%\",\"40.4%\"],\"correctAnswer\":\"C\",\"explanation\":\"Single equivalent discount for 20% and 20% $$\\\\eqalign{ & = 20 + 20 - \\\\frac{{20 \\\\times 20}}{{100}} \\\\cr & = 40 - 4 \\\\cr & = 36\\\\% \\\\cr} $$ Single equivalent discount for 36% and 10% $$\\\\eqalign{ & = 36 + 10 - \\\\frac{{36 \\\\times 10}}{{100}} \\\\cr & = 46 - 3.6 \\\\cr & = 42.4\\\\% \\\\cr} $$\",\"estimatedTime\":60,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"The single discount equivalent to the discount series of 20%, 10% and 5% is = ?\",\"options\":[\"11.66%\",\"31.6%\",\"35.66Z%\",\"32%\"],\"correctAnswer\":\"B\",\"explanation\":\"Single equivalent discount for 20% and 10% $$\\\\eqalign{ & = 20 + 10 - \\\\frac{{20 \\\\times 10}}{{100}} \\\\cr & = 30 - 2 \\\\cr & = 28\\\\% \\\\cr} $$ Single equivalent discount for 28% and 5% $$\\\\eqalign{ & = 28 + 5 - \\\\frac{{28 \\\\times 5}}{{100}} \\\\cr & = 33 - 1.4 \\\\cr & = 31.6\\\\% \\\\cr} $$\",\"estimatedTime\":60,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Two trains cross each other at a speed of 30kmph and 45 kmph, respectively. If they are moving in the opposite direction, find the length of both the trains combined. The time taken = 12 seconds.\",\"options\":[\"0.30 km\",\"0.32 km\",\"0.25 km\",\"0.33 km\"],\"correctAnswer\":\"C\",\"explanation\":\"The relative speed = 30 + 45 = 75 kmph = 20.83 m / s The distance covered = 12 * 20.83 = 249.96 m = 0.25 km.\",\"estimatedTime\":75,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Find the next number in the series : 61, 52, 63, 94, 46, .... ?\",\"options\":[\"81\",\"18\",\"49\",\"35\"],\"correctAnswer\":\"B\",\"explanation\":\"Here, each number is reverse of a number which is square of a number. i.e. 42=16→61, 52=25→52, 62=36→63, 72=49→94, 82=64→46. So, the next number will be 92=81→18. Hence, the answer is 18.\",\"estimatedTime\":60,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Identify the wrong number in the series. 0, 1, 1, 2, 3, 5, 8, 13, 20, 34?\",\"options\":[\"8\",\"20\",\"13\",\"34\"],\"correctAnswer\":\"B\",\"explanation\":\"Here, the series is a Fibonacci series. i.e. a number in the series is the sum of previous two numbers. So, in this 8+13 = 21. So the wrong number is 20. Hence, the answer is 20.\",\"estimatedTime\":60,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Complete the following series 6, 12, 36, 144, 720...?\",\"options\":[\"4320\",\"2843\",\"8249\",\"6825\"],\"correctAnswer\":\"A\",\"explanation\":\"Here, the series follows the following pattern. 6×2=12, 12×3=36, 36×4=144, 144×5=720. Similarly, 720×6=4320. Hence, the answer is 4320.\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Identify the missing number in the series. 8, 13, 21, 34, 55, ?, 144?\",\"options\":[\"55\",\"13\",\"89\",\"21\"],\"correctAnswer\":\"C\",\"explanation\":\"Here, the series is a Fibonacci series. i.e., a number in the series is the sum of previous two numbers. So, in this missing number is 34+55 =89. Hence, the answer is 89.\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"A train moving with a speed of 73 kmph passes a man walking with a speed of 7 kmph in the same direction in 32 seconds. Find the length of the train.\",\"options\":[\"585 m\",\"586 m\",\"587 m\",\"588 m\"],\"correctAnswer\":\"C\",\"explanation\":\"The relative speed = 73 – 7 = 66 kmph = 18.33 m / s The distance covered = 18.33 * 32 = 586.56 m.\",\"estimatedTime\":75,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"A train with a speed of 113 kmph passes a man with a speed of 104 kmph moving in the same direction in 98 seconds. Find the length of the train.\",\"options\":[\"220 m\",\"230 m\",\"245 m\",\"255 m\"],\"correctAnswer\":\"C\",\"explanation\":\"The relative speed = 113 – 104 = 9 kmph = 2.5 m / s The distance covered = 98 * 2.5 = 245 m.\",\"estimatedTime\":75,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Two trains crosses each other in 9 seconds travelling in the opposite direction. Find the combined length of the trains if their speeds are 76 kmph and 63 kmph.\",\"options\":[\"347.5 m\",\"347.3 m\",\"347.1 m\",\"346.9 m\"],\"correctAnswer\":\"A\",\"explanation\":\"The relative speed = 76 + 63 = 139 kmph = 38.61 m / s The distance covered = 38.61 * 9 = 347.49 m.\",\"estimatedTime\":75,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Two trains cross each other at speed 57 kmph and 87 kmph. If both the trains move in the same direction, find the combined length of the trains. The time taken by the train to cross each other is 85 seconds.\",\"options\":[\"708 m\",\"709 m\",\"710 m\",\"711 m\"],\"correctAnswer\":\"A\",\"explanation\":\"The relative speed = 87 – 57 = 30 kmph = 8.33 m / s The total distance covered = 8.33 * 85 = 708.05 m.\",\"estimatedTime\":75,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Two trains cross each other at a speed of 120 kmph and 145 kmph. If they move in the same direction and take 50 seconds to cross each other, find the combined length of both the trains.\",\"options\":[\"247 m\",\"347 m\",\"274 m\",\"374 m ⚡ Hurry! Secure Your Free Cyber Security Certification - March 2026\"],\"correctAnswer\":\"B\",\"explanation\":\"The relative speed = 145 – 120 = 25 kmph = 6.94 m / s The total distance covered = 6.94 * 50 = 347 m.\",\"estimatedTime\":75,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Two trains cross each other at a speed of 93 kmph and 65 kmph. If both the trains move in the same direction and take 56 seconds to cross each other, find the combined length of the trains.\",\"options\":[\"435.45 m\",\"435.12 m\",\"435.21 m\",\"435.54 m\"],\"correctAnswer\":\"B\",\"explanation\":\"The relative speed of the trains = 93 – 65 = 28 kmph = 7.77 m / s The total distance covered = 7.77 * 56 = 435.12 m.\",\"estimatedTime\":75,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Two trains cross each other in 143 seconds with a speed of 123 kmph and 154 kmph. Find the length of the trains combined if the trains are moving in the same direction.\",\"options\":[\"833.69 m\",\"833.96 m\",\"823.69 m\",\"823.96 m\"],\"correctAnswer\":\"A\",\"explanation\":\"The relative speed = 154 – 123 = 21 kmph = 5.83 m / s The total distance covered = 5.83 * 143 = 833.69 m.\",\"estimatedTime\":75,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"The mean of 1, 2, 2 2 , 2 3 , ......, 2 63 lies between which of the following number?\",\"options\":[\"2 57 and 2 58\",\"2 59 and 2 58\",\"2 57 and 2 56\",\"2 56 and 2 55\"],\"correctAnswer\":\"C\",\"explanation\":\"The series is in GP with a=1, r=2 and n=64. Sum = 2 63 – 1 Mean = \\\\(\\\\frac{2^{63}–1}{64}\\\\)=2 57 –\\\\(\\\\frac{1}{2^6}\\\\) Therefore, the mean lies between 2 57 and 2 56 .\",\"estimatedTime\":60,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Find the sum of 1+\\\\(\\\\frac{3}{5}+\\\\frac{5}{25}+\\\\frac{7}{125}\\\\)+⋯ up to n terms.\",\"options\":[\"15/8\",\"15/16\",\"25/16\",\"5/16\"],\"correctAnswer\":\"A\",\"explanation\":\"The given sequence is arithmetic geometric series, where a=1, d=2 and r=(1/5) S ∞ = \\\\(\\\\frac{a}{1-r} + \\\\frac{dr}{(1-r)^2}\\\\) S ∞ = \\\\(\\\\frac{1}{(1-1/5)} + \\\\frac{2/5}{(1-\\\\frac{1}{5})^2}\\\\) S ∞ = 5/4 + 10/16 = 15/8\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"If a, 2a+2 and 3a+3 are in GP, then what is the fifth term of the GP?\",\"options\":[\"-81/4\",\"81/4\",\"-81/2\",\"81/2\"],\"correctAnswer\":\"A\",\"explanation\":\"Given a, 2a+2 and 3a+3 are in GP. i.e., (2a+2) 2 = a(3a+3) a 2 + 5a + 4 = 0 a = -1, -4 Now, a = -1 does not satisfy the given series. Therefore, -4, -6 and -9 are in GP with r=3/2 Fifth term, T 5 = ar 4 = -4(3/2) 4 = -81/4\",\"estimatedTime\":60,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Find the sum of the first n terns of the series \\\\(\\\\frac{1}{2}+\\\\frac{3}{4}+\\\\frac{7}{8}+\\\\frac{15}{16}+\\\\)⋯.\",\"options\":[\"2 n – n – 1\",\"1 – 2 -n\",\"n + 2 -n – 1\",\"2 n -1\"],\"correctAnswer\":\"C\",\"explanation\":\"\\\\(\\\\frac{1}{2}+\\\\frac{3}{4}+\\\\frac{7}{8}+\\\\frac{15}{16}+\\\\)⋯ +n terms = (1-\\\\(\\\\frac{1}{2}\\\\))+(1-\\\\(\\\\frac{1}{4}\\\\))+(1-\\\\(\\\\frac{1}{8}\\\\)+⋯+(1-\\\\(\\\\frac{1}{2^n}\\\\)) = n – (\\\\(\\\\frac{1}{2}+\\\\frac{1}{4}+\\\\frac{1}{8}+⋯+\\\\frac{1}{2^n}) \\\\) = n – \\\\(\\\\frac{1}{2}\\\\Big(\\\\frac{1-(\\\\frac{1}{2})^n}{1-(\\\\frac{1}{2})}\\\\Big)\\\\) = n + 2 -n – 1\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Which of the following series is equivalent to a single discount of 80%?\",\"options\":[\"50%, 20% and 50%\",\"50%, 50% and 50%\",\"20%, 20% and 20%\",\"20%, 20% and 50%\"],\"correctAnswer\":\"A\",\"explanation\":\"Let the cost price be 100. First discount 50%: 100 – 50% of 100 = 100 – 50 = 50 Second discount 20%: 50 – 20% of 50 = 50 – 10 = 40 Final discount 50%: 40 – 50% of 40 = 40 – 20 = 20 The series of discount 50%, 20% and 50% is the desirable result.\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Find a single discount equivalent to the discount series of 50%, 50% and 50%.\",\"options\":[\"150%\",\"125%\",\"87.5%\",\"85%\"],\"correctAnswer\":\"C\",\"explanation\":\"Let the marked price be x. The first discount = 50% X – 50% f x = 0.5x The second discount is 50%: 0.5x – 50% of 0.5x = 0.25x The final discount is 50%: 0.25x – 50% of 0.25x = 0.125x 0.125x / x * 100 = 12.5% Total discount = 100 – 12.5 = 87.5%\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Find a single discount equivalent to the series of discount 20%, 20%, and 25%.\",\"options\":[\"48%\",\"52%\",\"60%\",\"65%\"],\"correctAnswer\":\"B\",\"explanation\":\"Let the marked price be 100. First discount is 20%: 100 – 20% of 100 = 100 – 20 = 80 Second discount is 20%: 80 – 20% of 80 = 80 – 16 = 64 The final discount is of 25%: 64 – 25% of 64 = 64 – 16 = 48 The total discount = 100 – 48 = 52%\",\"estimatedTime\":45,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"A number is twice a second number which in turn is 3 times the third number. Find the ratio of the series.\",\"options\":[\"6 : 3 : 1\",\"2 : 3 : 5\",\"2 : 3 : 6\",\"2 : 4 : 7\"],\"correctAnswer\":\"A\",\"explanation\":\"Let the last number be x. The second number is 3 time the third number = 3 * x = 3x The first number is twice the second number = 3x * 2 = 6x The ratio of the series = 6x : 3x : x = 6 : 3 : 1\",\"estimatedTime\":60,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"There are 5 terms a, b, c, d and e in a series. A = 4b, b = 7c, c = 2d, d = half of e and e = 12. Find the ratio of the series.\",\"options\":[\"56 : 14 : 1 : 1 : 1\",\"56 : 2 : 14 : 1 : 2\",\"56 : 14 : 2 : 1 : 1\",\"56 : 14 : 2 : 1 : 2 To practice all aptitude questions, please visit “1000+ Quantitative Aptitude Questions” , “1000+ Logical Reasoning Questions” , and “Data Interpretation Questions” . 👉 For weekly quantitative aptitude practice, exam, and certification updates, join Sanfoundry’s official WhatsApp & Telegram channels « Prev - Ratio and Proportion Questions and Answers – Word Problems – Set 2 » Next - Partnership Questions and Answers\"],\"correctAnswer\":\"D\",\"explanation\":\"e = 12 D = e / 2 = 12 / 2 = 6 C = 2d = 6 * 2 = 12 B = 7c = 12 * 7 = 84 A = 4b = 84 * 4 = 336 The required ratio = 336 : 84 : 12 : 6 : 12 = 56 : 14 : 2 : 1 : 2\",\"estimatedTime\":75,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"},{\"questionText\":\"Two trains cross each other at a speed of 40 kmph and 60 kmph, respectively. Find the combined distance of both the trains if the time taken is 20 seconds and the trains move in the same direction.\",\"options\":[\"111 m\",\"222 m\",\"333 m\",\"444 m 📌 Limited Seats! Register Now - Free AI-ML Certification (March 2026)\"],\"correctAnswer\":\"A\",\"explanation\":\"The relative speed = 60 – 40 = 20 kmph = 5.55 m / s The total distance covered = 20 * 5.55 = 111 m.\",\"estimatedTime\":75,\"subtopic\":\"Coding-Decoding\",\"tags\":[\"logical\",\"aptitude\",\"coding\",\"decoding\",\"code language\"],\"pattern\":\"logical\"}]}",
+  "parsed": {
+    "questions": [
+      {
+        "questionText": "Ankita’s younger brother Bobby is older than Nilu. Shweta is younger than Rahul but elder than Ankita. Who is the eldest? Logical Reasoning Questions on Odd Man Out Logical Reasoning Questions on Coding and Decoding Verbal Reasoning Questions on Blood Relation Verbal Reasoning Questions and Answers on Analogy Reasoning Questions on Venn Diagram Verbal Reasoning Questions on Logical Sequence of Words Non-Verbal Reasoning Questions on Dot Situation Analysis Non-Verbal Reasoning Questions and Answers on Missing Figures Reasoning Questions on Figure Classification Non-Verbal Questions on Pattern Completion Data Interpretation Quantitative Aptitude",
+        "options": [
+          "Rahul",
+          "Shweta",
+          "Ankita",
+          "Bobby Topic Wise Questions and Answers on Logical Reasoning Our 1000+ Questions and Answers focus on various topics of Logical Reasoning, covering 20+ topics. This resource will help you prepare for competitive exams such as SSC, CAT, GRE, UPSC, GMAT, Bank Exams, Defense Exams, Railway Exams, and Job placements. You can practice these Logical Reasoning Questions topic by topic, starting from the 1st or you can jump to any topic of your choice. Logical Reasoning: Odd Man Out Coding and Decoding Logical Deduction Verbal Reasoning: Blood Relation Analogy Venn Diagram Logical Sequence of Words Syllogisms Non-Verbal Reasoning: Dot Situation Analysis Missing Figures Figure Classification Pattern Completion Data Interpretation: Data Interpretation Questions Quantitative Aptitude: Quantitative Aptitude Questions The section includes reasoning questions and answers on odd man out series. Odd Man Out – Set 1 Odd Man Out – Set 2 Odd Man Out – Set 3 Odd Man Out – Set 4 Odd Man Out – Set 5 Odd Man Out – Set 6 Odd Man Out – Set 7 Odd Man Out – Set 8 Odd Man Out – Set 9 Odd Man Out – Set 10 The section contains logical reasoning questions and answers on coding and decoding. Coding and Decoding – Set 1 Coding and Decoding – Set 2 Coding and Decoding – Set 3 Coding and Decoding – Set 4 Coding and Decoding – Set 5 Coding and Decoding – Set 6 Coding and Decoding – Set 7 Coding and Decoding – Set 8 Coding and Decoding – Set 9 Coding and Decoding – Set 10 The section contains verbal reasoning questions and answers on blood relation. Blood Relation – Set 1 Blood Relation – Set 2 Blood Relation – Set 3 Blood Relation – Set 4 Blood Relation – Set 5 Blood Relation – Set 6 Blood Relation – Set 7 Blood Relation – Set 8 Blood Relation – Set 9 Blood Relation – Set 10 The section contains verbal reasoning practice questions on analogy. Analogy – Set 1 Analogy – Set 2 Analogy – Set 3 Analogy – Set 4 Analogy – Set 5 Analogy – Set 6 Analogy – Set 7 Analogy – Set 8 Analogy – Set 9 Analogy – Set 10 The section includes verbal reasoning questions and answers on venn diagram. Venn Diagram – Set 1 Venn Diagram – Set 2 Venn Diagram – Set 3 Venn Diagram – Set 4 Venn Diagram – Set 5 Venn Diagram – Set 6 Venn Diagram – Set 7 Venn Diagram – Set 8 Venn Diagram – Set 9 Venn Diagram – Set 10 The section contains logical reasoning questions on sequencing Sequencing – Set 1 Sequencing – Set 2 Sequencing – Set 3 Sequencing – Set 4 Sequencing – Set 5 Sequencing – Set 6 Sequencing – Set 7 Sequencing – Set 8 Sequencing – Set 9 Sequencing – Set 10 The section contains questions and answers on dot situation analysis. Dot Situation Analysis – Set 1 Dot Situation Analysis – Set 2 Dot Situation Analysis – Set 3 Dot Situation Analysis – Set 4 Dot Situation Analysis – Set 5 Dot Situation Analysis – Set 6 Dot Situation Analysis – Set 7 Dot Situation Analysis – Set 8 Dot Situation Analysis – Set 9 Dot Situation Analysis – Set 10 The section contains non verbal reasoning questions on missing figures. Missing Figures – Set 1 Missing Figures – Set 2 Missing Figures – Set 3 Missing Figures – Set 4 Missing Figures – Set 5 Missing Figures – Set 6 Missing Figures – Set 7 Missing Figures – Set 8 Missing Figures – Set 9 Missing Figures – Set 10 The section contains non verbal questions and answers on figure classification. Figure Classification – Set 1 Figure Classification – Set 2 Figure Classification – Set 3 Figure Classification – Set 4 Figure Classification – Set 5 Figure Classification – Set 6 Figure Classification – Set 7 Figure Classification – Set 8 Figure Classification – Set 9 Figure Classification – Set 10 The section contains non verbal reasoning questions and answers on pattern completion. Pattern Completion – Set 1 Pattern Completion – Set 2 Pattern Completion – Set 3 Pattern Completion – Set 4 Pattern Completion – Set 5 Pattern Completion – Set 6 Pattern Completion – Set 7 Pattern Completion – Set 8 Pattern Completion – Set 9 Pattern Completion – Set 10 The section contains questions and answers on data interpretation. Tabulation Bar Graphs Pie Chart Line Graphs The section contains questions and answers on quantitative aptitude. Quantitative Aptitude Questions and Answers If you would like to learn “Logical Reasoning” thoroughly, you should attempt to work on the complete set of questions and answers mentioned above. It will immensely help anyone trying to crack an exam or an interview. Wish you the best in your endeavor to learn and master Logical Reasoning! 👉 For weekly logical reasoning practice, exam, and certification updates, join Sanfoundry’s official WhatsApp & Telegram channels » Next - Odd Man Out Questions and Answers"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Here, according to question Nilu < Bobby < Ankita < Shweta < Rahul. Therefore, the eldest is Rahul. Hence the answer is Rahul.",
+        "estimatedTime": 75,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Each vowel of the GLADIOLUS word is substituted with the next letter of the English alphabetical series and each consonant is substituted with the letters preceding it. How many vowels will be present in the new arrangement?",
+        "options": [
+          "One",
+          "Two",
+          "Three",
+          "No Vowel"
+        ],
+        "correctAnswer": "D",
+        "explanation": "G → F L → K A → B D → C I → J O → P L → K U → V S → R Thus, GLADIOLUS = FKBCJPKVR.",
+        "estimatedTime": 75,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Current transformers are __________________",
+        "options": [
+          "parallel connected type of instrument transformers",
+          "series connected type of instrument transformers",
+          "parallel connected normal transformers",
+          "series-parallel connected type of instrument transformers"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Current transformer (CT) is a series connected type of instrument transformer. They are designed to present negligible load to the supply which is being measured and also have an accurate current ratio and phase relationship to enable accurate secondary connected metering.",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Leela, who is Sohan's daughter, says to Latika, \"Your mother Alka is the younger sister of my father who is the third child of Gajanan.\" What is the relation of Gajanan to Latika ?",
+        "options": [
+          "Father",
+          "Uncle",
+          "Grandfather",
+          "Father-in-law"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The correct answer is C: Grandfather . Let's break down the relationships step by step: 1. Leela's statement: \"Your mother Alka is the younger sister of my father who is the third child of Gajanan.\" 2. Decoding: * Leela's father is Sohan. * Alka is Latika's mother. * Alka is Sohan's younger sister. * Sohan is the third child of Gajanan. 3. Putting it together: * Sohan and Alka are siblings (brother and sister). * Gajanan is the father of both Sohan and Alka. * Therefore, Gajanan is the father of Latika's mother (Alka). 4. Conclusion: Since Gajanan is the father of Latika's mother, Gajanan is Latika's grandfather .",
+        "estimatedTime": 75,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "It was on the behest of the officer that he made those improvements.",
+        "options": [
+          "suggestion",
+          "orders",
+          "recommendation",
+          "request"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Suggestion : an idea or plan put forward for consideration. Orders : the arrangement or disposition of people or things in relation to each other according to a particular sequence, pattern, or method. Recommendation : a suggestion or proposal as to the best course of action, especially one put forward by an authoritative body. Request : an act of asking politely or formally for something. Behest : a person's orders or command. Synonym of Behest is Orders",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Study of the evolution of man as an animal",
+        "options": [
+          "Archaeology",
+          "Anthropology",
+          "Chronology",
+          "Ethnology"
+        ],
+        "correctAnswer": "B",
+        "explanation": "One word substitute is Anthropology . Archaeology: the study of human history and prehistory through the excavation of sites and the analysis of artefacts and other physical remains. Anthropology: the study of human biological and physiological characteristics and their evolution. Chronology: the arrangement of events or dates in the order of their occurrence. Ethnology: the study of the characteristics of different peoples and the differences and relationships between them.",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "What is the primary purpose of a scatter plot in EDA?",
+        "options": [
+          "To show the distribution of a single variable",
+          "To visualize relationships between variables",
+          "To display categorical data",
+          "To represent time series data"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Option A: To show the distribution of a single variable : This is usually done with histograms or box plots, not scatter plots. Option B: To visualize relationships between variables : This is the main point of a scatter plot! Each point on the plot represents a pair of values for two different variables. By looking at the pattern of points, we can see if there's a correlation or relationship between them. For example, if as one variable increases, the other also tends to increase, that shows a positive relationship. Option C: To display categorical data : Categorical data is better shown with bar charts or pie charts, not scatter plots. Option D: To represent time series data : Time series data is usually displayed using line charts. In simple terms: A scatter plot helps us see if two things are connected. If we plot \"ice cream sales\" versus \"temperature,\" we might see that as the temperature goes up, ice cream sales also go up. The scatter plot lets us see that relationship.",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "In time series analysis, what does the \"autocorrelation function\" (ACF) measure?",
+        "options": [
+          "Seasonal patterns",
+          "Trend patterns",
+          "Correlation between lagged values",
+          "Random noise"
+        ],
+        "correctAnswer": "C",
+        "explanation": "This question is mapped to Coding-Decoding. The correct answer is C based on the original source question.",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Inter division dynamics across the subsidiaries Due Diligence |E-Commerce Sector| Investment | Challenging 2022-2023 (C) Consult Club, IIM Ahmedabad Private Equity firm – Interview Transcript Due Diligence |Social Impact| Challenging Sure, I would like to now look at the various synergies that we can draw from the previous investments. I would like to look at revenue synergies, cost synergies and efficiency synergies. In terms of the revenue synergies, based on our other investments in home services sector we can drive demand for the company and identify skill training opportunities. The client can draw cost and efficiency synergies from similar foreign-based startups in our portfolio by means of technology transfer. Good points. Lets talk about the equity holding and investment amount that we should look at. What factors would influence this decision? Firstly, I would like to understand the nature of the investment – are we looking at a strategic investment with a majority stake or are we looking at a financial investment. As I mentioned, we plan to exit in 5-6 years, so it is a financial investment. I can take population growth as a proxy for the growth in the number of candidates. Similarly, the commissions will be based on the number of employees that we could place. Knowing 15% profit margins, we can discount the cash flows to get the present value of the firm. Good, let’s move on and look at the other factors. Since we are looking at skill programs, we should be looking at only the unemployed youth and students. We can use the labour participation rate and unemployment levels to get a figure. I can then multiply the market with the average fees to get the revenue. To further understand the revenues from commissions, I would like to know the commission rate and the number of companies that we are catering to currently and how is the demand expected to change. Let’s assume that there is enough demand. How would you get the projected revenues for the next 6 years to estimate the value of the firm. Right, so if we are looking at a minority stake in the company, the investment would depend on the valuation of the company and other possible PE firms who are looking to invest in the same company. We should also look at the willingness of the founders about the extent of dilution of their shares. Good points. There are in fact 2 other firms looking to invest in the same company. Let’s quickly now look at the various risks and exit options before the client. Sure. First and foremost, I would like to do a legal due diligence to see if there are any litigations, tax liabilities or regulatory compliance issues with the company, which can contribute to legal risks. I would look at the debt structure as well as the employee contracts of the company. In terms of technological risks, there are chances of obsolesce of some of these skills and need to adapt quickly to changing demands. There are economic risks, with respect to getting fees from the underprivileged in cases where sufficient government scholarships are absent. There is also high competition in the sector and threats from competition who can eat up the market share. In terms of exit options, the company can look to sell its stake back to the the initial promoters or another PE firm since there are existing competition. Alright, I think that’s a comprehensive analysis. Any final recommendation? That sounds like a fair approach. Explain me your approach to estimate the total market size. Good question. There hasn’t been any prior investments and the equity is split equally between the 3 brothers. At this point, I feel I have enough information to proceed. I’ll take a moment to structure my thoughts to produce an overall approach to analyse the feasibility of the investment. Sounds good, please go ahead. Okay, I would like to divide the analysis into 3 buckets – firstly estimating the market attractiveness and coming up with the valuation of the company. Next, I would like to investigate the synergies that we draw from the investments. Lastly, I would like to look at the various risks associated with the company. I would also know about the company’s founders and their vision. That’s interesting. And how is the competitive landscape in the sector where the client operates? It is a fragmented market and there is high competition from some similar early-stage start-ups. Do we have any information about the profitability of our client ? Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Sounds good. Firstly, I would like to understand our client’s motivation behind the investment. There are two motivations primarily, financials gains and driving social impact. Okay, does the client have any number about the quantum of investment that it wants to make? There is no restriction as such. We would like to help in analyzing various factors to decide this. Okay, and is there any exit multiple that you have in mind or any return that you are expecting from this investment? Yes the client has invested in similar companies before but none of them are based out of India. To answer your 2nd question, our current portfolio consists of growth stage startups from the healthcare, services and ed-tech sectors based out of India and other south-east Asian countries. Great. Now that I have information about our client, I would like to know more about the company in which we plan to invest. Can you tell me more about the company and their business model? Yes sure. It is a family run company started by 3-brothers. They work with the underprivileged students from Eastern-Indian states of Orissa, Bihar and West Bengal. Their business model is to upskill students in theoretical and vocational skills and help them provide employment. They get revenue sources include fees from the students at a subsidized amount and commissions from the companies where the students are employed. Thanks for this. Are their specific skills or sectors in which the students are trained. The students are unemployed youth who are provided training as beauticians, cutting and stitching jobs and as baristas for coffee shops. They are continuously expanding the the range of their skill program. Good question. So, we are looking at a 16% CAGR on the investment over a horizon of 6 years after which we plan to exit. That’s helpful. I would now want to get some information about the existing portfolio of the client. Has the client invested in similar companies previously? How does its portfolio look like? So currently the client operated at 15% net margin while the industry operated at 16% margins. Is their any other differentiation that the company has? The company has invested heavily in technology to continuously identify the gap in demand for the required skills in the industry. It also uses helps to identify prospects and incentives them to join the program by identifying government schemes to avail scholarships and get skilled. 2022-2023 Page 154 Lastly, what’s the equity structure of the company and has there been any prior investments? I’ll start by estimating the population of West Bengal, Orissa and Bihar which should be 20% of the total population. Next, I would segment the population by age(18-25 years which is 20% roughly). We can further look at urban and rural segments and then look at the low- and middle- income category. Does that sound like a good approach? Do you think you are missing any other criteria? Given the demand and good profit margins of the company, the investment looks lucrative, and the client should go ahead with it, Alright, thank you for the recommendation. (C) Consult Club, IIM Ahmedabad Recommendations (Beyond the transcript) • a) Do a proper analysis of the competitive landscape to gauge the competitive edge of the target company and also look into the threats of new entrant specially a big player. • b) Understand the operating model and the technology used of the target company to gauge the scalability of the business model. Key Learnings • In cases of due diligence and M&A, the preliminary questions are the most important and adequate time should be given to get relevant case facts. • The question about financial and strategic investment should have been asked in the beginning. Again, since time horizon was known beforehand, here case facts could have been linked better • It is important to think of synergies even between existing portfolio of the PE firm to the target company like potential technology transfer from companies in the portfolio operating abroad • In the guesstimate, it is essential to first lay down the approach the validate from the interviewer if something else is missing Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Approach/ Framework Interviewee Notes • It is important to understand the rationale for the investment • The preliminary questions should cover questions about the client and the target company to get important case facts. • It is essential to have a basic understand of the private equity industry and the process of due diligence, • It is important for the interviewee to link important case facts to subsequent answers. • Guesstimates can be qualitative or quantitative depending upon the interviewer. The approach should be laid out clearly. If numbers are required, reasonable assumptions can be taken. (For example, slightly higher unemployment levels in eastern India) Case Facts • Objective for investment is both social impact and financial gain. • 16% CAGR and a time horizon of 6 years. • No issues on cost side. • No poaching of customers by competitors. • The existing portfolio of the client and prior investments • The industries that the target company caters to currently • The ownership structure of the target company • Profit margins and industry competitiveness Commercial Due Diligence Valuation and financial feasibility Intrinsic Value Private Equity firm Page 155 Business Model P E S T E L Market Size 2022-2023 Due Diligence |Social Impact| Challenging Synergies and Business Model Exit Options and Risks Synergies Acquirer’s Value Customers Operations Differentiation Efficiency Synergies Financials Revenue Synergies Growth Rate Profitability Competition Equity Structure Cost Synergies Risks Exit Options Total Exit Partial Exit IPO Guesstimate Approach: Market size of underprivileged youth seeking jobs Segment total population to get population of Bihar, Orissa and WB (~20% of total – 25 crores) Segment further by age groups (18-30 years ~ 20% of 25 crore – 5 crore) Rural (70%) Urban (30%) Covered in this case Not covered in this case Lower Income group (80%) Lower Income group (40%) % unemployed and seeking jobs(10%) % unemployed and seeking jobs(15%) Total number of unemployed youth seeking jobs in the 3 states ~ 30 lacs Unconventional (C) Consult Club, IIM Ahmedabad Easy wins • Breakdown into a mathematical formula • Always remember Demand and Supply • Any problem can have an internal cause (in control of company) or external cause. For external cause, use PESTEL to analyze possible issues Unconventional - Tips & Tricks Page 157 Pointers to Remember • Never try to force fit a framework • Understand the problem really really well • Ask the interviewer if you’re unfamiliar with a particular industry, do not hesitate to ask question • If the industry is familiar, comparisons with companies you know about would help in providing recommendations • Be as comprehensive as possible and hence bucketing the problems into different sections will help in structured thinking • Can be looked at through 2 lenses – qualitative & quantitative (as a mathematical problem) • Using the 3CP i.e., of Company, Customer, Competitor and Product approach works in certain cases, but focus on keeping the approach MECE • In certain cases when the scope of the cases is broad, the interviewee should ask if the focus needs to be on a specific aspect to structure thoughts in that direction • While scoping the problem, the interviewee can consider if there are competitors in the same industry and the strategies, they follow 2022-2023 (C) Consult Club, IIM Ahmedabad You can go ahead with the ad model assumption. However, X doesn’t have any merchandising rights for GOT. What information do you need from me to calculate X’s revenues? I would need the following: (i) X’s monthly Subscription fee (ii) No. of episodes in GOT S8 (iii) GOT viewers not currently on X (iv) Average ad rate per slot per episode (v) No. of slots auctioned per episode Glad that you asked. I have the following data sheet with me. This should help you calculate revenues for X (Data sheet provided in table I). Thank you. From my calculations, X’s revenue from Subscriptions and Advertisements comes out to be $6 Mn (table II). However, I think there are some synergistic benefits to adding GOT on our platform. These can be attributed to following factors: • Customer Stickiness: Some of the additional customers would stick around after GOT ends increasing their CLV for X. These benefits need to be added to our revenue calculations • Additional ad revenues for existing programmes: X can leverage its added user base to charge a premium for ad slots in its existing shows during GOT‘s 3-month on-air run-time These are some very good points, and you can assume an additional benefit of $1 Mn from Synergy. Can you please now list down the cost heads for X? I have divided X’s costs into two buckets (Framework 1): • Direct Costs: This header would include the Bid amount, Streaming costs, Marketing costs • Overheads: This would include incremental legal costs, regulatory costs, customer service costs Apart from this, there would be Costs of capital (which would include costs of financing the investment and opportunity costs of not putting the money elsewhere), Assume that X expects to incur additional costs of $1 Mn apart from the bid amount. X has expected an ROI of 20% to incorporate for the cost of capital. Oh, I think I have all the data now. Based on my calculations, the bid amount for GOT season 8 cannot exceed $5 Mn to get the desired ROI of 20%. Now, I’d like to focus on the Strategic feasibility. Adding GOT would affect the way subscribers interact with the platform. Given the adult nature of content, some of the family-centric subscribers might get dissuaded from continuing. Also, this would affect our tie-ups with existing content providers which infer HBO as their competitor or substitute. These points are valid, but we can safely assume that X is strategically aligned with getting HBO onboard. Can you please now identify three potential risks that X needs to be aware of? Sure. I have collated the risks into the following categories: • Customer centric: X might not attract enough new customers on the platform given the subscription price and the presence of alternate channels of piracy like torrents, illegal streaming • Content centric: The content is not up to the mark increasing mid-season customer and advertiser drop-outs. Given the explicit content, X could also face added regulatory pressures • Platform centric: Focus on GOT might lead to self- cannibalization with decreased viewership for the platform’s existing content. Plus, X needs to minimize platform glitches such as that could inhibit user watching experience, leaving the new viewers unsatisfied with the platform I think we can stop here. Thank you. Bid Strategy for GOT Season 8– Interview Transcript Unconventional | Bid strategy | Challenging | Entertainment Page 158 Your client is Company X. They have been approached by HBO to bid for the eighth season of GOT. They want your help to evaluate the opportunity and determine the correct bidding strategy. I would like to ask a few clarifying questions to get an understanding about the case. Could you please elaborate on X’s business model and current product offerings? X is an OTT platform operating in India. The company has a website and an app where customers can access media content by paying a monthly subscription fee. X has its own content as well as tie- ups with other providers to provide a curated list of Movies, TV Shows, News Channels and Sporting Events on its platform for its subscribers. What is X’s objective for this bid? Is it to increase user base, or revenues or profits? And what makes GOT so attractive for X? X wants to maximise their profits and this bid should account for that. As for GOT, it is the most watched English TV Series in India. I would like to now understand the bidding terms. Will this bid be for the eighth season only? Also, will X have exclusive rights for this and till when is the bid valid? The bid will be for exclusive rights to stream GOT’s eighth and final season, and valid only for the duration that the show is on-air. Has X bid previously for GOT and if so, do we have any information regarding the bidding process? Also, is it okay to assume that the offer has been made to X’s competitors as well? It’s a closed bidding process that HBO extends to X and its four other competitors. The client had bid for GOT’s seventh season but did not win the bid. They were informed that they were close second and had bid $3 Mn for Season",
+        "options": [
+          "Consult Club, IIM Ahmedabad Private Equity firm – Interview Transcript Due Diligence |Social Impact| Challenging Sure, I would like to now look at the various synergies that we can draw from the previous investments. I would like to look at revenue synergies, cost synergies and efficiency synergies. In terms of the revenue synergies, based on our other investments in home services sector we can drive demand for the company and identify skill training opportunities. The client can draw cost and efficiency synergies from similar foreign-based startups in our portfolio by means of technology transfer. Good points. Lets talk about the equity holding and investment amount that we should look at. What factors would influence this decision? Firstly, I would like to understand the nature of the investment – are we looking at a strategic investment with a majority stake or are we looking at a financial investment. As I mentioned, we plan to exit in 5-6 years, so it is a financial investment. I can take population growth as a proxy for the growth in the number of candidates. Similarly, the commissions will be based on the number of employees that we could place. Knowing 15% profit margins, we can discount the cash flows to get the present value of the firm. Good, let’s move on and look at the other factors. Since we are looking at skill programs, we should be looking at only the unemployed youth and students. We can use the labour participation rate and unemployment levels to get a figure. I can then multiply the market with the average fees to get the revenue. To further understand the revenues from commissions, I would like to know the commission rate and the number of companies that we are catering to currently and how is the demand expected to change. Let’s assume that there is enough demand. How would you get the projected revenues for the next 6 years to estimate the value of the firm. Right, so if we are looking at a minority stake in the company, the investment would depend on the valuation of the company and other possible PE firms who are looking to invest in the same company. We should also look at the willingness of the founders about the extent of dilution of their shares. Good points. There are in fact 2 other firms looking to invest in the same company. Let’s quickly now look at the various risks and exit options before the client. Sure. First and foremost, I would like to do a legal due diligence to see if there are any litigations, tax liabilities or regulatory compliance issues with the company, which can contribute to legal risks. I would look at the debt structure as well as the employee contracts of the company. In terms of technological risks, there are chances of obsolesce of some of these skills and need to adapt quickly to changing demands. There are economic risks, with respect to getting fees from the underprivileged in cases where sufficient government scholarships are absent. There is also high competition in the sector and threats from competition who can eat up the market share. In terms of exit options, the company can look to sell its stake back to the the initial promoters or another PE firm since there are existing competition. Alright, I think that’s a comprehensive analysis. Any final recommendation? That sounds like a fair approach. Explain me your approach to estimate the total market size. Good question. There hasn’t been any prior investments and the equity is split equally between the 3 brothers. At this point, I feel I have enough information to proceed. I’ll take a moment to structure my thoughts to produce an overall approach to analyse the feasibility of the investment. Sounds good, please go ahead. Okay, I would like to divide the analysis into 3 buckets – firstly estimating the market attractiveness and coming up with the valuation of the company. Next, I would like to investigate the synergies that we draw from the investments. Lastly, I would like to look at the various risks associated with the company. I would also know about the company’s founders and their vision. That’s interesting. And how is the competitive landscape in the sector where the client operates? It is a fragmented market and there is high competition from some similar early-stage start-ups. Do we have any information about the profitability of our client ? Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Sounds good. Firstly, I would like to understand our client’s motivation behind the investment. There are two motivations primarily, financials gains and driving social impact. Okay, does the client have any number about the quantum of investment that it wants to make? There is no restriction as such. We would like to help in analyzing various factors to decide this. Okay, and is there any exit multiple that you have in mind or any return that you are expecting from this investment? Yes the client has invested in similar companies before but none of them are based out of India. To answer your 2nd question, our current portfolio consists of growth stage startups from the healthcare, services and ed-tech sectors based out of India and other south-east Asian countries. Great. Now that I have information about our client, I would like to know more about the company in which we plan to invest. Can you tell me more about the company and their business model? Yes sure. It is a family run company started by 3-brothers. They work with the underprivileged students from Eastern-Indian states of Orissa, Bihar and West Bengal. Their business model is to upskill students in theoretical and vocational skills and help them provide employment. They get revenue sources include fees from the students at a subsidized amount and commissions from the companies where the students are employed. Thanks for this. Are their specific skills or sectors in which the students are trained. The students are unemployed youth who are provided training as beauticians, cutting and stitching jobs and as baristas for coffee shops. They are continuously expanding the the range of their skill program. Good question. So, we are looking at a 16% CAGR on the investment over a horizon of 6 years after which we plan to exit. That’s helpful. I would now want to get some information about the existing portfolio of the client. Has the client invested in similar companies previously? How does its portfolio look like? So currently the client operated at 15% net margin while the industry operated at 16% margins. Is their any other differentiation that the company has? The company has invested heavily in technology to continuously identify the gap in demand for the required skills in the industry. It also uses helps to identify prospects and incentives them to join the program by identifying government schemes to avail scholarships and get skilled. 2022-2023 Page 154 Lastly, what’s the equity structure of the company and has there been any prior investments? I’ll start by estimating the population of West Bengal, Orissa and Bihar which should be 20% of the total population. Next, I would segment the population by age(18-25 years which is 20% roughly). We can further look at urban and rural segments and then look at the low- and middle- income category. Does that sound like a good approach? Do you think you are missing any other criteria? Given the demand and good profit margins of the company, the investment looks lucrative, and the client should go ahead with it, Alright, thank you for the recommendation.",
+          "Consult Club, IIM Ahmedabad Recommendations (Beyond the transcript) • a) Do a proper analysis of the competitive landscape to gauge the competitive edge of the target company and also look into the threats of new entrant specially a big player. • b) Understand the operating model and the technology used of the target company to gauge the scalability of the business model. Key Learnings • In cases of due diligence and M&A, the preliminary questions are the most important and adequate time should be given to get relevant case facts. • The question about financial and strategic investment should have been asked in the beginning. Again, since time horizon was known beforehand, here case facts could have been linked better • It is important to think of synergies even between existing portfolio of the PE firm to the target company like potential technology transfer from companies in the portfolio operating abroad • In the guesstimate, it is essential to first lay down the approach the validate from the interviewer if something else is missing Your client is a PE firm which wants to invest in a company which helps to provide employment to underprivileged students via skill development programmes. You need to do due diligence and analyse the feasibility of the investment. Approach/ Framework Interviewee Notes • It is important to understand the rationale for the investment • The preliminary questions should cover questions about the client and the target company to get important case facts. • It is essential to have a basic understand of the private equity industry and the process of due diligence, • It is important for the interviewee to link important case facts to subsequent answers. • Guesstimates can be qualitative or quantitative depending upon the interviewer. The approach should be laid out clearly. If numbers are required, reasonable assumptions can be taken. (For example, slightly higher unemployment levels in eastern India) Case Facts • Objective for investment is both social impact and financial gain. • 16% CAGR and a time horizon of 6 years. • No issues on cost side. • No poaching of customers by competitors. • The existing portfolio of the client and prior investments • The industries that the target company caters to currently • The ownership structure of the target company • Profit margins and industry competitiveness Commercial Due Diligence Valuation and financial feasibility Intrinsic Value Private Equity firm Page 155 Business Model P E S T E L Market Size 2022-2023 Due Diligence |Social Impact| Challenging Synergies and Business Model Exit Options and Risks Synergies Acquirer’s Value Customers Operations Differentiation Efficiency Synergies Financials Revenue Synergies Growth Rate Profitability Competition Equity Structure Cost Synergies Risks Exit Options Total Exit Partial Exit IPO Guesstimate Approach: Market size of underprivileged youth seeking jobs Segment total population to get population of Bihar, Orissa and WB (~20% of total – 25 crores) Segment further by age groups (18-30 years ~ 20% of 25 crore – 5 crore) Rural (70%) Urban (30%) Covered in this case Not covered in this case Lower Income group (80%) Lower Income group (40%) % unemployed and seeking jobs(10%) % unemployed and seeking jobs(15%) Total number of unemployed youth seeking jobs in the 3 states ~ 30 lacs Unconventional",
+          "Consult Club, IIM Ahmedabad Easy wins • Breakdown into a mathematical formula • Always remember Demand and Supply • Any problem can have an internal cause (in control of company) or external cause. For external cause, use PESTEL to analyze possible issues Unconventional - Tips & Tricks Page 157 Pointers to Remember • Never try to force fit a framework • Understand the problem really really well • Ask the interviewer if you’re unfamiliar with a particular industry, do not hesitate to ask question • If the industry is familiar, comparisons with companies you know about would help in providing recommendations • Be as comprehensive as possible and hence bucketing the problems into different sections will help in structured thinking • Can be looked at through 2 lenses – qualitative & quantitative (as a mathematical problem) • Using the 3CP i.e., of Company, Customer, Competitor and Product approach works in certain cases, but focus on keeping the approach MECE • In certain cases when the scope of the cases is broad, the interviewee should ask if the focus needs to be on a specific aspect to structure thoughts in that direction • While scoping the problem, the interviewee can consider if there are competitors in the same industry and the strategies, they follow 2022-2023",
+          "Consult Club, IIM Ahmedabad You can go ahead with the ad model assumption. However, X doesn’t have any merchandising rights for GOT. What information do you need from me to calculate X’s revenues? I would need the following: (i) X’s monthly Subscription fee (ii) No. of episodes in GOT S8 (iii) GOT viewers not currently on X (iv) Average ad rate per slot per episode (v) No. of slots auctioned per episode Glad that you asked. I have the following data sheet with me. This should help you calculate revenues for X (Data sheet provided in table I). Thank you. From my calculations, X’s revenue from Subscriptions and Advertisements comes out to be $6 Mn (table II). However, I think there are some synergistic benefits to adding GOT on our platform. These can be attributed to following factors: • Customer Stickiness: Some of the additional customers would stick around after GOT ends increasing their CLV for X. These benefits need to be added to our revenue calculations • Additional ad revenues for existing programmes: X can leverage its added user base to charge a premium for ad slots in its existing shows during GOT‘s 3-month on-air run-time These are some very good points, and you can assume an additional benefit of $1 Mn from Synergy. Can you please now list down the cost heads for X? I have divided X’s costs into two buckets (Framework 1): • Direct Costs: This header would include the Bid amount, Streaming costs, Marketing costs • Overheads: This would include incremental legal costs, regulatory costs, customer service costs Apart from this, there would be Costs of capital (which would include costs of financing the investment and opportunity costs of not putting the money elsewhere), Assume that X expects to incur additional costs of $1 Mn apart from the bid amount. X has expected an ROI of 20% to incorporate for the cost of capital. Oh, I think I have all the data now. Based on my calculations, the bid amount for GOT season 8 cannot exceed $5 Mn to get the desired ROI of 20%. Now, I’d like to focus on the Strategic feasibility. Adding GOT would affect the way subscribers interact with the platform. Given the adult nature of content, some of the family-centric subscribers might get dissuaded from continuing. Also, this would affect our tie-ups with existing content providers which infer HBO as their competitor or substitute. These points are valid, but we can safely assume that X is strategically aligned with getting HBO onboard. Can you please now identify three potential risks that X needs to be aware of? Sure. I have collated the risks into the following categories: • Customer centric: X might not attract enough new customers on the platform given the subscription price and the presence of alternate channels of piracy like torrents, illegal streaming • Content centric: The content is not up to the mark increasing mid-season customer and advertiser drop-outs. Given the explicit content, X could also face added regulatory pressures • Platform centric: Focus on GOT might lead to self- cannibalization with decreased viewership for the platform’s existing content. Plus, X needs to minimize platform glitches such as that could inhibit user watching experience, leaving the new viewers unsatisfied with the platform I think we can stop here. Thank you. Bid Strategy for GOT Season 8– Interview Transcript Unconventional | Bid strategy | Challenging | Entertainment Page 158 Your client is Company X. They have been approached by HBO to bid for the eighth season of GOT. They want your help to evaluate the opportunity and determine the correct bidding strategy. I would like to ask a few clarifying questions to get an understanding about the case. Could you please elaborate on X’s business model and current product offerings? X is an OTT platform operating in India. The company has a website and an app where customers can access media content by paying a monthly subscription fee. X has its own content as well as tie- ups with other providers to provide a curated list of Movies, TV Shows, News Channels and Sporting Events on its platform for its subscribers. What is X’s objective for this bid? Is it to increase user base, or revenues or profits? And what makes GOT so attractive for X? X wants to maximise their profits and this bid should account for that. As for GOT, it is the most watched English TV Series in India. I would like to now understand the bidding terms. Will this bid be for the eighth season only? Also, will X have exclusive rights for this and till when is the bid valid? The bid will be for exclusive rights to stream GOT’s eighth and final season, and valid only for the duration that the show is on-air. Has X bid previously for GOT and if so, do we have any information regarding the bidding process? Also, is it okay to assume that the offer has been made to X’s competitors as well? It’s a closed bidding process that HBO extends to X and its four other competitors. The client had bid for GOT’s seventh season but did not win the bid. They were informed that they were close second and had bid $3 Mn for Season"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This question is mapped to Coding-Decoding. The correct answer is A based on the original source question.",
+        "estimatedTime": 75,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Which of the following register is not used in opcode fetch operations?",
+        "options": [
+          "Program counter",
+          "Memory address register",
+          "Memory data register",
+          "Flag register"
+        ],
+        "correctAnswer": "D",
+        "explanation": "Flag register is not used in opcode fetch operations. It is used to represent the status of ALU operation which is performed after decoding of the opcode.",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "What does a microprocessor understand after decoding opcode?",
+        "options": [
+          "Perform ALU operation",
+          "Go to memory",
+          "Length of the instruction and number of operations",
+          "Go to the output device"
+        ],
+        "correctAnswer": "C",
+        "explanation": "After decoding the opcode of the instruction, a microprocessor understands the length of the instruction and the total number of operations to be performed.",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "For how many times per instruction, the content of the program counter is placed on the address bus?",
+        "options": [
+          "One time",
+          "Two times",
+          "Depends on the memory capacity of the processor",
+          "Depends on the length of the instruction"
+        ],
+        "correctAnswer": "D",
+        "explanation": "After decoding an opcode the microprocessor understands the length of the instruction. So, the content of the program counter is placed on the address bus as many times as the length of the instruction.",
+        "estimatedTime": 60,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Which of the following is not a property of block code?",
+        "options": [
+          "Cyclic",
+          "Non linearity",
+          "Linearity",
+          "Systematic"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Block codes are linear, systematic and cyclic in nature. Encoding and decoding techniques make use of mathematical constructs known as finite fields.",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "In how many ways 4 boys and 3 girls can be seated in a row so that they are alternate.",
+        "options": [
+          "144",
+          "288",
+          "12",
+          "256"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Let the Arrangement be, B G B G B G B 4 boys can be seated in 4! Ways Girl can be seated in 3! Ways Required number of ways, = 4! × 3! = 144",
+        "estimatedTime": 60,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Arrangement of the fractions $$\\frac{4}{3},\\, - \\frac{2}{9},\\, - \\frac{7}{8},\\,\\frac{5}{{12}}$$ into ascending order:",
+        "options": [
+          "$$ - \\frac{2}{9},\\, - \\frac{7}{8},\\,\\frac{4}{3},\\,\\frac{5}{{12}}$$",
+          "$$ - \\frac{7}{8},\\, - \\frac{2}{9},\\,\\frac{5}{{12}},\\,\\frac{4}{3}$$",
+          "$$ - \\frac{7}{8},\\, - \\frac{2}{9},\\,\\frac{4}{3},\\,\\frac{5}{{12}}$$",
+          "$$ - \\frac{2}{9},\\, - \\frac{7}{8},\\,\\frac{5}{{12}},\\,\\frac{4}{3}$$"
+        ],
+        "correctAnswer": "B",
+        "explanation": "$$\\eqalign{ & \\frac{4}{3},\\,\\frac{{ - 2}}{9},\\,\\frac{{ - 7}}{8},\\,\\frac{5}{{12}} \\cr & \\frac{4}{3} = 1.33 \\cr & \\frac{{ - 2}}{9} = - 0.22 \\cr & \\frac{{ - 7}}{8} = - 0.875 \\cr & \\frac{5}{{12}} = 0.416 \\cr & {\\text{So, }}\\frac{{ - 7}}{8},\\,\\frac{{ - 2}}{9},\\,\\frac{5}{{12}},\\,\\frac{4}{3} \\cr} $$",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Which one set of letters when sequentially placed at the gaps in the given letter series shall complete it ? a_bbc_aab_cca_bbcc",
+        "options": [
+          "bacb",
+          "acba",
+          "caba",
+          "abba"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The pattern is, a a bbc c aab b cca a bbcc. The pattern aabbcc is repeated.",
+        "estimatedTime": 60,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "SCD, TEF, UGH, ____, WKL",
+        "options": [
+          "CMN",
+          "UJI",
+          "VIJ",
+          "IJT"
+        ],
+        "correctAnswer": "C",
+        "explanation": "There are two alphabetical series here. The first series is with the first letters only: STUVW. The second series involves the remaining letters: CD, EF, GH, IJ, KL.",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "ELFA, GLHA, ILJA, _____, MLNA",
+        "options": [
+          "OLPA",
+          "KLMA",
+          "LLMA",
+          "KLLA"
+        ],
+        "correctAnswer": "D",
+        "explanation": "The second and forth letters in the series, L and A, are static. The first and third letters consist of an alphabetical order beginning with the letter E.",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "ZA 5 , Y 4 B, XC 6 , W 3 D, _____",
+        "options": [
+          "E 7 V",
+          "V 2 E",
+          "VE 5",
+          "VE 7"
+        ],
+        "correctAnswer": "D",
+        "explanation": "There are three series to look for here. The first letters are alphabetical in reverse: Z, Y, X, W, V. The second letters are in alphabetical order, beginning with A. The number series is as follows: 5, 4, 6, 3, 7.",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "JAK, KBL, LCM, MDN, _____",
+        "options": [
+          "OEP",
+          "NEO",
+          "MEN",
+          "PFQ"
+        ],
+        "correctAnswer": "B",
+        "explanation": "This is an alternating series in alphabetical order. The middle letters follow the order ABCDE. The first and third letters are alphabetical beginning with J. The third letter is repeated as a first letter in each subsequent three-letter segment.",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "BCB, DED, FGF, HIH, ___",
+        "options": [
+          "JKJ",
+          "HJH",
+          "IJI",
+          "JHJ"
+        ],
+        "correctAnswer": "A",
+        "explanation": "This series consists of a simple alphabetical order with the first two letters of all segments: B, C, D, E, F, G, H, I, J, K. The third letter of each segment is a repetition of the first letter.",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "P 5 QR, P 4 QS, P 3 QT, _____, P 1 QV",
+        "options": [
+          "PQW",
+          "PQV 2",
+          "P 2 QU",
+          "PQ 3 U"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The first two letters, PQ, are static. The third letter is in alphabetical order, beginning with R. The number series is in descending order beginning with 5.",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "What will come at the place of question mark ? 7, 26, 63, 124, 215, 342, ?",
+        "options": [
+          "391",
+          "511",
+          "481",
+          "421"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The terms are given in a series (2 3 -1) = 7 (3 3 -1) = 26 (4 3 -1) = 63 (5 3 -1) = 124 (6 3 -1) = 215 (7 3 -1) = 342 So, the missing term is, (8 3 -1) = 511.",
+        "estimatedTime": 60,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "What will come at the place of question mark ? 3, 2, 7, 6, 11, ?",
+        "options": [
+          "8",
+          "10",
+          "4",
+          "2"
+        ],
+        "correctAnswer": "B",
+        "explanation": "2 nd number is less by 1 than the 1 st number and 3 rd number is more by 5 than the 2 nd number. The same rule follows in other numbers of the series.",
+        "estimatedTime": 60,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "In the series 2, 6, 18, 54, ...... what will be the 8th term ?",
+        "options": [
+          "4370",
+          "4374",
+          "7443",
+          "7434"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Clearly, 2 x 3 = 6, 6 x 3 = 18, 18 x 3 = 54,..... So, the series is a G.P. in which a = 2, r = 3. Therefore 8th term = ar 8-1 = ar 7 = 2 x 3 7 = (2 x 2187) = 4374.",
+        "estimatedTime": 60,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "The arrangement of rational numbers, $$\\frac{- 7}{10}$$, $$\\frac{5}{- 8}$$, $$\\frac{2}{- 3}$$ in ascending order is :",
+        "options": [
+          "$$\\frac{2}{{ - 3}},\\frac{5}{{ - 8}},\\frac{{ - 7}}{{10}}$$",
+          "$$\\frac{5}{{ - 8}},\\frac{{ - 7}}{{10}},\\frac{2}{{ - 3}}$$",
+          "$$\\frac{{ - 7}}{{10}},\\frac{5}{{ - 8}},\\frac{2}{{ - 3}}$$",
+          "$$\\frac{{ - 7}}{{10}},\\frac{2}{{ - 3}},\\frac{5}{{ - 8}}$$"
+        ],
+        "correctAnswer": "D",
+        "explanation": "$$\\frac{- 7}{10}$$ = - 0.7 $$\\frac{5}{- 8}$$ = - $$\\frac{5}{8}$$ = - 0.625, $$\\frac{2}{- 3}$$ = - $$\\frac{2}{3}$$ = - 0.66 Since, -0.7 < -0.66 < -0.625 So, $$\\frac{- 7}{10}$$ < $$\\frac{2}{- 3}$$ < $$\\frac{5}{- 8}$$",
+        "estimatedTime": 60,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "A single discount equivalent to discount series 20% , 20% and 10% is = ?",
+        "options": [
+          "50%",
+          "48.4%",
+          "42.4%",
+          "40.4%"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Single equivalent discount for 20% and 20% $$\\eqalign{ & = 20 + 20 - \\frac{{20 \\times 20}}{{100}} \\cr & = 40 - 4 \\cr & = 36\\% \\cr} $$ Single equivalent discount for 36% and 10% $$\\eqalign{ & = 36 + 10 - \\frac{{36 \\times 10}}{{100}} \\cr & = 46 - 3.6 \\cr & = 42.4\\% \\cr} $$",
+        "estimatedTime": 60,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "The single discount equivalent to the discount series of 20%, 10% and 5% is = ?",
+        "options": [
+          "11.66%",
+          "31.6%",
+          "35.66Z%",
+          "32%"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Single equivalent discount for 20% and 10% $$\\eqalign{ & = 20 + 10 - \\frac{{20 \\times 10}}{{100}} \\cr & = 30 - 2 \\cr & = 28\\% \\cr} $$ Single equivalent discount for 28% and 5% $$\\eqalign{ & = 28 + 5 - \\frac{{28 \\times 5}}{{100}} \\cr & = 33 - 1.4 \\cr & = 31.6\\% \\cr} $$",
+        "estimatedTime": 60,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Two trains cross each other at a speed of 30kmph and 45 kmph, respectively. If they are moving in the opposite direction, find the length of both the trains combined. The time taken = 12 seconds.",
+        "options": [
+          "0.30 km",
+          "0.32 km",
+          "0.25 km",
+          "0.33 km"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The relative speed = 30 + 45 = 75 kmph = 20.83 m / s The distance covered = 12 * 20.83 = 249.96 m = 0.25 km.",
+        "estimatedTime": 75,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Find the next number in the series : 61, 52, 63, 94, 46, .... ?",
+        "options": [
+          "81",
+          "18",
+          "49",
+          "35"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Here, each number is reverse of a number which is square of a number. i.e. 42=16→61, 52=25→52, 62=36→63, 72=49→94, 82=64→46. So, the next number will be 92=81→18. Hence, the answer is 18.",
+        "estimatedTime": 60,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Identify the wrong number in the series. 0, 1, 1, 2, 3, 5, 8, 13, 20, 34?",
+        "options": [
+          "8",
+          "20",
+          "13",
+          "34"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Here, the series is a Fibonacci series. i.e. a number in the series is the sum of previous two numbers. So, in this 8+13 = 21. So the wrong number is 20. Hence, the answer is 20.",
+        "estimatedTime": 60,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Complete the following series 6, 12, 36, 144, 720...?",
+        "options": [
+          "4320",
+          "2843",
+          "8249",
+          "6825"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Here, the series follows the following pattern. 6×2=12, 12×3=36, 36×4=144, 144×5=720. Similarly, 720×6=4320. Hence, the answer is 4320.",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Identify the missing number in the series. 8, 13, 21, 34, 55, ?, 144?",
+        "options": [
+          "55",
+          "13",
+          "89",
+          "21"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Here, the series is a Fibonacci series. i.e., a number in the series is the sum of previous two numbers. So, in this missing number is 34+55 =89. Hence, the answer is 89.",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "A train moving with a speed of 73 kmph passes a man walking with a speed of 7 kmph in the same direction in 32 seconds. Find the length of the train.",
+        "options": [
+          "585 m",
+          "586 m",
+          "587 m",
+          "588 m"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The relative speed = 73 – 7 = 66 kmph = 18.33 m / s The distance covered = 18.33 * 32 = 586.56 m.",
+        "estimatedTime": 75,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "A train with a speed of 113 kmph passes a man with a speed of 104 kmph moving in the same direction in 98 seconds. Find the length of the train.",
+        "options": [
+          "220 m",
+          "230 m",
+          "245 m",
+          "255 m"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The relative speed = 113 – 104 = 9 kmph = 2.5 m / s The distance covered = 98 * 2.5 = 245 m.",
+        "estimatedTime": 75,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Two trains crosses each other in 9 seconds travelling in the opposite direction. Find the combined length of the trains if their speeds are 76 kmph and 63 kmph.",
+        "options": [
+          "347.5 m",
+          "347.3 m",
+          "347.1 m",
+          "346.9 m"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The relative speed = 76 + 63 = 139 kmph = 38.61 m / s The distance covered = 38.61 * 9 = 347.49 m.",
+        "estimatedTime": 75,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Two trains cross each other at speed 57 kmph and 87 kmph. If both the trains move in the same direction, find the combined length of the trains. The time taken by the train to cross each other is 85 seconds.",
+        "options": [
+          "708 m",
+          "709 m",
+          "710 m",
+          "711 m"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The relative speed = 87 – 57 = 30 kmph = 8.33 m / s The total distance covered = 8.33 * 85 = 708.05 m.",
+        "estimatedTime": 75,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Two trains cross each other at a speed of 120 kmph and 145 kmph. If they move in the same direction and take 50 seconds to cross each other, find the combined length of both the trains.",
+        "options": [
+          "247 m",
+          "347 m",
+          "274 m",
+          "374 m ⚡ Hurry! Secure Your Free Cyber Security Certification - March 2026"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The relative speed = 145 – 120 = 25 kmph = 6.94 m / s The total distance covered = 6.94 * 50 = 347 m.",
+        "estimatedTime": 75,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Two trains cross each other at a speed of 93 kmph and 65 kmph. If both the trains move in the same direction and take 56 seconds to cross each other, find the combined length of the trains.",
+        "options": [
+          "435.45 m",
+          "435.12 m",
+          "435.21 m",
+          "435.54 m"
+        ],
+        "correctAnswer": "B",
+        "explanation": "The relative speed of the trains = 93 – 65 = 28 kmph = 7.77 m / s The total distance covered = 7.77 * 56 = 435.12 m.",
+        "estimatedTime": 75,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Two trains cross each other in 143 seconds with a speed of 123 kmph and 154 kmph. Find the length of the trains combined if the trains are moving in the same direction.",
+        "options": [
+          "833.69 m",
+          "833.96 m",
+          "823.69 m",
+          "823.96 m"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The relative speed = 154 – 123 = 21 kmph = 5.83 m / s The total distance covered = 5.83 * 143 = 833.69 m.",
+        "estimatedTime": 75,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "The mean of 1, 2, 2 2 , 2 3 , ......, 2 63 lies between which of the following number?",
+        "options": [
+          "2 57 and 2 58",
+          "2 59 and 2 58",
+          "2 57 and 2 56",
+          "2 56 and 2 55"
+        ],
+        "correctAnswer": "C",
+        "explanation": "The series is in GP with a=1, r=2 and n=64. Sum = 2 63 – 1 Mean = \\(\\frac{2^{63}–1}{64}\\)=2 57 –\\(\\frac{1}{2^6}\\) Therefore, the mean lies between 2 57 and 2 56 .",
+        "estimatedTime": 60,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Find the sum of 1+\\(\\frac{3}{5}+\\frac{5}{25}+\\frac{7}{125}\\)+⋯ up to n terms.",
+        "options": [
+          "15/8",
+          "15/16",
+          "25/16",
+          "5/16"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The given sequence is arithmetic geometric series, where a=1, d=2 and r=(1/5) S ∞ = \\(\\frac{a}{1-r} + \\frac{dr}{(1-r)^2}\\) S ∞ = \\(\\frac{1}{(1-1/5)} + \\frac{2/5}{(1-\\frac{1}{5})^2}\\) S ∞ = 5/4 + 10/16 = 15/8",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "If a, 2a+2 and 3a+3 are in GP, then what is the fifth term of the GP?",
+        "options": [
+          "-81/4",
+          "81/4",
+          "-81/2",
+          "81/2"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Given a, 2a+2 and 3a+3 are in GP. i.e., (2a+2) 2 = a(3a+3) a 2 + 5a + 4 = 0 a = -1, -4 Now, a = -1 does not satisfy the given series. Therefore, -4, -6 and -9 are in GP with r=3/2 Fifth term, T 5 = ar 4 = -4(3/2) 4 = -81/4",
+        "estimatedTime": 60,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Find the sum of the first n terns of the series \\(\\frac{1}{2}+\\frac{3}{4}+\\frac{7}{8}+\\frac{15}{16}+\\)⋯.",
+        "options": [
+          "2 n – n – 1",
+          "1 – 2 -n",
+          "n + 2 -n – 1",
+          "2 n -1"
+        ],
+        "correctAnswer": "C",
+        "explanation": "\\(\\frac{1}{2}+\\frac{3}{4}+\\frac{7}{8}+\\frac{15}{16}+\\)⋯ +n terms = (1-\\(\\frac{1}{2}\\))+(1-\\(\\frac{1}{4}\\))+(1-\\(\\frac{1}{8}\\)+⋯+(1-\\(\\frac{1}{2^n}\\)) = n – (\\(\\frac{1}{2}+\\frac{1}{4}+\\frac{1}{8}+⋯+\\frac{1}{2^n}) \\) = n – \\(\\frac{1}{2}\\Big(\\frac{1-(\\frac{1}{2})^n}{1-(\\frac{1}{2})}\\Big)\\) = n + 2 -n – 1",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Which of the following series is equivalent to a single discount of 80%?",
+        "options": [
+          "50%, 20% and 50%",
+          "50%, 50% and 50%",
+          "20%, 20% and 20%",
+          "20%, 20% and 50%"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Let the cost price be 100. First discount 50%: 100 – 50% of 100 = 100 – 50 = 50 Second discount 20%: 50 – 20% of 50 = 50 – 10 = 40 Final discount 50%: 40 – 50% of 40 = 40 – 20 = 20 The series of discount 50%, 20% and 50% is the desirable result.",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Find a single discount equivalent to the discount series of 50%, 50% and 50%.",
+        "options": [
+          "150%",
+          "125%",
+          "87.5%",
+          "85%"
+        ],
+        "correctAnswer": "C",
+        "explanation": "Let the marked price be x. The first discount = 50% X – 50% f x = 0.5x The second discount is 50%: 0.5x – 50% of 0.5x = 0.25x The final discount is 50%: 0.25x – 50% of 0.25x = 0.125x 0.125x / x * 100 = 12.5% Total discount = 100 – 12.5 = 87.5%",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Find a single discount equivalent to the series of discount 20%, 20%, and 25%.",
+        "options": [
+          "48%",
+          "52%",
+          "60%",
+          "65%"
+        ],
+        "correctAnswer": "B",
+        "explanation": "Let the marked price be 100. First discount is 20%: 100 – 20% of 100 = 100 – 20 = 80 Second discount is 20%: 80 – 20% of 80 = 80 – 16 = 64 The final discount is of 25%: 64 – 25% of 64 = 64 – 16 = 48 The total discount = 100 – 48 = 52%",
+        "estimatedTime": 45,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "A number is twice a second number which in turn is 3 times the third number. Find the ratio of the series.",
+        "options": [
+          "6 : 3 : 1",
+          "2 : 3 : 5",
+          "2 : 3 : 6",
+          "2 : 4 : 7"
+        ],
+        "correctAnswer": "A",
+        "explanation": "Let the last number be x. The second number is 3 time the third number = 3 * x = 3x The first number is twice the second number = 3x * 2 = 6x The ratio of the series = 6x : 3x : x = 6 : 3 : 1",
+        "estimatedTime": 60,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "There are 5 terms a, b, c, d and e in a series. A = 4b, b = 7c, c = 2d, d = half of e and e = 12. Find the ratio of the series.",
+        "options": [
+          "56 : 14 : 1 : 1 : 1",
+          "56 : 2 : 14 : 1 : 2",
+          "56 : 14 : 2 : 1 : 1",
+          "56 : 14 : 2 : 1 : 2 To practice all aptitude questions, please visit “1000+ Quantitative Aptitude Questions” , “1000+ Logical Reasoning Questions” , and “Data Interpretation Questions” . 👉 For weekly quantitative aptitude practice, exam, and certification updates, join Sanfoundry’s official WhatsApp & Telegram channels « Prev - Ratio and Proportion Questions and Answers – Word Problems – Set 2 » Next - Partnership Questions and Answers"
+        ],
+        "correctAnswer": "D",
+        "explanation": "e = 12 D = e / 2 = 12 / 2 = 6 C = 2d = 6 * 2 = 12 B = 7c = 12 * 7 = 84 A = 4b = 84 * 4 = 336 The required ratio = 336 : 84 : 12 : 6 : 12 = 56 : 14 : 2 : 1 : 2",
+        "estimatedTime": 75,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      },
+      {
+        "questionText": "Two trains cross each other at a speed of 40 kmph and 60 kmph, respectively. Find the combined distance of both the trains if the time taken is 20 seconds and the trains move in the same direction.",
+        "options": [
+          "111 m",
+          "222 m",
+          "333 m",
+          "444 m 📌 Limited Seats! Register Now - Free AI-ML Certification (March 2026)"
+        ],
+        "correctAnswer": "A",
+        "explanation": "The relative speed = 60 – 40 = 20 kmph = 5.55 m / s The total distance covered = 20 * 5.55 = 111 m.",
+        "estimatedTime": 75,
+        "subtopic": "Coding-Decoding",
+        "tags": [
+          "logical",
+          "aptitude",
+          "coding",
+          "decoding",
+          "code language"
+        ],
+        "pattern": "logical"
+      }
+    ]
+  },
+  "providerPayload": {
+    "mode": "offline",
+    "source": "existing_mock_tests",
+    "questionCount": 50
+  },
+  "offlineSource": true
+}

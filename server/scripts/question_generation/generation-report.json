@@ -1,0 +1,216 @@
+{
+  "startedAt": "2026-03-12T18:07:40.448Z",
+  "completed": [
+    {
+      "provider": "claude",
+      "topic": "Time & Distance",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\claude\\time-distance.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "claude",
+      "topic": "Permutations & Combinations",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\claude\\permutations-combinations.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "claude",
+      "topic": "Probability",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\claude\\probability.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "claude",
+      "topic": "Data Structures - Trees",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\claude\\data-structures-trees.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "claude",
+      "topic": "Algorithms - Dynamic Programming",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\claude\\algorithms-dynamic-programming.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "gpt4",
+      "topic": "Profit & Loss",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gpt4\\profit-loss.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "gpt4",
+      "topic": "Simple Interest & Compound Interest",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gpt4\\simple-interest-compound-interest.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "gpt4",
+      "topic": "Blood Relations",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gpt4\\blood-relations.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "gpt4",
+      "topic": "Seating Arrangement",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gpt4\\seating-arrangement.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "gpt4",
+      "topic": "Puzzles",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gpt4\\puzzles.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "gemini",
+      "topic": "DBMS - SQL Queries",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gemini\\dbms-sql-queries.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "gemini",
+      "topic": "Operating Systems - Process Management",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gemini\\operating-systems-process-management.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "gemini",
+      "topic": "Computer Networks - TCP/IP",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gemini\\computer-networks-tcp-ip.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "gemini",
+      "topic": "Data Structures - Graphs",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gemini\\data-structures-graphs.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "gemini",
+      "topic": "Number Series",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\gemini\\number-series.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "llama",
+      "topic": "C Pointers",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\llama\\c-pointers.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "llama",
+      "topic": "Java OOP Concepts",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\llama\\java-oop-concepts.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "llama",
+      "topic": "Python Data Structures",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\llama\\python-data-structures.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "llama",
+      "topic": "Data Structures - Arrays",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\llama\\data-structures-arrays.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "llama",
+      "topic": "Data Structures - Linked Lists",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\llama\\data-structures-linked-lists.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "mistral",
+      "topic": "Percentage",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\mistral\\percentage.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "mistral",
+      "topic": "Ratio & Proportion",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\mistral\\ratio-proportion.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "mistral",
+      "topic": "Averages",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\mistral\\averages.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "mistral",
+      "topic": "Coding-Decoding",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\mistral\\coding-decoding.json",
+      "mode": "offline"
+    },
+    {
+      "provider": "mistral",
+      "topic": "Syllogisms",
+      "count": 50,
+      "costINR": 0,
+      "outputFile": "C:\\vscode\\smartPathAI-mern\\server\\scripts\\question_generation\\raw\\mistral\\syllogisms.json",
+      "mode": "offline"
+    }
+  ],
+  "failures": [],
+  "filters": {
+    "provider": null,
+    "topic": null,
+    "resume": false,
+    "dryRun": false,
+    "offline": true
+  },
+  "finishedAt": "2026-03-12T18:08:40.079Z",
+  "totalGenerated": 1250,
+  "totalCost": 0
+}
