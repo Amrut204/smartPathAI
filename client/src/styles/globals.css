@@ -2700,6 +2700,27 @@ textarea {
   gap: 1rem;
 }
 
+.student-profile-certification-modal {
+  color: #eef4ff;
+}
+
+.student-profile-certification-modal > p,
+.student-profile-certification-modal .muted-text,
+.student-profile-certification-modal label {
+  margin: 0;
+  color: rgba(232, 240, 250, 0.88);
+}
+
+.student-profile-certification-modal label {
+  display: grid;
+  gap: 0.55rem;
+  font-weight: 600;
+}
+
+.student-profile-certification-modal input {
+  width: 100%;
+}
+
 .student-declaration-warning,
 .student-profile-certification-panel {
   padding: 1rem 1.05rem;
@@ -4100,6 +4121,8 @@ textarea {
   display: grid;
   place-items: center;
   z-index: 40;
+  padding: 1rem;
+  overflow-y: auto;
 }
 
 .ui-modal {
@@ -4109,6 +4132,14 @@ textarea {
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-md);
   padding: var(--space-5);
+  color: #f5f8ff;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+}
+
+.ui-modal h3 {
+  margin: 0 0 1rem;
+  color: #f5f8ff;
 }
 
 .ui-toast-stack {
@@ -4987,6 +5018,17 @@ textarea {
   .resource-viewer-header {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .ui-modal-backdrop {
+    place-items: start center;
+  }
+
+  .ui-modal {
+    width: min(100%, 42rem);
+    max-height: calc(100vh - 1rem);
+    padding: 1rem;
+    margin-top: 0.5rem;
   }
 
   .resources-stat-grid,

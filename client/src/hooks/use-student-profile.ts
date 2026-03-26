@@ -9,12 +9,26 @@ interface ApiResponse<T> {
   meta?: { pagination?: { cursor: string | null; has_more: boolean; limit: number }; timestamp?: string; correlation_id?: string };
 }
 
+function buildApiErrorMessage(payload: ApiResponse<unknown>, fallback = "Request failed") {
+  const baseMessage = payload.error?.message?.trim() || fallback;
+  const details = payload.error?.details ?? [];
+  if (details.length === 0) {
+    return baseMessage;
+  }
+
+  const detailMessage = details
+    .map((detail) => (detail.field ? `${detail.field}: ${detail.message}` : detail.message))
+    .join(", ");
+
+  return `${baseMessage}: ${detailMessage}`;
+}
+
 async function fetcher<T>(url: string): Promise<T> {
   const response = await fetch(url, { credentials: "include" });
   const payload = (await response.json()) as ApiResponse<T>;
 
   if (!payload.success) {
-    throw new Error(payload.error.message);
+    throw new Error(buildApiErrorMessage(payload));
   }
 
   return payload.data;
@@ -174,7 +188,7 @@ export async function acceptOnboardingDeclaration(input: { typedValue: string })
 
   const payload = (await response.json()) as ApiResponse<StudentProfile>;
   if (!payload.success) {
-    throw new Error(payload.error.message);
+    throw new Error(buildApiErrorMessage(payload));
   }
 
   await mutate("/api/v1/students/me");
@@ -197,7 +211,7 @@ export async function getProfileCertificationPreview() {
   }>;
 
   if (!payload.success) {
-    throw new Error(payload.error.message);
+    throw new Error(buildApiErrorMessage(payload));
   }
 
   return payload.data;
@@ -213,7 +227,7 @@ export async function certifyStudentProfile(input: { typedValue: string }) {
 
   const payload = (await response.json()) as ApiResponse<StudentProfile>;
   if (!payload.success) {
-    throw new Error(payload.error.message);
+    throw new Error(buildApiErrorMessage(payload));
   }
 
   await mutate("/api/v1/students/me");
@@ -263,7 +277,7 @@ export async function updateStudentProfile(input: {
   const payload = (await response.json()) as ApiResponse<StudentProfile>;
 
   if (!payload.success) {
-    throw new Error(payload.error.message);
+    throw new Error(buildApiErrorMessage(payload));
   }
 
   await mutate("/api/v1/students/me");
