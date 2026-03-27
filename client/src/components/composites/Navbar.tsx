@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
+import { pilotFeedbackLinks } from "../../config/pilot-feedback";
 import { isClientFeatureEnabled } from "../../config/features";
 import { Button } from "../ui";
 
@@ -54,6 +55,7 @@ export function Navbar({
 }: NavbarProps) {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [supportOpen, setSupportOpen] = useState(false);
 
   const links = useMemo(() => {
     const baseLinks =
@@ -78,7 +80,11 @@ export function Navbar({
 
   useEffect(() => {
     setMenuOpen(false);
+    setSupportOpen(false);
   }, [location.pathname]);
+
+  const showFeedbackButton = Boolean(pilotFeedbackLinks.googleFormUrl);
+  const showSupportButton = Boolean(pilotFeedbackLinks.whatsappUrl || pilotFeedbackLinks.supportEmailHref);
 
   return (
     <nav className="navbar">
@@ -118,6 +124,43 @@ export function Navbar({
           );
         })}
         <div className="navbar-mobile-panel">
+          <div className="navbar-mobile-support">
+            {showFeedbackButton ? (
+              <a
+                className="navbar-utility-link"
+                href={pilotFeedbackLinks.googleFormUrl ?? "#"}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Feedback Form
+              </a>
+            ) : null}
+            {showSupportButton ? (
+              <div className="navbar-mobile-support-menu">
+                <button
+                  type="button"
+                  className="navbar-utility-button"
+                  onClick={() => setSupportOpen((value) => !value)}
+                >
+                  Support
+                </button>
+                {supportOpen ? (
+                  <div className="navbar-support-menu navbar-support-menu-mobile">
+                    {pilotFeedbackLinks.whatsappUrl ? (
+                      <a href={pilotFeedbackLinks.whatsappUrl} target="_blank" rel="noreferrer">
+                        WhatsApp Support
+                      </a>
+                    ) : null}
+                    {pilotFeedbackLinks.supportEmailHref ? (
+                      <a href={pilotFeedbackLinks.supportEmailHref}>
+                        Email Support
+                      </a>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
           <div className="navbar-mobile-user">
             <span className="ui-avatar">
               {userName.charAt(0).toUpperCase()}
@@ -140,6 +183,42 @@ export function Navbar({
       </div>
 
       <div className="navbar-actions">
+        {showFeedbackButton ? (
+          <a
+            className="navbar-utility-link"
+            href={pilotFeedbackLinks.googleFormUrl ?? "#"}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Feedback Form
+          </a>
+        ) : null}
+        {showSupportButton ? (
+          <div className="navbar-support">
+            <button
+              type="button"
+              className="navbar-utility-button"
+              onClick={() => setSupportOpen((value) => !value)}
+              aria-expanded={supportOpen}
+            >
+              Support
+            </button>
+            {supportOpen ? (
+              <div className="navbar-support-menu">
+                {pilotFeedbackLinks.whatsappUrl ? (
+                  <a href={pilotFeedbackLinks.whatsappUrl} target="_blank" rel="noreferrer">
+                    WhatsApp Support
+                  </a>
+                ) : null}
+                {pilotFeedbackLinks.supportEmailHref ? (
+                  <a href={pilotFeedbackLinks.supportEmailHref}>
+                    Email Support
+                  </a>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
         <span className="ui-avatar">
           {userName.charAt(0).toUpperCase()}
         </span>

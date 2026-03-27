@@ -10,6 +10,7 @@ import { AuditLogService, type AuditEventType } from "../services/audit-log.serv
 import { StudentImportJobService } from "../services/student-import-job.service.js";
 import { AdminOpsJobService } from "../services/admin-ops-job.service.js";
 import {
+  adminCreateCollegeSchema,
   adminCreateExternalResourceSchema,
   adminCreateMockTestSchema,
   adminCreateStudentSchema,
@@ -27,6 +28,7 @@ import {
   adminStudentListQuerySchema,
   adminTenantQuerySchema,
   adminTpoListQuerySchema,
+  adminUnlockStudentProfileSchema,
   adminUpdateIntegrationsSchema,
   adminUpdateMockTestSchema,
   adminUpdateResourceSchema,
@@ -315,6 +317,26 @@ router.post(
   }),
 );
 
+router.post(
+  "/colleges",
+  asyncHandler(async (req, res) => {
+    const body = adminCreateCollegeSchema.parse(req.body);
+    const data = await AdminOpsService.createCollege({
+      ...body,
+      actorUserId: req.auth!.userId,
+      actorName: req.auth!.email,
+    });
+    await logAdminAudit(req, data.tenant.id, "admin_ops_tpo_created", {
+      tenantId: data.tenant.id,
+      tenantName: data.tenant.name,
+      tpoId: data.tpo.id,
+      tpoEmail: data.tpo.email,
+      branches: data.tenant.branches,
+    });
+    res.status(201).json(successResponse(data));
+  }),
+);
+
 router.delete(
   "/students/:studentId",
   asyncHandler(async (req, res) => {
@@ -329,6 +351,24 @@ router.delete(
       email: data.email,
       fullName: data.fullName,
       removedCollections: data.removedCollections,
+    });
+    res.json(successResponse(data));
+  }),
+);
+
+router.post(
+  "/students/:studentId/unlock-profile",
+  asyncHandler(async (req, res) => {
+    const body = adminUnlockStudentProfileSchema.parse(req.body);
+    const data = await AdminOpsService.unlockStudentProfile({
+      tenantId: body.tenantId,
+      studentId: String(req.params.studentId),
+      actorUserId: req.auth!.userId,
+    });
+    await logAdminAudit(req, body.tenantId, "admin_ops_student_updated", {
+      studentId: data.studentId,
+      userId: data.userId,
+      unlockedAt: data.unlockedAt,
     });
     res.json(successResponse(data));
   }),

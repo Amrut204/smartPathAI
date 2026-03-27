@@ -11,6 +11,8 @@ const optionalClearingEmailSchema = z.union([z.string().trim().email(), z.litera
 const optionalClearingUrlSchema = z.union([z.string().trim().url(), z.literal("")]).optional();
 const optionalClearingStringSchema = (min = 1, max = 120) => z.union([z.string().trim().min(min).max(max), z.literal("")]).optional();
 const optionalClearingBatchSchema = z.union([z.string().trim().regex(/^\d{4}$/), z.literal("")]).optional();
+const semesterValues = ["1", "2", "3", "4", "5", "6", "7", "8"] as const;
+const optionalClearingSemesterSchema = z.union([z.enum(semesterValues), z.literal("")]).optional();
 const optionalClearingNumberSchema = (schema: z.ZodNumber) => z.preprocess((value) => {
   if (value === undefined) return undefined;
   if (value === null || value === "") return null;
@@ -34,7 +36,7 @@ export const updateStudentProfileSchema = z.object({
   branch: optionalClearingStringSchema(2, 64),
   batch: optionalClearingBatchSchema,
   degree: optionalClearingStringSchema(2, 120),
-  currentSemester: optionalClearingStringSchema(1, 32),
+  currentSemester: optionalClearingSemesterSchema,
   cgpa: optionalClearingNumberSchema(z.number().min(0).max(10)),
   activeBacklogs: optionalClearingNumberSchema(z.number().int().min(0)),
   totalHistoricalBacklogs: optionalClearingNumberSchema(z.number().int().min(0)),

@@ -42,6 +42,7 @@ export type AdminWorkspace = {
   referenceData: {
     topics: Array<{ id: string; name: string }>;
     companies: Array<{ id: string; name: string }>;
+    branches: string[];
     loginUrl: string;
   };
 };
@@ -65,6 +66,8 @@ export type AdminStudentRow = {
   missingRequiredCount: number;
   waitingOnStudent: boolean;
   waitingOnCollege: boolean;
+  isProfileCertified?: boolean;
+  isProfileLocked?: boolean;
   pendingCredentialJobId?: string | null;
 };
 
@@ -377,6 +380,33 @@ export async function adminSendStudentCredentials(input: { tenantId: string; stu
   return data;
 }
 
+export async function adminCreateCollege(input: {
+  collegeName: string;
+  tpoFullName: string;
+  tpoEmail: string;
+  tpoPassword: string;
+  branches: string[];
+}) {
+  const data = await sendJson<{
+    tenant: {
+      id: string;
+      name: string;
+      slug: string;
+      isActive: boolean;
+      branches: string[];
+    };
+    tpo: AdminTpoRow;
+    credentialEmail: { id: string; status?: string };
+  }>("/api/v1/internal/admin-ops/colleges", "POST", input);
+  await Promise.all([
+    mutate("/api/v1/internal/admin-ops/tenants"),
+    mutate(`/api/v1/internal/admin-ops/workspace?tenantId=${encodeURIComponent(data.tenant.id)}`),
+    mutate(`/api/v1/internal/admin-ops/tpo-accounts?tenantId=${encodeURIComponent(data.tenant.id)}`),
+    mutate(`/api/v1/internal/admin-ops/jobs?tenantId=${encodeURIComponent(data.tenant.id)}`),
+  ]);
+  return data;
+}
+
 export async function adminDeleteStudent(input: { tenantId: string; studentId: string }) {
   const data = await sendJson<{
     studentId: string;
@@ -390,6 +420,22 @@ export async function adminDeleteStudent(input: { tenantId: string; studentId: s
     mutate((key) => typeof key === "string" && key.startsWith(`/api/v1/internal/admin-ops/students?tenantId=${encodeURIComponent(input.tenantId)}`)),
     mutate(`/api/v1/internal/admin-ops/workspace?tenantId=${encodeURIComponent(input.tenantId)}`),
     mutate(`/api/v1/internal/admin-ops/jobs?tenantId=${encodeURIComponent(input.tenantId)}`),
+  ]);
+  return data;
+}
+
+export async function adminUnlockStudentProfile(input: { tenantId: string; studentId: string }) {
+  const data = await sendJson<{
+    studentId: string;
+    userId: string;
+    unlockedAt: string;
+    unlockedBy: string;
+  }>(`/api/v1/internal/admin-ops/students/${encodeURIComponent(input.studentId)}/unlock-profile`, "POST", {
+    tenantId: input.tenantId,
+  });
+  await Promise.all([
+    mutate((key) => typeof key === "string" && key.startsWith(`/api/v1/internal/admin-ops/students?tenantId=${encodeURIComponent(input.tenantId)}`)),
+    mutate(`/api/v1/internal/admin-ops/workspace?tenantId=${encodeURIComponent(input.tenantId)}`),
   ]);
   return data;
 }

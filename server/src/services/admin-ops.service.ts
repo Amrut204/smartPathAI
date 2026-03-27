@@ -10,8 +10,10 @@ import { StudentService } from "./student.service.js";
 import { StudentRepository } from "../repositories/student.repository.js";
 import { StudentImportJobService } from "./student-import-job.service.js";
 import { AdminOpsJobService } from "./admin-ops-job.service.js";
+import { CommunicationService } from "./communication.service.js";
 import { getMongoDb } from "../utils/mongodb.js";
 import { resolveManagedCloudBaseUrl } from "../utils/storage.js";
+import { buildDeclarationProfileDataPatch, buildStudentDeclarationStatus } from "../utils/student-declaration.js";
 
 function nowIso() {
   return new Date().toISOString();
@@ -54,6 +56,15 @@ function normalizeOptionalString(value: unknown) {
   return trimmed ? trimmed : null;
 }
 
+function normalizeBranchList(values: unknown): string[] {
+  if (!Array.isArray(values)) return [];
+  return [...new Set(
+    values
+      .map((value) => String(value ?? "").trim())
+      .filter((value) => value.length >= 2),
+  )];
+}
+
 function assertSelectedTenantId(tenantId: string | null | undefined) {
   const normalized = String(tenantId ?? "").trim();
   if (!normalized) {
@@ -68,6 +79,13 @@ async function assertTenantExists(tenantId: string) {
     throw new AppError("TENANT_NOT_FOUND", "Selected college was not found.", 404);
   }
   return tenant;
+}
+
+function getTenantBranchesFromConfig(config: unknown): string[] {
+  const raw = config && typeof config === "object"
+    ? config as Record<string, unknown>
+    : {};
+  return normalizeBranchList(raw.branches);
 }
 
 async function listTopics(tenantId: string) {
@@ -124,6 +142,7 @@ const tenantWorkspaceCache = new Map<string, {
     referenceData: {
       topics: Array<{ id: string; name: string }>;
       companies: Array<{ id: string; name: string }>;
+      branches: string[];
       loginUrl: string;
     };
   };
@@ -280,6 +299,7 @@ export const AdminOpsService = {
       referenceData: {
         topics,
         companies,
+        branches: getTenantBranchesFromConfig(tenant.config),
         loginUrl: buildLoginUrl(),
       },
     };
@@ -288,6 +308,177 @@ export const AdminOpsService = {
       value,
     });
     return value;
+  },
+
+  async createCollege(input: {
+    actorUserId: string;
+    actorName?: string | null;
+    collegeName: string;
+    tpoFullName: string;
+    tpoEmail: string;
+    tpoPassword: string;
+    branches: string[];
+  }) {
+    const db = await getMongoDb();
+    const normalizedName = String(input.collegeName).trim();
+    const slug = slugify(normalizedName);
+    if (!slug) {
+      throw new AppError("TENANT_SLUG_INVALID", "College name could not be converted into a valid slug.", 400);
+    }
+
+    const tpoEmail = String(input.tpoEmail).trim().toLowerCase();
+    const existingUser = await db.collection("users").findOne(
+      { email: tpoEmail },
+      { projection: { _id: 0, id: 1, tenant_id: 1, role: 1 } },
+    );
+    if (existingUser) {
+      throw new AppError("TPO_EMAIL_EXISTS", "A user with this email already exists.", 409);
+    }
+
+    const branches = normalizeBranchList(input.branches);
+    if (branches.length === 0) {
+      throw new AppError("TENANT_BRANCHES_REQUIRED", "Add at least one branch for the college.", 400);
+    }
+
+    const tenant = await MongoAuthRepository.createTenant({
+      name: normalizedName,
+      slug,
+      config: {
+        branches,
+      },
+    });
+
+    const passwordHash = await bcryptHash(input.tpoPassword, 12);
+    const timestamp = nowIso();
+    const user = await MongoAuthRepository.createUser({
+      tenantId: tenant.id,
+      email: tpoEmail,
+      role: "tpo",
+      fullName: String(input.tpoFullName).trim(),
+      passwordHash,
+      mustChangePassword: true,
+      passwordIssuedAt: timestamp,
+      passwordVersion: 1,
+    });
+
+    const emailJob = await CommunicationService.sendTemplatedToRecipients({
+      tenantId: tenant.id,
+      senderId: input.actorUserId,
+      templateSlug: "tpo-onboarding-credentials",
+      recipients: [
+        {
+          studentId: user.id,
+          fullName: String(user.full_name ?? ""),
+          email: String(user.email ?? ""),
+          driveName: undefined,
+          variables: {
+            tpo_name: String(user.full_name ?? ""),
+            tpo_email: String(user.email ?? ""),
+            temporary_password: input.tpoPassword,
+            login_url: buildLoginUrl(),
+            issued_by: input.actorName ?? "Admin",
+            college_name: tenant.name,
+          },
+        },
+      ],
+      variables: {
+        tpo_name: String(user.full_name ?? ""),
+        tpo_email: String(user.email ?? ""),
+        temporary_password: input.tpoPassword,
+        login_url: buildLoginUrl(),
+        issued_by: input.actorName ?? "Admin",
+        college_name: tenant.name,
+      },
+      metadata: {
+        flow: "college_setup",
+      },
+      allowUnsubscribe: false,
+    });
+
+    this.clearListCache();
+    this.clearTenantWorkspaceCache();
+
+    return {
+      tenant: {
+        id: tenant.id,
+        name: tenant.name,
+        slug: tenant.slug,
+        isActive: tenant.is_active,
+        branches,
+      },
+      tpo: {
+        id: user.id,
+        email: user.email,
+        fullName: user.full_name,
+        isActive: user.is_active,
+        tenantId: tenant.id,
+        createdAt: timestamp,
+        lastPasswordIssuedAt: timestamp,
+      },
+      credentialEmail: emailJob,
+    };
+  },
+
+  async unlockStudentProfile(input: {
+    tenantId: string;
+    studentId: string;
+    actorUserId: string;
+  }) {
+    const tenantId = assertSelectedTenantId(input.tenantId);
+    await assertTenantExists(tenantId);
+    const db = await getMongoDb();
+    const student = await db.collection("students").findOne(
+      { tenant_id: tenantId, id: input.studentId },
+      { projection: { _id: 0, id: 1, user_id: 1, profile_data: 1, roll_number: 1, branch: 1, batch: 1, cgpa: 1, backlogs: 1, backlogs_total: 1, attendance_pct: 1, skills: 1 } },
+    );
+    if (!student) {
+      throw new AppError("STUDENT_NOT_FOUND", "Student not found for the selected college.", 404);
+    }
+
+    const user = await db.collection("users").findOne(
+      { tenant_id: tenantId, id: String(student.user_id) },
+      { projection: { _id: 0, full_name: 1, email: 1 } },
+    );
+
+    const declarationStatus = buildStudentDeclarationStatus({
+      student: student as Record<string, unknown>,
+      user: {
+        full_name: user?.full_name,
+        email: user?.email,
+      },
+    });
+
+    if (!declarationStatus.profileCertification.isCertified || !declarationStatus.profileCertification.isLocked) {
+      throw new AppError("PROFILE_NOT_LOCKED", "This student profile is not currently locked.", 409);
+    }
+
+    const now = nowIso();
+    const updated = await db.collection("students").findOneAndUpdate(
+      { tenant_id: tenantId, id: input.studentId },
+      {
+        $set: {
+          profile_data: buildDeclarationProfileDataPatch({
+            profileData: (student.profile_data ?? {}) as Record<string, unknown>,
+            declaration: {
+              profileEditUnlockedAt: now,
+              profileEditUnlockedBy: input.actorUserId,
+              profileCertificationInvalidatedAt: now,
+              profileCertificationInvalidationReason: "Profile unlocked by admin for student corrections.",
+            },
+          }),
+        },
+      },
+      { returnDocument: "after", projection: { _id: 0, id: 1, user_id: 1, profile_data: 1 } },
+    );
+
+    this.clearTenantWorkspaceCache(tenantId);
+
+    return {
+      studentId: String(updated?.id ?? input.studentId),
+      userId: String(updated?.user_id ?? student.user_id),
+      unlockedAt: now,
+      unlockedBy: input.actorUserId,
+    };
   },
 
   async listStudents(tenantId: string, query: {

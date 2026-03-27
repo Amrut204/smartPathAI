@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 
 import { Button, Card, Modal, Skeleton, Tabs } from "../../components/ui";
 import { isClientFeatureEnabled } from "../../config/features";
+import { useTenantSettings } from "../../hooks/use-tenant";
 import {
   certifyStudentProfile,
   getProfileCertificationPreview,
@@ -59,9 +60,11 @@ const baseProfileSectionTabs: Array<{ id: ProfileSection; label: string }> = [
   { id: "details", label: "Placement Details" },
   { id: "recommended", label: "Recommended" },
 ];
+const semesterOptions = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
 export default function ProfilePage() {
   const { data, error, isLoading, mutate } = useStudentProfile();
+  const { data: tenantSettings } = useTenantSettings();
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -174,7 +177,21 @@ export default function ProfilePage() {
     () => (data?.missingRequiredFields ?? []).map((field) => field.label),
     [data],
   );
+  const requiredFieldKeys = useMemo(
+    () => new Set((data?.requiredFields ?? []).map((field) => field.key)),
+    [data],
+  );
   const isComplete = (data?.profileCompleteness.pct ?? 0) >= 100;
+  const isLocked = Boolean(data?.declarationStatus.profileCertification.isLocked);
+  const tenantBranches = useMemo(() => {
+    const rawBranches = Array.isArray(tenantSettings?.config?.branches) ? tenantSettings.config.branches : [];
+    const currentBranch = data?.studentEditableProfile.branch ?? "";
+    const values = [...rawBranches, currentBranch]
+      .map((value) => String(value ?? "").trim())
+      .filter(Boolean);
+    return [...new Set(values)];
+  }, [data?.studentEditableProfile.branch, tenantSettings?.config?.branches]);
+  const currentSemesterNumber = Number(data?.studentEditableProfile.currentSemester || 0);
   const showRecommendedTab = isClientFeatureEnabled("studentProfileRecommended");
   const profileSectionTabs = useMemo(
     () => baseProfileSectionTabs.filter((tab) => tab.id !== "recommended" || showRecommendedTab),
@@ -223,6 +240,10 @@ export default function ProfilePage() {
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (isLocked) {
+      setStatus("Your certified profile is locked. Contact placement support or admin to unlock it before editing.");
+      return;
+    }
     setSaving(true);
     setStatus(null);
 
@@ -326,6 +347,13 @@ export default function ProfilePage() {
         />
       </section>
 
+      {isLocked ? (
+        <section className="student-workspace-panel student-profile-alert">
+          <h2>Profile locked after certification</h2>
+          <p>Your certified profile is read-only now. Contact placement support or your admin if any detail needs correction.</p>
+        </section>
+      ) : null}
+
       {!isComplete && activeSection === "checklist" ? (
         <section className="student-workspace-panel">
           <div className="student-workspace-panel-head">
@@ -363,48 +391,58 @@ export default function ProfilePage() {
           </div>
           <div className="form-grid">
             <label>
-              PRN
-              <input value={form.prn} onChange={(event) => setForm((current) => ({ ...current, prn: event.target.value }))} />
+              PRN{requiredFieldKeys.has("prn") ? <span className="required-asterisk"> *</span> : null}
+              <input disabled={isLocked} value={form.prn} onChange={(event) => setForm((current) => ({ ...current, prn: event.target.value }))} />
             </label>
             <label>
-              Roll Number
-              <input value={form.rollNumber} onChange={(event) => setForm((current) => ({ ...current, rollNumber: event.target.value }))} />
+              Roll Number{requiredFieldKeys.has("rollNumber") ? <span className="required-asterisk"> *</span> : null}
+              <input disabled={isLocked} value={form.rollNumber} onChange={(event) => setForm((current) => ({ ...current, rollNumber: event.target.value }))} />
             </label>
             <label>
-              Branch
-              <input value={form.branch} onChange={(event) => setForm((current) => ({ ...current, branch: event.target.value }))} />
+              Branch{requiredFieldKeys.has("branch") ? <span className="required-asterisk"> *</span> : null}
+              <select disabled={isLocked} value={form.branch} onChange={(event) => setForm((current) => ({ ...current, branch: event.target.value }))}>
+                <option value="">Select branch</option>
+                {tenantBranches.map((branch) => <option key={branch} value={branch}>{branch}</option>)}
+              </select>
             </label>
             <label>
-              Batch
-              <input value={form.batch} onChange={(event) => setForm((current) => ({ ...current, batch: event.target.value }))} placeholder="2026" />
+              Batch{requiredFieldKeys.has("batch") ? <span className="required-asterisk"> *</span> : null}
+              <input disabled={isLocked} value={form.batch} onChange={(event) => setForm((current) => ({ ...current, batch: event.target.value }))} placeholder="2026" />
             </label>
             <label>
-              Degree
-              <input value={form.degree} onChange={(event) => setForm((current) => ({ ...current, degree: event.target.value }))} />
+              Degree{requiredFieldKeys.has("degree") ? <span className="required-asterisk"> *</span> : null}
+              <input disabled={isLocked} value={form.degree} onChange={(event) => setForm((current) => ({ ...current, degree: event.target.value }))} />
             </label>
             <label>
-              Current Semester
-              <input value={form.currentSemester} onChange={(event) => setForm((current) => ({ ...current, currentSemester: event.target.value }))} />
+              Current Semester{requiredFieldKeys.has("currentSemester") ? <span className="required-asterisk"> *</span> : null}
+              <select disabled={isLocked} value={form.currentSemester} onChange={(event) => setForm((current) => ({ ...current, currentSemester: event.target.value }))}>
+                <option value="">Select semester</option>
+                {semesterOptions.map((semester) => {
+                  const numericSemester = Number(semester);
+                  const isDecrease = currentSemesterNumber > 0 && numericSemester < currentSemesterNumber;
+                  return <option key={semester} value={semester} disabled={isDecrease}>{semester}</option>;
+                })}
+              </select>
             </label>
             <label>
-              CGPA
-              <input type="number" min="0" max="10" step="0.01" value={form.cgpa} onChange={(event) => setForm((current) => ({ ...current, cgpa: event.target.value }))} />
+              CGPA{requiredFieldKeys.has("cgpa") ? <span className="required-asterisk"> *</span> : null}
+              <input disabled={isLocked} type="number" min="0" max="10" step="0.01" value={form.cgpa} onChange={(event) => setForm((current) => ({ ...current, cgpa: event.target.value }))} />
             </label>
             <label>
-              Active Backlogs
-              <input type="number" min="0" step="1" value={form.activeBacklogs} onChange={(event) => setForm((current) => ({ ...current, activeBacklogs: event.target.value }))} />
+              Active Backlogs{requiredFieldKeys.has("activeBacklogs") ? <span className="required-asterisk"> *</span> : null}
+              <input disabled={isLocked} type="number" min="0" step="1" value={form.activeBacklogs} onChange={(event) => setForm((current) => ({ ...current, activeBacklogs: event.target.value }))} />
             </label>
             <label>
-              Total Historical Backlogs
-              <input type="number" min="0" step="1" value={form.totalHistoricalBacklogs} onChange={(event) => setForm((current) => ({ ...current, totalHistoricalBacklogs: event.target.value }))} />
+              Total Historical Backlogs{requiredFieldKeys.has("totalHistoricalBacklogs") ? <span className="required-asterisk"> *</span> : null}
+              <input disabled={isLocked} type="number" min="0" step="1" value={form.totalHistoricalBacklogs} onChange={(event) => setForm((current) => ({ ...current, totalHistoricalBacklogs: event.target.value }))} />
             </label>
             <label>
-              Attendance %
-              <input type="number" min="0" max="100" step="0.1" value={form.attendancePct} onChange={(event) => setForm((current) => ({ ...current, attendancePct: event.target.value }))} />
+              Attendance %{requiredFieldKeys.has("attendancePct") ? <span className="required-asterisk"> *</span> : null}
+              <input disabled={isLocked} type="number" min="0" max="100" step="0.1" value={form.attendancePct} onChange={(event) => setForm((current) => ({ ...current, attendancePct: event.target.value }))} />
             </label>
           </div>
           <div className="hero-actions">
-            <Button type="submit" disabled={saving}>{saving ? "Saving..." : "Save Academic Details"}</Button>
+            <Button type="submit" disabled={saving || isLocked}>{saving ? "Saving..." : "Save Academic Details"}</Button>
             {status ? <p className={status.includes("successfully") ? "success-text" : "error-text"}>{status}</p> : null}
           </div>
         </form>
@@ -433,7 +471,9 @@ export default function ProfilePage() {
               </h3>
               <p>
                 {data.declarationStatus.profileCertification.isCertified
-                  ? "Your profile has been reviewed and certified for drive-use decisions."
+                  ? data.declarationStatus.profileCertification.isLocked
+                    ? "Your profile is certified and locked. Contact admin support if any detail needs correction."
+                    : "Your profile has been reviewed and certified for drive-use decisions."
                   : data.declarationStatus.profileCertification.requiresRecertification
                     ? "You changed important placement fields after certification. Review and certify again before applying to drives."
                     : data.profileCompleteness.isComplete
@@ -446,39 +486,42 @@ export default function ProfilePage() {
             </div>
             {!data.declarationStatus.profileCertification.isCertified ? (
               <div className="hero-actions">
-                <Button type="button" disabled={!data.profileCompleteness.isComplete || certificationBusy} onClick={openCertification}>
+                <Button type="button" disabled={!data.profileCompleteness.isComplete || certificationBusy || isLocked} onClick={openCertification}>
                   {certificationBusy ? "Loading..." : "Review and certify"}
                 </Button>
               </div>
             ) : (
-              <p className="success-text">Certified on {new Date(data.declarationStatus.profileCertification.acceptedAt ?? "").toLocaleString()}</p>
+              <p className="success-text">
+                Certified on {new Date(data.declarationStatus.profileCertification.acceptedAt ?? "").toLocaleString()}
+                {data.declarationStatus.profileCertification.isLocked ? " • Locked for edits" : ""}
+              </p>
             )}
           </div>
 
           <div className="form-grid">
             <label>
-              Phone Number
-              <input value={form.phone} onChange={(event) => setForm((current) => ({ ...current, phone: event.target.value }))} />
+              Phone Number{requiredFieldKeys.has("phone") ? <span className="required-asterisk"> *</span> : null}
+              <input disabled={isLocked} value={form.phone} onChange={(event) => setForm((current) => ({ ...current, phone: event.target.value }))} />
             </label>
             <label>
-              Personal Email
-              <input type="email" value={form.personalEmail} onChange={(event) => setForm((current) => ({ ...current, personalEmail: event.target.value }))} />
+              Personal Email{requiredFieldKeys.has("personalEmail") ? <span className="required-asterisk"> *</span> : null}
+              <input disabled={isLocked} type="email" value={form.personalEmail} onChange={(event) => setForm((current) => ({ ...current, personalEmail: event.target.value }))} />
             </label>
             <label>
-              Resume Link
-              <input value={form.resumeUrl} onChange={(event) => setForm((current) => ({ ...current, resumeUrl: event.target.value }))} />
+              Resume Link{requiredFieldKeys.has("resumeUrl") ? <span className="required-asterisk"> *</span> : null}
+              <input disabled={isLocked} value={form.resumeUrl} onChange={(event) => setForm((current) => ({ ...current, resumeUrl: event.target.value }))} />
             </label>
             <label>
-              Target Roles
-              <input value={form.targetRoles} onChange={(event) => setForm((current) => ({ ...current, targetRoles: event.target.value }))} placeholder="Software engineer, analyst, GET" />
+              Target Roles{requiredFieldKeys.has("targetRoles") ? <span className="required-asterisk"> *</span> : null}
+              <input disabled={isLocked} value={form.targetRoles} onChange={(event) => setForm((current) => ({ ...current, targetRoles: event.target.value }))} placeholder="Software engineer, analyst, GET" />
             </label>
             <label>
-              Preferred Locations
-              <input value={form.preferredLocations} onChange={(event) => setForm((current) => ({ ...current, preferredLocations: event.target.value }))} placeholder="Pune, Mumbai, Bengaluru" />
+              Preferred Locations{requiredFieldKeys.has("preferredLocations") ? <span className="required-asterisk"> *</span> : null}
+              <input disabled={isLocked} value={form.preferredLocations} onChange={(event) => setForm((current) => ({ ...current, preferredLocations: event.target.value }))} placeholder="Pune, Mumbai, Bengaluru" />
             </label>
             <label>
-              Willing to Relocate
-              <select value={form.willingToRelocate} onChange={(event) => setForm((current) => ({ ...current, willingToRelocate: event.target.value as "yes" | "no" | "" }))}>
+              Willing to Relocate{requiredFieldKeys.has("willingToRelocate") ? <span className="required-asterisk"> *</span> : null}
+              <select disabled={isLocked} value={form.willingToRelocate} onChange={(event) => setForm((current) => ({ ...current, willingToRelocate: event.target.value as "yes" | "no" | "" }))}>
                 <option value="">Select one</option>
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
@@ -486,47 +529,47 @@ export default function ProfilePage() {
             </label>
             <label>
               Skills
-              <input value={form.skills} onChange={(event) => setForm((current) => ({ ...current, skills: event.target.value }))} placeholder="Communication, Aptitude, SQL" />
+              <input disabled={isLocked} value={form.skills} onChange={(event) => setForm((current) => ({ ...current, skills: event.target.value }))} placeholder="Communication, Aptitude, SQL" />
             </label>
             <label>
               LinkedIn
-              <input value={form.linkedIn} onChange={(event) => setForm((current) => ({ ...current, linkedIn: event.target.value }))} />
+              <input disabled={isLocked} value={form.linkedIn} onChange={(event) => setForm((current) => ({ ...current, linkedIn: event.target.value }))} />
             </label>
             <label>
               GitHub / Coding Profile
-              <input value={form.githubUrl} onChange={(event) => setForm((current) => ({ ...current, githubUrl: event.target.value }))} />
+              <input disabled={isLocked} value={form.githubUrl} onChange={(event) => setForm((current) => ({ ...current, githubUrl: event.target.value }))} />
             </label>
             <label>
               Portfolio
-              <input value={form.portfolioUrl} onChange={(event) => setForm((current) => ({ ...current, portfolioUrl: event.target.value }))} />
+              <input disabled={isLocked} value={form.portfolioUrl} onChange={(event) => setForm((current) => ({ ...current, portfolioUrl: event.target.value }))} />
             </label>
             <label>
               Languages
-              <input value={form.languages} onChange={(event) => setForm((current) => ({ ...current, languages: event.target.value }))} placeholder="English, Hindi, Marathi" />
+              <input disabled={isLocked} value={form.languages} onChange={(event) => setForm((current) => ({ ...current, languages: event.target.value }))} placeholder="English, Hindi, Marathi" />
             </label>
           </div>
 
           <div className="form-grid">
             <label>
               Internships
-              <textarea rows={4} value={form.internships} onChange={(event) => setForm((current) => ({ ...current, internships: event.target.value }))} placeholder="Short summary of internship work and outcomes" />
+              <textarea disabled={isLocked} rows={4} value={form.internships} onChange={(event) => setForm((current) => ({ ...current, internships: event.target.value }))} placeholder="Short summary of internship work and outcomes" />
             </label>
             <label>
               Projects
-              <textarea rows={4} value={form.projects} onChange={(event) => setForm((current) => ({ ...current, projects: event.target.value }))} placeholder="Key projects that support your placement profile" />
+              <textarea disabled={isLocked} rows={4} value={form.projects} onChange={(event) => setForm((current) => ({ ...current, projects: event.target.value }))} placeholder="Key projects that support your placement profile" />
             </label>
             <label>
               Certifications
-              <textarea rows={4} value={form.certifications} onChange={(event) => setForm((current) => ({ ...current, certifications: event.target.value }))} placeholder="Certifications, workshops, or licenses" />
+              <textarea disabled={isLocked} rows={4} value={form.certifications} onChange={(event) => setForm((current) => ({ ...current, certifications: event.target.value }))} placeholder="Certifications, workshops, or licenses" />
             </label>
             <label>
               Achievements
-              <textarea rows={4} value={form.achievements} onChange={(event) => setForm((current) => ({ ...current, achievements: event.target.value }))} placeholder="Awards, competitions, leadership, publications" />
+              <textarea disabled={isLocked} rows={4} value={form.achievements} onChange={(event) => setForm((current) => ({ ...current, achievements: event.target.value }))} placeholder="Awards, competitions, leadership, publications" />
             </label>
           </div>
 
           <div className="hero-actions">
-            <Button type="submit" disabled={saving}>{saving ? "Saving..." : "Save Profile"}</Button>
+            <Button type="submit" disabled={saving || isLocked}>{saving ? "Saving..." : "Save Profile"}</Button>
             {status ? <p className={status.includes("successfully") ? "success-text" : "error-text"}>{status}</p> : null}
           </div>
         </form>

@@ -38,7 +38,7 @@ export default function AnnouncementsPage() {
     );
   }
 
-  const announcements = data ?? [];
+  const announcements = Array.isArray(data) ? data : [];
 
   const onMarkRead = async (announcementId: string) => {
     setBusyId(announcementId);
@@ -73,14 +73,18 @@ export default function AnnouncementsPage() {
           <div className="student-announcement-stack">
             {announcements.map((item) => {
               const expanded = expandedId === item.id;
+              const title = String(item?.title ?? "Announcement");
+              const message = String(item?.message ?? "");
+              const publishedAt = item?.publishedAt ? new Date(item.publishedAt).toLocaleString() : "-";
+
               return (
                 <div key={item.id} className={`student-announcement-row ${item.unread ? "unread" : ""}`}>
                   <div className="student-announcement-row-head">
                     <div>
-                      <strong>{item.title}</strong>
+                      <strong>{title}</strong>
                       <p>
-                        {new Date(item.publishedAt).toLocaleString()}
-                        {item.relatedDriveName ? ` â€¢ ${item.relatedDriveName}` : ""}
+                        {publishedAt}
+                        {item.relatedDriveName ? ` • ${item.relatedDriveName}` : ""}
                       </p>
                     </div>
                     <div className="student-announcement-row-meta">
@@ -90,9 +94,9 @@ export default function AnnouncementsPage() {
                       {item.unread ? <Badge variant="success">Unread</Badge> : null}
                     </div>
                   </div>
-                  <p>{expanded ? item.message : `${item.message.slice(0, 220)}${item.message.length > 220 ? "..." : ""}`}</p>
+                  <p>{expanded ? message : `${message.slice(0, 220)}${message.length > 220 ? "..." : ""}`}</p>
                   <div className="hero-actions">
-                    {item.message.length > 220 ? (
+                    {message.length > 220 ? (
                       <Button variant="ghost" onClick={() => setExpandedId(expanded ? null : item.id)}>
                         {expanded ? "Show Less" : "Show More"}
                       </Button>

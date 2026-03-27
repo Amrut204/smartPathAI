@@ -7,6 +7,7 @@ import { hash as bcryptHash } from "bcryptjs";
 import { getBranchPrepTrack } from "../config/branch-prep.config.js";
 import { AppError } from "../middleware/error-handler.js";
 import { buildStudentProfileSummary, normalizeStudentProfileData } from "../utils/student-profile.js";
+import { buildStudentDeclarationStatus } from "../utils/student-declaration.js";
 import {
   buildLocalResourceFileUrl,
   isManagedCloudUrl,
@@ -2346,6 +2347,13 @@ export const StudentRepository = {
           email: user?.email,
         },
       });
+      const declarationStatus = buildStudentDeclarationStatus({
+        student: row as Record<string, unknown>,
+        user: {
+          full_name: user?.full_name,
+          email: user?.email,
+        },
+      });
 
       return {
         id: String(row.id),
@@ -2369,6 +2377,8 @@ export const StudentRepository = {
         waitingOnCollege: summary.pendingCollegeFields.length > 0,
         canAccessResources: summary.canAccessResources,
         canAccessMockTests: summary.canAccessMockTests,
+        isProfileCertified: declarationStatus.profileCertification.isCertified,
+        isProfileLocked: declarationStatus.profileCertification.isLocked,
         targetRoles: summary.studentEditableProfile.targetRoles,
         preferredLocations: summary.studentEditableProfile.preferredLocations,
         willingToRelocate: summary.studentEditableProfile.willingToRelocate,

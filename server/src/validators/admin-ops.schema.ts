@@ -53,6 +53,14 @@ export const adminCreateTpoSchema = z.object({
   email: z.string().trim().email().max(320),
 });
 
+export const adminCreateCollegeSchema = z.object({
+  collegeName: z.string().trim().min(2).max(200),
+  tpoFullName: z.string().trim().min(2).max(160),
+  tpoEmail: z.string().trim().email().max(320),
+  tpoPassword: z.string().min(8).max(120),
+  branches: z.array(z.string().trim().min(2).max(80)).min(1).max(50),
+});
+
 export const adminUpdateTpoSchema = z.object({
   tenantId: z.string().trim().min(1).max(120),
   fullName: z.string().trim().min(2).max(160).optional(),
@@ -75,6 +83,10 @@ export const adminResetStudentCredentialsSchema = z.object({
 });
 
 export const adminDeleteStudentSchema = z.object({
+  tenantId: z.string().trim().min(1).max(120),
+});
+
+export const adminUnlockStudentProfileSchema = z.object({
   tenantId: z.string().trim().min(1).max(120),
 });
 

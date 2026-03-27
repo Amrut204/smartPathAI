@@ -3,6 +3,7 @@ import path from "node:path";
 import pdfParse from "pdf-parse";
 
 import { AppError } from "../middleware/error-handler.js";
+import { MongoAuthRepository } from "../repositories/mongo-auth.repository.js";
 import { StudentRepository } from "../repositories/student.repository.js";
 import { getMongoDb } from "../utils/mongodb.js";
 import { buildStudentProfileSummary, normalizeStudentProfileData } from "../utils/student-profile.js";
@@ -78,6 +79,25 @@ function buildMyProfileResponse(profile: Awaited<ReturnType<typeof StudentReposi
     canAccessResources: summary.canAccessResources,
     canAccessMockTests: summary.canAccessMockTests,
   };
+}
+
+function normalizeTenantBranches(config: unknown): string[] {
+  if (!config || typeof config !== "object") return [];
+  const raw = (config as { branches?: unknown }).branches;
+  if (!Array.isArray(raw)) return [];
+  return [...new Set(
+    raw
+      .map((value) => String(value ?? "").trim())
+      .filter((value) => value.length >= 2),
+  )];
+}
+
+function normalizeSemesterValue(value: unknown): number | null {
+  const raw = String(value ?? "").trim();
+  if (!raw) return null;
+  const parsed = Number(raw);
+  if (!Number.isInteger(parsed) || parsed < 1 || parsed > 8) return null;
+  return parsed;
 }
 
 function parseCsvLine(line: string): string[] {
@@ -1111,6 +1131,9 @@ export const StudentService = {
           profileCertificationSnapshotHash: certificationPreview.snapshotHash,
           profileCertificationInvalidatedAt: null,
           profileCertificationInvalidationReason: null,
+          profileEditLockedAt: now,
+          profileEditUnlockedAt: null,
+          profileEditUnlockedBy: null,
           lastCertifiedProfileAt: now,
         },
       }),
@@ -1168,6 +1191,43 @@ export const StudentService = {
     accuracyDeclarationAccepted?: boolean;
   }) {
     const before = await StudentRepository.getStudentProfile(params.tenantId, params.userId);
+    const currentProfileResponse = buildMyProfileResponse(before);
+    if (currentProfileResponse.declarationStatus.profileCertification.isLocked) {
+      throw new AppError(
+        "PROFILE_LOCKED",
+        "Your certified profile is locked. Contact your placement admin to unlock it before making changes.",
+        409,
+      );
+    }
+
+    const tenant = await MongoAuthRepository.findTenantById(params.tenantId);
+    const tenantBranches = normalizeTenantBranches(tenant?.config);
+    const nextBranch = params.branch !== undefined ? String(params.branch).trim() : String(before.branch ?? "").trim();
+    if (tenantBranches.length > 0 && nextBranch && !tenantBranches.includes(nextBranch)) {
+      throw new AppError(
+        "BRANCH_NOT_ALLOWED",
+        "Select a valid branch from your college branch list.",
+        400,
+      );
+    }
+
+    const previousSemester = normalizeSemesterValue(normalizeStudentProfileData(before.profile_data).currentSemester);
+    const nextSemester = params.currentSemester !== undefined
+      ? normalizeSemesterValue(params.currentSemester)
+      : previousSemester;
+    if (
+      params.currentSemester !== undefined
+      && previousSemester !== null
+      && nextSemester !== null
+      && nextSemester < previousSemester
+    ) {
+      throw new AppError(
+        "SEMESTER_DECREASE_NOT_ALLOWED",
+        "Current semester can stay the same or increase, but it cannot be decreased.",
+        400,
+      );
+    }
+
     const existingProfileData = normalizeStudentProfileData(before.profile_data);
     const mergedProfileDataBase = {
       ...((before.profile_data ?? {}) as Record<string, unknown>),
@@ -1214,16 +1274,7 @@ export const StudentService = {
         profile_data: mergedProfileDataBase,
       },
     });
-    const currentProfileResponse = buildMyProfileResponse(before);
-    const mergedProfileData = currentProfileResponse.declarationStatus.profileCertification.isCertified && materialChanges.length > 0
-      ? buildDeclarationProfileDataPatch({
-          profileData: mergedProfileDataBase,
-          declaration: {
-            profileCertificationInvalidatedAt: new Date().toISOString(),
-            profileCertificationInvalidationReason: `Updated ${materialChanges.join(", ")} after certification.`,
-          },
-        })
-      : mergedProfileDataBase;
+    const mergedProfileData = mergedProfileDataBase;
     const updatedProfile = await StudentRepository.updateStudentProfile({
       tenantId: params.tenantId,
       userId: params.userId,
@@ -1290,24 +1341,6 @@ export const StudentService = {
       impactScore: 32,
       module: "Profile",
     });
-
-    if (currentProfileResponse.declarationStatus.profileCertification.isCertified && materialChanges.length > 0) {
-      await StudentActivityService.logEvent({
-        tenantId: params.tenantId,
-        studentId: String(updatedProfile.id),
-        eventType: "student_profile_certification_invalidated",
-        eventSource: "student_declaration",
-        entityId: String(updatedProfile.id),
-        entityType: "student_profile",
-        title: "Profile certification needs review",
-        description: `Material profile data changed after certification: ${materialChanges.join(", ")}.`,
-        metadata: {
-          materialChanges,
-        },
-        impactScore: 10,
-        module: "Profile",
-      });
-    }
 
     return this.getMyProfile(params.tenantId, params.userId);
   },

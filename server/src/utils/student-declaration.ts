@@ -30,6 +30,9 @@ type DeclarationStateRecord = {
   profileCertificationInvalidatedAt?: unknown;
   profileCertificationInvalidationReason?: unknown;
   lastCertifiedProfileAt?: unknown;
+  profileEditLockedAt?: unknown;
+  profileEditUnlockedAt?: unknown;
+  profileEditUnlockedBy?: unknown;
 };
 
 export const STUDENT_DECLARATION_POLICY_VERSION = "2026-03-25";
@@ -101,6 +104,9 @@ function asDeclarationStateRecord(profileData: unknown): DeclarationStateRecord 
     profileCertificationInvalidatedAt: declaration.profileCertificationInvalidatedAt,
     profileCertificationInvalidationReason: declaration.profileCertificationInvalidationReason,
     lastCertifiedProfileAt: declaration.lastCertifiedProfileAt,
+    profileEditLockedAt: declaration.profileEditLockedAt,
+    profileEditUnlockedAt: declaration.profileEditUnlockedAt,
+    profileEditUnlockedBy: declaration.profileEditUnlockedBy,
   };
 }
 
@@ -115,6 +121,7 @@ export type StudentDeclarationStatus = {
   };
   profileCertification: {
     isCertified: boolean;
+    isLocked: boolean;
     acceptedAt: string | null;
     version: string | null;
     snapshotHash: string | null;
@@ -207,7 +214,10 @@ export function buildStudentDeclarationStatus(input: {
   const rawDeclaration = asDeclarationStateRecord(input.student.profile_data);
   const acceptedAt = asNullableString(rawDeclaration.profileCertifiedAt);
   const invalidatedAt = asNullableString(rawDeclaration.profileCertificationInvalidatedAt);
+  const lockedAt = asNullableString(rawDeclaration.profileEditLockedAt);
+  const unlockedAt = asNullableString(rawDeclaration.profileEditUnlockedAt);
   const isCertified = Boolean(acceptedAt) && (!invalidatedAt || (acceptedAt !== null && invalidatedAt < acceptedAt));
+  const isLocked = Boolean(lockedAt) && (!unlockedAt || (lockedAt !== null && lockedAt > unlockedAt));
   const prn = normalized.prn;
 
   return {
@@ -225,6 +235,7 @@ export function buildStudentDeclarationStatus(input: {
     },
     profileCertification: {
       isCertified,
+      isLocked,
       acceptedAt,
       version: asNullableString(rawDeclaration.profileCertificationVersion),
       snapshotHash: asNullableString(rawDeclaration.profileCertificationSnapshotHash),
@@ -299,6 +310,9 @@ export function buildDeclarationProfileDataPatch(input: {
     profileCertificationInvalidatedAt: string | null;
     profileCertificationInvalidationReason: string | null;
     lastCertifiedProfileAt: string | null;
+    profileEditLockedAt: string | null;
+    profileEditUnlockedAt: string | null;
+    profileEditUnlockedBy: string | null;
   }>;
 }) {
   const raw = input.profileData && typeof input.profileData === "object"

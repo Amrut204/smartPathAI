@@ -31,6 +31,7 @@ export function useTenantSettings() {
     slug: string;
     config: {
       emailSettings?: TenantEmailSettings;
+      branches?: string[];
     };
   }>("/api/v1/tenants/me", fetcher, {
     revalidateOnFocus: false,
@@ -51,6 +52,7 @@ export async function updateTenantEmailSettings(input: TenantEmailSettings) {
     slug: string;
     config: {
       emailSettings?: TenantEmailSettings;
+      branches?: string[];
     };
   }>;
 

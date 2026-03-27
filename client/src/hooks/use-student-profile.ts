@@ -98,6 +98,7 @@ export interface StudentProfile {
     };
     profileCertification: {
       isCertified: boolean;
+      isLocked: boolean;
       acceptedAt: string | null;
       version: string | null;
       snapshotHash: string | null;

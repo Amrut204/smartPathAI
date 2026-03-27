@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
-import { PilotFeedbackStrip } from "../../components/composites/PilotFeedbackStrip";
 import { Badge, Button, Modal, Skeleton, Tabs } from "../../components/ui";
 import { isClientFeatureEnabled } from "../../config/features";
 import {
@@ -128,7 +127,8 @@ export default function DashboardPage() {
   const canAccessMockTests = profileData?.canAccessMockTests ?? Boolean(data.canAccessMockTests);
   const canAccessResources = profileData?.canAccessResources ?? Boolean(data.canAccessResources);
   const missingStudentFields = profileData?.missingRequiredFields ?? (Array.isArray(data.missingStudentFields) ? data.missingStudentFields : []);
-  const unreadAnnouncements = (announcements ?? []).filter((item) => item.unread);
+  const safeAnnouncements = Array.isArray(announcements) ? announcements : [];
+  const unreadAnnouncements = safeAnnouncements.filter((item) => item?.unread);
   const popupAnnouncement = unreadAnnouncements.find((item) => item.popupEligible) ?? null;
   const showAdvancedMetrics = isClientFeatureEnabled("studentAdvancedMetrics");
   const studentStorageKey = useMemo(() => {
@@ -305,10 +305,10 @@ export default function DashboardPage() {
             <div><span>{showAdvancedMetrics ? "Recent study focus" : "Mock tests taken"}</span><strong>{showAdvancedMetrics ? `${studyHours7d.toFixed(1)} hrs` : mockTestsTaken7d}</strong></div>
           </div>
 
-          {(announcements ?? []).length > 0 ? (
+          {safeAnnouncements.length > 0 ? (
             <div className="student-workspace-inline-note">
               <span>{unreadAnnouncements.length} unread announcement(s)</span>
-              <span>{(announcements ?? []).length} active notice(s)</span>
+              <span>{safeAnnouncements.length} active notice(s)</span>
             </div>
           ) : null}
 
@@ -332,20 +332,21 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {(announcements ?? []).length === 0 ? (
+          {safeAnnouncements.length === 0 ? (
             <p className="muted-text">No active announcements right now.</p>
           ) : (
             <div className="student-announcement-stack">
-              {(announcements ?? []).map((item) => {
+              {safeAnnouncements.map((item) => {
                 const expanded = expandedAnnouncementId === item.id;
+                const message = String(item?.message ?? "");
                 return (
                   <div key={item.id} className={`student-announcement-row ${item.unread ? "unread" : ""}`}>
                     <div className="student-announcement-row-head">
                       <div>
-                        <strong>{item.title}</strong>
+                        <strong>{String(item?.title ?? "Announcement")}</strong>
                         <p>
-                          {new Date(item.publishedAt).toLocaleString()}
-                          {item.relatedDriveName ? ` - ${item.relatedDriveName}` : ""}
+                          {item?.publishedAt ? new Date(item.publishedAt).toLocaleString() : "-"}
+                          {item?.relatedDriveName ? ` - ${item.relatedDriveName}` : ""}
                         </p>
                       </div>
                       <div className="student-announcement-row-meta">
@@ -355,9 +356,9 @@ export default function DashboardPage() {
                         {item.unread ? <Badge variant="success">Unread</Badge> : null}
                       </div>
                     </div>
-                    <p>{expanded ? item.message : `${item.message.slice(0, 180)}${item.message.length > 180 ? "..." : ""}`}</p>
+                    <p>{expanded ? message : `${message.slice(0, 180)}${message.length > 180 ? "..." : ""}`}</p>
                     <div className="hero-actions">
-                      {item.message.length > 180 ? (
+                      {message.length > 180 ? (
                         <Button variant="ghost" onClick={() => setExpandedAnnouncementId(expanded ? null : item.id)}>
                           {expanded ? "Show Less" : "Show More"}
                         </Button>
@@ -453,7 +454,6 @@ export default function DashboardPage() {
         </section>
       ) : null}
 
-      <PilotFeedbackStrip description="If something looks wrong during pilot, report it here so the team can respond quickly." />
     </section>
   );
 }

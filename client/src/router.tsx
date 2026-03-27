@@ -3,8 +3,8 @@ import { createBrowserRouter, Navigate, Outlet, RouterProvider, useLocation, use
 
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Navbar } from "./components/composites/Navbar";
+import { StudentFooter } from "./components/composites/StudentFooter";
 import { useAuth } from "./components/providers/AuthProvider";
-import { useStudentAnnouncements } from "./hooks/use-announcements";
 import { useStudentProfile } from "./hooks/use-student-profile";
 import { Button, Input, Spinner } from "./components/ui";
 
@@ -13,6 +13,7 @@ const LoginPage = lazy(() => import("./pages/public/LoginPage"));
 const InitialPasswordResetPage = lazy(() => import("./pages/public/InitialPasswordResetPage"));
 const SignupPage = lazy(() => import("./pages/public/SignupPage"));
 const UnsubscribePage = lazy(() => import("./pages/public/UnsubscribePage"));
+const ResourceUsagePolicyPage = lazy(() => import("./pages/public/ResourceUsagePolicyPage"));
 const DashboardPage = lazy(() => import("./pages/student/DashboardPage"));
 const StudentOnboardingDeclarationPage = lazy(() => import("./pages/student/StudentOnboardingDeclarationPage"));
 const AnnouncementsPage = lazy(() => import("./pages/student/AnnouncementsPage"));
@@ -142,7 +143,6 @@ function StudentTopicSearchStrip() {
 function StudentLayout() {
   const { profile, logout } = useAuth();
   const { data: studentProfile } = useStudentProfile();
-  const { data: announcements } = useStudentAnnouncements();
 
   return (
     <div className="app-shell app-shell-with-strip">
@@ -151,7 +151,7 @@ function StudentLayout() {
         title="Smart Path"
         userName={profile?.full_name ?? "Student"}
         studentProfileCompletionPct={studentProfile?.profileCompleteness.pct ?? null}
-        studentHasAnnouncementDot={(announcements ?? []).some((item) => item.hasNavIndicator)}
+        studentHasAnnouncementDot={false}
         onLogout={logout}
       />
       <StudentTopicSearchStrip />
@@ -160,6 +160,7 @@ function StudentLayout() {
           <Outlet />
         </ErrorBoundary>
       </main>
+      <StudentFooter />
     </div>
   );
 }
@@ -259,6 +260,7 @@ function AdminLayout() {
           <Outlet />
         </ErrorBoundary>
       </main>
+      <StudentFooter showPolicy={false} />
     </div>
   );
 }
@@ -364,6 +366,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+  { path: "/resource-usage-policy", element: renderRoute(<ResourceUsagePolicyPage />) },
   { path: "*", element: <Navigate to="/" replace /> },
 ]);
 

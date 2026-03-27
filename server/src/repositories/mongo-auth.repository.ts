@@ -68,6 +68,14 @@ interface CreateStudentInput {
   batch: string;
 }
 
+interface CreateTenantInput {
+  name: string;
+  slug: string;
+  domain?: string | null;
+  subscriptionTier?: string | null;
+  config?: Record<string, unknown>;
+}
+
 const COLLECTIONS = {
   tenants: "tenants",
   users: "users",
@@ -96,6 +104,37 @@ export const MongoAuthRepository = {
       {},
       { projection: { _id: 0, id: 1, name: 1, slug: 1, domain: 1, subscription_tier: 1, is_active: 1, config: 1, created_at: 1, updated_at: 1 } },
     ).sort({ name: 1 }).toArray();
+  },
+
+  async createTenant(input: CreateTenantInput): Promise<TenantRecord> {
+    const db = await getMongoDb();
+    const existing = await db.collection<TenantRecord>(COLLECTIONS.tenants).findOne(
+      { $or: [{ slug: input.slug }, { name: input.name }] },
+      { projection: { _id: 0, id: 1, slug: 1, name: 1 } },
+    );
+
+    if (existing?.slug === input.slug) {
+      throw new AppError("TENANT_SLUG_EXISTS", "A college with this slug already exists.", 409);
+    }
+    if (existing?.name === input.name) {
+      throw new AppError("TENANT_NAME_EXISTS", "A college with this name already exists.", 409);
+    }
+
+    const timestamp = nowIso();
+    const tenant: TenantRecord = {
+      id: randomUUID(),
+      name: input.name,
+      slug: input.slug,
+      domain: input.domain ?? null,
+      subscription_tier: input.subscriptionTier ?? null,
+      is_active: true,
+      config: input.config ?? {},
+      created_at: timestamp,
+      updated_at: timestamp,
+    };
+
+    await db.collection<TenantRecord>(COLLECTIONS.tenants).insertOne(tenant);
+    return tenant;
   },
 
   async updateTenantEmailSettings(tenantId: string, input: TenantEmailSettings): Promise<TenantRecord | null> {

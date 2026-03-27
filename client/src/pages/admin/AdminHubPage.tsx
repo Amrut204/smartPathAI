@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { Button, Input, Select, Table } from "../../components/ui";
 import {
   adminCreateExternalResource,
+  adminCreateCollege,
   adminCreateMockTest,
   adminCreateStudent,
   adminCreateStudentImportJob,
@@ -17,6 +18,7 @@ import {
   adminReleaseJob,
   adminResetStudentCredentials,
   adminSendStudentCredentials,
+  adminUnlockStudentProfile,
   adminResetTpoCredentials,
   adminRetryJob,
   adminSaveEmailSettings,
@@ -139,6 +141,24 @@ function validateTpoForm(input: { fullName: string; email: string }) {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email.trim())) throw new Error("Enter a valid TPO email address.");
 }
 
+function validateCollegeForm(input: {
+  collegeName: string;
+  tpoFullName: string;
+  tpoEmail: string;
+  tpoPassword: string;
+  branchesText: string;
+}) {
+  if (!input.collegeName.trim()) throw new Error("Enter the college name.");
+  validateTpoForm({ fullName: input.tpoFullName, email: input.tpoEmail });
+  if (input.tpoPassword.trim().length < 8) throw new Error("TPO password must be at least 8 characters.");
+  const branches = input.branchesText
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
+  if (branches.length === 0) throw new Error("Add at least one branch for the college.");
+  return [...new Set(branches)];
+}
+
 export default function AdminHubPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedTab = searchParams.get("tab");
@@ -176,6 +196,13 @@ export default function AdminHubPage() {
   const [externalForm, setExternalForm] = useState({ title: "", description: "", topicId: "", resourceType: "external_link", url: "", isActive: true });
   const [integrationForm, setIntegrationForm] = useState({ googleForm: "", googleSheet: "", label: "", notes: "" });
   const [emailForm, setEmailForm] = useState({ fromName: "", fromEmail: "", replyToEmail: "" });
+  const [collegeForm, setCollegeForm] = useState({
+    collegeName: "",
+    tpoFullName: "",
+    tpoEmail: "",
+    tpoPassword: "",
+    branchesText: "",
+  });
 
   useEffect(() => {
     const stored = window.localStorage.getItem("admin:selectedTenantId");
@@ -429,6 +456,13 @@ export default function AdminHubPage() {
                               const job = await adminResetStudentCredentials({ tenantId, studentId: student.id });
                               setMessage(`Credential reset queued for ${student.fullName}. Job ${job.id}.`, "success");
                             })} disabled={busyAction === `reset-${student.id}`}>Reset Credentials</Button>
+                            {student.isProfileLocked ? (
+                              <Button variant="ghost" onClick={() => runAction(`unlock-${student.id}`, async () => {
+                                const tenantId = requireTenant();
+                                await adminUnlockStudentProfile({ tenantId, studentId: student.id });
+                                setMessage(`${student.fullName}'s profile is unlocked for corrections.`, "success");
+                              })} disabled={busyAction === `unlock-${student.id}`}>Unlock Profile</Button>
+                            ) : null}
                             <Button variant="ghost" onClick={() => runAction(`delete-${student.id}`, async () => {
                               const tenantId = requireTenant();
                               if (!window.confirm(`Delete ${student.fullName} from this college? This removes the student account and linked student activity data.`)) {
@@ -822,6 +856,30 @@ export default function AdminHubPage() {
 
       {activeTab === "settings" ? (
         <>
+          <section className="admin-ops-section">
+            <h2>Add College</h2>
+            <div className="form-grid">
+              <label><span className="muted-text">College name</span><Input value={collegeForm.collegeName} onChange={(event) => setCollegeForm((current) => ({ ...current, collegeName: event.target.value }))} /></label>
+              <label><span className="muted-text">First TPO full name</span><Input value={collegeForm.tpoFullName} onChange={(event) => setCollegeForm((current) => ({ ...current, tpoFullName: event.target.value }))} /></label>
+              <label><span className="muted-text">TPO email</span><Input value={collegeForm.tpoEmail} onChange={(event) => setCollegeForm((current) => ({ ...current, tpoEmail: event.target.value }))} /></label>
+              <label><span className="muted-text">Manual password</span><Input type="password" value={collegeForm.tpoPassword} onChange={(event) => setCollegeForm((current) => ({ ...current, tpoPassword: event.target.value }))} /></label>
+              <label style={{ gridColumn: "1 / -1" }}><span className="muted-text">Branches (comma separated)</span><Input value={collegeForm.branchesText} onChange={(event) => setCollegeForm((current) => ({ ...current, branchesText: event.target.value }))} placeholder="CSE, CST, AIML, E&TC" /></label>
+            </div>
+            <div className="hero-actions"><Button onClick={() => runAction("create-college", async () => {
+              const branches = validateCollegeForm(collegeForm);
+              const created = await adminCreateCollege({
+                collegeName: collegeForm.collegeName.trim(),
+                tpoFullName: collegeForm.tpoFullName.trim(),
+                tpoEmail: collegeForm.tpoEmail.trim(),
+                tpoPassword: collegeForm.tpoPassword,
+                branches,
+              });
+              setSelectedTenantId(created.tenant.id);
+              setCollegeForm({ collegeName: "", tpoFullName: "", tpoEmail: "", tpoPassword: "", branchesText: "" });
+              setMessage(`Created ${created.tenant.name} and sent the first TPO credentials to ${created.tpo.email}.`, "success");
+            })} disabled={busyAction === "create-college"}>Create College</Button></div>
+          </section>
+
           <section className="admin-ops-section">
             <h2>Email Settings</h2>
             <div className="form-grid">

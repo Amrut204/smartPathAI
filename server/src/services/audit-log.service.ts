@@ -31,6 +31,7 @@ export type AuditEventType =
   | "drive_result_email_resent"
   | "admin_singleton_cleanup"
   | "admin_ops_student_created"
+  | "admin_ops_student_updated"
   | "admin_ops_student_deleted"
   | "admin_ops_tpo_created"
   | "admin_ops_tpo_updated"
