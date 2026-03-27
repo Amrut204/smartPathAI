@@ -373,7 +373,7 @@ router.get(
     const topicId = req.query.topicId as string | undefined;
     const limit = clampListLimit(req.query.limit, { defaultLimit: 24, maxLimit: 100 });
     const cursor = typeof req.query.cursor === "string" ? req.query.cursor : undefined;
-    const data = await StudentService.getResourcesPage(req.auth!.tenantId, {
+    const data = await StudentService.getResourcesPage(req.auth!.tenantId, req.auth!.userId, {
       topicId,
       limit,
       cursor,

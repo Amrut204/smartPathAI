@@ -112,14 +112,24 @@ export default function TpoReportsPage() {
     setSearchParams(next);
   };
 
+  const openEvidencePack = () => {
+    setSearchParams(new URLSearchParams({
+      group: "Compliance / Evidence",
+      reportType: "naac_5_2_progression",
+      preset: "academic_year",
+      academicYear: filters.academicYear ?? "2025-2026",
+    }));
+  };
+
   return (
     <section className="tpo-reports-shell">
       <header className="tpo-reports-header">
         <div>
           <h1>Reports</h1>
-          <p>Choose one report, adjust the time period if needed, then export it.</p>
+          <p>Choose one report, adjust the time period if needed, then export it. Use the evidence pack when you need a clean compliance-ready proof bundle for NAAC or placement review.</p>
         </div>
         <div className="hero-actions">
+          <Button variant="secondary" onClick={openEvidencePack}>Open NAAC Evidence Pack</Button>
           {previewData ? (
             <>
               <Button onClick={() => downloadReport(activeReport, filters, "xlsx")}>Export Excel</Button>

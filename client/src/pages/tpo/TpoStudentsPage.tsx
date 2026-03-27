@@ -220,6 +220,9 @@ export default function TpoStudentsPage() {
             <p className="muted-text">Search the full list, identify blocked students fast, and focus interventions using real backend filters.</p>
           </div>
           <div className="hero-actions">
+            <Link to="/tpo/students/upload">
+              <Button>Bulk Upload Students</Button>
+            </Link>
             <Button variant="secondary" onClick={resetFilters}>Reset Filters</Button>
           </div>
         </div>

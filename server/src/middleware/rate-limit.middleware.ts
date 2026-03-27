@@ -81,3 +81,44 @@ export const exportRateLimiter = rateLimit({
     "Too many exports recently. Please wait a few minutes and try again.",
   ),
 });
+
+function buildTenantUserRateLimiter(options: {
+  windowMs: number;
+  limit: number;
+  code: string;
+  message: string;
+}) {
+  return rateLimit({
+    windowMs: options.windowMs,
+    limit: options.limit,
+    standardHeaders: "draft-7",
+    legacyHeaders: false,
+    keyGenerator: (req) => {
+      const auth = (req as unknown as { auth?: { userId?: string; tenantId?: string } }).auth;
+      const ip = req.ip ?? req.socket?.remoteAddress ?? "unknown";
+      return `${ipKeyGenerator(ip)}:${String(auth?.tenantId ?? "no-tenant")}:${String(auth?.userId ?? "anon")}`;
+    },
+    handler: rateLimitJsonHandler(options.code, options.message),
+  });
+}
+
+export const communicationSendRateLimiter = buildTenantUserRateLimiter({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  code: "COMMUNICATION_SEND_RATE_LIMITED",
+  message: "Too many communication sends recently. Please wait a few minutes and try again.",
+});
+
+export const resultReleaseRateLimiter = buildTenantUserRateLimiter({
+  windowMs: 5 * 60 * 1000,
+  limit: 5,
+  code: "RESULT_RELEASE_RATE_LIMITED",
+  message: "Too many result release attempts recently. Please wait a few minutes and try again.",
+});
+
+export const mockTestStartRateLimiter = buildTenantUserRateLimiter({
+  windowMs: 10 * 60 * 1000,
+  limit: 30,
+  code: "MOCK_TEST_START_RATE_LIMITED",
+  message: "Too many mock test starts recently. Please wait a few minutes and try again.",
+});

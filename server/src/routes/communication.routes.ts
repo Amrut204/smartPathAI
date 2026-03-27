@@ -3,6 +3,7 @@ import { Router } from "express";
 import { asyncHandler } from "../middleware/error-handler.js";
 import { requireAuth } from "../middleware/auth.middleware.js";
 import { authorizeRole } from "../middleware/rbac.middleware.js";
+import { communicationSendRateLimiter } from "../middleware/rate-limit.middleware.js";
 import { CommunicationService } from "../services/communication.service.js";
 import {
   announcementHistoryQuerySchema,
@@ -119,6 +120,7 @@ router.post(
 
 router.post(
   "/send",
+  communicationSendRateLimiter,
   asyncHandler(async (req, res) => {
     const body = sendCommunicationSchema.parse(req.body);
     const data = await CommunicationService.sendBulk(

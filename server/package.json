@@ -42,6 +42,8 @@
         "import:scraped-questions:dry": "node --env-file=.env scripts/import-scraped-question-bank.mjs --dry-run",
         "import:pdf-summary-index": "node --env-file=.env scripts/import-pdf-summary-index.mjs",
         "import:pdf-summary-index:dry": "node --env-file=.env scripts/import-pdf-summary-index.mjs --dry-run",
+        "metadata:backfill:recommendations": "node --env-file=.env scripts/backfill-recommendation-metadata.mjs",
+        "metadata:backfill:recommendations:dry": "node --env-file=.env scripts/backfill-recommendation-metadata.mjs --dry-run",
         "import:unmatched-pdf-summaries": "node --env-file=.env scripts/import-unmatched-pdf-summaries.mjs",
         "import:unmatched-pdf-summaries:dry": "node --env-file=.env scripts/import-unmatched-pdf-summaries.mjs --dry-run",
         "prepare:ocr-pdfs": "node --env-file=.env scripts/prepare-ocr-needed-pdfs.mjs",

@@ -4,7 +4,7 @@ import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { hash as bcryptHash } from "bcryptjs";
 
-import { getBranchPrepTrack } from "../config/branch-prep.config.js";
+import { getBranchPrepTrack, matchesBranchPrepTrackTag } from "../config/branch-prep.config.js";
 import { AppError } from "../middleware/error-handler.js";
 import { buildStudentProfileSummary, normalizeStudentProfileData } from "../utils/student-profile.js";
 import { buildStudentDeclarationStatus } from "../utils/student-declaration.js";
@@ -80,6 +80,30 @@ let studyDocumentManifestMtimeMs = 0;
 let hiddenOnePagePdfMtimeMs = 0;
 let onePagePdfTriageManifestMtimeMs = 0;
 const resourceListCacheTtlMs = 5 * 60 * 1000;
+
+function normalizeBranchCacheKey(branch: string | null | undefined) {
+  return String(branch ?? "").trim().toUpperCase() || "ALL";
+}
+
+function filterResourcesForStudentBranch<T extends {
+  studyDocument?: {
+    branchRelevance?: string[];
+  };
+}>(items: T[], branch: string | null | undefined) {
+  const normalizedBranch = String(branch ?? "").trim();
+  if (!normalizedBranch) {
+    return items;
+  }
+
+  return items.filter((item) => {
+    const branchRelevance = item.studyDocument?.branchRelevance;
+    if (!Array.isArray(branchRelevance) || branchRelevance.length === 0) {
+      return true;
+    }
+
+    return branchRelevance.some((value) => matchesBranchPrepTrackTag(String(value), normalizedBranch));
+  });
+}
 
 if (existsSync(studyDocumentManifestPath)) {
   try {
@@ -1989,8 +2013,8 @@ export const StudentRepository = {
     };
   },
 
-  async getResources(tenantId: string, topicId?: string) {
-    const cacheKey = `${tenantId}::${topicId ?? "*"}`;
+  async getResources(tenantId: string, topicId?: string, branch?: string) {
+    const cacheKey = `${tenantId}::${topicId ?? "*"}::${normalizeBranchCacheKey(branch)}`;
     const cached = resourceListCache.get(cacheKey);
     if (cached && cached.expiresAt > Date.now()) {
       return cached.items;
@@ -2012,7 +2036,10 @@ export const StudentRepository = {
     ).sort({ created_at: -1 }).toArray();
 
     const legacy = data.map((resource) => toResourceDto(resource, { includeSearchMetadata: false }));
-    const items = dedupeResourceItems([...shared, ...legacy]);
+    const items = filterResourcesForStudentBranch(
+      dedupeResourceItems([...shared, ...legacy]),
+      branch,
+    );
     resourceListCache.set(cacheKey, {
       expiresAt: Date.now() + resourceListCacheTtlMs,
       items,
@@ -2027,10 +2054,11 @@ export const StudentRepository = {
       limit?: number;
       cursor?: string;
       filter?: ResourceListFilter;
+      branch?: string;
     },
   ) {
     const limit = Math.max(1, Math.min(Number(params?.limit ?? 24), 100));
-    const allItems = await this.getResources(tenantId, params?.topicId);
+    const allItems = await this.getResources(tenantId, params?.topicId, params?.branch);
     const filteredItems = params?.filter && params.filter !== "all"
       ? allItems.filter((item) => matchesResourceListFilter(item, params.filter!))
       : allItems;
@@ -2185,7 +2213,7 @@ export const StudentRepository = {
     }));
   },
 
-  async searchResourcesByTopicName(tenantId: string, topicQuery: string) {
+  async searchResourcesByTopicName(tenantId: string, topicQuery: string, branch?: string) {
     const db = await getMongoDb();
     const query = topicQuery.trim();
     if (!query) {
@@ -2263,7 +2291,10 @@ export const StudentRepository = {
         id: String(topic.id),
         name: String(topic.name),
       })),
-      resources: dedupeResourceItems([...sharedResources, ...legacyResources]),
+      resources: filterResourcesForStudentBranch(
+        dedupeResourceItems([...sharedResources, ...legacyResources]),
+        branch,
+      ),
     };
   },
 

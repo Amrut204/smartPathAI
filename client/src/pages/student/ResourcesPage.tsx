@@ -7,13 +7,15 @@ import { isClientFeatureEnabled } from "../../config/features";
 import {
   type ResourceItem,
   type ResourceListFilter,
+  type ResourceRecommendationsPayload,
   type ResourceStorageBudgetStatus,
+  useResourceRecommendations,
   useResourceStorageBudget,
   useResources,
   useTopicSearch,
 } from "../../hooks/use-resources";
 import { useStudentDashboard } from "../../hooks/use-student-dashboard";
-import { Button, Card, Input, Skeleton, Tabs } from "../../components/ui";
+import { Button, Card, Input, Skeleton } from "../../components/ui";
 import { finishPerfMark, startPerfMark } from "../../utils/perf";
 
 const RESOURCE_FILTERS: Array<{ id: ResourceListFilter; label: string }> = [
@@ -65,7 +67,7 @@ function matchesFilter(resource: ResourceItem, filter: ResourceListFilter) {
   return true;
 }
 
-function ResourceCard({ resource }: { resource: ResourceItem }) {
+function ResourceCard({ resource, emphasizeReasons = false }: { resource: ResourceItem; emphasizeReasons?: boolean }) {
   return (
     <Card className="resource-visual-card">
       <div className="resource-card-media">
@@ -88,6 +90,23 @@ function ResourceCard({ resource }: { resource: ResourceItem }) {
             {(resource.keyTopics ?? []).slice(0, 3).map((topic) => (
               <span key={`${resource.id}_${topic}`} className="resource-topic-chip">{topic}</span>
             ))}
+          </div>
+        ) : null}
+        {emphasizeReasons && (resource.recommendationReasons?.length ?? 0) > 0 ? (
+          <div className="resource-topic-chips">
+            {(resource.recommendationReasons ?? []).map((reason) => (
+              <span key={`${resource.id}_${reason}`} className="resource-topic-chip resource-topic-chip-reason">{reason}</span>
+            ))}
+          </div>
+        ) : null}
+        {resource.lastViewedAt || resource.progressPct !== null && resource.progressPct !== undefined ? (
+          <div className="resource-topic-chips">
+            {resource.progressPct !== null && resource.progressPct !== undefined ? (
+              <span className="resource-topic-chip">Progress {Math.round(resource.progressPct)}%</span>
+            ) : null}
+            {resource.lastViewedAt ? (
+              <span className="resource-topic-chip">Last opened {new Date(resource.lastViewedAt).toLocaleDateString()}</span>
+            ) : null}
           </div>
         ) : null}
         <p className="resource-card-meta">
@@ -143,7 +162,6 @@ export default function ResourcesPage() {
   const [aiLoading, setAiLoading] = useState(false);
   const [aiResponse, setAiResponse] = useState("");
   const [aiError, setAiError] = useState<string | null>(null);
-  const [activeSection, setActiveSection] = useState("recommended");
 
   const {
     data: resources,
@@ -153,6 +171,7 @@ export default function ResourcesPage() {
     hasMore,
     loadMore,
   } = useResources(undefined, { filter: activeFilter });
+  const { data: recommendations, isLoading: recommendationsLoading } = useResourceRecommendations(activeFilter);
   const { data: storageBudget } = useResourceStorageBudget();
   const { data: dashboard } = useStudentDashboard();
   const { data: topicSearchData, error: topicSearchError, isLoading: topicSearchLoading } = useTopicSearch(topicFromUrl || null);
@@ -172,49 +191,53 @@ export default function ResourcesPage() {
     }
   }, [isLoading, resources, topicSearchLoading]);
 
-  const resourceMap = useMemo(
-    () => new Map((resources ?? []).map((resource) => [resource.id, resource])),
-    [resources],
-  );
-
-  const continueReadingResources = useMemo(
-    () => (dashboard?.resourceUsage.recentResources ?? [])
-      .map((item) => resourceMap.get(item.resourceId))
-      .filter((item): item is ResourceItem => Boolean(item))
-      .slice(0, 6),
-    [dashboard?.resourceUsage.recentResources, resourceMap],
-  );
-
   const visibleResources = useMemo(() => {
     const base = topicFromUrl ? (topicSearchData?.resources ?? []) : (resources ?? []);
     return base.filter((resource) => matchesFilter(resource, activeFilter));
   }, [activeFilter, resources, topicFromUrl, topicSearchData?.resources]);
 
-  const recommendedResources = useMemo(() => {
-    if (branchTrackFocusAreas.length === 0) return [] as ResourceItem[];
-    return visibleResources
-      .filter((resource) => {
-        const haystack = `${resource.title} ${resource.description} ${resource.summaryShort ?? ""}`.toLowerCase();
-        return branchTrackFocusAreas.some((item) => haystack.includes(item.topicName.toLowerCase()));
-      })
-      .slice(0, 8);
-  }, [branchTrackFocusAreas, visibleResources]);
+  const recommendationSections = useMemo(() => {
+    const payload = recommendations as ResourceRecommendationsPayload | undefined;
+    if (!payload || topicFromUrl) return [] as Array<{
+      id: string;
+      label: string;
+      description: string;
+      items: ResourceItem[];
+    }>;
 
-  const expandedSections = useMemo(() => {
-    const sections = [
-      { id: "recommended", label: "Recommended", items: recommendedResources },
-      { id: "continue", label: "Continue", items: continueReadingResources },
-      { id: "all", label: "All Resources", items: visibleResources },
-    ].filter((section) => section.items.length > 0 || section.id === "all");
-    return sections;
-  }, [continueReadingResources, recommendedResources, visibleResources]);
-
-  const resolvedSection = expandedSections.some((section) => section.id === activeSection)
-    ? activeSection
-    : (expandedSections[0]?.id ?? "all");
-
-  const currentSection = expandedSections.find((section) => section.id === resolvedSection) ?? null;
-  const activeItems = showExpandedResources && !topicFromUrl ? (currentSection?.items ?? []) : visibleResources;
+    return [
+      {
+        id: "best",
+        label: "Best For You Now",
+        description: "The strongest next-study picks based on your branch, weak areas, and preparation goals.",
+        items: payload.sections.bestForYouNow,
+      },
+      {
+        id: "weak",
+        label: "Fix Your Weak Areas",
+        description: "Priority resources for the topics where you need the biggest lift.",
+        items: payload.sections.fixYourWeakAreas,
+      },
+      {
+        id: "drive",
+        label: "Prepare For Upcoming Drives",
+        description: "Resources boosted for the companies and roles in your pipeline.",
+        items: payload.sections.prepareForUpcomingDrives,
+      },
+      {
+        id: "branch",
+        label: "Based On Your Branch",
+        description: `Core picks aligned to ${payload.context.branchTrackLabel}.`,
+        items: payload.sections.basedOnYourBranch,
+      },
+      {
+        id: "continue",
+        label: "Continue Learning",
+        description: "Resume the resources you already opened so momentum is not wasted.",
+        items: payload.sections.continueLearning,
+      },
+    ].filter((section) => section.items.length > 0);
+  }, [recommendations, topicFromUrl]);
 
   const onSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -297,7 +320,7 @@ export default function ResourcesPage() {
         </div>
 
         <div className="resources-toolbar-meta">
-          <span>{activeItems.length} resource(s) loaded in this view</span>
+          <span>{visibleResources.length} resource(s) loaded in this view</span>
           {topicFromUrl ? (
             <span>Showing topic results for "{topicFromUrl}"</span>
           ) : null}
@@ -309,36 +332,43 @@ export default function ResourcesPage() {
           {showExpandedResources && dashboard ? (
             <span>Recommended for {branchTrackLabel}: {branchTrackFocusAreas.map((item) => item.topicName).join(", ")}</span>
           ) : null}
+          {showExpandedResources && !topicFromUrl && (recommendations?.context.targetRoles?.length ?? 0) > 0 ? (
+            <span>Target roles: {recommendations?.context.targetRoles.join(", ")}</span>
+          ) : null}
         </div>
       </section>
 
-      {showExpandedResources && !topicFromUrl && expandedSections.length > 0 ? (
-        <div className="student-workspace-switcher">
-          <Tabs
-            tabs={expandedSections.map((section) => ({ id: section.id, label: section.label }))}
-            activeId={resolvedSection}
-            onChange={(id) => setActiveSection(id)}
-          />
-        </div>
-      ) : null}
-
-      {!showExpandedResources && continueReadingResources.length > 0 ? (
+      {showExpandedResources && !topicFromUrl && recommendationsLoading ? (
         <section className="resources-section">
           <div className="resources-section-header">
             <div>
-              <h2>Continue Reading</h2>
-              <p>Pick up the resources you opened recently.</p>
+              <h2>Recommended For You</h2>
+              <p>Loading the strongest study picks for your current preparation state.</p>
             </div>
-            <span className="resources-section-count">{continueReadingResources.length}</span>
           </div>
-
           <div className="resources-card-grid">
-            {continueReadingResources.map((resource) => (
-              <ResourceCard key={`continue_${resource.id}`} resource={resource} />
-            ))}
+            {Array.from({ length: 4 }).map((_, index) => <ResourceCardSkeleton key={`resource-rec-skeleton-${index}`} />)}
           </div>
         </section>
       ) : null}
+
+      {showExpandedResources && !topicFromUrl ? recommendationSections.map((section) => (
+        <section key={section.id} className="resources-section">
+          <div className="resources-section-header">
+            <div>
+              <h2>{section.label}</h2>
+              <p>{section.description}</p>
+            </div>
+            <span className="resources-section-count">{section.items.length}</span>
+          </div>
+
+          <div className="resources-card-grid">
+            {section.items.map((resource) => (
+              <ResourceCard key={`${section.id}_${resource.id}`} resource={resource} emphasizeReasons />
+            ))}
+          </div>
+        </section>
+      )) : null}
 
       {showExpandedResources && topicFromUrl && showAiStudyAssist ? (
         <section className="student-workspace-panel">
@@ -359,30 +389,16 @@ export default function ResourcesPage() {
       <section className="resources-section">
         <div className="resources-section-header">
           <div>
-            <h2>
-              {topicFromUrl
-                ? "Search Results"
-                : showExpandedResources
-                  ? (currentSection?.label ?? "All Resources")
-                  : "All Resources"}
-            </h2>
-            <p>
-              {topicFromUrl
-                ? "Matched materials from your topic search."
-                : showExpandedResources && resolvedSection === "recommended"
-                  ? "Resources aligned to your current branch focus."
-                  : showExpandedResources && resolvedSection === "continue"
-                    ? "Pick up the resources you opened recently."
-                    : "Browse the current filtered library."}
-            </p>
+            <h2>{topicFromUrl ? "Search Results" : "Explore More"}</h2>
+            <p>{topicFromUrl ? "Matched materials from your topic search." : "Browse the filtered library beyond the top recommendations."}</p>
           </div>
-          <span className="resources-section-count">{activeItems.length}</span>
+          <span className="resources-section-count">{visibleResources.length}</span>
         </div>
 
         {topicSearchLoading ? <Card className="app-state-card app-state-card-compact"><p className="muted-text">Searching resources...</p></Card> : null}
         {topicSearchError ? <p className="error-text">Unable to fetch topic results.</p> : null}
 
-        {!topicSearchLoading && !isLoading && activeItems.length === 0 ? (
+        {!topicSearchLoading && !isLoading && visibleResources.length === 0 ? (
           <Card className="resources-empty-card">
             {topicFromUrl ? "No resources match this topic and filter." : "No resources match the current filter."}
           </Card>
@@ -391,7 +407,7 @@ export default function ResourcesPage() {
         <div className="resources-card-grid">
           {isLoading
             ? Array.from({ length: 8 }).map((_, index) => <ResourceCardSkeleton key={`resource-skeleton-${index}`} />)
-            : activeItems.map((resource) => <ResourceCard key={resource.id} resource={resource} />)}
+            : visibleResources.map((resource) => <ResourceCard key={resource.id} resource={resource} />)}
         </div>
 
         {!topicFromUrl && !isLoading && hasMore ? (

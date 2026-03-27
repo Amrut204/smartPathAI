@@ -5,7 +5,7 @@ import { requireAuth } from "../middleware/auth.middleware.js";
 import { authorizeRole } from "../middleware/rbac.middleware.js";
 import { DriveService } from "../services/drive.service.js";
 import { DriveExportService } from "../services/drive-export.service.js";
-import { exportRateLimiter } from "../middleware/rate-limit.middleware.js";
+import { exportRateLimiter, resultReleaseRateLimiter } from "../middleware/rate-limit.middleware.js";
 import {
   driveListQuerySchema,
   createDriveSchema,
@@ -176,6 +176,7 @@ router.post(
 
 router.post(
   "/:driveId/results/release",
+  resultReleaseRateLimiter,
   asyncHandler(async (req, res) => {
     const body = driveResultReleaseSchema.parse(req.body);
     const data = await DriveService.releaseDriveResults({

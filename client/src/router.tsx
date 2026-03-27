@@ -28,6 +28,7 @@ const ProfilePage = lazy(() => import("./pages/student/ProfilePage"));
 const AdminHubPage = lazy(() => import("./pages/admin/AdminHubPage"));
 const TpoDashboardPage = lazy(() => import("./pages/tpo/TpoDashboardPage"));
 const TpoStudentsPage = lazy(() => import("./pages/tpo/TpoStudentsPage"));
+const TpoStudentUploadPage = lazy(() => import("./pages/tpo/TpoStudentUploadPage"));
 const TpoStudentDetailPage = lazy(() => import("./pages/tpo/TpoStudentDetailPage"));
 const TpoDrivesPage = lazy(() => import("./pages/tpo/TpoDrivesPage"));
 const TpoDriveCreatePage = lazy(() => import("./pages/tpo/TpoDriveCreatePage"));
@@ -327,7 +328,7 @@ const router = createBrowserRouter([
         children: [
           { path: "/tpo/dashboard", element: renderRoute(<TpoDashboardPage />) },
           { path: "/tpo/students", element: renderRoute(<TpoStudentsPage />) },
-          { path: "/tpo/students/upload", element: <Navigate to="/tpo/students" replace /> },
+          { path: "/tpo/students/upload", element: renderRoute(<TpoStudentUploadPage />) },
           { path: "/tpo/students/:studentId", element: renderRoute(<TpoStudentDetailPage />) },
           { path: "/tpo/drives", element: renderRoute(<TpoDrivesPage />) },
           { path: "/tpo/drives/create", element: renderRoute(<TpoDriveCreatePage />) },

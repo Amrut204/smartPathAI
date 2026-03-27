@@ -4,6 +4,7 @@ import { asyncHandler } from "../middleware/error-handler.js";
 import { requireAuth } from "../middleware/auth.middleware.js";
 import { authorizeRole } from "../middleware/rbac.middleware.js";
 import { requireCompletedStudentProfile } from "../middleware/student-profile.middleware.js";
+import { mockTestStartRateLimiter } from "../middleware/rate-limit.middleware.js";
 import { MockTestService } from "../services/mock-test.service.js";
 import {
   listMockTestsQuerySchema,
@@ -149,6 +150,7 @@ router.post(
 router.post(
   "/:testId/start",
   authorizeRole("student"),
+  mockTestStartRateLimiter,
   asyncHandler(requireCompletedStudentProfile),
   asyncHandler(async (req, res) => {
     const data = await MockTestService.startAttempt(

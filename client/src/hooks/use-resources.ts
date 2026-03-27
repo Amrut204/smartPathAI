@@ -24,6 +24,11 @@ export interface ResourceItem {
   summaryStatus?: string;
   keywords?: string[];
   keyTopics?: string[];
+  recommendationScore?: number;
+  recommendationReasons?: string[];
+  recommendationBucket?: string;
+  lastViewedAt?: string | null;
+  progressPct?: number | null;
   onePageTriageBucket?: "keep" | "review" | "hide";
   onePageSuggestedLabel?: string;
   studyDocument?: {
@@ -203,6 +208,38 @@ export function useTopicSearch(topicQuery: string | null) {
   const url = value ? `/api/v1/resources/search?topic=${encodeURIComponent(value)}` : null;
 
   return useSWR<TopicSearchResult>(url, fetcher, {
+    revalidateOnFocus: false,
+  });
+}
+
+export interface ResourceRecommendationsPayload {
+  context: {
+    branch: string;
+    branchTrackLabel: string;
+    targetRoles: string[];
+    upcomingDrives: Array<{
+      company: string;
+      role: string;
+      driveDate: string;
+    }>;
+  };
+  sections: {
+    bestForYouNow: ResourceItem[];
+    fixYourWeakAreas: ResourceItem[];
+    prepareForUpcomingDrives: ResourceItem[];
+    basedOnYourBranch: ResourceItem[];
+    continueLearning: ResourceItem[];
+    exploreMore: ResourceItem[];
+  };
+}
+
+export function useResourceRecommendations(filter: ResourceListFilter = "all") {
+  const params = new URLSearchParams();
+  if (filter !== "all") {
+    params.set("filter", filter);
+  }
+  params.set("limitPerSection", "8");
+  return useSWR<ResourceRecommendationsPayload>(`/api/v1/resources/recommendations?${params.toString()}`, fetcher, {
     revalidateOnFocus: false,
   });
 }

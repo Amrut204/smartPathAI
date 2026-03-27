@@ -1399,6 +1399,12 @@ textarea {
   border: 1px solid #e2e8f0;
 }
 
+.resource-topic-chip-reason {
+  color: #0f3b52;
+  background: #e6f4fb;
+  border-color: #b7ddf0;
+}
+
 .resource-match-snippet {
   margin: 0;
   font-size: 0.82rem;

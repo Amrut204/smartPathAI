@@ -143,6 +143,86 @@ type YouTubeSuggestion = {
   channelName: string;
 };
 
+type StudentResourceItem = Awaited<ReturnType<typeof StudentRepository.getResources>>[number];
+type ResourceListFilter = "all" | "pdf" | "notes" | "guide" | "notebook" | "external";
+type RecommendedResourceItem = StudentResourceItem & {
+  recommendationScore: number;
+  recommendationReasons: string[];
+  recommendationBucket?: string;
+  lastViewedAt?: string | null;
+  progressPct?: number | null;
+};
+
+function normalizeRecommendationText(value: unknown) {
+  return String(value ?? "").toLowerCase().replace(/\s+/g, " ").trim();
+}
+
+function buildRecommendationHaystack(parts: Array<unknown>) {
+  return normalizeRecommendationText(parts.filter(Boolean).join(" "));
+}
+
+function uniqueById<T extends { id: string }>(items: T[]) {
+  const seen = new Set<string>();
+  return items.filter((item) => {
+    if (seen.has(item.id)) return false;
+    seen.add(item.id);
+    return true;
+  });
+}
+
+function matchesResourceFilterForRecommendation(resource: StudentResourceItem, filter: ResourceListFilter) {
+  const type = normalizeRecommendationText(resource.resourceType);
+  if (filter === "all") return true;
+  if (filter === "pdf") return type === "pdf";
+  if (filter === "notes") return type === "text" || type === "notes" || type === "document";
+  if (filter === "guide") return type === "markdown";
+  if (filter === "notebook") return type === "notebook";
+  if (filter === "external") return type === "external_link" || resource.sourceMode === "external";
+  return true;
+}
+
+function estimateResourceQuality(resource: StudentResourceItem) {
+  const studyDocument = resource.studyDocument;
+  const resourceSearchMetadata = resource as StudentResourceItem & {
+    keyTopics?: string[];
+    summaryShort?: string;
+  };
+  let score = 0;
+
+  if (studyDocument?.whatThisCovers) score += 4;
+  if ((studyDocument?.keyConcepts?.length ?? 0) > 0) score += 4;
+  if ((studyDocument?.interviewFocus?.length ?? 0) > 0) score += 3;
+  if ((studyDocument?.stepByStepUnderstanding?.length ?? 0) > 0) score += 3;
+  if ((studyDocument?.practicePrompts?.length ?? 0) > 0) score += 2;
+  if ((studyDocument?.importantDefinitions?.length ?? 0) > 0) score += 2;
+  if ((resourceSearchMetadata.keyTopics?.length ?? 0) > 0) score += 2;
+  if (resourceSearchMetadata.summaryShort) score += 2;
+  if (resource.thumbnailUrl) score += 1;
+  if (resource.resourceType === "pdf") score += 1;
+  if (resource.onePageTriageBucket === "review") score -= 2;
+  if (resource.onePageTriageBucket === "hide") score -= 6;
+
+  return score;
+}
+
+function buildDifficultyFit(readinessScore: number, difficulty: string): "stretch" | "fit" | "easy" {
+  const normalizedDifficulty = normalizeRecommendationText(difficulty);
+  if (readinessScore < 40) {
+    if (normalizedDifficulty === "easy") return "fit";
+    if (normalizedDifficulty === "medium") return "stretch";
+    return "stretch";
+  }
+  if (readinessScore < 70) {
+    if (normalizedDifficulty === "medium") return "fit";
+    if (normalizedDifficulty === "easy") return "easy";
+    return "stretch";
+  }
+
+  if (normalizedDifficulty === "hard") return "fit";
+  if (normalizedDifficulty === "medium") return "fit";
+  return "easy";
+}
+
 const YOUTUBE_CACHE_TTL_MS = 15 * 60 * 1000;
 const youtubeSuggestionCache = new Map<string, { expiresAt: number; items: YouTubeSuggestion[] }>();
 const PDF_TEXT_CACHE_TTL_MS = 30 * 60 * 1000;
@@ -571,6 +651,175 @@ async function fetchYouTubeSuggestions(query: string): Promise<YouTubeSuggestion
     youtubeSuggestionCache.set(key, { expiresAt: Date.now() + YOUTUBE_CACHE_TTL_MS, items: fallback });
     return fallback;
   }
+}
+
+function scoreRecommendedResource(
+  resource: StudentResourceItem,
+  context: {
+    branch: string;
+    branchTrackLabel: string;
+    branchFocusAreas: Array<{ topicId: string | null; topicName: string; reason: string }>;
+    weakAreas: Array<{ topicId: string; topicName: string; masteryLevel: number }>;
+    upcomingDrives: Array<{ company: string; role: string; driveDate: string; status: string }>;
+    targetRoles: string[];
+    recentResources: Array<{ resourceId: string; title: string; viewedAt: string; resourceType: string; progressPct: number | null }>;
+  },
+  popularityMap: Map<string, number>,
+) {
+  const resourceSearchMetadata = resource as StudentResourceItem & {
+    summaryShort?: string;
+  };
+  const haystack = buildRecommendationHaystack([
+    resource.title,
+    resource.description,
+    resourceSearchMetadata.summaryShort,
+    resource.studyDocument?.whatThisCovers,
+    resource.studyDocument?.topic,
+    resource.studyDocument?.subtopic,
+    ...(resource.studyDocument?.keyConcepts ?? []),
+    ...(resource.studyDocument?.interviewFocus ?? []),
+    ...(resource.studyDocument?.recommendedFor ?? []),
+    ...(resource.studyDocument?.careerTracks ?? []),
+    ...(resource.studyDocument?.branchRelevance ?? []),
+  ]);
+  const reasons: string[] = [];
+  let score = 0;
+  let weakTopicMatch = false;
+  let branchMatch = false;
+  let upcomingDriveMatch = false;
+  let continueLearningMatch = false;
+
+  const explicitBranchMatch = (resource.studyDocument?.branchRelevance ?? [])
+    .some((value) => normalizeRecommendationText(value).includes(normalizeRecommendationText(context.branchTrackLabel)));
+  if (explicitBranchMatch) {
+    score += 16;
+    branchMatch = true;
+    reasons.push(`Matches your ${context.branchTrackLabel} branch track.`);
+  }
+
+  for (const focusArea of context.branchFocusAreas) {
+    const topicName = normalizeRecommendationText(focusArea.topicName);
+    if (!topicName) continue;
+    if (resource.topicId && focusArea.topicId && resource.topicId === focusArea.topicId) {
+      score += 14;
+      branchMatch = true;
+      reasons.push(`Supports ${focusArea.topicName}, which is important for your branch.`);
+      break;
+    }
+    if (haystack.includes(topicName)) {
+      score += 12;
+      branchMatch = true;
+      reasons.push(`Aligns with your branch focus area: ${focusArea.topicName}.`);
+      break;
+    }
+  }
+
+  for (const weakArea of context.weakAreas) {
+    const weakTopicName = normalizeRecommendationText(weakArea.topicName);
+    if (resource.topicId && resource.topicId === weakArea.topicId) {
+      score += 26;
+      weakTopicMatch = true;
+      reasons.push(`Targets a weak topic for you: ${weakArea.topicName}.`);
+      break;
+    }
+    if (weakTopicName && haystack.includes(weakTopicName)) {
+      score += 22;
+      weakTopicMatch = true;
+      reasons.push(`Helps strengthen ${weakArea.topicName}, where you need more practice.`);
+      break;
+    }
+  }
+
+  for (const drive of context.upcomingDrives) {
+    const company = normalizeRecommendationText(drive.company);
+    const role = normalizeRecommendationText(drive.role);
+    if ((company && haystack.includes(company)) || (role && haystack.includes(role))) {
+      score += 24;
+      upcomingDriveMatch = true;
+      reasons.push(`Useful for your upcoming ${drive.company} drive.`);
+      break;
+    }
+  }
+
+  for (const targetRole of context.targetRoles) {
+    const normalizedRole = normalizeRecommendationText(targetRole);
+    if (normalizedRole && haystack.includes(normalizedRole)) {
+      score += 11;
+      reasons.push(`Matches your target role: ${targetRole}.`);
+      break;
+    }
+  }
+
+  const recentItem = context.recentResources.find((item) => item.resourceId === resource.id);
+  if (recentItem) {
+    if ((recentItem.progressPct ?? 0) > 0 && (recentItem.progressPct ?? 0) < 100) {
+      score += 18;
+      continueLearningMatch = true;
+      reasons.push("Continue from where you left off.");
+    } else {
+      score -= 8;
+      reasons.push("You opened this recently, so it is deprioritized for fresh practice.");
+    }
+  }
+
+  const qualityScore = estimateResourceQuality(resource);
+  score += qualityScore;
+  if (qualityScore >= 8) {
+    reasons.push("High-quality study guide with strong coverage.");
+  }
+
+  const popularity = popularityMap.get(resource.id) ?? 0;
+  if (popularity >= 12) {
+    score += 6;
+    reasons.push("Frequently opened by students in recent preparation.");
+  } else if (popularity >= 4) {
+    score += 3;
+  }
+
+  if (resource.sourceMode === "external") {
+    score -= 2;
+  }
+
+  return {
+    ...resource,
+    recommendationScore: score,
+    recommendationReasons: uniqueById(
+      reasons.map((reason, index) => ({ id: `${resource.id}-${index}-${reason}`, value: reason })),
+    ).map((item) => item.value).slice(0, 3),
+    lastViewedAt: recentItem?.viewedAt ?? null,
+    progressPct: recentItem?.progressPct ?? null,
+    recommendationFlags: {
+      weakTopicMatch,
+      branchMatch,
+      upcomingDriveMatch,
+      continueLearningMatch,
+    },
+  };
+}
+
+function selectRecommendedResources(
+  items: Array<RecommendedResourceItem & {
+    recommendationFlags: {
+      weakTopicMatch: boolean;
+      branchMatch: boolean;
+      upcomingDriveMatch: boolean;
+      continueLearningMatch: boolean;
+    };
+  }>,
+  predicate: (item: RecommendedResourceItem & { recommendationFlags: { weakTopicMatch: boolean; branchMatch: boolean; upcomingDriveMatch: boolean; continueLearningMatch: boolean } }) => boolean,
+  limit: number,
+  bucket: string,
+) {
+  return uniqueById(
+    items
+      .filter(predicate)
+      .sort((left, right) => right.recommendationScore - left.recommendationScore)
+      .slice(0, limit)
+      .map((item) => ({
+        ...item,
+        recommendationBucket: bucket,
+      })),
+  );
 }
 
 export const StudentService = {
@@ -1455,12 +1704,14 @@ export const StudentService = {
     return StudentRepository.getVaultByCompany(tenantId, userId, companyId);
   },
 
-  async getResources(tenantId: string, topicId?: string) {
-    return StudentRepository.getResources(tenantId, topicId);
+  async getResources(tenantId: string, userId: string, topicId?: string) {
+    const student = await StudentRepository.getStudentByUserId(tenantId, userId);
+    return StudentRepository.getResources(tenantId, topicId, String(student.branch ?? ""));
   },
 
   async getResourcesPage(
     tenantId: string,
+    userId: string,
     params?: {
       topicId?: string;
       limit?: number;
@@ -1468,7 +1719,117 @@ export const StudentService = {
       filter?: "all" | "pdf" | "notes" | "guide" | "notebook" | "external";
     },
   ) {
-    return StudentRepository.getResourcesPage(tenantId, params);
+    const student = await StudentRepository.getStudentByUserId(tenantId, userId);
+    return StudentRepository.getResourcesPage(tenantId, {
+      ...params,
+      branch: String(student.branch ?? ""),
+    });
+  },
+
+  async getRecommendedResources(
+    tenantId: string,
+    userId: string,
+    params?: {
+      filter?: ResourceListFilter;
+      limitPerSection?: number;
+    },
+  ) {
+    const db = await getMongoDb();
+    const student = await StudentRepository.getStudentByUserId(tenantId, userId);
+    const dashboard = await StudentRepository.getDashboardData(tenantId, String(student.id));
+    const profileData = normalizeStudentProfileData(student.profile_data);
+    const allResources = await StudentRepository.getResources(tenantId, undefined, String(student.branch ?? ""));
+    const filter = params?.filter ?? "all";
+    const limitPerSection = Math.max(4, Math.min(params?.limitPerSection ?? 8, 12));
+    const resources = allResources.filter((resource) => matchesResourceFilterForRecommendation(resource, filter));
+    const resourceIds = resources.map((resource) => resource.id);
+    const recentThreshold = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
+
+    const popularityRows = resourceIds.length > 0
+      ? await db.collection("resource_view_events").aggregate([
+          {
+            $match: {
+              tenant_id: tenantId,
+              event_type: "open",
+              resource_id: { $in: resourceIds },
+              created_at: { $gte: recentThreshold },
+            },
+          },
+          {
+            $group: {
+              _id: "$resource_id",
+              count: { $sum: 1 },
+            },
+          },
+        ]).toArray()
+      : [];
+    const popularityMap = new Map(popularityRows.map((row) => [String(row._id), Number(row.count ?? 0)]));
+
+    const scoredResources = resources
+      .map((resource) => scoreRecommendedResource(resource, {
+        branch: String(student.branch ?? ""),
+        branchTrackLabel: dashboard.branchTrack.label,
+        branchFocusAreas: dashboard.branchTrack.focusAreas,
+        weakAreas: dashboard.weakAreas,
+        upcomingDrives: dashboard.upcomingDrives,
+        targetRoles: profileData.targetRoles,
+        recentResources: dashboard.resourceUsage.recentResources,
+      }, popularityMap))
+      .sort((left, right) => right.recommendationScore - left.recommendationScore);
+
+    const bestForYouNow = selectRecommendedResources(scoredResources, () => true, limitPerSection, "best_for_you_now");
+    const fixYourWeakAreas = selectRecommendedResources(scoredResources, (item) => item.recommendationFlags.weakTopicMatch, limitPerSection, "fix_weak_areas");
+    const prepareForUpcomingDrives = selectRecommendedResources(scoredResources, (item) => item.recommendationFlags.upcomingDriveMatch, limitPerSection, "prepare_upcoming_drives");
+    const basedOnYourBranch = selectRecommendedResources(scoredResources, (item) => item.recommendationFlags.branchMatch, limitPerSection, "based_on_branch");
+    const continueLearning = selectRecommendedResources(scoredResources, (item) => item.recommendationFlags.continueLearningMatch, limitPerSection, "continue_learning");
+    const usedIds = new Set([
+      ...bestForYouNow,
+      ...fixYourWeakAreas,
+      ...prepareForUpcomingDrives,
+      ...basedOnYourBranch,
+      ...continueLearning,
+    ].map((item) => item.id));
+    const exploreMore = uniqueById(
+      scoredResources
+        .filter((item) => !usedIds.has(item.id))
+        .slice(0, Math.max(limitPerSection, 12))
+        .map((item) => ({
+          ...item,
+          recommendationBucket: "explore_more",
+        })),
+    );
+
+    const stripFlags = (
+      items: Array<RecommendedResourceItem & {
+        recommendationFlags: {
+          weakTopicMatch: boolean;
+          branchMatch: boolean;
+          upcomingDriveMatch: boolean;
+          continueLearningMatch: boolean;
+        };
+      }>,
+    ) => items.map(({ recommendationFlags: _ignored, ...item }) => item);
+
+    return {
+      context: {
+        branch: String(student.branch ?? ""),
+        branchTrackLabel: dashboard.branchTrack.label,
+        targetRoles: profileData.targetRoles,
+        upcomingDrives: dashboard.upcomingDrives.slice(0, 3).map((drive) => ({
+          company: drive.company,
+          role: drive.role,
+          driveDate: drive.driveDate,
+        })),
+      },
+      sections: {
+        bestForYouNow: stripFlags(bestForYouNow),
+        fixYourWeakAreas: stripFlags(fixYourWeakAreas),
+        prepareForUpcomingDrives: stripFlags(prepareForUpcomingDrives),
+        basedOnYourBranch: stripFlags(basedOnYourBranch),
+        continueLearning: stripFlags(continueLearning),
+        exploreMore: stripFlags(exploreMore),
+      },
+    };
   },
 
   async getResourceById(tenantId: string, resourceId: string) {
@@ -1479,8 +1840,16 @@ export const StudentService = {
     return StudentRepository.listTopics(tenantId, query, limit);
   },
 
-  async searchStudyContent(tenantId: string, topicQuery: string) {
-    const result = await StudentRepository.searchResourcesByTopicName(tenantId, topicQuery);
+  async searchStudyContent(tenantId: string, userId: string, topicQuery: string) {
+    const db = await getMongoDb();
+    const student = await StudentRepository.getStudentByUserId(tenantId, userId);
+    const dashboard = await StudentRepository.getDashboardData(tenantId, String(student.id));
+    const profileData = normalizeStudentProfileData(student.profile_data);
+    const result = await StudentRepository.searchResourcesByTopicName(
+      tenantId,
+      topicQuery,
+      String(student.branch ?? ""),
+    );
     const youtubeVideos = await fetchYouTubeSuggestions(topicQuery);
     const rankedResources = await rankResourcesByPdfContent(
       result.resources as Array<Record<string, unknown>>,
@@ -1499,14 +1868,61 @@ export const StudentService = {
       (resource) => Number(resource.relevanceScore ?? 0) >= strongThreshold,
     );
 
+    const popularityRows = rankedResources.length > 0
+      ? await db.collection("resource_view_events").aggregate([
+          {
+            $match: {
+              tenant_id: tenantId,
+              event_type: "open",
+              resource_id: { $in: rankedResources.map((resource) => String(resource.id)) },
+              created_at: { $gte: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString() },
+            },
+          },
+          { $group: { _id: "$resource_id", count: { $sum: 1 } } },
+        ]).toArray()
+      : [];
+    const popularityMap = new Map(popularityRows.map((row) => [String(row._id), Number(row.count ?? 0)]));
+    const scoredRankedResources = rankedResources
+      .map((resource) => {
+        const recommendation = scoreRecommendedResource(resource as StudentResourceItem, {
+          branch: String(student.branch ?? ""),
+          branchTrackLabel: dashboard.branchTrack.label,
+          branchFocusAreas: dashboard.branchTrack.focusAreas,
+          weakAreas: dashboard.weakAreas,
+          upcomingDrives: dashboard.upcomingDrives,
+          targetRoles: profileData.targetRoles,
+          recentResources: dashboard.resourceUsage.recentResources,
+        }, popularityMap);
+        return {
+          ...(resource as StudentResourceItem & {
+            relevanceScore?: number;
+            matchSource?: "pdf_content" | "metadata" | "reference";
+            matchSnippet?: string | null;
+          }),
+          ...recommendation,
+          recommendationBucket: "search",
+        };
+      })
+      .sort((left, right) => {
+        const relevanceDelta = Number(right.relevanceScore ?? 0) - Number(left.relevanceScore ?? 0);
+        if (relevanceDelta !== 0) return relevanceDelta;
+        return right.recommendationScore - left.recommendationScore;
+      });
+
     const finalResources = (() => {
-      if (strongMatches.length > 0) {
-        return strongMatches.slice(0, 120);
+      const strongRecommended = scoredRankedResources.filter(
+        (resource) => Number(resource.relevanceScore ?? 0) >= strongThreshold,
+      );
+      const positiveRecommended = scoredRankedResources.filter(
+        (resource) => Number(resource.relevanceScore ?? 0) > 0,
+      );
+      if (strongRecommended.length > 0) {
+        return strongRecommended.slice(0, 120);
       }
-      if (positiveScore.length > 0) {
-        return positiveScore.slice(0, 80);
+      if (positiveRecommended.length > 0) {
+        return positiveRecommended.slice(0, 80);
       }
-      return candidateResources.slice(0, 80);
+      return scoredRankedResources.slice(0, 80);
     })();
 
     return {

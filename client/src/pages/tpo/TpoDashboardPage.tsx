@@ -86,7 +86,7 @@ export default function TpoDashboardPage() {
           <Link to="/tpo/reports">
             <Button variant="secondary">Open Reports</Button>
           </Link>
-          <Link to="/tpo/communication/compose">
+          <Link to="/tpo/communication">
             <Button variant="secondary">Send Reminder</Button>
           </Link>
         </div>

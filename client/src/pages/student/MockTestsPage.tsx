@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useMemo, useState } from "react";
 
 import { PilotFeedbackStrip } from "../../components/composites/PilotFeedbackStrip";
-import { Badge, Button, Card, Select, Spinner, Tabs } from "../../components/ui";
+import { Badge, Button, Card, Select, Spinner } from "../../components/ui";
 import { isClientFeatureEnabled } from "../../config/features";
 import {
   useCuratedMockTests,
@@ -19,14 +19,22 @@ function difficultyTone(difficulty: string) {
   return "success";
 }
 
+function difficultyFitLabel(value?: "stretch" | "fit" | "easy") {
+  if (value === "stretch") return "Stretch";
+  if (value === "easy") return "Warm-up";
+  return "Best fit";
+}
+
 function TestCard({
   test,
   topicName,
   companyName,
+  emphasizeReasons = false,
 }: {
   test: MockTestListItem;
   topicName?: string;
   companyName?: string;
+  emphasizeReasons?: boolean;
 }) {
   return (
     <Card className="mock-discovery-card">
@@ -35,8 +43,30 @@ function TestCard({
           <h3>{test.title}</h3>
           <p>{topicName ?? test.topicName ?? "Open topic"}{companyName ?? test.companyName ? ` - ${companyName ?? test.companyName}` : ""}</p>
         </div>
-        <Badge variant={difficultyTone(test.difficulty)}>{test.difficulty}</Badge>
+        <div style={{ display: "grid", gap: 8, justifyItems: "end" }}>
+          <Badge variant={difficultyTone(test.difficulty)}>{test.difficulty}</Badge>
+          {test.difficultyFit ? <Badge variant="warning">{difficultyFitLabel(test.difficultyFit)}</Badge> : null}
+        </div>
       </div>
+
+      {emphasizeReasons && (test.recommendationReasons?.length ?? 0) > 0 ? (
+        <div className="resource-topic-chips">
+          {(test.recommendationReasons ?? []).map((reason) => (
+            <span key={`${test.id}_${reason}`} className="resource-topic-chip resource-topic-chip-reason">{reason}</span>
+          ))}
+        </div>
+      ) : null}
+
+      {(test.lastScore !== null && test.lastScore !== undefined) || test.lastSubmittedAt ? (
+        <div className="resource-topic-chips">
+          {test.lastScore !== null && test.lastScore !== undefined ? (
+            <span className="resource-topic-chip">Last score {Math.round(test.lastScore)}%</span>
+          ) : null}
+          {test.lastSubmittedAt ? (
+            <span className="resource-topic-chip">Last attempt {new Date(test.lastSubmittedAt).toLocaleDateString()}</span>
+          ) : null}
+        </div>
+      ) : null}
 
       <div className="mock-discovery-stats">
         <div>
@@ -62,7 +92,6 @@ export default function MockTestsPage() {
   const [topicId, setTopicId] = useState("");
   const [companyId, setCompanyId] = useState("");
   const [difficulty, setDifficulty] = useState("");
-  const [activeSection, setActiveSection] = useState("recommended");
 
   const {
     items,
@@ -96,28 +125,61 @@ export default function MockTestsPage() {
     [companyOptions],
   );
 
-  const mockSections = useMemo(() => {
-    const sections = [
-      { id: "recommended", label: "Suggested", items: curatedCatalog?.sections.recommended ?? [] },
-      { id: "company", label: "Company Prep", items: curatedCatalog?.sections.companyPrep ?? [] },
-      { id: "verbal", label: "Verbal", items: curatedCatalog?.sections.verbal ?? [] },
-      { id: "all", label: "All Tests", items },
-    ].filter((section) => section.items.length > 0 || section.id === "all");
-    return sections;
-  }, [curatedCatalog?.sections.companyPrep, curatedCatalog?.sections.recommended, curatedCatalog?.sections.verbal, items]);
+  const recommendationSections = useMemo(() => {
+    if (!curatedCatalog) return [] as Array<{
+      id: string;
+      label: string;
+      description: string;
+      items: MockTestListItem[];
+    }>;
 
-  const resolvedActiveSection = mockSections.some((section) => section.id === activeSection)
-    ? activeSection
-    : (mockSections[0]?.id ?? "all");
-  const currentSection = mockSections.find((section) => section.id === resolvedActiveSection) ?? null;
+    return [
+      {
+        id: "take-next",
+        label: "Take Next",
+        description: "The best next tests based on your readiness, recent performance, and branch context.",
+        items: curatedCatalog.sections.takeNext,
+      },
+      {
+        id: "weak-topics",
+        label: "Improve Weak Topics",
+        description: "Focused tests to raise your weakest scoring areas first.",
+        items: curatedCatalog.sections.weakTopicRecovery,
+      },
+      {
+        id: "upcoming-drives",
+        label: "Upcoming Company Prep",
+        description: "Practice boosted for the companies and roles currently ahead of you.",
+        items: curatedCatalog.sections.upcomingDrivePrep,
+      },
+      {
+        id: "branch-core",
+        label: "Branch Core Practice",
+        description: `Branch-core tests aligned to ${curatedCatalog.branchTrackLabel ?? "your track"}.`,
+        items: curatedCatalog.sections.branchCorePractice,
+      },
+      {
+        id: "retake",
+        label: "Retake For Improvement",
+        description: "Tests worth revisiting because your earlier score still has room to improve.",
+        items: curatedCatalog.sections.retakeForImprovement,
+      },
+      {
+        id: "cross-branch",
+        label: "Cross-Branch / General Placement Prep",
+        description: "Aptitude, verbal, and general placement tests that stay valuable across roles.",
+        items: curatedCatalog.sections.crossBranchPrep,
+      },
+    ].filter((section) => section.items.length > 0);
+  }, [curatedCatalog]);
 
   return (
     <section className="student-workspace-shell mock-tests-page">
       <section className="student-workspace-header">
         <div className="mock-hero-copy">
           <p className="resources-kicker">Practice Library</p>
-          <h1>Find a test by topic, company, and difficulty.</h1>
-          <p>Use the filters below to narrow the catalog, then open the test you want to attempt.</p>
+          <h1>Take the best next test for your current preparation state.</h1>
+          <p>Use the filters below to narrow the catalog, then lean on the smart sections to decide what to attempt next.</p>
         </div>
         {showExpandedMockCatalog && curatedCatalog ? (
           <div className="student-workspace-metrics">
@@ -170,36 +232,46 @@ export default function MockTestsPage() {
       {isLoadingInitial ? <div className="student-workspace-panel app-state-card"><Spinner /><p className="muted-text">Loading tests...</p></div> : null}
       {error ? <div className="student-workspace-panel app-state-card app-state-card-error"><h2>Unable to load tests</h2></div> : null}
 
-      {showExpandedMockCatalog && !isLoadingInitial && !error && mockSections.length > 0 ? (
-        <div className="student-workspace-switcher">
-          <Tabs
-            tabs={mockSections.map((section) => ({ id: section.id, label: section.label }))}
-            activeId={resolvedActiveSection}
-            onChange={(id) => setActiveSection(id)}
-          />
-        </div>
-      ) : null}
+      {showExpandedMockCatalog && !isLoadingInitial && !error ? recommendationSections.map((section) => (
+        <section key={section.id} className="mock-section">
+          <div className="mock-section-header">
+            <div>
+              <h2>{section.label}</h2>
+              <p>{section.description}</p>
+            </div>
+            <span className="mock-section-count">{section.items.length}</span>
+          </div>
+
+          <div className="mock-discovery-grid">
+            {section.items.map((test) => (
+              <TestCard
+                key={`${section.id}_${test.id}`}
+                test={test}
+                topicName={test.topicId ? topicMap.get(test.topicId) : undefined}
+                companyName={test.companyId ? companyMap.get(test.companyId) : undefined}
+                emphasizeReasons
+              />
+            ))}
+          </div>
+        </section>
+      )) : null}
 
       {!isLoadingInitial && !error ? (
         <section className="mock-section">
           <div className="mock-section-header">
             <div>
-              <h2>{showExpandedMockCatalog ? (currentSection?.label ?? "Available Tests") : "Available Tests"}</h2>
-              <p>
-                {showExpandedMockCatalog
-                  ? "Browse the section that fits your current preparation mode."
-                  : "Open the tests that match your current topic, company, and difficulty filters."}
-              </p>
+              <h2>Explore More Tests</h2>
+              <p>Browse the filtered catalog directly whenever you want to go wider than the top recommendations.</p>
             </div>
-            <span className="mock-section-count">{showExpandedMockCatalog ? (currentSection?.items.length ?? 0) : items.length}</span>
+            <span className="mock-section-count">{items.length}</span>
           </div>
 
-          {(showExpandedMockCatalog ? (currentSection?.items.length ?? 0) === 0 : items.length === 0) ? (
+          {items.length === 0 ? (
             <Card className="resources-empty-card">No tests match the current filters.</Card>
           ) : null}
 
           <div className="mock-discovery-grid">
-            {(showExpandedMockCatalog ? (currentSection?.items ?? []) : items).map((test) => (
+            {items.map((test) => (
               <TestCard
                 key={test.id}
                 test={test}
@@ -211,7 +283,7 @@ export default function MockTestsPage() {
         </section>
       ) : null}
 
-      {!showExpandedMockCatalog && !isLoadingInitial && !error && hasMore ? (
+      {!isLoadingInitial && !error && hasMore ? (
         <section className="student-workspace-panel">
           <div className="hero-actions">
             <Button onClick={() => setSize(size + 1)} disabled={isLoadingMore}>

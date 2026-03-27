@@ -9,6 +9,7 @@ import {
   useStudentAnnouncements,
 } from "../../hooks/use-announcements";
 import { usePilotStudentDashboard } from "../../hooks/use-pilot-dashboard";
+import { useStudentDashboard } from "../../hooks/use-student-dashboard";
 import { useStudentRiskScore } from "../../hooks/use-risk-assessment";
 import { useStudentProfile } from "../../hooks/use-student-profile";
 import { finishPerfMark, startPerfMark } from "../../utils/perf";
@@ -79,6 +80,7 @@ function DashboardSkeleton() {
 
 export default function DashboardPage() {
   const { data, error, isLoading } = usePilotStudentDashboard();
+  const { data: richDashboard } = useStudentDashboard();
   const { data: profileData } = useStudentProfile();
   const { data: riskScore } = useStudentRiskScore();
   const { data: announcements } = useStudentAnnouncements();
@@ -123,6 +125,9 @@ export default function DashboardPage() {
   const checklist = Array.isArray(data.checklist) ? data.checklist : [];
   const upcomingDrives = Array.isArray(data.upcomingDrives) ? data.upcomingDrives : [];
   const recentResources = Array.isArray(data.recentResources) ? data.recentResources : [];
+  const richerRecentResources = Array.isArray(richDashboard?.resourceUsage?.recentResources)
+    ? richDashboard.resourceUsage.recentResources
+    : [];
   const profileCompletenessPct = profileData?.profileCompleteness.pct ?? Number(data.profileCompletenessPct ?? 0);
   const canAccessMockTests = profileData?.canAccessMockTests ?? Boolean(data.canAccessMockTests);
   const canAccessResources = profileData?.canAccessResources ?? Boolean(data.canAccessResources);
@@ -136,6 +141,25 @@ export default function DashboardPage() {
     return `pilot-orientation-dismissed:${stableId}`;
   }, [data.studentName, profileData?.seededProfile.collegeEmail]);
   const riskRecommendations = Array.isArray(riskScore?.recommendations) ? riskScore.recommendations : [];
+  const nearestUpcomingDrive = [...upcomingDrives]
+    .filter((drive) => {
+      const driveDate = new Date(String(drive.driveDate ?? ""));
+      return !Number.isNaN(driveDate.getTime());
+    })
+    .sort((left, right) => new Date(left.driveDate).getTime() - new Date(right.driveDate).getTime())[0] ?? null;
+  const daysUntilNearestDrive = nearestUpcomingDrive
+    ? Math.max(
+        0,
+        Math.ceil((new Date(nearestUpcomingDrive.driveDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)),
+      )
+    : null;
+  const recommendedMockTest = richDashboard?.recommendedTest ?? null;
+  const shouldShowOrientation = !orientationDismissed
+    && (
+      profileCompletenessPct < 100
+      || mockTestsTaken7d === 0
+      || richerRecentResources.length === 0
+    );
   const peerComparison = riskScore?.comparisonToPeers ?? {
     yourMockTests: 0,
     avgInYourBranch: 0,
@@ -172,6 +196,63 @@ export default function DashboardPage() {
     }
     setOrientationDismissed(true);
   };
+
+  const nextAction = (() => {
+    if (profileCompletenessPct < 100) {
+      const pending = missingStudentFields[0]?.label ?? "required profile details";
+      return {
+        label: "Complete your profile",
+        detail: `Finish ${pending} to keep practice modules and drive access fully available.`,
+        ctaLabel: "Open profile",
+        href: "/profile",
+      };
+    }
+
+    if (mockTestsTaken7d === 0 && canAccessMockTests) {
+      return {
+        label: "Take your next mock test",
+        detail: recommendedMockTest
+          ? `${recommendedMockTest.title} is a strong next step based on your current progress.`
+          : "Start one mock test this week to keep your readiness signal fresh.",
+        ctaLabel: recommendedMockTest ? "Open suggested mock" : "Browse mock tests",
+        href: recommendedMockTest ? `/mock-tests/${encodeURIComponent(recommendedMockTest.id)}` : "/mock-tests",
+      };
+    }
+
+    if (richerRecentResources.length === 0 && canAccessResources) {
+      return {
+        label: "Open a recommended resource",
+        detail: "Start one focused study resource so the app can guide you from real activity instead of profile data only.",
+        ctaLabel: "Browse resources",
+        href: "/resources",
+      };
+    }
+
+    if (nearestUpcomingDrive) {
+      return {
+        label: "Prepare for your next drive",
+        detail: `${nearestUpcomingDrive.company}${nearestUpcomingDrive.role ? ` - ${nearestUpcomingDrive.role}` : ""} is the nearest active opportunity.`,
+        ctaLabel: "Check drives",
+        href: "/drives",
+      };
+    }
+
+    if (richerRecentResources[0]) {
+      return {
+        label: "Resume where you left off",
+        detail: `Continue ${richerRecentResources[0].title} instead of starting a new topic from scratch.`,
+        ctaLabel: "Continue reading",
+        href: `/resources/view/${encodeURIComponent(richerRecentResources[0].resourceId)}`,
+      };
+    }
+
+    return {
+      label: "Keep your preparation active",
+      detail: "Review announcements, drives, and your recent practice so your profile stays ready for the next opportunity.",
+      ctaLabel: "Go to drives",
+      href: "/drives",
+    };
+  })();
 
   return (
     <section className="student-workspace-shell">
@@ -214,14 +295,22 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      {!orientationDismissed ? (
+      {shouldShowOrientation ? (
         <section className="student-workspace-panel">
           <div className="student-workspace-panel-head">
             <div>
               <h2>Start here</h2>
-              <p>Complete your academic, contact, and placement details to unlock resources and mock tests. Check available drives once your profile is certified.</p>
+              <p>
+                Complete your profile, open resources, and take your first mock test so Smart Path can start guiding you with real preparation signals.
+                Profile completion unlocks the full practice experience.
+              </p>
             </div>
             <Button variant="ghost" onClick={dismissOrientationBanner}>Dismiss</Button>
+          </div>
+          <div className="student-workspace-inline-note">
+            <span>1. Complete all required profile fields</span>
+            <span>2. Open at least one resource</span>
+            <span>3. Attempt your first mock test</span>
           </div>
         </section>
       ) : null}
@@ -243,6 +332,45 @@ export default function DashboardPage() {
           {showAdvancedMetrics ? <div><span>Study 7d</span><strong>{studyHours7d.toFixed(1)}h</strong></div> : null}
           <div><span>Mocks 7d</span><strong>{mockTestsTaken7d}</strong></div>
           <div><span>Eligible Drives</span><strong>{eligibleUpcomingDrives}</strong></div>
+        </div>
+      </section>
+
+      <section className="student-workspace-panel">
+        <div className="student-workspace-panel-head">
+          <div>
+            <h2>Next action</h2>
+            <p>{nextAction.label}</p>
+          </div>
+          <Link to={nextAction.href} className="ui-button secondary">{nextAction.ctaLabel}</Link>
+        </div>
+        <div className="student-workspace-metric-grid">
+          <div>
+            <span>Recommended move</span>
+            <strong>{nextAction.label}</strong>
+          </div>
+          <div>
+            <span>Nearest drive</span>
+            <strong>{nearestUpcomingDrive ? nearestUpcomingDrive.company : "No drive yet"}</strong>
+          </div>
+          <div>
+            <span>Countdown</span>
+            <strong>{daysUntilNearestDrive === null ? "-" : `${daysUntilNearestDrive} day(s)`}</strong>
+          </div>
+          <div>
+            <span>Context</span>
+            <strong>{nearestUpcomingDrive?.role || recommendedMockTest?.title || "Keep momentum"}</strong>
+          </div>
+        </div>
+        <div className="student-workspace-inline-note">
+          <span>{nextAction.detail}</span>
+          {nearestUpcomingDrive ? (
+            <span>
+              {nearestUpcomingDrive.company}
+              {nearestUpcomingDrive.role ? ` - ${nearestUpcomingDrive.role}` : ""}
+              {" on "}
+              {new Date(nearestUpcomingDrive.driveDate).toLocaleDateString()}
+            </span>
+          ) : null}
         </div>
       </section>
 

@@ -51,7 +51,7 @@ router.get(
     const filter = typeof req.query.filter === "string" ? req.query.filter : undefined;
     const limit = clampListLimit(req.query.limit, { defaultLimit: 24, maxLimit: 100 });
     const cursor = typeof req.query.cursor === "string" ? req.query.cursor : undefined;
-    const data = await StudentService.getResourcesPage(req.auth!.tenantId, {
+    const data = await StudentService.getResourcesPage(req.auth!.tenantId, req.auth!.userId, {
       topicId,
       limit,
       cursor,
@@ -88,7 +88,22 @@ router.get(
     if (!topic) {
       throw new AppError("TOPIC_QUERY_REQUIRED", "topic query is required", 400);
     }
-    const data = await StudentService.searchStudyContent(req.auth!.tenantId, topic);
+    const data = await StudentService.searchStudyContent(req.auth!.tenantId, req.auth!.userId, topic);
+    res.json(successResponse(data));
+  }),
+);
+
+router.get(
+  "/recommendations",
+  authorizeRole("student"),
+  asyncHandler(requireCompletedStudentProfile),
+  asyncHandler(async (req, res) => {
+    const filter = typeof req.query.filter === "string" ? req.query.filter : undefined;
+    const limitPerSection = clampListLimit(req.query.limitPerSection, { defaultLimit: 8, maxLimit: 12 });
+    const data = await StudentService.getRecommendedResources(req.auth!.tenantId, req.auth!.userId, {
+      filter: filter as "all" | "pdf" | "notes" | "guide" | "notebook" | "external" | undefined,
+      limitPerSection,
+    });
     res.json(successResponse(data));
   }),
 );

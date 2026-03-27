@@ -31,6 +31,13 @@ export interface MockTestListItem {
   durationSec: number;
   difficulty: string;
   attemptCount: number;
+  avgScore?: number | null;
+  lastScore?: number | null;
+  lastSubmittedAt?: string | null;
+  recommendationScore?: number;
+  recommendationReasons?: string[];
+  recommendationBucket?: string;
+  difficultyFit?: "stretch" | "fit" | "easy";
 }
 
 export interface MockTestMetadata {
@@ -58,6 +65,12 @@ export interface CuratedMockTestsPayload {
     aptitude: MockTestListItem[];
     branchCore: MockTestListItem[];
     crossBranch: MockTestListItem[];
+    takeNext: MockTestListItem[];
+    weakTopicRecovery: MockTestListItem[];
+    upcomingDrivePrep: MockTestListItem[];
+    branchCorePractice: MockTestListItem[];
+    crossBranchPrep: MockTestListItem[];
+    retakeForImprovement: MockTestListItem[];
   };
   branchTrackLabel: string | null;
 }

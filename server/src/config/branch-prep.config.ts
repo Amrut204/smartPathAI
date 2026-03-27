@@ -155,6 +155,25 @@ function normalizeBranchValue(raw: string | null | undefined) {
   return { value, upper, compact };
 }
 
+function buildBranchAliasSet(branch: string | null | undefined) {
+  const aliases = new Set<string>();
+  const track = getBranchPrepTrack(branch);
+  const values = [
+    branch,
+    track.branch,
+    track.label,
+    `${track.label} Engineering`,
+  ];
+
+  for (const value of values) {
+    const normalized = normalizeBranchValue(value);
+    if (normalized.upper) aliases.add(normalized.upper);
+    if (normalized.compact) aliases.add(normalized.compact);
+  }
+
+  return aliases;
+}
+
 const BRANCH_ALIAS_RULES: Array<{ test: RegExp; key: keyof typeof BRANCH_PREP_TRACKS }> = [
   { test: /^(CSE|CS|COMPUTERSCIENCE|COMPUTERSCIENCEENGINEERING)/i, key: "CSE" },
   { test: /^(IT|INFORMATIONTECHNOLOGY)/i, key: "IT" },
@@ -186,4 +205,28 @@ export function getBranchPrepTrack(branch: string | null | undefined) {
   }
 
   return BRANCH_PREP_TRACKS.CSE;
+}
+
+export function matchesBranchPrepTrackTag(candidate: string | null | undefined, branch: string | null | undefined) {
+  const normalizedCandidate = normalizeBranchValue(candidate);
+  if (!normalizedCandidate.upper && !normalizedCandidate.compact) {
+    return false;
+  }
+
+  const aliases = buildBranchAliasSet(branch);
+  for (const alias of aliases) {
+    if (normalizedCandidate.upper === alias || normalizedCandidate.compact === alias) {
+      return true;
+    }
+
+    if (alias.length >= 4 && normalizedCandidate.compact.includes(alias)) {
+      return true;
+    }
+
+    if (normalizedCandidate.compact.length >= 4 && alias.includes(normalizedCandidate.compact)) {
+      return true;
+    }
+  }
+
+  return false;
 }
