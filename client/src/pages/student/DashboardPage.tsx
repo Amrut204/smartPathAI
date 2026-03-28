@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Badge, Button, Modal, Skeleton, Tabs } from "../../components/ui";
 import { isClientFeatureEnabled } from "../../config/features";
@@ -100,6 +100,14 @@ export default function DashboardPage() {
     }
   }, [data]);
 
+  const stableStudentId = profileData?.seededProfile.collegeEmail || data?.studentName || "student";
+  const studentStorageKey = `pilot-orientation-dismissed:${stableStudentId}`;
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setOrientationDismissed(window.localStorage.getItem(studentStorageKey) === "true");
+  }, [studentStorageKey]);
+
   if (isLoading) {
     return <DashboardSkeleton />;
   }
@@ -136,10 +144,6 @@ export default function DashboardPage() {
   const unreadAnnouncements = safeAnnouncements.filter((item) => item?.unread);
   const popupAnnouncement = unreadAnnouncements.find((item) => item.popupEligible) ?? null;
   const showAdvancedMetrics = isClientFeatureEnabled("studentAdvancedMetrics");
-  const studentStorageKey = useMemo(() => {
-    const stableId = profileData?.seededProfile.collegeEmail || data.studentName;
-    return `pilot-orientation-dismissed:${stableId}`;
-  }, [data.studentName, profileData?.seededProfile.collegeEmail]);
   const riskRecommendations = Array.isArray(riskScore?.recommendations) ? riskScore.recommendations : [];
   const nearestUpcomingDrive = [...upcomingDrives]
     .filter((drive) => {
@@ -166,11 +170,6 @@ export default function DashboardPage() {
     yourScore: 0,
     avgScoreInYourBranch: 0,
   };
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    setOrientationDismissed(window.localStorage.getItem(studentStorageKey) === "true");
-  }, [studentStorageKey]);
 
   const onMarkAnnouncementRead = async (announcementId: string) => {
     setAnnouncementBusy(announcementId);

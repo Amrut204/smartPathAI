@@ -38,6 +38,10 @@
         "import:repo-harvested-nonpdf:dry": "node --env-file=.env scripts/import-repo-harvested-nonpdf-resources.mjs --dry-run",
         "import:external-resources": "node --env-file=.env scripts/import-external-resource-metadata.mjs",
         "import:external-resources:dry": "node --env-file=.env scripts/import-external-resource-metadata.mjs --dry-run",
+        "import:open-resource-core": "node --env-file=.env scripts/import-open-resource-core-content.mjs",
+        "import:open-resource-core:dry": "node --env-file=.env scripts/import-open-resource-core-content.mjs --dry-run",
+        "upload:open-resource-core:s3": "node --env-file=.env scripts/upload-open-resource-core-content-to-s3.mjs",
+        "upload:open-resource-core:s3:dry": "node --env-file=.env scripts/upload-open-resource-core-content-to-s3.mjs --dry-run",
         "import:scraped-questions": "node --env-file=.env scripts/import-scraped-question-bank.mjs",
         "import:scraped-questions:dry": "node --env-file=.env scripts/import-scraped-question-bank.mjs --dry-run",
         "import:pdf-summary-index": "node --env-file=.env scripts/import-pdf-summary-index.mjs",
@@ -78,7 +82,10 @@
         "questions:generate:resume": "node --env-file=.env scripts/multi-llm-question-generator.mjs --resume",
         "questions:generate:dry": "node --env-file=.env scripts/multi-llm-question-generator.mjs --dry-run",
         "questions:generate:offline": "node --env-file=.env scripts/multi-llm-question-generator.mjs --offline",
-        "questions:build-tests": "node --env-file=.env scripts/build-mock-tests-from-question-bank.mjs"
+        "questions:build-tests": "node --env-file=.env scripts/build-mock-tests-from-question-bank.mjs",
+        "questions:review-generated": "node --env-file=.env scripts/review-generated-mock-sets.mjs",
+        "questions:promote-approved": "node --env-file=.env scripts/promote-approved-generated-questions.mjs",
+        "questions:promote-approved:dry": "node --env-file=.env scripts/promote-approved-generated-questions.mjs --dry-run"
     },
     "dependencies": {
         "@aws-sdk/client-s3": "^3.917.0",

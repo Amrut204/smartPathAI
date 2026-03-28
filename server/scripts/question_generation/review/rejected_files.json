@@ -1,0 +1,58 @@
+{
+  "generatedAt": "2026-03-28T07:14:37.148Z",
+  "files": [
+    {
+      "filePath": "scripts/question_generation/raw/mistral/averages.json",
+      "provider": "mistral",
+      "model": "mistralai/Mixtral-8x7B-Instruct-v0.1-offline",
+      "topic": "Averages",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 28,
+      "noisyQuestions": 21,
+      "rejectedQuestions": 22,
+      "usableRatio": 0.56,
+      "noisyRatio": 0.42,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 22
+        },
+        {
+          "reason": "option_too_long",
+          "count": 22
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 21
+        }
+      ],
+      "status": "rejected",
+      "sampleRejected": [
+        {
+          "questionText": "If sin (20 + X) = cos 30, then what will be the value of X? Aptitude Questions on Number System Quantitative Aptitude Questions on HCF and LCM Aptitude Questions on Decimal Fractions Quantitative Apti",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "Excellent customer service: It is important to have robust return/refund policies for D2C brands to gain trust. Services like BOPIS (buy online pick in-store) or BORIS (Buy online return in-store) sho",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "Note the merging part has been written to show what’s going on here. If you were to actually use merge sort (or a similar algorithm) in Python, you would probably use heapq.merge to do the merging. BL",
+          "reasons": [
+            "question_too_long",
+            "option_too_long"
+          ]
+        }
+      ]
+    }
+  ]
+}

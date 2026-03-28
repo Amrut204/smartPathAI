@@ -1,0 +1,729 @@
+{
+  "generatedAt": "2026-03-28T07:14:36.934Z",
+  "totalFiles": 25,
+  "approvedFiles": 15,
+  "reviewFiles": 9,
+  "rejectedFiles": 1,
+  "files": [
+    {
+      "filePath": "scripts/question_generation/raw/claude/algorithms-dynamic-programming.json",
+      "provider": "claude",
+      "model": "claude-sonnet-4-offline",
+      "topic": "Algorithms - Dynamic Programming",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 45,
+      "noisyQuestions": 2,
+      "rejectedQuestions": 5,
+      "usableRatio": 0.9,
+      "noisyRatio": 0.04,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 4
+        },
+        {
+          "reason": "option_too_long",
+          "count": 4
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 2
+        },
+        {
+          "reason": "question_too_short",
+          "count": 1
+        }
+      ],
+      "status": "approved"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/claude/data-structures-trees.json",
+      "provider": "claude",
+      "model": "claude-sonnet-4-offline",
+      "topic": "Data Structures - Trees",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 45,
+      "noisyQuestions": 3,
+      "rejectedQuestions": 5,
+      "usableRatio": 0.9,
+      "noisyRatio": 0.06,
+      "topFailureReasons": [
+        {
+          "reason": "option_too_long",
+          "count": 5
+        },
+        {
+          "reason": "question_too_long",
+          "count": 3
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 3
+        }
+      ],
+      "status": "approved"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/claude/permutations-combinations.json",
+      "provider": "claude",
+      "model": "claude-sonnet-4-offline",
+      "topic": "Permutations & Combinations",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 38,
+      "noisyQuestions": 11,
+      "rejectedQuestions": 12,
+      "usableRatio": 0.76,
+      "noisyRatio": 0.22,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 12
+        },
+        {
+          "reason": "option_too_long",
+          "count": 12
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 11
+        }
+      ],
+      "status": "review"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/claude/probability.json",
+      "provider": "claude",
+      "model": "claude-sonnet-4-offline",
+      "topic": "Probability",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 38,
+      "noisyQuestions": 11,
+      "rejectedQuestions": 12,
+      "usableRatio": 0.76,
+      "noisyRatio": 0.22,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 12
+        },
+        {
+          "reason": "option_too_long",
+          "count": 12
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 11
+        }
+      ],
+      "status": "review"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/claude/time-distance.json",
+      "provider": "claude",
+      "model": "claude-sonnet-4-offline",
+      "topic": "Time & Distance",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 38,
+      "noisyQuestions": 11,
+      "rejectedQuestions": 12,
+      "usableRatio": 0.76,
+      "noisyRatio": 0.22,
+      "topFailureReasons": [
+        {
+          "reason": "option_too_long",
+          "count": 11
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 11
+        },
+        {
+          "reason": "question_too_long",
+          "count": 7
+        }
+      ],
+      "status": "review"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/gemini/computer-networks-tcp-ip.json",
+      "provider": "gemini",
+      "model": "gemini-1.5-flash-offline",
+      "topic": "Computer Networks - TCP/IP",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 48,
+      "noisyQuestions": 0,
+      "rejectedQuestions": 2,
+      "usableRatio": 0.96,
+      "noisyRatio": 0,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 2
+        }
+      ],
+      "status": "approved"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/gemini/data-structures-graphs.json",
+      "provider": "gemini",
+      "model": "gemini-1.5-flash-offline",
+      "topic": "Data Structures - Graphs",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 41,
+      "noisyQuestions": 6,
+      "rejectedQuestions": 9,
+      "usableRatio": 0.82,
+      "noisyRatio": 0.12,
+      "topFailureReasons": [
+        {
+          "reason": "option_too_long",
+          "count": 9
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 6
+        },
+        {
+          "reason": "question_too_long",
+          "count": 4
+        }
+      ],
+      "status": "approved"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/gemini/dbms-sql-queries.json",
+      "provider": "gemini",
+      "model": "gemini-1.5-flash-offline",
+      "topic": "DBMS - SQL Queries",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 45,
+      "noisyQuestions": 3,
+      "rejectedQuestions": 5,
+      "usableRatio": 0.9,
+      "noisyRatio": 0.06,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 3
+        },
+        {
+          "reason": "option_too_long",
+          "count": 3
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 3
+        },
+        {
+          "reason": "question_too_short",
+          "count": 2
+        }
+      ],
+      "status": "approved"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/gemini/number-series.json",
+      "provider": "gemini",
+      "model": "gemini-1.5-flash-offline",
+      "topic": "Number Series",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 48,
+      "noisyQuestions": 2,
+      "rejectedQuestions": 2,
+      "usableRatio": 0.96,
+      "noisyRatio": 0.04,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 2
+        },
+        {
+          "reason": "option_too_long",
+          "count": 2
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 2
+        }
+      ],
+      "status": "approved"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/gemini/operating-systems-process-management.json",
+      "provider": "gemini",
+      "model": "gemini-1.5-flash-offline",
+      "topic": "Operating Systems - Process Management",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 38,
+      "noisyQuestions": 5,
+      "rejectedQuestions": 12,
+      "usableRatio": 0.76,
+      "noisyRatio": 0.1,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 6
+        },
+        {
+          "reason": "option_too_long",
+          "count": 5
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 5
+        },
+        {
+          "reason": "explanation_too_short",
+          "count": 4
+        },
+        {
+          "reason": "question_too_short",
+          "count": 2
+        }
+      ],
+      "status": "review"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/gpt4/blood-relations.json",
+      "provider": "gpt4",
+      "model": "gpt-4o-mini-offline",
+      "topic": "Blood Relations",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 44,
+      "noisyQuestions": 5,
+      "rejectedQuestions": 6,
+      "usableRatio": 0.88,
+      "noisyRatio": 0.1,
+      "topFailureReasons": [
+        {
+          "reason": "option_too_long",
+          "count": 5
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 5
+        },
+        {
+          "reason": "question_too_long",
+          "count": 3
+        },
+        {
+          "reason": "question_too_short",
+          "count": 1
+        }
+      ],
+      "status": "approved"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/gpt4/profit-loss.json",
+      "provider": "gpt4",
+      "model": "gpt-4o-mini-offline",
+      "topic": "Profit & Loss",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 40,
+      "noisyQuestions": 9,
+      "rejectedQuestions": 10,
+      "usableRatio": 0.8,
+      "noisyRatio": 0.18,
+      "topFailureReasons": [
+        {
+          "reason": "option_too_long",
+          "count": 10
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 9
+        },
+        {
+          "reason": "question_too_long",
+          "count": 7
+        }
+      ],
+      "status": "review"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/gpt4/puzzles.json",
+      "provider": "gpt4",
+      "model": "gpt-4o-mini-offline",
+      "topic": "Puzzles",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 47,
+      "noisyQuestions": 2,
+      "rejectedQuestions": 3,
+      "usableRatio": 0.94,
+      "noisyRatio": 0.04,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 3
+        },
+        {
+          "reason": "option_too_long",
+          "count": 2
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 2
+        }
+      ],
+      "status": "approved"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/gpt4/seating-arrangement.json",
+      "provider": "gpt4",
+      "model": "gpt-4o-mini-offline",
+      "topic": "Seating Arrangement",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 43,
+      "noisyQuestions": 5,
+      "rejectedQuestions": 7,
+      "usableRatio": 0.86,
+      "noisyRatio": 0.1,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 5
+        },
+        {
+          "reason": "option_too_long",
+          "count": 5
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 5
+        },
+        {
+          "reason": "question_too_short",
+          "count": 1
+        }
+      ],
+      "status": "approved"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/gpt4/simple-interest-compound-interest.json",
+      "provider": "gpt4",
+      "model": "gpt-4o-mini-offline",
+      "topic": "Simple Interest & Compound Interest",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 34,
+      "noisyQuestions": 14,
+      "rejectedQuestions": 16,
+      "usableRatio": 0.68,
+      "noisyRatio": 0.28,
+      "topFailureReasons": [
+        {
+          "reason": "option_too_long",
+          "count": 15
+        },
+        {
+          "reason": "question_too_long",
+          "count": 14
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 14
+        }
+      ],
+      "status": "review"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/llama/c-pointers.json",
+      "provider": "llama",
+      "model": "meta-llama/Llama-3.1-70B-Instruct-Turbo-offline",
+      "topic": "C Pointers",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 47,
+      "noisyQuestions": 3,
+      "rejectedQuestions": 3,
+      "usableRatio": 0.94,
+      "noisyRatio": 0.06,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 3
+        },
+        {
+          "reason": "option_too_long",
+          "count": 3
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 3
+        }
+      ],
+      "status": "approved"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/llama/data-structures-arrays.json",
+      "provider": "llama",
+      "model": "meta-llama/Llama-3.1-70B-Instruct-Turbo-offline",
+      "topic": "Data Structures - Arrays",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 46,
+      "noisyQuestions": 2,
+      "rejectedQuestions": 4,
+      "usableRatio": 0.92,
+      "noisyRatio": 0.04,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 4
+        },
+        {
+          "reason": "option_too_long",
+          "count": 4
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 2
+        }
+      ],
+      "status": "approved"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/llama/data-structures-linked-lists.json",
+      "provider": "llama",
+      "model": "meta-llama/Llama-3.1-70B-Instruct-Turbo-offline",
+      "topic": "Data Structures - Linked Lists",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 44,
+      "noisyQuestions": 5,
+      "rejectedQuestions": 6,
+      "usableRatio": 0.88,
+      "noisyRatio": 0.1,
+      "topFailureReasons": [
+        {
+          "reason": "option_too_long",
+          "count": 6
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 5
+        },
+        {
+          "reason": "question_too_long",
+          "count": 2
+        }
+      ],
+      "status": "approved"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/llama/java-oop-concepts.json",
+      "provider": "llama",
+      "model": "meta-llama/Llama-3.1-70B-Instruct-Turbo-offline",
+      "topic": "Java OOP Concepts",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 45,
+      "noisyQuestions": 2,
+      "rejectedQuestions": 5,
+      "usableRatio": 0.9,
+      "noisyRatio": 0.04,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 5
+        },
+        {
+          "reason": "option_too_long",
+          "count": 3
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 2
+        }
+      ],
+      "status": "approved"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/llama/python-data-structures.json",
+      "provider": "llama",
+      "model": "meta-llama/Llama-3.1-70B-Instruct-Turbo-offline",
+      "topic": "Python Data Structures",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 45,
+      "noisyQuestions": 3,
+      "rejectedQuestions": 5,
+      "usableRatio": 0.9,
+      "noisyRatio": 0.06,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 5
+        },
+        {
+          "reason": "option_too_long",
+          "count": 4
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 3
+        }
+      ],
+      "status": "approved"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/mistral/averages.json",
+      "provider": "mistral",
+      "model": "mistralai/Mixtral-8x7B-Instruct-v0.1-offline",
+      "topic": "Averages",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 28,
+      "noisyQuestions": 21,
+      "rejectedQuestions": 22,
+      "usableRatio": 0.56,
+      "noisyRatio": 0.42,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 22
+        },
+        {
+          "reason": "option_too_long",
+          "count": 22
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 21
+        }
+      ],
+      "status": "rejected"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/mistral/coding-decoding.json",
+      "provider": "mistral",
+      "model": "mistralai/Mixtral-8x7B-Instruct-v0.1-offline",
+      "topic": "Coding-Decoding",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 47,
+      "noisyQuestions": 3,
+      "rejectedQuestions": 3,
+      "usableRatio": 0.94,
+      "noisyRatio": 0.06,
+      "topFailureReasons": [
+        {
+          "reason": "option_too_long",
+          "count": 3
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 3
+        },
+        {
+          "reason": "question_too_long",
+          "count": 2
+        }
+      ],
+      "status": "approved"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/mistral/percentage.json",
+      "provider": "mistral",
+      "model": "mistralai/Mixtral-8x7B-Instruct-v0.1-offline",
+      "topic": "Percentage",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 33,
+      "noisyQuestions": 16,
+      "rejectedQuestions": 17,
+      "usableRatio": 0.66,
+      "noisyRatio": 0.32,
+      "topFailureReasons": [
+        {
+          "reason": "option_too_long",
+          "count": 17
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 16
+        },
+        {
+          "reason": "question_too_long",
+          "count": 14
+        }
+      ],
+      "status": "review"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/mistral/ratio-proportion.json",
+      "provider": "mistral",
+      "model": "mistralai/Mixtral-8x7B-Instruct-v0.1-offline",
+      "topic": "Ratio & Proportion",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 33,
+      "noisyQuestions": 16,
+      "rejectedQuestions": 17,
+      "usableRatio": 0.66,
+      "noisyRatio": 0.32,
+      "topFailureReasons": [
+        {
+          "reason": "option_too_long",
+          "count": 17
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 16
+        },
+        {
+          "reason": "question_too_long",
+          "count": 13
+        }
+      ],
+      "status": "review"
+    },
+    {
+      "filePath": "scripts/question_generation/raw/mistral/syllogisms.json",
+      "provider": "mistral",
+      "model": "mistralai/Mixtral-8x7B-Instruct-v0.1-offline",
+      "topic": "Syllogisms",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 37,
+      "noisyQuestions": 11,
+      "rejectedQuestions": 13,
+      "usableRatio": 0.74,
+      "noisyRatio": 0.22,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 12
+        },
+        {
+          "reason": "option_too_long",
+          "count": 12
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 11
+        },
+        {
+          "reason": "question_too_short",
+          "count": 1
+        }
+      ],
+      "status": "review"
+    }
+  ]
+}

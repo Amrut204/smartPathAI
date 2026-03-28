@@ -1,0 +1,498 @@
+{
+  "generatedAt": "2026-03-28T07:14:37.147Z",
+  "files": [
+    {
+      "filePath": "scripts/question_generation/raw/claude/permutations-combinations.json",
+      "provider": "claude",
+      "model": "claude-sonnet-4-offline",
+      "topic": "Permutations & Combinations",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 38,
+      "noisyQuestions": 11,
+      "rejectedQuestions": 12,
+      "usableRatio": 0.76,
+      "noisyRatio": 0.22,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 12
+        },
+        {
+          "reason": "option_too_long",
+          "count": 12
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 11
+        }
+      ],
+      "status": "review",
+      "sampleRejected": [
+        {
+          "questionText": "If sin (20 + X) = cos 30, then what will be the value of X? Aptitude Questions on Number System Quantitative Aptitude Questions on HCF and LCM Aptitude Questions on Decimal Fractions Quantitative Apti",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "Excellent customer service: It is important to have robust return/refund policies for D2C brands to gain trust. Services like BOPIS (buy online pick in-store) or BORIS (Buy online return in-store) sho",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "25x of the price of big fish. However, it costs the same to catch those fish. Okay, that’s interesting. So let me know try and identify the cause for drop in profitability. Since profitability is a fu",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        }
+      ]
+    },
+    {
+      "filePath": "scripts/question_generation/raw/claude/probability.json",
+      "provider": "claude",
+      "model": "claude-sonnet-4-offline",
+      "topic": "Probability",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 38,
+      "noisyQuestions": 11,
+      "rejectedQuestions": 12,
+      "usableRatio": 0.76,
+      "noisyRatio": 0.22,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 12
+        },
+        {
+          "reason": "option_too_long",
+          "count": 12
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 11
+        }
+      ],
+      "status": "review",
+      "sampleRejected": [
+        {
+          "questionText": "If sin (20 + X) = cos 30, then what will be the value of X? Aptitude Questions on Number System Quantitative Aptitude Questions on HCF and LCM Aptitude Questions on Decimal Fractions Quantitative Apti",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "Excellent customer service: It is important to have robust return/refund policies for D2C brands to gain trust. Services like BOPIS (buy online pick in-store) or BORIS (Buy online return in-store) sho",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "Note the merging part has been written to show what’s going on here. If you were to actually use merge sort (or a similar algorithm) in Python, you would probably use heapq.merge to do the merging. BL",
+          "reasons": [
+            "question_too_long",
+            "option_too_long"
+          ]
+        }
+      ]
+    },
+    {
+      "filePath": "scripts/question_generation/raw/claude/time-distance.json",
+      "provider": "claude",
+      "model": "claude-sonnet-4-offline",
+      "topic": "Time & Distance",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 38,
+      "noisyQuestions": 11,
+      "rejectedQuestions": 12,
+      "usableRatio": 0.76,
+      "noisyRatio": 0.22,
+      "topFailureReasons": [
+        {
+          "reason": "option_too_long",
+          "count": 11
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 11
+        },
+        {
+          "reason": "question_too_long",
+          "count": 7
+        }
+      ],
+      "status": "review",
+      "sampleRejected": [
+        {
+          "questionText": "If sin (20 + X) = cos 30, then what will be the value of X? Aptitude Questions on Number System Quantitative Aptitude Questions on HCF and LCM Aptitude Questions on Decimal Fractions Quantitative Apti",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "Excellent customer service: It is important to have robust return/refund policies for D2C brands to gain trust. Services like BOPIS (buy online pick in-store) or BORIS (Buy online return in-store) sho",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "Look at other packaging materials- probably like tin cans- however this would involve a significant marketing effort. Okay thanks for those suggestions. We can close the case here. Beverage Manufactur",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        }
+      ]
+    },
+    {
+      "filePath": "scripts/question_generation/raw/gemini/operating-systems-process-management.json",
+      "provider": "gemini",
+      "model": "gemini-1.5-flash-offline",
+      "topic": "Operating Systems - Process Management",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 38,
+      "noisyQuestions": 5,
+      "rejectedQuestions": 12,
+      "usableRatio": 0.76,
+      "noisyRatio": 0.1,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 6
+        },
+        {
+          "reason": "option_too_long",
+          "count": 5
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 5
+        },
+        {
+          "reason": "explanation_too_short",
+          "count": 4
+        },
+        {
+          "reason": "question_too_short",
+          "count": 2
+        }
+      ],
+      "status": "review",
+      "sampleRejected": [
+        {
+          "questionText": "The portion of the process scheduler in an operating system that dispatches processes is concerned with ____________",
+          "reasons": [
+            "explanation_too_short"
+          ]
+        },
+        {
+          "questionText": "The priority of a process will ______________ if the scheduler assigns it a static priority.",
+          "reasons": [
+            "explanation_too_short"
+          ]
+        },
+        {
+          "questionText": "Which of the following is not an internal command used by mailx? Unix MCQ on Architecture & General Purpose Utilities Unix MCQ on File System Unix MCQ on Handling Ordinary Files Multiple Choice Questi",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        }
+      ]
+    },
+    {
+      "filePath": "scripts/question_generation/raw/gpt4/profit-loss.json",
+      "provider": "gpt4",
+      "model": "gpt-4o-mini-offline",
+      "topic": "Profit & Loss",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 40,
+      "noisyQuestions": 9,
+      "rejectedQuestions": 10,
+      "usableRatio": 0.8,
+      "noisyRatio": 0.18,
+      "topFailureReasons": [
+        {
+          "reason": "option_too_long",
+          "count": 10
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 9
+        },
+        {
+          "reason": "question_too_long",
+          "count": 7
+        }
+      ],
+      "status": "review",
+      "sampleRejected": [
+        {
+          "questionText": "If sin (20 + X) = cos 30, then what will be the value of X? Aptitude Questions on Number System Quantitative Aptitude Questions on HCF and LCM Aptitude Questions on Decimal Fractions Quantitative Apti",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "Excellent customer service: It is important to have robust return/refund policies for D2C brands to gain trust. Services like BOPIS (buy online pick in-store) or BORIS (Buy online return in-store) sho",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "25x of the price of big fish. However, it costs the same to catch those fish. Okay, that’s interesting. So let me know try and identify the cause for drop in profitability. Since profitability is a fu",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        }
+      ]
+    },
+    {
+      "filePath": "scripts/question_generation/raw/gpt4/simple-interest-compound-interest.json",
+      "provider": "gpt4",
+      "model": "gpt-4o-mini-offline",
+      "topic": "Simple Interest & Compound Interest",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 34,
+      "noisyQuestions": 14,
+      "rejectedQuestions": 16,
+      "usableRatio": 0.68,
+      "noisyRatio": 0.28,
+      "topFailureReasons": [
+        {
+          "reason": "option_too_long",
+          "count": 15
+        },
+        {
+          "reason": "question_too_long",
+          "count": 14
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 14
+        }
+      ],
+      "status": "review",
+      "sampleRejected": [
+        {
+          "questionText": "If sin (20 + X) = cos 30, then what will be the value of X? Aptitude Questions on Number System Quantitative Aptitude Questions on HCF and LCM Aptitude Questions on Decimal Fractions Quantitative Apti",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "Excellent customer service: It is important to have robust return/refund policies for D2C brands to gain trust. Services like BOPIS (buy online pick in-store) or BORIS (Buy online return in-store) sho",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "25x of the price of big fish. However, it costs the same to catch those fish. Okay, that’s interesting. So let me know try and identify the cause for drop in profitability. Since profitability is a fu",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        }
+      ]
+    },
+    {
+      "filePath": "scripts/question_generation/raw/mistral/percentage.json",
+      "provider": "mistral",
+      "model": "mistralai/Mixtral-8x7B-Instruct-v0.1-offline",
+      "topic": "Percentage",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 33,
+      "noisyQuestions": 16,
+      "rejectedQuestions": 17,
+      "usableRatio": 0.66,
+      "noisyRatio": 0.32,
+      "topFailureReasons": [
+        {
+          "reason": "option_too_long",
+          "count": 17
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 16
+        },
+        {
+          "reason": "question_too_long",
+          "count": 14
+        }
+      ],
+      "status": "review",
+      "sampleRejected": [
+        {
+          "questionText": "If sin (20 + X) = cos 30, then what will be the value of X? Aptitude Questions on Number System Quantitative Aptitude Questions on HCF and LCM Aptitude Questions on Decimal Fractions Quantitative Apti",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "Excellent customer service: It is important to have robust return/refund policies for D2C brands to gain trust. Services like BOPIS (buy online pick in-store) or BORIS (Buy online return in-store) sho",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "5 Lacs 2020-21 Profits Revenue Costs Mall Outlets Tech park outlets Rent salaries Dine-ins Drive- throughs Fixed Variable Recommendations • Use automation in the value chain of the drive-ins to reduce",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        }
+      ]
+    },
+    {
+      "filePath": "scripts/question_generation/raw/mistral/ratio-proportion.json",
+      "provider": "mistral",
+      "model": "mistralai/Mixtral-8x7B-Instruct-v0.1-offline",
+      "topic": "Ratio & Proportion",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 33,
+      "noisyQuestions": 16,
+      "rejectedQuestions": 17,
+      "usableRatio": 0.66,
+      "noisyRatio": 0.32,
+      "topFailureReasons": [
+        {
+          "reason": "option_too_long",
+          "count": 17
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 16
+        },
+        {
+          "reason": "question_too_long",
+          "count": 13
+        }
+      ],
+      "status": "review",
+      "sampleRejected": [
+        {
+          "questionText": "If sin (20 + X) = cos 30, then what will be the value of X? Aptitude Questions on Number System Quantitative Aptitude Questions on HCF and LCM Aptitude Questions on Decimal Fractions Quantitative Apti",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "Excellent customer service: It is important to have robust return/refund policies for D2C brands to gain trust. Services like BOPIS (buy online pick in-store) or BORIS (Buy online return in-store) sho",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "25x of the price of big fish. However, it costs the same to catch those fish. Okay, that’s interesting. So let me know try and identify the cause for drop in profitability. Since profitability is a fu",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        }
+      ]
+    },
+    {
+      "filePath": "scripts/question_generation/raw/mistral/syllogisms.json",
+      "provider": "mistral",
+      "model": "mistralai/Mixtral-8x7B-Instruct-v0.1-offline",
+      "topic": "Syllogisms",
+      "totalQuestions": 50,
+      "validShapeQuestions": 50,
+      "usableQuestions": 37,
+      "noisyQuestions": 11,
+      "rejectedQuestions": 13,
+      "usableRatio": 0.74,
+      "noisyRatio": 0.22,
+      "topFailureReasons": [
+        {
+          "reason": "question_too_long",
+          "count": 12
+        },
+        {
+          "reason": "option_too_long",
+          "count": 12
+        },
+        {
+          "reason": "noise_pattern",
+          "count": 11
+        },
+        {
+          "reason": "question_too_short",
+          "count": 1
+        }
+      ],
+      "status": "review",
+      "sampleRejected": [
+        {
+          "questionText": "Inter division dynamics across the subsidiaries Due Diligence |E-Commerce Sector| Investment | Challenging 2022-2023 (C) Consult Club, IIM Ahmedabad Private Equity firm – Interview Transcript Due Dili",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "Look at other packaging materials- probably like tin cans- however this would involve a significant marketing effort. Okay thanks for those suggestions. We can close the case here. Beverage Manufactur",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        },
+        {
+          "questionText": "Trust/Inclination: Are rural consumers comfortable transacting online? Or, are they comfortable only with the physical kirana stores? Good. So the issues we have been facing are lack of trust and very",
+          "reasons": [
+            "question_too_long",
+            "option_too_long",
+            "noise_pattern"
+          ]
+        }
+      ]
+    }
+  ]
+}
