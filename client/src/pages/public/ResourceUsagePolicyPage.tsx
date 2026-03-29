@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
+import { Brand } from "../../components/composites/Brand";
+
 const PAGE_TITLE = "Resource Usage Policy | Smart Path";
 
 export default function ResourceUsagePolicyPage() {
@@ -12,13 +14,7 @@ export default function ResourceUsagePolicyPage() {
     <section className="public-shell policy-shell">
       <article className="public-card policy-card">
         <div className="policy-header">
-          <Link to="/" className="marketing-brand policy-brand" aria-label="Smart Path home">
-            <span className="marketing-brand-mark">SP</span>
-            <span>
-              Smart Path
-              <small>Resource Usage Policy</small>
-            </span>
-          </Link>
+          <Brand href="/" variant="full" descriptor="Resource Usage Policy" className="policy-brand" />
           <h1>Resource Usage Policy</h1>
           <p>
             Smart Path provides resources to support student preparation and educational use. This page explains how

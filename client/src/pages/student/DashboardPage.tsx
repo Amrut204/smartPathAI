@@ -314,10 +314,17 @@ export default function DashboardPage() {
         </section>
       ) : null}
 
-      <section className="student-workspace-hero">
-        <div className="student-workspace-hero-main">
+      <section className="student-workspace-hero student-dashboard-snapshot-grid">
+        <div className="student-workspace-hero-main student-dashboard-snapshot-main">
           <span className="student-workspace-eyebrow">Placement snapshot</span>
-          <strong>{showAdvancedMetrics ? `${readinessScore.toFixed(1)}%` : eligibleUpcomingDrives}</strong>
+          <div className="student-dashboard-snapshot-value">
+            <strong>{showAdvancedMetrics ? `${readinessScore.toFixed(1)}%` : eligibleUpcomingDrives}</strong>
+            <span>
+              {showAdvancedMetrics
+                ? `${eligibleUpcomingDrives} eligible drive${eligibleUpcomingDrives === 1 ? "" : "s"}`
+                : "eligible now"}
+            </span>
+          </div>
           <p className="muted-text">
             {showAdvancedMetrics
               ? `${eligibleUpcomingDrives} upcoming drive(s) currently match your profile.`
@@ -325,7 +332,7 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        <div className="student-workspace-metrics">
+        <div className="student-workspace-metrics student-dashboard-snapshot-stats">
           <div><span>CGPA</span><strong>{cgpa.toFixed(2)}</strong></div>
           <div><span>Profile</span><strong>{profileCompletenessPct}%</strong></div>
           {showAdvancedMetrics ? <div><span>Study 7d</span><strong>{studyHours7d.toFixed(1)}h</strong></div> : null}
@@ -334,43 +341,48 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      <section className="student-workspace-panel">
+      <section className="student-workspace-panel student-dashboard-next-panel">
         <div className="student-workspace-panel-head">
           <div>
             <h2>Next action</h2>
-            <p>{nextAction.label}</p>
-          </div>
-          <Link to={nextAction.href} className="ui-button secondary">{nextAction.ctaLabel}</Link>
-        </div>
-        <div className="student-workspace-metric-grid">
-          <div>
-            <span>Recommended move</span>
-            <strong>{nextAction.label}</strong>
-          </div>
-          <div>
-            <span>Nearest drive</span>
-            <strong>{nearestUpcomingDrive ? nearestUpcomingDrive.company : "No drive yet"}</strong>
-          </div>
-          <div>
-            <span>Countdown</span>
-            <strong>{daysUntilNearestDrive === null ? "-" : `${daysUntilNearestDrive} day(s)`}</strong>
-          </div>
-          <div>
-            <span>Context</span>
-            <strong>{nearestUpcomingDrive?.role || recommendedMockTest?.title || "Keep momentum"}</strong>
+            <p>Focus on the strongest next step instead of spreading effort across too many tasks.</p>
           </div>
         </div>
-        <div className="student-workspace-inline-note">
-          <span>{nextAction.detail}</span>
-          {nearestUpcomingDrive ? (
-            <span>
-              {nearestUpcomingDrive.company}
-              {nearestUpcomingDrive.role ? ` - ${nearestUpcomingDrive.role}` : ""}
-              {" on "}
-              {new Date(nearestUpcomingDrive.driveDate).toLocaleDateString()}
-            </span>
-          ) : null}
+        <div className="student-dashboard-next-layout">
+          <div className="student-dashboard-next-primary">
+            <div className="student-dashboard-next-primary-head">
+              <div>
+                <span>Recommended move</span>
+                <strong>{nextAction.label}</strong>
+              </div>
+              <Link to={nextAction.href} className="ui-button secondary">{nextAction.ctaLabel}</Link>
+            </div>
+            <p>{nextAction.detail}</p>
+          </div>
+
+          <div className="student-dashboard-next-meta">
+            <div>
+              <span>Nearest drive</span>
+              <strong>{nearestUpcomingDrive ? nearestUpcomingDrive.company : "No drive yet"}</strong>
+            </div>
+            <div>
+              <span>Countdown</span>
+              <strong>{daysUntilNearestDrive === null ? "-" : `${daysUntilNearestDrive} day(s)`}</strong>
+            </div>
+            <div>
+              <span>Context</span>
+              <strong>{nearestUpcomingDrive?.role || recommendedMockTest?.title || "Keep momentum"}</strong>
+            </div>
+          </div>
         </div>
+        {nearestUpcomingDrive ? (
+          <p className="student-dashboard-next-footnote muted-text">
+            {nearestUpcomingDrive.company}
+            {nearestUpcomingDrive.role ? ` - ${nearestUpcomingDrive.role}` : ""}
+            {" on "}
+            {new Date(nearestUpcomingDrive.driveDate).toLocaleDateString()}
+          </p>
+        ) : null}
       </section>
 
       {showAdvancedMetrics && riskScore ? (

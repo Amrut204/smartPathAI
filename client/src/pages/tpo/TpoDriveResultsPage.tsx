@@ -17,6 +17,7 @@ type ReleaseAudience = "selected" | "rejected" | "finalized";
 
 interface DraftRow {
   outcome?: Outcome;
+  applicationState?: "not_applied" | "applied" | "withdrawn" | "absent";
   remarks?: string;
   registered?: boolean;
   appeared?: boolean;
@@ -88,6 +89,7 @@ export default function TpoDriveResultsPage() {
     rows.map((row) => ({
       studentId: row.id,
       outcome: getOutcome(row.id, row.outcome),
+      applicationState: getValue(row.id, "applicationState", row.applicationState),
       remarks: getRemarks(row.id, row.remarks),
       registered: getValue(row.id, "registered", row.registered ?? undefined),
       appeared: getValue(row.id, "appeared", row.appeared ?? undefined),
@@ -341,6 +343,7 @@ export default function TpoDriveResultsPage() {
                 <th>CGPA</th>
                 <th>Registered</th>
                 <th>Appeared</th>
+                <th>Application State</th>
                 <th>Outcome</th>
                 <th>Reporting Fields</th>
               </tr>
@@ -381,6 +384,25 @@ export default function TpoDriveResultsPage() {
                         }))
                       }
                     />
+                  </td>
+                  <td>
+                    <Select
+                      value={getValue(row.id, "applicationState", row.applicationState)}
+                      onChange={(event) =>
+                        setDraft((current) => ({
+                          ...current,
+                          [row.id]: {
+                            ...current[row.id],
+                            applicationState: event.target.value as DraftRow["applicationState"],
+                          },
+                        }))
+                      }
+                    >
+                      <option value="not_applied">not applied</option>
+                      <option value="applied">applied</option>
+                      <option value="withdrawn">withdrawn</option>
+                      <option value="absent">absent</option>
+                    </Select>
                   </td>
                   <td>
                     <div className="tpo-student-cell-stack">

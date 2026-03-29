@@ -72,6 +72,10 @@ export const studentDriveApplySchema = z.object({
   confirmDeclaration: z.literal(true),
 });
 
+export const studentDriveWithdrawSchema = z.object({
+  confirmWithdrawal: z.literal(true),
+});
+
 export const leaderboardQuerySchema = z.object({
   cursor: z.string().uuid().optional(),
   limit: z.coerce.number().int().min(1).max(100).default(20),

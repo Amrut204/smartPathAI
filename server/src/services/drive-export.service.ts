@@ -68,6 +68,48 @@ export const DriveExportService = {
     return { filename, csv };
   },
 
+  async buildResumeCsv(tenantId: string, driveId: string) {
+    const drive = await DriveRepository.getDriveById(tenantId, driveId);
+    const rows = await DriveRepository.listDriveResumeExportRows(tenantId, driveId);
+
+    if (rows.length === 0) {
+      throw new AppError(
+        "DRIVE_EXPORT_NO_RESUMES",
+        "No applied students with stored resume snapshots were found for this drive yet.",
+        409,
+      );
+    }
+
+    const header = [
+      "name",
+      "roll_number",
+      "email",
+      "branch",
+      "cgpa",
+      "application_state",
+      "outcome",
+      "resume_filename",
+      "resume_url",
+    ].join(",");
+
+    const lines = rows.map((student) => [
+      escapeCsvCell(student.fullName),
+      escapeCsvCell(student.rollNumber),
+      escapeCsvCell(student.email),
+      escapeCsvCell(student.branch),
+      String(Number(student.cgpa ?? 0)),
+      escapeCsvCell(student.applicationState),
+      escapeCsvCell(student.outcome),
+      escapeCsvCell(student.resumeFilename ?? ""),
+      escapeCsvCell(student.resumeUrl),
+    ].join(","));
+
+    return {
+      filename: `${safeFilename(drive.company)}-${safeFilename(drive.role ?? "drive")}-resumes.csv`,
+      csv: `${header}\n${lines.join("\n")}\n`,
+    };
+  },
+
   async buildSummaryPdf(tenantId: string, driveId: string) {
     const drive = await DriveRepository.getDriveById(tenantId, driveId);
     const latestSnapshot = drive.eligibility?.snapshots?.[0] ?? null;

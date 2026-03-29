@@ -14,6 +14,7 @@ import { CommunicationService } from "./communication.service.js";
 import { getMongoDb } from "../utils/mongodb.js";
 import { resolveManagedCloudBaseUrl } from "../utils/storage.js";
 import { buildDeclarationProfileDataPatch, buildStudentDeclarationStatus } from "../utils/student-declaration.js";
+import { GoogleDriveResumeService } from "./google-drive-resume.service.js";
 
 function nowIso() {
   return new Date().toISOString();
@@ -1216,6 +1217,9 @@ export const AdminOpsService = {
     return {
       googleForm: normalizeOptionalString(integrations.googleForm) ?? globalFeedback.googleForm,
       googleSheet: normalizeOptionalString(integrations.googleSheet),
+      googleDriveSharedDriveId: normalizeOptionalString(integrations.googleDriveSharedDriveId),
+      googleDriveRootFolderId: normalizeOptionalString(integrations.googleDriveRootFolderId),
+      googleDriveServiceAccountEmail: GoogleDriveResumeService.getStorageAuthLabel(),
       label: normalizeOptionalString(integrations.label) ?? globalFeedback.label,
       notes: normalizeOptionalString(integrations.notes) ?? globalFeedback.notes,
     };
@@ -1225,6 +1229,8 @@ export const AdminOpsService = {
     tenantId: string;
     googleForm?: string | null;
     googleSheet?: string | null;
+    googleDriveSharedDriveId?: string | null;
+    googleDriveRootFolderId?: string | null;
     label?: string | null;
     notes?: string | null;
   }) {
@@ -1248,6 +1254,8 @@ export const AdminOpsService = {
         ...currentIntegrations,
         googleForm: null,
         googleSheet: normalizeOptionalString(input.googleSheet),
+        googleDriveSharedDriveId: normalizeOptionalString(input.googleDriveSharedDriveId),
+        googleDriveRootFolderId: normalizeOptionalString(input.googleDriveRootFolderId),
         label: null,
         notes: null,
       },

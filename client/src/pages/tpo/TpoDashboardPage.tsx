@@ -3,7 +3,13 @@ import { Link } from "react-router-dom";
 import { Badge, Button, Card, Skeleton, Table } from "../../components/ui";
 import { RiskDashboard } from "../../components/RiskDashboard";
 import { usePilotTpoDashboard } from "../../hooks/use-pilot-dashboard";
-import { approveSupportRequest, denySupportRequest, useTpoSupportInbox } from "../../hooks/use-support";
+import {
+  approveSupportRequest,
+  denySupportRequest,
+  resolveStudentSupportRequest,
+  useTpoStudentSupportInbox,
+  useTpoSupportInbox,
+} from "../../hooks/use-support";
 
 function TpoDashboardSkeleton() {
   return (
@@ -28,8 +34,10 @@ function TpoDashboardSkeleton() {
 
 export default function TpoDashboardPage() {
   const { data, isLoading, error } = usePilotTpoDashboard();
-  const inbox = useTpoSupportInbox(true);
-  const pendingSupport = (inbox.data ?? []).filter((item) => item.status === "pending");
+  const supportAccessInbox = useTpoSupportInbox(true);
+  const studentSupportInbox = useTpoStudentSupportInbox(true);
+  const pendingSupportAccess = (supportAccessInbox.data ?? []).filter((item) => item.status === "pending");
+  const openStudentRequests = (studentSupportInbox.data ?? []).filter((item) => item.status === "open");
 
   if (isLoading) {
     return <TpoDashboardSkeleton />;
@@ -119,50 +127,84 @@ export default function TpoDashboardPage() {
         </Card>
 
         <Card className="tpo-list-card">
-          <h2>Support Requests</h2>
-          {inbox.isLoading ? (
+          <h2>Student Support Requests</h2>
+          {studentSupportInbox.isLoading ? (
             <p className="muted-text">Loading requests...</p>
-          ) : inbox.error ? (
+          ) : studentSupportInbox.error ? (
             <p className="error-text">Unable to load support requests.</p>
-          ) : pendingSupport.length === 0 ? (
-            <p className="muted-text">No pending requests.</p>
           ) : (
             <ul className="tpo-list">
-              {pendingSupport.slice(0, 5).map((req) => (
+              {openStudentRequests.length === 0 ? (
+                <li className="muted-text">No open student requests.</li>
+              ) : null}
+              {openStudentRequests.slice(0, 5).map((req) => (
                 <li key={req.id} style={{ display: "grid", gap: 8 }}>
                   <div>
-                    <strong>Admin request</strong>{" "}
+                    <strong>{req.subject}</strong>{" "}
                     <span className="muted-text">
-                      from {req.requested_by_email} ({new Date(req.created_at).toLocaleString()})
+                      from {req.student_name} ({req.student_email}) - {new Date(req.created_at).toLocaleString()}
                     </span>
                     <div className="muted-text" style={{ marginTop: 6 }}>
-                      {req.reason}
+                      {req.message}
                     </div>
                   </div>
                   <div className="hero-actions">
                     <Button
                       onClick={async () => {
-                        await approveSupportRequest(req.id, 60);
+                        const note = prompt("Add a short resolution note for the student:", "Resolved by placement office");
+                        if (!note || !note.trim()) return;
+                        await resolveStudentSupportRequest(req.id, note.trim());
                       }}
                     >
-                      Approve (60m)
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      onClick={async () => {
-                        if (!confirm("Deny this support request?")) return;
-                        await denySupportRequest(req.id, "Denied by TPO");
-                      }}
-                    >
-                      Deny
+                      Mark Resolved
                     </Button>
                   </div>
                 </li>
               ))}
             </ul>
           )}
+          {!supportAccessInbox.error && pendingSupportAccess.length > 0 ? (
+            <>
+              <p className="muted-text" style={{ marginTop: 14 }}>
+                Admin support access requests
+              </p>
+              <ul className="tpo-list">
+                {pendingSupportAccess.slice(0, 3).map((req) => (
+                  <li key={req.id} style={{ display: "grid", gap: 8 }}>
+                    <div>
+                      <strong>Admin access request</strong>{" "}
+                      <span className="muted-text">
+                        from {req.requested_by_email} ({new Date(req.created_at).toLocaleString()})
+                      </span>
+                      <div className="muted-text" style={{ marginTop: 6 }}>
+                        {req.reason}
+                      </div>
+                    </div>
+                    <div className="hero-actions">
+                      <Button
+                        onClick={async () => {
+                          await approveSupportRequest(req.id, 60);
+                        }}
+                      >
+                        Approve (60m)
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        onClick={async () => {
+                          if (!confirm("Deny this support access request?")) return;
+                          await denySupportRequest(req.id, "Denied by TPO");
+                        }}
+                      >
+                        Deny
+                      </Button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
           <p className="muted-text" style={{ marginTop: 10 }}>
-            Approvals are time-limited and audited to protect student privacy.
+            Student requests are visible to the placement office. Admin access approvals remain time-limited and audited.
           </p>
         </Card>
       </div>

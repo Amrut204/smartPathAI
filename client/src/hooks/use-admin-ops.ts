@@ -178,6 +178,9 @@ export type AdminResourceRow = {
 export type AdminIntegrations = {
   googleForm: string | null;
   googleSheet: string | null;
+  googleDriveSharedDriveId: string | null;
+  googleDriveRootFolderId: string | null;
+  googleDriveServiceAccountEmail: string | null;
   label: string | null;
   notes: string | null;
 };
@@ -565,7 +568,15 @@ export async function adminUpdateResource(input: {
   return data;
 }
 
-export async function adminSaveIntegrations(input: { tenantId: string; googleForm?: string | null; googleSheet?: string | null; label?: string | null; notes?: string | null }) {
+export async function adminSaveIntegrations(input: {
+  tenantId: string;
+  googleForm?: string | null;
+  googleSheet?: string | null;
+  googleDriveSharedDriveId?: string | null;
+  googleDriveRootFolderId?: string | null;
+  label?: string | null;
+  notes?: string | null;
+}) {
   const data = await sendJson<AdminIntegrations>("/api/v1/internal/admin-ops/integrations", "PUT", input);
   await mutate(`/api/v1/internal/admin-ops/integrations?tenantId=${encodeURIComponent(input.tenantId)}`);
   return data;

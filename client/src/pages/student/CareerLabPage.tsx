@@ -519,7 +519,7 @@ export default function CareerLabPage() {
 
       <div className="career-grid">
         <div id="career-interview">
-        <Card>
+        <Card className="career-panel-card">
           <h2>Voice Interview Simulator</h2>
           <div className="form-grid">
             <label>
@@ -759,7 +759,7 @@ export default function CareerLabPage() {
         </Card>
         </div>
 
-        <Card>
+        <Card className="career-panel-card">
           <h2>Placement Predictor</h2>
           <p className="career-score">{data.placementPredictor.shortlistProbability}%</p>
           <Progress value={data.placementPredictor.shortlistProbability} />
@@ -792,7 +792,7 @@ export default function CareerLabPage() {
         </Card>
 
         <div id="career-plan">
-        <Card>
+        <Card className="career-panel-card">
           <h2>Action Plan Engine</h2>
           <p className="muted-text">
             Week of {data.actionPlan.week_start} | Target readiness {data.actionPlan.target_readiness.toFixed(1)}
@@ -857,7 +857,7 @@ export default function CareerLabPage() {
         </Card>
         </div>
 
-        <Card>
+        <Card className="career-panel-card">
           <h2>Coding Tracker Integration</h2>
           <div className="form-grid">
             <label>

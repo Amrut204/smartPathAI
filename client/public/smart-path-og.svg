@@ -1,0 +1,20 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" rx="32" fill="#F5F7FB"/>
+  <rect x="52" y="52" width="1096" height="526" rx="28" fill="#FFFFFF" stroke="#D7DEE8" stroke-width="4"/>
+  <rect x="96" y="106" width="90" height="90" rx="24" fill="#E8EEF9"/>
+  <rect x="112" y="122" width="58" height="58" rx="16" fill="#FFFFFF" stroke="#C7D2E4" stroke-width="3"/>
+  <path d="M125 162L139 148L149 158L161 145" stroke="#1D4ED8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="125" cy="162" r="3.4" fill="#0F172A"/>
+  <circle cx="139" cy="148" r="3.4" fill="#0F172A"/>
+  <circle cx="149" cy="158" r="3.4" fill="#0F172A"/>
+  <circle cx="161" cy="145" r="3.4" fill="#0F172A"/>
+  <text x="214" y="155" fill="#0F172A" font-family="Inter, Arial, sans-serif" font-size="38" font-weight="700">Smart Path</text>
+  <text x="96" y="264" fill="#0F172A" font-family="Inter, Arial, sans-serif" font-size="62" font-weight="700">
+    <tspan x="96" dy="0">Placement readiness</tspan>
+    <tspan x="96" dy="78">for students, TPOs,</tspan>
+    <tspan x="96" dy="78">and colleges</tspan>
+  </text>
+  <text x="96" y="500" fill="#5B6678" font-family="Inter, Arial, sans-serif" font-size="28">
+    One clean platform for resources, mock tests, readiness, communication, and support.
+  </text>
+</svg>

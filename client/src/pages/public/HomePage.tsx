@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
+import { Brand } from "../../components/composites/Brand";
 import { Badge } from "../../components/ui";
 
 const PAGE_TITLE = "Smart Path | Placement Readiness For Students, TPOs, And Colleges";
 const PAGE_DESCRIPTION = "Smart Path helps colleges run placement readiness, resources, mock tests, and student support from one clean platform.";
-const OG_IMAGE = "/og-placementiq.svg";
+const OG_IMAGE = "/smart-path-og.svg";
 
 function upsertMeta(selector: string, attributes: Record<string, string>) {
   let element = document.head.querySelector<HTMLMetaElement>(selector);
@@ -66,13 +67,7 @@ export default function HomePage() {
   return (
     <div className="marketing-shell">
       <header className="marketing-topbar">
-        <Link to="/" className="marketing-brand" aria-label="Smart Path home">
-          <span className="marketing-brand-mark">SP</span>
-          <span>
-            Smart Path
-            <small>Placement readiness platform</small>
-          </span>
-        </Link>
+        <Brand href="/" variant="full" descriptor="Placement readiness platform" className="marketing-brand" />
 
         <nav className="marketing-nav" aria-label="Primary">
           <a href="#about">About</a>
@@ -153,7 +148,7 @@ export default function HomePage() {
 
       <footer className="marketing-footer">
         <div>
-          <strong>Smart Path</strong>
+          <Brand href="/" variant="compact" className="marketing-footer-brand" />
           <p>Placement readiness and operations support for students, TPOs, and colleges.</p>
         </div>
         <div className="marketing-footer-links">

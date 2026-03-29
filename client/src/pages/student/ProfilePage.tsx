@@ -7,6 +7,7 @@ import { useTenantSettings } from "../../hooks/use-tenant";
 import {
   certifyStudentProfile,
   getProfileCertificationPreview,
+  uploadStudentResume,
   updateStudentProfile,
   useStudentProfile,
 } from "../../hooks/use-student-profile";
@@ -73,6 +74,9 @@ export default function ProfilePage() {
   const [certificationTypedValue, setCertificationTypedValue] = useState("");
   const [certificationStatus, setCertificationStatus] = useState<string | null>(null);
   const [certificationBusy, setCertificationBusy] = useState(false);
+  const [isTpoVisibilityOpen, setIsTpoVisibilityOpen] = useState(false);
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [resumeBusy, setResumeBusy] = useState(false);
   const [certificationPreview, setCertificationPreview] = useState<null | {
     certificationPreview: {
       studentName: string;
@@ -315,6 +319,26 @@ export default function ProfilePage() {
     }
   };
 
+  const handleResumeUpload = async () => {
+    if (!resumeFile) {
+      setStatus("Choose a PDF resume before uploading.");
+      return;
+    }
+
+    setResumeBusy(true);
+    setStatus(null);
+    try {
+      await uploadStudentResume(resumeFile);
+      await mutate();
+      setResumeFile(null);
+      setStatus("Resume uploaded successfully.");
+    } catch (resumeError) {
+      setStatus(resumeError instanceof Error ? resumeError.message : "Unable to upload resume");
+    } finally {
+      setResumeBusy(false);
+    }
+  };
+
   return (
     <section className="student-workspace-shell profile-page">
       {!isComplete ? (
@@ -507,10 +531,46 @@ export default function ProfilePage() {
               Personal Email{requiredFieldKeys.has("personalEmail") ? <span className="required-asterisk"> *</span> : null}
               <input disabled={isLocked} type="email" value={form.personalEmail} onChange={(event) => setForm((current) => ({ ...current, personalEmail: event.target.value }))} />
             </label>
-            <label>
-              Resume Link{requiredFieldKeys.has("resumeUrl") ? <span className="required-asterisk"> *</span> : null}
-              <input disabled={isLocked} value={form.resumeUrl} onChange={(event) => setForm((current) => ({ ...current, resumeUrl: event.target.value }))} />
-            </label>
+            <div style={{ gridColumn: "1 / -1", display: "grid", gap: 12 }}>
+              <label>
+                Resume PDF{requiredFieldKeys.has("resumeUrl") ? <span className="required-asterisk"> *</span> : null}
+                <input
+                  disabled={isLocked}
+                  type="file"
+                  accept="application/pdf,.pdf"
+                  onChange={(event) => setResumeFile(event.target.files?.[0] ?? null)}
+                />
+              </label>
+              <div className="hero-actions">
+                <Button type="button" disabled={isLocked || resumeBusy || !resumeFile} onClick={handleResumeUpload}>
+                  {resumeBusy ? "Uploading..." : "Upload Resume PDF"}
+                </Button>
+              </div>
+              {data.studentEditableProfile.resumeDriveWebLink ? (
+                <p className="muted-text">
+                  Current resume:{" "}
+                  <a href={data.studentEditableProfile.resumeDriveWebLink} target="_blank" rel="noreferrer">
+                    {data.studentEditableProfile.resumeFilename || "View current resume"}
+                  </a>
+                  {data.studentEditableProfile.resumeUploadedAt
+                    ? ` · uploaded ${new Date(data.studentEditableProfile.resumeUploadedAt).toLocaleString()}`
+                    : ""}
+                </p>
+              ) : data.studentEditableProfile.resumeUrl ? (
+                <p className="muted-text">
+                  Legacy resume link on profile:{" "}
+                  <a href={data.studentEditableProfile.resumeUrl} target="_blank" rel="noreferrer">
+                    {data.studentEditableProfile.resumeUrl}
+                  </a>
+                </p>
+              ) : (
+                <p className="muted-text">No resume uploaded yet.</p>
+              )}
+              <label>
+                Legacy Resume Link (optional during rollout)
+                <input disabled={isLocked} value={form.resumeUrl} onChange={(event) => setForm((current) => ({ ...current, resumeUrl: event.target.value }))} placeholder="Optional backup link while managed uploads roll out" />
+              </label>
+            </div>
             <label>
               Target Roles{requiredFieldKeys.has("targetRoles") ? <span className="required-asterisk"> *</span> : null}
               <input disabled={isLocked} value={form.targetRoles} onChange={(event) => setForm((current) => ({ ...current, targetRoles: event.target.value }))} placeholder="Software engineer, analyst, GET" />
@@ -593,6 +653,44 @@ export default function ProfilePage() {
           </div>
         </section>
       ) : null}
+
+      <section className="student-workspace-panel student-profile-visibility-panel">
+        <button
+          type="button"
+          className="student-profile-visibility-toggle"
+          onClick={() => setIsTpoVisibilityOpen((current) => !current)}
+          aria-expanded={isTpoVisibilityOpen}
+        >
+          <div>
+            <span className="resources-kicker">{data.tpoVisibilitySummary.title}</span>
+            <h2>Understand which progress signals your placement office can review.</h2>
+            <p>{data.tpoVisibilitySummary.description}</p>
+          </div>
+          <span className="student-profile-visibility-toggle-icon" aria-hidden="true">
+            {isTpoVisibilityOpen ? "−" : "+"}
+          </span>
+        </button>
+
+        {isTpoVisibilityOpen ? (
+          <div className="student-profile-visibility-content">
+            <div className="student-profile-visibility-rows">
+              {data.tpoVisibilitySummary.rows.map((row) => (
+                <div key={row.key} className="student-profile-visibility-row">
+                  <span className="student-profile-visibility-label">{row.label}</span>
+                  <strong className="student-profile-visibility-value">{row.value}</strong>
+                  <span className={`student-profile-visibility-status is-${row.status}`}>
+                    <span className="student-profile-visibility-dot" aria-hidden="true" />
+                    <span className="student-profile-visibility-status-text">
+                      {row.status === "good" ? "On track" : row.status === "attention" ? "Needs attention" : "Needs action"}
+                    </span>
+                  </span>
+                </div>
+              ))}
+            </div>
+            <p className="muted-text student-profile-visibility-note">{data.tpoVisibilitySummary.note}</p>
+          </div>
+        ) : null}
+      </section>
 
       <Modal open={isCertificationOpen} onClose={() => setIsCertificationOpen(false)} title="Certify profile details">
         <div className="student-profile-certification-modal">

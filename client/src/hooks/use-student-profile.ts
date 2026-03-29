@@ -66,6 +66,13 @@ export interface StudentProfile {
     phone: string;
     personalEmail: string;
     resumeUrl: string;
+    resumeStorageProvider: string;
+    resumeDriveFileId: string;
+    resumeDriveWebLink: string;
+    resumeFilename: string;
+    resumeMimeType: string;
+    resumeSizeBytes: number | null;
+    resumeUploadedAt: string;
     targetRoles: string[];
     preferredLocations: string[];
     willingToRelocate: boolean | null;
@@ -166,6 +173,39 @@ export interface StudentProfile {
     label: string;
     complete: boolean;
   }>;
+  tpoVisibilitySummary: {
+    title: string;
+    description: string;
+    rows: Array<{
+      key:
+        | "profileStatus"
+        | "profileCertified"
+        | "readinessScore"
+        | "riskCategory"
+        | "mockTestsAttempted"
+        | "studyHours7d"
+        | "driveApplications"
+        | "resourceEngagement";
+      label: string;
+      value: string;
+      status: "good" | "attention" | "concern";
+    }>;
+    fields: {
+      profileStatus: { label: string; value: string; status: "good" | "attention" | "concern" };
+      profileCertified: { label: string; value: string; status: "good" | "attention" | "concern" };
+      readinessScore: { label: string; value: string; status: "good" | "attention" | "concern" };
+      riskCategory: { label: string; value: string; status: "good" | "attention" | "concern" };
+      mockTestsAttempted: { label: string; value: string; status: "good" | "attention" | "concern" };
+      studyHours7d: { label: string; value: string; status: "good" | "attention" | "concern" };
+      driveApplications: { label: string; value: string; status: "good" | "attention" | "concern" };
+      resourceEngagement7d: number;
+      resourceEngagementLabel: string;
+      tpoVisibilityNote: string;
+    };
+    note: string;
+    generatedAt: string;
+    windowStartedAt: string;
+  };
   canAccessResources: boolean;
   canAccessMockTests: boolean;
 }
@@ -277,6 +317,30 @@ export async function updateStudentProfile(input: {
 
   const payload = (await response.json()) as ApiResponse<StudentProfile>;
 
+  if (!payload.success) {
+    throw new Error(buildApiErrorMessage(payload));
+  }
+
+  await mutate("/api/v1/students/me");
+  await mutate("/api/v1/students/me/dashboard");
+  await mutate("/api/v1/students/me/pilot-dashboard");
+  await mutate("/api/v1/students/my-risk-score");
+
+  return payload.data;
+}
+
+export async function uploadStudentResume(file: File): Promise<StudentProfile> {
+  const form = new FormData();
+  form.append("resume", file);
+
+  const response = await fetch("/api/v1/students/me/resume", {
+    method: "POST",
+    credentials: "include",
+    headers: withCsrfHeader(undefined),
+    body: form,
+  });
+
+  const payload = (await response.json()) as ApiResponse<StudentProfile>;
   if (!payload.success) {
     throw new Error(buildApiErrorMessage(payload));
   }

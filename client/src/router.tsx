@@ -25,6 +25,7 @@ const MockTestResultsPage = lazy(() => import("./pages/student/MockTestResultsPa
 const ResourcesPage = lazy(() => import("./pages/student/ResourcesPage"));
 const ResourceViewerPage = lazy(() => import("./pages/student/ResourceViewerPage"));
 const ProfilePage = lazy(() => import("./pages/student/ProfilePage"));
+const SupportPage = lazy(() => import("./pages/student/SupportPage"));
 const AdminHubPage = lazy(() => import("./pages/admin/AdminHubPage"));
 const TpoDashboardPage = lazy(() => import("./pages/tpo/TpoDashboardPage"));
 const TpoStudentsPage = lazy(() => import("./pages/tpo/TpoStudentsPage"));
@@ -149,7 +150,6 @@ function StudentLayout() {
     <div className="app-shell app-shell-with-strip">
       <Navbar
         role="student"
-        title="Smart Path"
         userName={profile?.full_name ?? "Student"}
         studentProfileCompletionPct={studentProfile?.profileCompleteness.pct ?? null}
         studentHasAnnouncementDot={false}
@@ -230,7 +230,6 @@ function TpoLayout() {
     <div className="app-shell">
       <Navbar
         role="tpo"
-        title="Smart Path"
         userName={profile?.full_name ?? "Admin"}
         showAdminLinks={false}
         onLogout={logout}
@@ -251,7 +250,6 @@ function AdminLayout() {
     <div className="app-shell">
       <Navbar
         role="tpo"
-        title="Smart Path"
         userName={profile?.full_name ?? "Admin"}
         showAdminLinks
         onLogout={logout}
@@ -316,6 +314,7 @@ const router = createBrowserRouter([
           { path: "/study-guides", element: <Navigate to="/resources" replace /> },
           { path: "/study-guides/:slug", element: <Navigate to="/resources" replace /> },
           { path: "/profile", element: renderRoute(<StudentDeclarationGuard><ProfilePage /></StudentDeclarationGuard>) },
+          { path: "/support", element: renderRoute(<StudentDeclarationGuard><SupportPage /></StudentDeclarationGuard>) },
         ],
       },
     ],

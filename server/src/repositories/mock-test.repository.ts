@@ -51,7 +51,7 @@ export const MockTestRepository = {
 
     const data = await db.collection("mock_tests").find(
       filter,
-      { projection: { _id: 0, id: 1, title: 1, topic_id: 1, company_id: 1, duration_sec: 1, difficulty: 1, is_active: 1, created_at: 1 } },
+      { projection: { _id: 0, id: 1, title: 1, topic_id: 1, company_id: 1, duration_sec: 1, difficulty: 1, is_active: 1, created_at: 1, primary_branches: 1, is_cross_branch: 1 } },
     ).sort({ created_at: -1 }).limit(filters.limit + 1).toArray();
 
     const hasMore = data.length > filters.limit;
@@ -66,6 +66,8 @@ export const MockTestRepository = {
         durationSec: Number(row.duration_sec ?? 0),
         difficulty: String(row.difficulty ?? "medium"),
         isActive: Boolean(row.is_active),
+        primaryBranches: Array.isArray(row.primary_branches) ? row.primary_branches.map((value) => String(value)) : [],
+        isCrossBranch: Boolean(row.is_cross_branch),
       })),
       hasMore,
       nextCursor: hasMore ? String(items[items.length - 1]?.created_at) : null,
@@ -86,7 +88,7 @@ export const MockTestRepository = {
 
     const data = await db.collection("mock_tests").findOne(
       filter,
-      { projection: { _id: 0, id: 1, title: 1, topic_id: 1, company_id: 1, questions: 1, duration_sec: 1, difficulty: 1, is_active: 1 } },
+      { projection: { _id: 0, id: 1, title: 1, topic_id: 1, company_id: 1, questions: 1, duration_sec: 1, difficulty: 1, is_active: 1, primary_branches: 1, is_cross_branch: 1 } },
     );
 
     if (!data) {
@@ -124,6 +126,8 @@ export const MockTestRepository = {
       difficulty: input.difficulty,
       questions: input.questions,
       is_active: input.isActive,
+      primary_branches: [],
+      is_cross_branch: false,
       created_at: now,
       updated_at: now,
     });

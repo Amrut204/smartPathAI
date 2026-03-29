@@ -61,6 +61,23 @@ export interface SupportRequest {
   revoked_at: string | null;
 }
 
+export interface StudentSupportRequest {
+  id: string;
+  tenant_id: string;
+  student_id: string;
+  student_email: string;
+  student_name: string;
+  subject: string;
+  message: string;
+  status: "open" | "resolved";
+  created_at: string;
+  updated_at: string;
+  resolved_at: string | null;
+  resolved_by_user_id: string | null;
+  resolved_by_email: string | null;
+  resolution_note: string | null;
+}
+
 export function useSupportSession(enabled: boolean) {
   return useSWR<SupportSessionInfo>(enabled ? "/api/v1/support/session" : null, fetcher, {
     revalidateOnFocus: false,
@@ -75,6 +92,18 @@ export function useAdminSupportRequests(enabled: boolean) {
 
 export function useTpoSupportInbox(enabled: boolean) {
   return useSWR<SupportRequest[]>(enabled ? "/api/v1/support/inbox" : null, fetcher, {
+    revalidateOnFocus: false,
+  });
+}
+
+export function useStudentSupportRequests(enabled: boolean) {
+  return useSWR<StudentSupportRequest[]>(enabled ? "/api/v1/support/student-requests/me" : null, fetcher, {
+    revalidateOnFocus: false,
+  });
+}
+
+export function useTpoStudentSupportInbox(enabled: boolean) {
+  return useSWR<StudentSupportRequest[]>(enabled ? "/api/v1/support/student-requests/inbox" : null, fetcher, {
     revalidateOnFocus: false,
   });
 }
@@ -109,5 +138,19 @@ export async function approveSupportRequest(sessionId: string, ttlMinutes = 60) 
 export async function denySupportRequest(sessionId: string, note: string) {
   const data = await postJson<SupportRequest>(`/api/v1/support/requests/${encodeURIComponent(sessionId)}/deny`, { note });
   await mutate("/api/v1/support/inbox");
+  return data;
+}
+
+export async function createStudentSupportRequest(input: { subject: string; message: string }) {
+  const data = await postJson<StudentSupportRequest>("/api/v1/support/student-requests", input);
+  await mutate("/api/v1/support/student-requests/me");
+  await mutate("/api/v1/support/student-requests/inbox");
+  return data;
+}
+
+export async function resolveStudentSupportRequest(requestId: string, note: string) {
+  const data = await postJson<StudentSupportRequest>(`/api/v1/support/student-requests/${encodeURIComponent(requestId)}/resolve`, { note });
+  await mutate("/api/v1/support/student-requests/inbox");
+  await mutate("/api/v1/support/student-requests/me");
   return data;
 }

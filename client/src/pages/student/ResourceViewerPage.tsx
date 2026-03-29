@@ -561,6 +561,8 @@ export default function ResourceViewerPage() {
 
   const blocks = useMemo(() => renderStructuredBlocks(content), [content]);
   const studyDocument = resource?.studyDocument;
+  const licenseType = ((resource as ResourceItem & { license_type?: string | null })?.license_type ?? "").trim();
+  const showLicenseBadge = licenseType !== "" && licenseType.toLowerCase() !== "unverified";
 
   const handleExternalOpen = () => {
     if (!resource) return;
@@ -580,14 +582,32 @@ export default function ResourceViewerPage() {
     <section className="resource-viewer-page">
       <Card className="resource-viewer-shell">
         <div className="resource-viewer-header">
-          <div>
+          <div className="resource-viewer-header-copy">
             <p className="resources-kicker">In-App Viewer</p>
             <h1>{resource?.title ?? "Resource Viewer"}</h1>
-            <p className="muted-text">
-              {resource ? `${String(resource.resourceType ?? "resource").replace(/_/g, " ")} resource` : "Loading resource"}
-            </p>
+            <div className="resource-viewer-header-meta" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
+              <p className="muted-text" style={{ margin: 0 }}>
+                {resource ? `${String(resource.resourceType ?? "resource").replace(/_/g, " ")} resource` : "Loading resource"}
+              </p>
+              {showLicenseBadge ? (
+                <span
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    lineHeight: 1.4,
+                    background: "var(--color-background-success, #dcfce7)",
+                    color: "var(--color-text-success, #166534)",
+                    fontSize: 11,
+                    padding: "2px 8px",
+                    borderRadius: "var(--border-radius-md, 14px)",
+                  }}
+                >
+                  {licenseType}
+                </span>
+              ) : null}
+            </div>
           </div>
-          <div className="hero-actions">
+          <div className="hero-actions resource-viewer-header-actions">
             <Link to="/resources">
               <Button variant="secondary">Back to Resources</Button>
             </Link>
@@ -647,9 +667,9 @@ export default function ResourceViewerPage() {
             {pdfLike && !external ? (
               <div className="resource-pdf-frame-wrap">
                 <div className="resource-pdf-toolbar">
-                  <span>Page {pdfCurrentPage} of {pdfPageCount || "--"}</span>
-                  <span>{pdfPageCount > 0 ? `${Math.round((pdfCurrentPage / pdfPageCount) * 100)}% viewed` : "Preparing PDF viewer"}</span>
-                  <div className="hero-actions">
+                  <span className="resource-pdf-toolbar-page">Page {pdfCurrentPage} of {pdfPageCount || "--"}</span>
+                  <span className="resource-pdf-toolbar-progress">{pdfPageCount > 0 ? `${Math.round((pdfCurrentPage / pdfPageCount) * 100)}% viewed` : "Preparing PDF viewer"}</span>
+                  <div className="hero-actions resource-pdf-toolbar-actions">
                     <Button variant="secondary" onClick={() => setPdfCurrentPage((page) => Math.max(1, page - 1))} disabled={pdfCurrentPage <= 1 || pdfPageRendering}>
                       Previous
                     </Button>

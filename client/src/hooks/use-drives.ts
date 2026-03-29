@@ -43,8 +43,13 @@ export interface DriveSummary {
   roundsConducted: string[];
   mouStatus: "not_started" | "in_discussion" | "signed" | "not_applicable";
   reportingNotes: string | null;
+  registrationInstructions?: string | null;
+  requiredDocuments?: string[];
+  location?: string | null;
+  mode?: "on_campus" | "off_campus" | "hybrid" | null;
+  dressCode?: string | null;
   criteria: DriveCriteria;
-  status: "upcoming" | "active" | "completed" | "cancelled";
+  status: "draft" | "published" | "registration_closed" | "in_process" | "results_pending" | "completed" | "archived" | "cancelled";
   eligibleCount: number;
 }
 
@@ -61,7 +66,17 @@ export interface DriveResultRow {
   attendancePct: number;
   readinessScore: number;
   status: "eligible" | "applied" | "not_eligible" | "not_computed";
+  applicationState: "not_applied" | "applied" | "withdrawn" | "absent";
   outcome: "pending" | "shortlisted" | "selected" | "rejected";
+  rounds: Array<{
+    key: string;
+    label: string;
+    stageType: "screening" | "aptitude" | "group_discussion" | "technical_interview" | "hr_interview" | "final_decision" | "custom";
+    status: "pending" | "qualified" | "not_qualified" | "scheduled" | "completed";
+    decidedAt?: string | null;
+    releasedAt?: string | null;
+    notes?: string | null;
+  }>;
   remarks: string | null;
   registered: boolean | null;
   appeared: boolean | null;
@@ -105,6 +120,9 @@ export interface DriveEligibilitySnapshot {
   eligibleCount: number;
   ineligibleCount: number;
   reasons: DriveEligibilityReason[];
+  branchBreakdown?: Array<{ branch: string; eligibleCount: number; ineligibleCount: number; totalStudents: number }>;
+  sampleExcludedStudents?: Array<{ studentId: string; fullName: string; branch: string; cgpa: number; attendancePct: number; reasons: string[] }>;
+  previewDigest?: string | null;
   computedAt: string;
   computedBy: string;
 }
@@ -127,11 +145,16 @@ export interface DriveEligibilityPreview {
   eligibleRate: number;
   reasons: DriveEligibilityReason[];
   topEligibleStudents: DriveEligibilityCandidate[];
+  branchBreakdown?: Array<{ branch: string; eligibleCount: number; ineligibleCount: number; totalStudents: number }>;
+  sampleExcludedStudents?: Array<{ studentId: string; fullName: string; branch: string; cgpa: number; attendancePct: number; reasons: string[] }>;
+  previewDigest?: string;
 }
 
 export interface DriveDetail extends DriveSummary {
   createdAt: string;
   updatedAt: string;
+  previewDigest?: string | null;
+  previewedAt?: string | null;
   eligibility: {
     latestVersion: number | null;
     lastComputedAt: string | null;
@@ -246,8 +269,14 @@ export async function createDrive(input: {
   roundsConducted?: string[];
   mouStatus?: DriveSummary["mouStatus"];
   reportingNotes?: string;
+  registrationInstructions?: string;
+  requiredDocuments?: string[];
+  location?: string;
+  mode?: NonNullable<DriveSummary["mode"]>;
+  dressCode?: string;
   criteria: DriveCriteria;
   status?: DriveSummary["status"];
+  previewDigest?: string;
 }) {
   const response = await fetch("/api/v1/drives", {
     method: "POST",
@@ -298,8 +327,14 @@ export async function updateDrive(
     roundsConducted: string[];
     mouStatus: DriveSummary["mouStatus"];
     reportingNotes: string;
+    registrationInstructions: string;
+    requiredDocuments: string[];
+    location: string;
+    mode: NonNullable<DriveSummary["mode"]>;
+    dressCode: string;
     criteria: DriveCriteria;
     status: DriveSummary["status"];
+    previewDigest: string;
   }>,
 ) {
   const response = await fetch(`/api/v1/drives/${driveId}`, {
@@ -373,6 +408,7 @@ export async function updateDriveResults(input: {
   updates: Array<{
     studentId: string;
     outcome: "pending" | "shortlisted" | "selected" | "rejected";
+    applicationState?: DriveResultRow["applicationState"];
     remarks?: string;
     registered?: boolean;
     appeared?: boolean;
@@ -389,6 +425,7 @@ export async function updateDriveResults(input: {
     sourceNote?: string;
     nonPlacementReason?: string;
     actionPlan?: string;
+    rounds?: DriveResultRow["rounds"];
   }>;
   resultIntake?: {
     source?: "employer_email" | "employer_portal" | "manual_update";
@@ -422,6 +459,27 @@ export async function updateDriveResults(input: {
     mutate(`/api/v1/drives/${input.driveId}`),
     mutate(`/api/v1/drives/${input.driveId}/results`),
     mutate((key) => typeof key === "string" && key.startsWith("/api/v1/drives?")),
+  ]);
+
+  return payload.data;
+}
+
+export async function withdrawFromDrive(driveId: string) {
+  const response = await fetch(`/api/v1/students/me/drives/${driveId}/withdraw`, {
+    method: "POST",
+    credentials: "include",
+    headers: withCsrfHeader({ "Content-Type": "application/json" }),
+    body: JSON.stringify({ confirmWithdrawal: true }),
+  });
+
+  const payload = (await response.json()) as ApiResponse<{ driveId: string; applicationState: "withdrawn" }>;
+  if (!payload.success) {
+    throw new Error(payload.error.message);
+  }
+
+  await Promise.all([
+    mutate("/api/v1/students/me/drives"),
+    mutate("/api/v1/students/me/pilot-dashboard"),
   ]);
 
   return payload.data;

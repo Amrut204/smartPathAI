@@ -56,6 +56,13 @@ export type NormalizedStudentProfileData = {
   phone: string;
   personalEmail: string;
   resumeUrl: string;
+  resumeStorageProvider: string;
+  resumeDriveFileId: string;
+  resumeDriveWebLink: string;
+  resumeFilename: string;
+  resumeMimeType: string;
+  resumeSizeBytes: number | null;
+  resumeUploadedAt: string;
   targetRoles: string[];
   preferredLocations: string[];
   willingToRelocate: boolean | null;
@@ -100,6 +107,13 @@ export type StudentProfileSummary = {
     phone: string;
     personalEmail: string;
     resumeUrl: string;
+    resumeStorageProvider: string;
+    resumeDriveFileId: string;
+    resumeDriveWebLink: string;
+    resumeFilename: string;
+    resumeMimeType: string;
+    resumeSizeBytes: number | null;
+    resumeUploadedAt: string;
     targetRoles: string[];
     preferredLocations: string[];
     willingToRelocate: boolean | null;
@@ -212,7 +226,14 @@ export function normalizeStudentProfileData(profileData: unknown): NormalizedStu
     totalHistoricalBacklogs: getFirstNumber(raw, ["totalHistoricalBacklogs", "total_historical_backlogs", "totalBacklogs", "backlogs_total"]),
     phone: getFirstString(raw, ["phone", "phoneNumber", "phone_number", "mobile", "mobileNumber"]),
     personalEmail: getFirstString(raw, ["personalEmail", "personal_email", "alternateEmail", "alternate_email"]),
-    resumeUrl: getFirstString(raw, ["resumeUrl", "resume_url", "resumeLink", "resume_link"]),
+    resumeUrl: getFirstString(raw, ["resumeDriveWebLink", "resume_drive_web_link", "resumeUrl", "resume_url", "resumeLink", "resume_link"]),
+    resumeStorageProvider: getFirstString(raw, ["resumeStorageProvider", "resume_storage_provider"]),
+    resumeDriveFileId: getFirstString(raw, ["resumeDriveFileId", "resume_drive_file_id"]),
+    resumeDriveWebLink: getFirstString(raw, ["resumeDriveWebLink", "resume_drive_web_link", "resumeUrl", "resume_url"]),
+    resumeFilename: getFirstString(raw, ["resumeFilename", "resume_filename"]),
+    resumeMimeType: getFirstString(raw, ["resumeMimeType", "resume_mime_type"]),
+    resumeSizeBytes: getFirstNumber(raw, ["resumeSizeBytes", "resume_size_bytes"]),
+    resumeUploadedAt: getFirstString(raw, ["resumeUploadedAt", "resume_uploaded_at"]),
     targetRoles: getFirstArray(raw, ["targetRoles", "target_roles", "preferredRoles", "preferred_roles"]),
     preferredLocations: getFirstArray(raw, ["preferredLocations", "preferred_locations", "locationPreferences", "location_preferences"]),
     willingToRelocate: getFirstBoolean(raw, ["willingToRelocate", "willing_to_relocate", "relocationPreference", "relocation_preference"]),
@@ -277,7 +298,7 @@ export function buildStudentProfileSummary(input: {
     { key: "attendancePct", label: "Attendance", owner: "student", complete: isPresentNumber(attendancePct) },
     { key: "phone", label: "Phone number", owner: "student", complete: isPresentString(normalized.phone) },
     { key: "personalEmail", label: "Personal email", owner: "student", complete: isPresentString(normalized.personalEmail) },
-    { key: "resumeUrl", label: "Resume link", owner: "student", complete: isPresentString(normalized.resumeUrl) },
+    { key: "resumeUrl", label: "Resume", owner: "student", complete: isPresentString(normalized.resumeUrl) || isPresentString(normalized.resumeDriveWebLink) },
     { key: "targetRoles", label: "Target roles", owner: "student", complete: isPresentArray(normalized.targetRoles) },
     {
       key: "preferredLocations",
@@ -331,6 +352,13 @@ export function buildStudentProfileSummary(input: {
       phone: normalized.phone,
       personalEmail: normalized.personalEmail,
       resumeUrl: normalized.resumeUrl,
+      resumeStorageProvider: normalized.resumeStorageProvider,
+      resumeDriveFileId: normalized.resumeDriveFileId,
+      resumeDriveWebLink: normalized.resumeDriveWebLink,
+      resumeFilename: normalized.resumeFilename,
+      resumeMimeType: normalized.resumeMimeType,
+      resumeSizeBytes: normalized.resumeSizeBytes,
+      resumeUploadedAt: normalized.resumeUploadedAt,
       targetRoles: normalized.targetRoles,
       preferredLocations: normalized.preferredLocations,
       willingToRelocate: normalized.willingToRelocate,

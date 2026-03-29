@@ -194,7 +194,14 @@ export default function AdminHubPage() {
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [resourceForm, setResourceForm] = useState({ title: "", description: "", topicId: "", resourceType: "pdf", url: "", isActive: true });
   const [externalForm, setExternalForm] = useState({ title: "", description: "", topicId: "", resourceType: "external_link", url: "", isActive: true });
-  const [integrationForm, setIntegrationForm] = useState({ googleForm: "", googleSheet: "", label: "", notes: "" });
+  const [integrationForm, setIntegrationForm] = useState({
+    googleForm: "",
+    googleSheet: "",
+    googleDriveSharedDriveId: "",
+    googleDriveRootFolderId: "",
+    label: "",
+    notes: "",
+  });
   const [emailForm, setEmailForm] = useState({ fromName: "", fromEmail: "", replyToEmail: "" });
   const [collegeForm, setCollegeForm] = useState({
     collegeName: "",
@@ -238,6 +245,8 @@ export default function AdminHubPage() {
     setIntegrationForm({
       googleForm: integrations.data.googleForm ?? "",
       googleSheet: integrations.data.googleSheet ?? "",
+      googleDriveSharedDriveId: integrations.data.googleDriveSharedDriveId ?? "",
+      googleDriveRootFolderId: integrations.data.googleDriveRootFolderId ?? "",
       label: integrations.data.label ?? "",
       notes: integrations.data.notes ?? "",
     });
@@ -900,11 +909,23 @@ export default function AdminHubPage() {
               <label><span className="muted-text">Label</span><Input value={integrationForm.label} onChange={(event) => setIntegrationForm((current) => ({ ...current, label: event.target.value }))} /></label>
               <label><span className="muted-text">Google Form URL</span><Input value={integrationForm.googleForm} onChange={(event) => setIntegrationForm((current) => ({ ...current, googleForm: event.target.value }))} /></label>
               <label><span className="muted-text">Google Sheet URL</span><Input value={integrationForm.googleSheet} onChange={(event) => setIntegrationForm((current) => ({ ...current, googleSheet: event.target.value }))} /></label>
+              <label><span className="muted-text">Resume Shared Drive ID (optional)</span><Input value={integrationForm.googleDriveSharedDriveId} onChange={(event) => setIntegrationForm((current) => ({ ...current, googleDriveSharedDriveId: event.target.value }))} placeholder="Leave blank if using a normal Drive folder" /></label>
+              <label><span className="muted-text">Resume root folder ID</span><Input value={integrationForm.googleDriveRootFolderId} onChange={(event) => setIntegrationForm((current) => ({ ...current, googleDriveRootFolderId: event.target.value }))} placeholder="Folder ID in your managed Google Drive storage" /></label>
+              <label style={{ gridColumn: "1 / -1" }}><span className="muted-text">Drive auth mode</span><Input value={integrations.data?.googleDriveServiceAccountEmail ?? ""} readOnly /></label>
               <label style={{ gridColumn: "1 / -1" }}><span className="muted-text">Notes</span><textarea className="ui-input" rows={3} value={integrationForm.notes} onChange={(event) => setIntegrationForm((current) => ({ ...current, notes: event.target.value }))} /></label>
             </div>
+            <p className="muted-text">Use Smart Path-managed Google Drive storage by setting the root folder ID above. A Shared Drive is optional; a normal Drive folder also works when OAuth-based Drive access is configured on the server.</p>
             <div className="hero-actions"><Button onClick={() => runAction("integrations", async () => {
               const tenantId = requireTenant();
-              await adminSaveIntegrations({ tenantId, googleForm: integrationForm.googleForm || null, googleSheet: integrationForm.googleSheet || null, label: integrationForm.label || null, notes: integrationForm.notes || null });
+              await adminSaveIntegrations({
+                tenantId,
+                googleForm: integrationForm.googleForm || null,
+                googleSheet: integrationForm.googleSheet || null,
+                googleDriveSharedDriveId: integrationForm.googleDriveSharedDriveId || null,
+                googleDriveRootFolderId: integrationForm.googleDriveRootFolderId || null,
+                label: integrationForm.label || null,
+                notes: integrationForm.notes || null,
+              });
               setMessage(`Integration links saved for ${selectedTenantName}.`, "success");
             })} disabled={busyAction === "integrations"}>Save Integrations</Button></div>
           </section>

@@ -4,6 +4,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { askAiOnce } from "../../hooks/use-ai-assistant";
 import { PilotFeedbackStrip } from "../../components/composites/PilotFeedbackStrip";
 import { isClientFeatureEnabled } from "../../config/features";
+import { pilotFeedbackLinks } from "../../config/pilot-feedback";
 import {
   type ResourceItem,
   type ResourceListFilter,
@@ -179,6 +180,7 @@ export default function ResourcesPage() {
   const showAiStudyAssist = isClientFeatureEnabled("studentAiStudyAssist");
   const branchTrackLabel = dashboard?.branchTrack?.label ?? "your track";
   const branchTrackFocusAreas = Array.isArray(dashboard?.branchTrack?.focusAreas) ? dashboard.branchTrack.focusAreas : [];
+  const takedownEmail = pilotFeedbackLinks.supportEmail ?? "admin@campusdrive.me";
 
   useEffect(() => {
     startPerfMark("student-resources:first-visible");
@@ -423,6 +425,18 @@ export default function ResourcesPage() {
         title="Missing file or wrong resource?"
         description="Use these links if a resource does not open, the wrong content appears, or an external link is broken."
       />
+
+      <p
+        style={{
+          fontSize: 12,
+          color: "var(--color-text-secondary, var(--color-text-muted))",
+          textAlign: "center",
+          paddingTop: "2rem",
+          paddingBottom: "1rem",
+        }}
+      >
+        Resources on this platform are curated for placement preparation. For takedown requests contact {takedownEmail}.
+      </p>
     </section>
   );
 }

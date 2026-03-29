@@ -56,9 +56,15 @@ export interface PilotStudentDrive {
   role: string;
   driveDate: string;
   status: string;
+  lifecycle?: string;
   eligibleCount: number;
   isEligible: boolean;
   reasons: Array<{ code: string; label: string }>;
+  eligibility?: {
+    finalVerdict: "eligible" | "not_eligible";
+    blockingReasons: Array<{ code: string; label: string }>;
+    advisoryNotes: string[];
+  };
   criteria: {
     minCgpa: number;
     maxBacklogs: number;
@@ -69,8 +75,15 @@ export interface PilotStudentDrive {
     excludePlacedStudents?: boolean;
   };
   myStatus: string;
+  applicationState?: "not_applied" | "applied" | "withdrawn" | "absent";
+  canWithdraw?: boolean;
   myOutcome: string;
   remarks: string | null;
+  timeline?: {
+    registrationStatus: string;
+    applicationState: string;
+    profileCertified: boolean;
+  };
 }
 
 export interface PilotTpoDashboard {

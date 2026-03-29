@@ -17,10 +17,12 @@ import {
   PROFILE_CERTIFICATION_TYPED_VALUE,
   STUDENT_DECLARATION_POLICY_VERSION,
 } from "../utils/student-declaration.js";
-import { DriveRepository } from "../repositories/drive.repository.js";
+import { DriveRepository, normalizeDriveLifecycle } from "../repositories/drive.repository.js";
 import { PointsService } from "./points.service.js";
 import { StudentActivityService } from "./student-activity.service.js";
 import { evaluateStudentEligibility, ELIGIBILITY_REASON_LABELS } from "./eligibility.logic.js";
+import { RiskAssessmentService } from "./risk-assessment.service.js";
+import { GoogleDriveResumeService } from "./google-drive-resume.service.js";
 
 interface LogStudyHoursInput {
   tenantId: string;
@@ -29,6 +31,23 @@ interface LogStudyHoursInput {
   studyDate?: string;
   hours: number;
 }
+
+type TpoVisibilityStatus = "good" | "attention" | "concern";
+
+type TpoVisibilityRow = {
+  key:
+    | "profileStatus"
+    | "profileCertified"
+    | "readinessScore"
+    | "riskCategory"
+    | "mockTestsAttempted"
+    | "studyHours7d"
+    | "driveApplications"
+    | "resourceEngagement";
+  label: string;
+  value: string;
+  status: TpoVisibilityStatus;
+};
 
 type TopicProgressStatus = "incomplete" | "in_progress" | "complete";
 
@@ -79,6 +98,10 @@ function buildMyProfileResponse(profile: Awaited<ReturnType<typeof StudentReposi
     canAccessResources: summary.canAccessResources,
     canAccessMockTests: summary.canAccessMockTests,
   };
+}
+
+function hasResumeOnProfile(profileData: ReturnType<typeof normalizeStudentProfileData>) {
+  return Boolean(profileData.resumeDriveWebLink || profileData.resumeUrl);
 }
 
 function normalizeTenantBranches(config: unknown): string[] {
@@ -797,6 +820,161 @@ function scoreRecommendedResource(
   };
 }
 
+function formatCountLabel(count: number, singular: string, plural = `${singular}s`) {
+  return `${count} ${count === 1 ? singular : plural}`;
+}
+
+function getReadinessStatus(readinessScore: number): TpoVisibilityStatus {
+  if (readinessScore >= 75) return "good";
+  if (readinessScore >= 55) return "attention";
+  return "concern";
+}
+
+function getRiskStatus(category: string | null | undefined): TpoVisibilityStatus {
+  if (category === "LOW_RISK") return "good";
+  if (category === "MEDIUM_RISK") return "attention";
+  return "concern";
+}
+
+async function buildTpoVisibilitySummary(profile: Awaited<ReturnType<typeof StudentRepository.getStudentProfile>>) {
+  const tenantId = String(profile.tenant_id);
+  const userId = String(profile.user_id);
+  const studentId = String(profile.id);
+  const db = await getMongoDb();
+  const now = new Date();
+  const start7Date = new Date(now);
+  start7Date.setUTCDate(start7Date.getUTCDate() - 7);
+  const start7Iso = start7Date.toISOString();
+
+  const profileResponse = buildMyProfileResponse(profile);
+  const [dashboard, riskScore, totalMockAttempts, driveApplications] = await Promise.all([
+    StudentRepository.getDashboardData(tenantId, studentId),
+    RiskAssessmentService.getStudentRiskScore(tenantId, userId).catch(() => null),
+    db.collection("student_attempts").countDocuments({
+      tenant_id: tenantId,
+      student_id: studentId,
+      status: "submitted",
+    }),
+    db.collection("drive_results").countDocuments({
+      tenant_id: tenantId,
+      student_id: studentId,
+      status: { $in: ["applied"] },
+    }),
+  ]);
+
+  const profileStatusValue = profileResponse.profileCompleteness.isComplete
+    ? "Complete"
+    : `${Number(profileResponse.profileCompleteness.pct ?? 0).toFixed(0)}% complete`;
+  const profileStatus: TpoVisibilityRow = {
+    key: "profileStatus",
+    label: "Profile status",
+    value: profileStatusValue,
+    status: profileResponse.profileCompleteness.isComplete ? "good" : "concern",
+  };
+
+  const profileCertified: TpoVisibilityRow = {
+    key: "profileCertified",
+    label: "Profile certified",
+    value: profileResponse.declarationStatus.profileCertification.isCertified ? "Certified" : "Not certified yet",
+    status: profileResponse.declarationStatus.profileCertification.isCertified ? "good" : "concern",
+  };
+
+  const readinessScore = Number(dashboard.readinessScore ?? profile.readiness_score ?? 0);
+  const readiness: TpoVisibilityRow = {
+    key: "readinessScore",
+    label: "Readiness",
+    value: `${readinessScore.toFixed(1)}%`,
+    status: getReadinessStatus(readinessScore),
+  };
+
+  const riskCategoryValue = riskScore?.category === "LOW_RISK"
+    ? "Low risk"
+    : riskScore?.category === "MEDIUM_RISK"
+      ? "Medium risk"
+      : riskScore?.category === "HIGH_RISK"
+        ? "High risk"
+        : "Not available yet";
+  const riskCategory: TpoVisibilityRow = {
+    key: "riskCategory",
+    label: "Risk category",
+    value: riskCategoryValue,
+    status: riskScore ? getRiskStatus(riskScore.category) : "attention",
+  };
+
+  const mockTestsAttempted: TpoVisibilityRow = {
+    key: "mockTestsAttempted",
+    label: "Mock test participation",
+    value: formatCountLabel(totalMockAttempts, "attempt"),
+    status: totalMockAttempts >= 5 ? "good" : totalMockAttempts > 0 ? "attention" : "concern",
+  };
+
+  const studyHours7d = Number(dashboard.studyHoursWeek ?? 0);
+  const studyActivity: TpoVisibilityRow = {
+    key: "studyHours7d",
+    label: "Study activity this week",
+    value: `${studyHours7d.toFixed(1)} hour${studyHours7d === 1 ? "" : "s"}`,
+    status: studyHours7d >= 3 ? "good" : studyHours7d > 0 ? "attention" : "concern",
+  };
+
+  const driveApplicationsRow: TpoVisibilityRow = {
+    key: "driveApplications",
+    label: "Drive applications",
+    value: formatCountLabel(driveApplications, "application"),
+    status: driveApplications > 0 ? "good" : "attention",
+  };
+
+  const activeDays7d = Number(dashboard.resourceUsage?.activeDays7d ?? 0);
+  const resourceEngagement: TpoVisibilityRow = {
+    key: "resourceEngagement",
+    label: "Resource engagement",
+    value: activeDays7d > 0
+      ? `Active this week (${formatCountLabel(activeDays7d, "day")})`
+      : "No recent activity",
+    status: activeDays7d > 0 ? "good" : "attention",
+  };
+
+  return {
+    title: "Shared with your TPO",
+    description: "This summary shows the placement-readiness signals your placement office can review in Smart Path.",
+    rows: [
+      profileStatus,
+      profileCertified,
+      readiness,
+      riskCategory,
+      mockTestsAttempted,
+      studyActivity,
+      driveApplicationsRow,
+      resourceEngagement,
+    ],
+    fields: {
+      profileStatus,
+      profileCertified,
+      readinessScore: readiness,
+      riskCategory,
+      mockTestsAttempted,
+      studyHours7d: studyActivity,
+      driveApplications: driveApplicationsRow,
+      resourceEngagement7d: activeDays7d,
+      resourceEngagementLabel: resourceEngagement.value,
+      tpoVisibilityNote:
+        "Your TPO sees summary progress signals in Smart Path. Individual mock answers and detailed page-by-page browsing are not visible to your TPO.",
+    },
+    note:
+      "Your TPO sees summary progress signals in Smart Path. Individual mock answers and detailed page-by-page browsing are not visible to your TPO.",
+    generatedAt: now.toISOString(),
+    windowStartedAt: start7Iso,
+  };
+}
+
+async function buildMyProfileResponseWithVisibility(profile: Awaited<ReturnType<typeof StudentRepository.getStudentProfile>>) {
+  const base = buildMyProfileResponse(profile);
+  const tpoVisibilitySummary = await buildTpoVisibilitySummary(profile);
+  return {
+    ...base,
+    tpoVisibilitySummary,
+  };
+}
+
 function selectRecommendedResources(
   items: Array<RecommendedResourceItem & {
     recommendationFlags: {
@@ -939,6 +1117,8 @@ export const StudentService = {
   async listStudentDrives(tenantId: string, userId: string) {
     const db = await getMongoDb();
     const student = await StudentRepository.getStudentByUserId(tenantId, userId);
+    const profile = await StudentRepository.getStudentProfile(tenantId, userId);
+    const profileCertified = buildMyProfileResponse(profile).declarationStatus.profileCertification.isCertified;
     const drives = await db.collection("drives").find(
       { tenant_id: tenantId, deleted_at: null },
       { projection: { _id: 0, id: 1, company: 1, role: 1, drive_date: 1, criteria: 1, status: 1, eligible_count: 1 } },
@@ -948,12 +1128,13 @@ export const StudentService = {
     const results = driveIds.length > 0
       ? await db.collection("drive_results").find(
           { tenant_id: tenantId, student_id: student.id, drive_id: { $in: driveIds } },
-          { projection: { _id: 0, drive_id: 1, status: 1, outcome: 1, remarks: 1, result_released_at: 1, offer_letter_url: 1, offer_letter_reference: 1 } },
+          { projection: { _id: 0, drive_id: 1, status: 1, application_state: 1, outcome: 1, remarks: 1, result_released_at: 1, offer_letter_url: 1, offer_letter_reference: 1 } },
         ).toArray()
       : [];
     const resultMap = new Map(results.map((item) => [String(item.drive_id), item]));
 
       return drives.map((drive) => {
+        const lifecycle = normalizeDriveLifecycle(drive.status);
         const evaluation = evaluateStudentEligibility(
           {
             cgpa: Number(student.cgpa ?? 0),
@@ -974,15 +1155,35 @@ export const StudentService = {
         );
         const row = resultMap.get(String(drive.id));
         const isReleased = Boolean(row?.result_released_at);
+        const applicationState = String(row?.application_state ?? (row?.status === "applied" ? "applied" : "not_applied"));
 
       return {
         id: String(drive.id),
         company: String(drive.company ?? ""),
         role: String(drive.role ?? ""),
         driveDate: String(drive.drive_date ?? ""),
-        status: String(drive.status ?? "upcoming"),
+        status: lifecycle,
+        lifecycle,
         eligibleCount: Number(drive.eligible_count ?? 0),
         isEligible: evaluation.eligible,
+        eligibility: {
+          finalVerdict: evaluation.eligible ? "eligible" : "not_eligible",
+          blockingReasons: evaluation.reasons.map((reason) => ({
+            code: reason,
+            label: ELIGIBILITY_REASON_LABELS[reason],
+          })),
+          advisoryNotes: evaluation.eligible
+            ? ["You match the current drive criteria."]
+            : ["Fix the blocking items below before you expect placement-office help."],
+          criteriaSnapshot: {
+            minCgpa: Number(drive.criteria?.minCgpa ?? 0),
+            maxBacklogs: Number(drive.criteria?.maxBacklogs ?? 0),
+            maxActiveBacklogs: Number(drive.criteria?.maxActiveBacklogs ?? drive.criteria?.maxBacklogs ?? 0),
+            maxTotalBacklogs: Number(drive.criteria?.maxTotalBacklogs ?? 0),
+            branches: Array.isArray(drive.criteria?.branches) ? drive.criteria.branches : [],
+            minAttendance: Number(drive.criteria?.minAttendance ?? 0),
+          },
+        },
         reasons: evaluation.reasons.map((reason) => ({
           code: reason,
           label: ELIGIBILITY_REASON_LABELS[reason],
@@ -990,15 +1191,25 @@ export const StudentService = {
         criteria: {
           minCgpa: Number(drive.criteria?.minCgpa ?? 0),
           maxBacklogs: Number(drive.criteria?.maxBacklogs ?? 0),
+          maxActiveBacklogs: Number(drive.criteria?.maxActiveBacklogs ?? drive.criteria?.maxBacklogs ?? 0),
+          maxTotalBacklogs: Number(drive.criteria?.maxTotalBacklogs ?? 0),
           branches: Array.isArray(drive.criteria?.branches) ? drive.criteria.branches : [],
           minAttendance: Number(drive.criteria?.minAttendance ?? 0),
+          excludePlacedStudents: Boolean(drive.criteria?.excludePlacedStudents),
         },
         myStatus: String(row?.status ?? "not_computed"),
+        applicationState,
+        canWithdraw: lifecycle === "published" && applicationState === "applied",
         myOutcome: isReleased ? String(row?.outcome ?? "pending") : "pending",
         remarks: isReleased && row?.remarks ? String(row.remarks) : null,
         resultReleasedAt: isReleased ? String(row?.result_released_at ?? "") : null,
         offerLetterUrl: isReleased && row?.offer_letter_url ? String(row.offer_letter_url) : null,
         offerLetterReference: isReleased && row?.offer_letter_reference ? String(row.offer_letter_reference) : null,
+        timeline: {
+          registrationStatus: lifecycle === "published" ? "open" : lifecycle === "registration_closed" ? "closed" : lifecycle,
+          applicationState,
+          profileCertified,
+        },
       };
     });
   },
@@ -1042,7 +1253,8 @@ export const StudentService = {
       driveId: String(drive.id),
       company: String(drive.company ?? ""),
       role: drive.role ? String(drive.role) : null,
-      status: String(drive.status ?? "upcoming"),
+      status: normalizeDriveLifecycle(drive.status),
+      lifecycle: normalizeDriveLifecycle(drive.status),
       eligible: evaluation.eligible,
       reasons: evaluation.reasons.map((reason) => ({
         code: reason,
@@ -1064,6 +1276,7 @@ export const StudentService = {
         branch: String(student.branch ?? ""),
       },
       declarationStatus: myProfile.declarationStatus,
+      applicationState: "not_applied",
       warning: "Continue only if these values are still correct. If anything is outdated or false, contact the TPO before applying.",
     };
   },
@@ -1098,14 +1311,59 @@ export const StudentService = {
       })));
     }
 
-    const driveDate = new Date(`${drive.driveDate}T23:59:59.999Z`);
-    if (Number.isNaN(driveDate.getTime()) || driveDate.getTime() < Date.now()) {
-      throw new AppError("DRIVE_DEADLINE_PASSED", "This drive is no longer accepting applications.", 409);
+    if (normalizeDriveLifecycle(drive.status) !== "published") {
+      throw new AppError("DRIVE_REGISTRATION_CLOSED", "This drive is not open for new applications right now.", 409);
     }
 
     const existingResult = await DriveRepository.getDriveResultForStudent(params.tenantId, params.driveId, String(student.id));
     if (existingResult && (existingResult.status === "applied" || existingResult.outcome !== "pending")) {
       throw new AppError("DRIVE_ALREADY_APPLIED", "You have already applied to this drive.", 409);
+    }
+
+    const normalizedProfile = normalizeStudentProfileData(profile.profile_data);
+    let resumeSnapshot:
+      | {
+        provider: string;
+        fileId?: string | null;
+        webLink: string;
+        filename?: string | null;
+        uploadedAt?: string | null;
+      }
+      | null = null;
+
+    if (normalizedProfile.resumeDriveFileId && normalizedProfile.resumeDriveWebLink) {
+      const copied = await GoogleDriveResumeService.copyResumeSnapshot({
+        tenantId: params.tenantId,
+        driveId: params.driveId,
+        studentId: String(student.id),
+        fullName: String(profile.full_name ?? student.full_name ?? "student"),
+        sourceFileId: normalizedProfile.resumeDriveFileId,
+        sourceFilename: normalizedProfile.resumeFilename || "resume.pdf",
+        mimeType: normalizedProfile.resumeMimeType || "application/pdf",
+        sizeBytes: normalizedProfile.resumeSizeBytes ?? 0,
+      });
+      resumeSnapshot = {
+        provider: copied.provider,
+        fileId: copied.fileId,
+        webLink: copied.webViewLink,
+        filename: copied.filename,
+        uploadedAt: copied.uploadedAt,
+      };
+    } else if (normalizedProfile.resumeUrl) {
+      resumeSnapshot = {
+        provider: "legacy_link",
+        webLink: normalizedProfile.resumeUrl,
+        filename: normalizedProfile.resumeFilename || null,
+        uploadedAt: normalizedProfile.resumeUploadedAt || null,
+      };
+    }
+
+    if (!resumeSnapshot?.webLink) {
+      throw new AppError(
+        "RESUME_REQUIRED",
+        "Upload your resume in Profile before applying to drives.",
+        409,
+      );
     }
 
     await StudentRepository.upsertStudentDriveDeclaration({
@@ -1123,7 +1381,12 @@ export const StudentService = {
       },
     });
 
-    await DriveRepository.markDriveApplied(params.tenantId, params.driveId, String(student.id));
+    await DriveRepository.markDriveApplied(
+      params.tenantId,
+      params.driveId,
+      String(student.id),
+      resumeSnapshot,
+    );
 
     await StudentActivityService.logEvent({
       id: `drive-apply:${params.driveId}:${String(student.id)}`,
@@ -1164,7 +1427,49 @@ export const StudentService = {
       module: "Drives",
     });
 
-    return { driveId: params.driveId, status: "applied" as const };
+    return { driveId: params.driveId, status: "applied" as const, applicationState: "applied" as const };
+  },
+
+  async withdrawFromDrive(params: {
+    tenantId: string;
+    userId: string;
+    driveId: string;
+  }) {
+    const student = await StudentRepository.getStudentByUserId(params.tenantId, params.userId);
+    const data = await DriveRepository.getDriveResultForStudent(params.tenantId, params.driveId, String(student.id));
+    if (!data || data.applicationState !== "applied") {
+      throw new AppError("DRIVE_WITHDRAWAL_INVALID", "Only applied drives can be withdrawn.", 409);
+    }
+
+    const drive = await DriveRepository.getDriveById(params.tenantId, params.driveId);
+    if (normalizeDriveLifecycle(drive.status) !== "published") {
+      throw new AppError("DRIVE_WITHDRAWAL_CLOSED", "This drive is no longer open for withdrawal.", 409);
+    }
+
+    await DriveRepository.markDriveWithdrawn(params.tenantId, params.driveId, String(student.id));
+    await DriveRepository.recountDriveEligibleCount(params.tenantId, params.driveId);
+
+    await StudentActivityService.logEvent({
+      id: `drive-withdraw:${params.driveId}:${String(student.id)}`,
+      tenantId: params.tenantId,
+      studentId: String(student.id),
+      eventType: "drive_applied",
+      eventSource: "drive_results",
+      entityId: params.driveId,
+      entityType: "drive",
+      title: "Withdrew from drive",
+      description: `Withdrew from ${drive.company}${drive.role ? ` (${drive.role})` : ""}.`,
+      metadata: {
+        driveId: params.driveId,
+        company: drive.company,
+        role: drive.role,
+        applicationState: "withdrawn",
+      },
+      impactScore: 12,
+      module: "Drives",
+    });
+
+    return { driveId: params.driveId, applicationState: "withdrawn" as const };
   },
 
   async getDashboard(tenantId: string, userId: string) {
@@ -1253,7 +1558,7 @@ export const StudentService = {
 
   async getMyProfile(tenantId: string, userId: string) {
     const profile = await StudentRepository.getStudentProfile(tenantId, userId);
-    return buildMyProfileResponse(profile);
+    return buildMyProfileResponseWithVisibility(profile);
   },
 
   async getMyDeclarationStatus(tenantId: string, userId: string) {
@@ -1315,7 +1620,7 @@ export const StudentService = {
       module: "Profile",
     });
 
-    return buildMyProfileResponse(updated);
+    return buildMyProfileResponseWithVisibility(updated);
   },
 
   async getProfileCertificationPreview(tenantId: string, userId: string) {
@@ -1405,7 +1710,7 @@ export const StudentService = {
       module: "Profile",
     });
 
-    return buildMyProfileResponse(updated);
+    return buildMyProfileResponseWithVisibility(updated);
   },
 
   async updateMyProfile(params: {
@@ -1584,10 +1889,88 @@ export const StudentService = {
         changedFields,
         previousSkillsCount: Array.isArray(before.skills) ? before.skills.length : 0,
         currentSkillsCount: Array.isArray(updatedProfile.skills) ? updatedProfile.skills.length : 0,
-        previousResumePresent: Boolean(existingProfileData.resumeUrl),
-        currentResumePresent: Boolean(normalizeStudentProfileData(updatedProfile.profile_data).resumeUrl),
+        previousResumePresent: hasResumeOnProfile(existingProfileData),
+        currentResumePresent: hasResumeOnProfile(normalizeStudentProfileData(updatedProfile.profile_data)),
       },
       impactScore: 32,
+      module: "Profile",
+    });
+
+    return this.getMyProfile(params.tenantId, params.userId);
+  },
+
+  async uploadMyResume(params: {
+    tenantId: string;
+    userId: string;
+    file: {
+      buffer: Buffer;
+      originalname: string;
+      mimetype: string;
+      size: number;
+    };
+  }) {
+    const profile = await StudentRepository.getStudentProfile(params.tenantId, params.userId);
+    const currentProfileResponse = buildMyProfileResponse(profile);
+    if (currentProfileResponse.declarationStatus.profileCertification.isLocked) {
+      throw new AppError(
+        "PROFILE_LOCKED",
+        "Your certified profile is locked. Contact your placement admin to unlock it before uploading a new resume.",
+        409,
+      );
+    }
+
+    const mimeType = String(params.file.mimetype ?? "").toLowerCase();
+    const originalName = String(params.file.originalname ?? "").trim();
+    const isPdf = mimeType.includes("pdf") || originalName.toLowerCase().endsWith(".pdf");
+    if (!isPdf) {
+      throw new AppError("RESUME_FILE_INVALID", "Upload a PDF resume file.", 400);
+    }
+    if (params.file.size > 3 * 1024 * 1024) {
+      throw new AppError("RESUME_FILE_TOO_LARGE", "Keep the resume PDF under 3 MB for now.", 400);
+    }
+
+    const currentProfile = normalizeStudentProfileData(profile.profile_data);
+    const uploadedResume = await GoogleDriveResumeService.uploadCurrentResume({
+      tenantId: params.tenantId,
+      studentId: String(profile.id),
+      fullName: String(profile.full_name ?? "student"),
+      originalFilename: originalName || "resume.pdf",
+      buffer: params.file.buffer,
+      mimeType: "application/pdf",
+      previousFileId: currentProfile.resumeDriveFileId || null,
+    });
+
+    const updatedProfile = await StudentRepository.updateStudentProfile({
+      tenantId: params.tenantId,
+      userId: params.userId,
+      profileData: {
+        ...((profile.profile_data ?? {}) as Record<string, unknown>),
+        resumeStorageProvider: uploadedResume.provider,
+        resumeDriveFileId: uploadedResume.fileId,
+        resumeDriveWebLink: uploadedResume.webViewLink,
+        resumeFilename: uploadedResume.filename,
+        resumeMimeType: uploadedResume.mimeType,
+        resumeSizeBytes: uploadedResume.sizeBytes,
+        resumeUploadedAt: uploadedResume.uploadedAt,
+        resumeUrl: uploadedResume.webViewLink,
+      },
+    });
+
+    await StudentActivityService.logEvent({
+      tenantId: params.tenantId,
+      studentId: String(updatedProfile.id),
+      eventType: "profile_updated",
+      eventSource: "student_profile",
+      entityId: String(updatedProfile.id),
+      entityType: "student_profile",
+      title: "Resume uploaded",
+      description: "Uploaded a managed resume for drive applications.",
+      metadata: {
+        resumeStorageProvider: uploadedResume.provider,
+        resumeFilename: uploadedResume.filename,
+        resumeSizeBytes: uploadedResume.sizeBytes,
+      },
+      impactScore: 20,
       module: "Profile",
     });
 

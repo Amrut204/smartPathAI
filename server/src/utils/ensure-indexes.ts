@@ -114,6 +114,7 @@ export async function ensureCoreIndexes(): Promise<void> {
 
     ensureIndex({ collection: "drive_results", keys: { tenant_id: 1, drive_id: 1 } }),
     ensureIndex({ collection: "drive_results", keys: { tenant_id: 1, drive_id: 1, status: 1 } }),
+    ensureIndex({ collection: "drive_results", keys: { tenant_id: 1, drive_id: 1, application_state: 1 } }),
     ensureIndex({ collection: "drive_results", keys: { tenant_id: 1, drive_id: 1, student_id: 1 }, options: { unique: true } }),
     ensureIndex({ collection: "drive_results", keys: { tenant_id: 1, student_id: 1, updated_at: -1 } }),
     ensureIndex({ collection: "student_drive_declarations", keys: { tenant_id: 1, student_id: 1, drive_id: 1 }, options: { unique: true } }),

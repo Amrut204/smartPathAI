@@ -135,6 +135,12 @@ export default function MockTestsPage() {
 
     return [
       {
+        id: "for-your-branch",
+        label: "For Your Branch",
+        description: `${curatedCatalog.branchTrackLabel ?? "Your branch"} core practice and relevant technical tests.`,
+        items: curatedCatalog.sections.forYourBranch,
+      },
+      {
         id: "take-next",
         label: "Take Next",
         description: "The best next tests based on your readiness, recent performance, and branch context.",
@@ -238,6 +244,9 @@ export default function MockTestsPage() {
             <div>
               <h2>{section.label}</h2>
               <p>{section.description}</p>
+              {section.id === "for-your-branch" && section.items.length > 0 && section.items.length <= 8 ? (
+                <p className="muted-text">More branch-specific tests will appear here as the catalog expands.</p>
+              ) : null}
             </div>
             <span className="mock-section-count">{section.items.length}</span>
           </div>

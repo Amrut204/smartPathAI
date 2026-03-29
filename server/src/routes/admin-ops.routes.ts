@@ -568,12 +568,16 @@ router.put(
       tenantId: body.tenantId,
       googleForm: body.googleForm ?? null,
       googleSheet: body.googleSheet ?? null,
+      googleDriveSharedDriveId: body.googleDriveSharedDriveId ?? null,
+      googleDriveRootFolderId: body.googleDriveRootFolderId ?? null,
       label: body.label ?? null,
       notes: body.notes ?? null,
     });
     await logAdminAudit(req, body.tenantId, "admin_ops_integrations_updated", {
       hasGoogleForm: Boolean(data.googleForm),
       hasGoogleSheet: Boolean(data.googleSheet),
+      hasGoogleDriveSharedDriveId: Boolean(data.googleDriveSharedDriveId),
+      hasGoogleDriveRootFolderId: Boolean(data.googleDriveRootFolderId),
     });
     res.json(successResponse(data));
   }),

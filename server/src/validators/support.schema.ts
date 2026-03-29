@@ -5,6 +5,15 @@ export const createSupportRequestSchema = z.object({
   reason: z.string().trim().min(10).max(2000),
 });
 
+export const createStudentSupportRequestSchema = z.object({
+  subject: z.string().trim().min(4).max(160),
+  message: z.string().trim().min(10).max(2000),
+});
+
+export const resolveStudentSupportRequestSchema = z.object({
+  note: z.string().trim().min(1).max(1000),
+});
+
 export const approveSupportRequestSchema = z.object({
   ttlMinutes: z.number().int().min(15).max(24 * 60).default(60),
   note: z.string().trim().max(500).optional(),

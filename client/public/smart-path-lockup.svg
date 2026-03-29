@@ -1,0 +1,11 @@
+<svg width="360" height="96" viewBox="0 0 360 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="4" y="8" width="80" height="80" rx="22" fill="#E8EEF9"/>
+  <rect x="18" y="22" width="52" height="52" rx="14" fill="#FFFFFF" stroke="#C7D2E4" stroke-width="2.5"/>
+  <path d="M31 58L42 47L50 55L62 43" stroke="#1D4ED8" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="31" cy="58" r="3" fill="#0F172A"/>
+  <circle cx="42" cy="47" r="3" fill="#0F172A"/>
+  <circle cx="50" cy="55" r="3" fill="#0F172A"/>
+  <circle cx="62" cy="43" r="3" fill="#0F172A"/>
+  <text x="104" y="43" fill="#0F172A" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700">Smart Path</text>
+  <text x="104" y="67" fill="#5B6678" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" letter-spacing="0.06em">PLACEMENT READINESS PLATFORM</text>
+</svg>

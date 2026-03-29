@@ -5,6 +5,7 @@ import { requireAuth } from "../middleware/auth.middleware.js";
 import { authorizeRole } from "../middleware/rbac.middleware.js";
 import { AuditLogService } from "../services/audit-log.service.js";
 import { SupportSessionService } from "../services/support-session.service.js";
+import { StudentSupportService } from "../services/student-support.service.js";
 import { getMongoDb } from "../utils/mongodb.js";
 import {
   createSupportSessionToken,
@@ -15,8 +16,10 @@ import { successResponse } from "../utils/response-envelope.js";
 import {
   approveSupportRequestSchema,
   createSupportRequestSchema,
+  createStudentSupportRequestSchema,
   denySupportRequestSchema,
   listAuditLogsQuerySchema,
+  resolveStudentSupportRequestSchema,
   revokeSupportRequestSchema,
 } from "../validators/support.schema.js";
 
@@ -193,6 +196,41 @@ router.get(
   }),
 );
 
+// Student: submit / list own support requests
+router.post(
+  "/student-requests",
+  authorizeRole("student"),
+  asyncHandler(async (req, res) => {
+    const body = createStudentSupportRequestSchema.parse(req.body);
+    const record = await StudentSupportService.create({
+      tenantId: req.auth!.tenantId,
+      studentId: req.auth!.userId,
+      subject: body.subject,
+      message: body.message,
+    });
+
+    await AuditLogService.log({
+      tenantId: record.tenant_id,
+      actorUserId: req.auth!.userId,
+      actorRole: req.auth!.role,
+      actorTenantId: req.auth!.tenantId,
+      eventType: "student_support_requested",
+      metadata: { requestId: record.id, subject: record.subject },
+    });
+
+    res.status(201).json(successResponse(record));
+  }),
+);
+
+router.get(
+  "/student-requests/me",
+  authorizeRole("student"),
+  asyncHandler(async (req, res) => {
+    const rows = await StudentSupportService.listForStudent(req.auth!.userId);
+    res.json(successResponse(rows));
+  }),
+);
+
 // TPO: inbox + approve/deny/revoke
 router.get(
   "/inbox",
@@ -200,6 +238,41 @@ router.get(
   asyncHandler(async (req, res) => {
     const rows = await SupportSessionService.listTenantInbox(req.auth!.tenantId);
     res.json(successResponse(rows));
+  }),
+);
+
+router.get(
+  "/student-requests/inbox",
+  authorizeRole("tpo"),
+  asyncHandler(async (req, res) => {
+    const rows = await StudentSupportService.listTenantInbox(req.auth!.tenantId);
+    res.json(successResponse(rows));
+  }),
+);
+
+router.post(
+  "/student-requests/:id/resolve",
+  authorizeRole("tpo"),
+  asyncHandler(async (req, res) => {
+    const body = resolveStudentSupportRequestSchema.parse(req.body);
+    const requestId = String(req.params.id);
+    const updated = await StudentSupportService.resolve({
+      tenantId: req.auth!.tenantId,
+      requestId,
+      resolvedByUserId: req.auth!.userId,
+      resolvedByEmail: req.auth!.email,
+      note: body.note,
+    });
+
+    await AuditLogService.log({
+      tenantId: updated.tenant_id,
+      actorUserId: req.auth!.userId,
+      actorRole: req.auth!.role,
+      eventType: "student_support_resolved",
+      metadata: { requestId: updated.id, subject: updated.subject },
+    });
+
+    res.json(successResponse(updated));
   }),
 );
 

@@ -1,20 +1,29 @@
-import { DriveRepository } from "../repositories/drive.repository.js";
+import {
+  DriveRepository,
+  buildDriveCriteriaDigest,
+  normalizeDriveLifecycle,
+  type DriveApplicationState,
+  type DriveLifecycle,
+  type DriveResultRound,
+} from "../repositories/drive.repository.js";
 import { EligibilityService } from "./eligibility.service.js";
 import { AppError } from "../middleware/error-handler.js";
 import { StudentActivityService } from "./student-activity.service.js";
 import { AuditLogService } from "./audit-log.service.js";
 import { CommunicationService } from "./communication.service.js";
 
-type DriveStatus = "upcoming" | "active" | "completed" | "cancelled";
-
-const VALID_TRANSITIONS: Record<DriveStatus, DriveStatus[]> = {
-  upcoming: ["active", "cancelled"],
-  active: ["completed", "cancelled"],
-  completed: [],
+const VALID_TRANSITIONS: Record<DriveLifecycle, DriveLifecycle[]> = {
+  draft: ["published", "cancelled"],
+  published: ["draft", "registration_closed", "cancelled"],
+  registration_closed: ["in_process", "cancelled"],
+  in_process: ["results_pending", "completed", "cancelled"],
+  results_pending: ["completed", "cancelled"],
+  completed: ["archived"],
+  archived: [],
   cancelled: [],
 };
 
-function assertStatusTransition(currentStatus: DriveStatus, nextStatus: DriveStatus) {
+function assertStatusTransition(currentStatus: DriveLifecycle, nextStatus: DriveLifecycle) {
   if (currentStatus === nextStatus) {
     return;
   }
@@ -32,6 +41,10 @@ type ReleaseAudience = "selected" | "rejected" | "finalized";
 
 type ResultNotificationRow = Awaited<ReturnType<typeof DriveRepository.listDriveResults>>[number];
 type DriveOutcome = "pending" | "shortlisted" | "selected" | "rejected";
+
+function requiresPreviewForStatus(status: DriveLifecycle) {
+  return status !== "draft" && status !== "cancelled";
+}
 
 const VALID_OUTCOME_TRANSITIONS: Record<DriveOutcome, DriveOutcome[]> = {
   pending: ["pending", "shortlisted", "selected", "rejected"],
@@ -128,7 +141,7 @@ export const DriveService = {
     query: {
       limit: number;
       cursor?: string;
-      status?: DriveStatus;
+      status?: DriveLifecycle;
     },
   ) {
     return DriveRepository.listDrives(tenantId, query);
@@ -149,6 +162,12 @@ export const DriveService = {
       roundsConducted?: string[];
       mouStatus?: "not_started" | "in_discussion" | "signed" | "not_applicable";
       reportingNotes?: string;
+      registrationInstructions?: string;
+      requiredDocuments?: string[];
+      location?: string;
+      mode?: "on_campus" | "off_campus" | "hybrid";
+      dressCode?: string;
+      previewDigest?: string;
       criteria: {
         minCgpa?: number;
         maxBacklogs?: number;
@@ -158,9 +177,15 @@ export const DriveService = {
         minAttendance?: number;
         excludePlacedStudents?: boolean;
       };
-      status: DriveStatus;
+      status: DriveLifecycle;
     },
   ) {
+    const requestedStatus = normalizeDriveLifecycle(input.status);
+    const criteriaDigest = buildDriveCriteriaDigest(input.criteria);
+    if (requiresPreviewForStatus(requestedStatus) && input.previewDigest !== criteriaDigest) {
+      throw new AppError("DRIVE_PREVIEW_REVIEW_REQUIRED", "Run and review eligibility preview before publishing this drive.", 409);
+    }
+
     return DriveRepository.createDrive(tenantId, createdBy, input);
   },
 
@@ -198,6 +223,12 @@ export const DriveService = {
       roundsConducted: string[];
       mouStatus: "not_started" | "in_discussion" | "signed" | "not_applicable";
       reportingNotes: string;
+      registrationInstructions: string;
+      requiredDocuments: string[];
+      location: string;
+      mode: "on_campus" | "off_campus" | "hybrid";
+      dressCode: string;
+      previewDigest: string;
       criteria: {
         minCgpa?: number;
         maxBacklogs?: number;
@@ -207,15 +238,38 @@ export const DriveService = {
         minAttendance?: number;
         excludePlacedStudents?: boolean;
       };
-      status: DriveStatus;
+      status: DriveLifecycle;
     }>,
   ) {
+    const existing = await DriveRepository.getDriveById(tenantId, driveId);
+    const currentStatus = normalizeDriveLifecycle(existing.status);
+
     if (updates.status) {
-      const existing = await DriveRepository.getDriveById(tenantId, driveId);
-      assertStatusTransition(existing.status as DriveStatus, updates.status);
+      const nextStatus = normalizeDriveLifecycle(updates.status);
+      assertStatusTransition(currentStatus, nextStatus);
     }
 
-    return DriveRepository.updateDrive(tenantId, driveId, updates);
+    const nextCriteria = updates.criteria ?? existing.criteria;
+    const nextStatus = normalizeDriveLifecycle(updates.status ?? currentStatus);
+    const criteriaChanged = updates.criteria !== undefined;
+    const patch: typeof updates = { ...updates };
+
+    if (criteriaChanged && currentStatus !== "draft" && currentStatus !== "cancelled") {
+      patch.status = "draft";
+      patch.previewDigest = "";
+    }
+
+    const effectiveStatus = normalizeDriveLifecycle(patch.status ?? nextStatus);
+    const nextDigest = buildDriveCriteriaDigest(nextCriteria);
+    if (requiresPreviewForStatus(effectiveStatus) && patch.previewDigest !== nextDigest && existing.previewDigest !== nextDigest) {
+      throw new AppError("DRIVE_PREVIEW_REVIEW_REQUIRED", "Review eligibility preview again before moving this drive forward.", 409);
+    }
+
+    if (!patch.previewDigest && existing.previewDigest === nextDigest && requiresPreviewForStatus(effectiveStatus)) {
+      patch.previewDigest = existing.previewDigest ?? undefined;
+    }
+
+    return DriveRepository.updateDrive(tenantId, driveId, patch);
   },
 
   async deleteDrive(tenantId: string, driveId: string) {
@@ -289,6 +343,34 @@ export const DriveService = {
     return DriveRepository.listDriveResults(tenantId, driveId);
   },
 
+  async withdrawStudentApplication(input: {
+    tenantId: string;
+    driveId: string;
+    studentId: string;
+  }) {
+    const [drive, existingResult] = await Promise.all([
+      DriveRepository.getDriveById(input.tenantId, input.driveId),
+      DriveRepository.getDriveResultForStudent(input.tenantId, input.driveId, input.studentId),
+    ]);
+
+    if (normalizeDriveLifecycle(drive.status) !== "published") {
+      throw new AppError("DRIVE_WITHDRAWAL_CLOSED", "You can withdraw only while registration is open.", 409);
+    }
+
+    if (!existingResult || existingResult.applicationState !== "applied") {
+      throw new AppError("DRIVE_WITHDRAWAL_INVALID", "Only applied drives can be withdrawn.", 409);
+    }
+
+    await DriveRepository.markDriveWithdrawn(input.tenantId, input.driveId, input.studentId);
+    await DriveRepository.recountDriveEligibleCount(input.tenantId, input.driveId);
+
+    return {
+      driveId: input.driveId,
+      studentId: input.studentId,
+      applicationState: "withdrawn" as const,
+    };
+  },
+
   async updateDriveResults(
     tenantId: string,
     driveId: string,
@@ -297,6 +379,7 @@ export const DriveService = {
       updates: Array<{
         studentId: string;
         outcome: "pending" | "shortlisted" | "selected" | "rejected";
+        applicationState?: DriveApplicationState;
         remarks?: string;
         registered?: boolean;
         appeared?: boolean;
@@ -313,6 +396,7 @@ export const DriveService = {
         sourceNote?: string;
         nonPlacementReason?: string;
         actionPlan?: string;
+        rounds?: DriveResultRound[];
       }>;
       resultIntake?: {
         source?: "employer_email" | "employer_portal" | "manual_update";
@@ -340,11 +424,15 @@ export const DriveService = {
       payload.updates.map((update) => {
         const currentStatus = existingStatusMap.get(update.studentId) ?? "eligible";
         const nextStatus =
-          update.outcome !== "pending" ? "applied" : (currentStatus === "applied" ? "applied" : "eligible");
+          update.applicationState === "applied" || update.applicationState === "absent" || update.outcome !== "pending"
+            ? "applied"
+            : (currentStatus === "applied" ? "applied" : "eligible");
 
         return {
           ...update,
           status: nextStatus,
+          applicationState: update.applicationState
+            ?? (update.outcome !== "pending" ? "applied" : undefined),
         };
       }),
     );
@@ -381,8 +469,10 @@ export const DriveService = {
 
     if (payload.markCompleted) {
       const existing = await DriveRepository.getDriveById(tenantId, driveId);
-      assertStatusTransition(existing.status as DriveStatus, "completed");
-      await DriveRepository.updateDriveStatus(tenantId, driveId, "completed");
+      const currentLifecycle = normalizeDriveLifecycle(existing.status);
+      const nextLifecycle = currentLifecycle === "in_process" ? "results_pending" : "completed";
+      assertStatusTransition(currentLifecycle, nextLifecycle);
+      await DriveRepository.updateDriveStatus(tenantId, driveId, nextLifecycle);
     }
 
     await StudentActivityService.logEvents(

@@ -18,6 +18,7 @@ import {
   bulkTopicProgressSchema,
   updateStudentProfileSchema,
   studentDriveApplySchema,
+  studentDriveWithdrawSchema,
   studentOnboardingDeclarationSchema,
   studentProfileCertificationSchema,
   leaderboardQuerySchema,
@@ -31,6 +32,7 @@ import { successResponse } from "../utils/response-envelope.js";
 import { clampListLimit } from "../utils/pagination.js";
 import { CommunicationService } from "../services/communication.service.js";
 import { studentAnnouncementsQuerySchema } from "../validators/communication.schema.js";
+import { AuditLogService } from "../services/audit-log.service.js";
 
 const router = Router();
 const upload = multer({
@@ -153,6 +155,33 @@ router.patch(
       tenantId: req.auth!.tenantId,
       userId: req.auth!.userId,
       ...body,
+    });
+    res.json(successResponse(updated));
+  }),
+);
+
+router.post(
+  "/me/resume",
+  authorizeRole("student"),
+  upload.single("resume"),
+  asyncHandler(async (req, res) => {
+    if (!req.file) {
+      res.status(400).json({
+        success: false,
+        error: { code: "RESUME_FILE_MISSING", message: "Upload a PDF file in form field 'resume'." },
+      });
+      return;
+    }
+
+    const updated = await StudentService.uploadMyResume({
+      tenantId: req.auth!.tenantId,
+      userId: req.auth!.userId,
+      file: {
+        buffer: req.file.buffer,
+        originalname: req.file.originalname,
+        mimetype: req.file.mimetype,
+        size: req.file.size,
+      },
     });
     res.json(successResponse(updated));
   }),
@@ -385,6 +414,27 @@ router.get(
         limit,
       },
     }));
+  }),
+);
+
+router.post(
+  "/me/drives/:driveId/withdraw",
+  authorizeRole("student"),
+  asyncHandler(async (req, res) => {
+    const body = studentDriveWithdrawSchema.parse(req.body);
+    const data = await StudentService.withdrawFromDrive({
+      tenantId: req.auth!.tenantId,
+      userId: req.auth!.userId,
+      driveId: String(req.params.driveId),
+    });
+    await AuditLogService.log({
+      tenantId: req.auth!.tenantId,
+      actorUserId: req.auth!.userId,
+      actorRole: req.auth!.role,
+      eventType: "drive_application_withdrawn",
+      metadata: { driveId: String(req.params.driveId) },
+    });
+    res.json(successResponse({ ...data, confirmed: body.confirmWithdrawal }));
   }),
 );
 

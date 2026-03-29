@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { Brand } from "../../components/composites/Brand";
 import { useAuth } from "../../components/providers/AuthProvider";
 import { Button, Input } from "../../components/ui";
 
@@ -42,6 +43,7 @@ export default function InitialPasswordResetPage() {
     <section className="public-auth-shell">
       <div className="public-auth-layout">
         <aside className="public-auth-aside">
+          <Brand href="/" variant="full" descriptor="Secure account setup" className="public-auth-brand" />
           <p className="public-auth-kicker">First login setup</p>
           <h1>Set your permanent password before entering your workspace.</h1>
           <p className="public-auth-lead">

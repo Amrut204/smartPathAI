@@ -38,6 +38,8 @@ export interface MockTestListItem {
   recommendationReasons?: string[];
   recommendationBucket?: string;
   difficultyFit?: "stretch" | "fit" | "easy";
+  primaryBranches?: string[];
+  isCrossBranch?: boolean;
 }
 
 export interface MockTestMetadata {
@@ -58,6 +60,7 @@ export interface CuratedMockTestsPayload {
     avgAttempts: number;
   };
   sections: {
+    forYourBranch: MockTestListItem[];
     recommended: MockTestListItem[];
     companyFocused: MockTestListItem[];
     companyPrep: MockTestListItem[];

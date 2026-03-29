@@ -4,10 +4,19 @@ import { useMemo, useState } from "react";
 import { Badge, Button } from "../../components/ui";
 import { deleteDrive, useDrives, type DriveSummary } from "../../hooks/use-drives";
 
-const statusTabs: Array<DriveSummary["status"]> = ["upcoming", "active", "completed", "cancelled"];
+const statusTabs: Array<{ id: DriveSummary["status"]; label: string }> = [
+  { id: "draft", label: "Draft" },
+  { id: "published", label: "Published" },
+  { id: "registration_closed", label: "Closed" },
+  { id: "in_process", label: "In Process" },
+  { id: "results_pending", label: "Results Pending" },
+  { id: "completed", label: "Completed" },
+  { id: "archived", label: "Archived" },
+  { id: "cancelled", label: "Cancelled" },
+];
 
 export default function TpoDrivesPage() {
-  const [status, setStatus] = useState<DriveSummary["status"]>("upcoming");
+  const [status, setStatus] = useState<DriveSummary["status"]>("published");
   const [busyDriveId, setBusyDriveId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { data, isLoading, mutate } = useDrives({ status });
@@ -28,7 +37,7 @@ export default function TpoDrivesPage() {
     }
   };
 
-  const statusLabel = status.charAt(0).toUpperCase() + status.slice(1);
+  const statusLabel = statusTabs.find((item) => item.id === status)?.label ?? status;
 
   return (
     <section className="tpo-drives-shell">
@@ -46,12 +55,12 @@ export default function TpoDrivesPage() {
         <div className="tpo-drives-subnav-links">
           {statusTabs.map((item) => (
             <button
-              key={item}
+              key={item.id}
               type="button"
-              className={status === item ? "tpo-drives-subnav-link is-active" : "tpo-drives-subnav-link"}
-              onClick={() => setStatus(item)}
+              className={status === item.id ? "tpo-drives-subnav-link is-active" : "tpo-drives-subnav-link"}
+              onClick={() => setStatus(item.id)}
             >
-              {item}
+              {item.label}
             </button>
           ))}
         </div>

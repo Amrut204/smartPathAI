@@ -16,6 +16,7 @@ export default function TpoDriveCreatePage() {
   const [error, setError] = useState<string | null>(null);
   const [reviewConfirmed, setReviewConfirmed] = useState(false);
   const [eligibilityPreview, setEligibilityPreview] = useState<DriveEligibilityPreview | null>(null);
+  const [targetStatus, setTargetStatus] = useState<"draft" | "published">("published");
 
   const [company, setCompany] = useState("");
   const [role, setRole] = useState("");
@@ -143,6 +144,8 @@ export default function TpoDriveCreatePage() {
         mouStatus,
         reportingNotes: reportingNotes.trim() || undefined,
         criteria,
+        status: targetStatus,
+        previewDigest: eligibilityPreview.previewDigest,
       });
 
       navigate(`/tpo/drives/${created.id}`);
@@ -337,6 +340,16 @@ export default function TpoDriveCreatePage() {
           <p>Branches: {normalizedBranches.join(", ") || "-"}</p>
           <p>Min Attendance: {minAttendance || "-"}</p>
           <p>Exclude Already Placed: {excludePlacedStudents ? "Yes" : "No"}</p>
+          <label>
+            Publish mode
+            <Select
+              value={targetStatus}
+              onChange={(event) => setTargetStatus(event.target.value as typeof targetStatus)}
+            >
+              <option value="published">Publish now after review</option>
+              <option value="draft">Save as draft</option>
+            </Select>
+          </label>
           <hr />
           <h3>Eligibility Preview</h3>
           {eligibilityPreview ? (
@@ -345,6 +358,18 @@ export default function TpoDriveCreatePage() {
               <p>Eligible: {eligibilityPreview.eligibleCount}</p>
               <p>Ineligible: {eligibilityPreview.ineligibleCount}</p>
               <p>Eligibility rate: {eligibilityPreview.eligibleRate}%</p>
+              {eligibilityPreview.branchBreakdown && eligibilityPreview.branchBreakdown.length > 0 ? (
+                <>
+                  <p><strong>Branch-wise split</strong></p>
+                  <ul>
+                    {eligibilityPreview.branchBreakdown.map((item) => (
+                      <li key={item.branch}>
+                        {item.branch}: {item.eligibleCount} eligible / {item.totalStudents} evaluated
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : null}
               {eligibilityPreview.reasons.length > 0 ? (
                 <ul>
                   {eligibilityPreview.reasons.map((reason) => (
@@ -356,6 +381,18 @@ export default function TpoDriveCreatePage() {
               ) : (
                 <p>No ineligibility reasons detected for current criteria.</p>
               )}
+              {eligibilityPreview.sampleExcludedStudents && eligibilityPreview.sampleExcludedStudents.length > 0 ? (
+                <>
+                  <p><strong>Sample exclusions</strong></p>
+                  <ul>
+                    {eligibilityPreview.sampleExcludedStudents.slice(0, 5).map((student) => (
+                      <li key={student.studentId}>
+                        {student.fullName} ({student.branch}) - {student.reasons.join(", ")}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : null}
             </>
           ) : (
             <p>No preview available. Go back and run preview.</p>
@@ -376,7 +413,7 @@ export default function TpoDriveCreatePage() {
               Back
             </Button>
             <Button disabled={busy || !eligibilityPreview || !reviewConfirmed} onClick={onSubmit}>
-              {busy ? "Creating..." : "Create Drive"}
+              {busy ? "Saving..." : targetStatus === "draft" ? "Create Draft" : "Create & Publish"}
             </Button>
           </div>
         </Card>

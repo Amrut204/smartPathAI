@@ -12,7 +12,13 @@ import { ReadinessService } from "./readiness.service.js";
 import { StudentRepository } from "../repositories/student.repository.js";
 import { getMongoDb } from "../utils/mongodb.js";
 import { StudentActivityService } from "./student-activity.service.js";
-import { getBranchPrepTrack, matchesBranchPrepTrackTag } from "../config/branch-prep.config.js";
+import { getBranchPrepTrack } from "../config/branch-prep.config.js";
+import {
+  inferMockTestBranches,
+  inferMockTestIsCrossBranch,
+  matchesMockTestBranch,
+  normalizeMockTestBranches,
+} from "../config/mock-test-branch.config.js";
 
 const STUDENT_MIN_VISIBLE_QUESTION_COUNT = 10;
 
@@ -72,7 +78,7 @@ function classifyTrackCategory(input: {
 }) {
   const haystack = `${input.title} ${input.topicName ?? ""} ${input.companyName ?? ""}`.toLowerCase();
   const companyKeywordMatch = /\b(tcs|infosys|wipro|accenture|cognizant|capgemini|nqt|ibm|deloitte|tech mahindra|hcl)\b/i.test(haystack);
-  const companyPrepKeywordMatch = /\b(memory based|placement paper|company[-\s]?specific|campus paper|nqt)\b/i.test(haystack);
+  const companyPrepKeywordMatch = /\b(memory based|placement paper|company[-\s]?specific|campus paper|nqt|pattern|variant|assessment|online test|mock test)\b/i.test(haystack);
   const branchCoreKeywordMatch = /\b(electrical|electronics|mechanical|civil|thermodynamics|surveying|circuits|signals|machines|structure|manufacturing|vlsi|power systems|digital electronics|analog electronics|strength of materials|fluid mechanics|geotechnical)\b/i.test(haystack);
 
   if (input.companyName || (companyKeywordMatch && companyPrepKeywordMatch) || /\b(company paper)\b/i.test(haystack)) {
@@ -92,27 +98,6 @@ function classifyTrackCategory(input: {
 
 function sliceSection(items: Array<Awaited<ReturnType<typeof decorateListedItems>>[number]>, predicate: (item: Awaited<ReturnType<typeof decorateListedItems>>[number]) => boolean, limit: number) {
   return items.filter(predicate).slice(0, limit);
-}
-
-function filterItemsForStudentBranch(
-  items: Array<Awaited<ReturnType<typeof decorateListedItems>>[number]>,
-  branch: string,
-) {
-  const branchTrack = getBranchPrepTrack(branch);
-  const focusAreaNames = branchTrack.focusAreas.map((item) => item.topicName.toLowerCase());
-
-  return items.filter((item) => {
-    if (item.trackCategory !== "branch_core") {
-      return true;
-    }
-
-    const haystack = `${item.title} ${item.topicName ?? ""} ${item.companyName ?? ""}`.toLowerCase();
-    if (focusAreaNames.some((topicName) => haystack.includes(topicName))) {
-      return true;
-    }
-
-    return matchesBranchPrepTrackTag(item.topicName ?? "", branch) || matchesBranchPrepTrackTag(item.title, branch);
-  });
 }
 
 type DecoratedMockTestItem = Awaited<ReturnType<typeof decorateListedItems>>[number];
@@ -159,6 +144,7 @@ function scoreMockTestRecommendation(
   },
   context: {
     readinessScore: number;
+    studentBranch: string;
     weakAreas: Array<{ topicId: string; topicName: string; masteryLevel: number }>;
     branchTrackLabel: string;
     focusAreaNames: string[];
@@ -183,11 +169,22 @@ function scoreMockTestRecommendation(
     }
   }
 
-  if (item.trackCategory === "branch_core") {
+  if (
+    matchesMockTestBranch(
+      {
+        primaryBranches: item.primaryBranches,
+        title: item.title,
+        topicName: item.topicName,
+        companyName: item.companyName,
+      },
+      context.studentBranch,
+    )
+  ) {
     const branchTrackName = normalizeRecommendationText(context.branchTrackLabel);
     if (
       context.focusAreaNames.some((topicName) => haystack.includes(topicName))
       || (branchTrackName && haystack.includes(branchTrackName))
+      || (item.primaryBranches?.length ?? 0) > 0
     ) {
       score += 18;
       branchMatch = true;
@@ -235,7 +232,7 @@ function scoreMockTestRecommendation(
   }
 
   if (item.trackCategory === "company_prep") score += 4;
-  if (item.trackCategory === "aptitude" || item.trackCategory === "verbal") score += 3;
+  if (item.isCrossBranch || item.trackCategory === "aptitude" || item.trackCategory === "verbal") score += 3;
 
   return {
     ...item,
@@ -296,6 +293,8 @@ async function decorateListedItems(
     difficulty: string;
     isActive?: boolean;
     attemptCount?: number;
+    primaryBranches?: string[];
+    isCrossBranch?: boolean;
   }>,
 ) {
   if (items.length === 0) {
@@ -327,15 +326,32 @@ async function decorateListedItems(
   return items.map((item) => {
     const topicName = item.topicId ? topicMap.get(item.topicId) ?? null : null;
     const companyName = item.companyId ? companyMap.get(item.companyId) ?? null : null;
+    const trackCategory = classifyTrackCategory({
+      title: item.title,
+      topicName,
+      companyName,
+    });
+    const primaryBranches = normalizeMockTestBranches(
+      (item.primaryBranches?.length ?? 0) > 0
+        ? item.primaryBranches
+        : inferMockTestBranches({
+          title: item.title,
+          topicName,
+          companyName,
+        }),
+    );
+    const isCrossBranch = Boolean(item.isCrossBranch)
+      || ((item.primaryBranches?.length ?? 0) === 0
+        && primaryBranches.length === 0
+        && inferMockTestIsCrossBranch({ title: item.title, topicName, companyName }, trackCategory));
+
     return {
       ...item,
       topicName,
       companyName,
-      trackCategory: classifyTrackCategory({
-        title: item.title,
-        topicName,
-        companyName,
-      }),
+      trackCategory,
+      primaryBranches,
+      isCrossBranch,
     };
   });
 }
@@ -371,13 +387,12 @@ export const MockTestService = {
     );
 
     const decoratedItems = await decorateListedItems(input.tenantId, listed.items.map((item) => ({
-        ...item,
-        attemptCount: attemptCounts.get(item.id) ?? 0,
-      })));
-    const branchFilteredItems = filterItemsForStudentBranch(decoratedItems, String(student.branch ?? ""));
+      ...item,
+      attemptCount: attemptCounts.get(item.id) ?? 0,
+    })));
 
     return {
-      items: branchFilteredItems,
+      items: decoratedItems,
       hasMore: listed.hasMore,
       nextCursor: listed.nextCursor,
     };
@@ -400,6 +415,7 @@ export const MockTestService = {
           avgAttempts: 0,
         },
         sections: {
+          forYourBranch: [] as typeof items,
           recommended: [] as typeof items,
           companyFocused: sliceSection(items, (item) => Boolean(item.companyId), 6),
           companyPrep: sliceSection(items, (item) => item.trackCategory === "company_prep", 8),
@@ -459,6 +475,7 @@ export const MockTestService = {
           lastSubmittedAt: summary?.lastSubmittedAt ?? null,
         }, {
           readinessScore: dashboard.readinessScore,
+          studentBranch: String(student.branch ?? ""),
           weakAreas: dashboard.weakAreas,
           branchTrackLabel: branchTrack.label,
           focusAreaNames,
@@ -469,11 +486,22 @@ export const MockTestService = {
     const takeNext = selectRecommendedMockTests(scoredItems, () => true, 6, "take_next");
     const weakTopicRecovery = selectRecommendedMockTests(scoredItems, (item) => item.recommendationFlags.weakTopicMatch, 6, "weak_topic_recovery");
     const upcomingDrivePrep = selectRecommendedMockTests(scoredItems, (item) => item.recommendationFlags.driveMatch, 6, "upcoming_drive_prep");
-    const branchCorePractice = selectRecommendedMockTests(scoredItems, (item) => item.trackCategory === "branch_core" && item.recommendationFlags.branchMatch, 8, "branch_core_practice");
+    const forYourBranch = selectRecommendedMockTests(
+      scoredItems,
+      (item) => !item.isCrossBranch && item.recommendationFlags.branchMatch,
+      8,
+      "for_your_branch",
+    );
+    const branchCorePractice = selectRecommendedMockTests(
+      scoredItems,
+      (item) => !item.isCrossBranch && (item.trackCategory === "branch_core" || item.recommendationFlags.branchMatch),
+      8,
+      "branch_core_practice",
+    );
     const retakeForImprovement = selectRecommendedMockTests(scoredItems, (item) => item.recommendationFlags.retryMatch, 6, "retake_for_improvement");
     const crossBranchPrep = selectRecommendedMockTests(
       scoredItems,
-      (item) => item.trackCategory === "general" || item.trackCategory === "aptitude" || item.trackCategory === "verbal",
+      (item) => item.isCrossBranch || item.trackCategory === "general" || item.trackCategory === "aptitude" || item.trackCategory === "verbal",
       10,
       "cross_branch_prep",
     );
@@ -496,6 +524,7 @@ export const MockTestService = {
         avgAttempts: items.length > 0 ? Number((items.reduce((sum, item) => sum + (item.attemptCount ?? 0), 0) / items.length).toFixed(1)) : 0,
       },
       sections: {
+        forYourBranch: stripFlags(forYourBranch),
         recommended: stripFlags(takeNext),
         companyFocused: stripFlags(selectRecommendedMockTests(scoredItems, (item) => Boolean(item.companyId), 6, "company_focused")),
         companyPrep: stripFlags(selectRecommendedMockTests(scoredItems, (item) => item.trackCategory === "company_prep", 8, "company_prep")),

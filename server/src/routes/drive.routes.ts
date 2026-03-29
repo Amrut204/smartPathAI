@@ -5,6 +5,7 @@ import { requireAuth } from "../middleware/auth.middleware.js";
 import { authorizeRole } from "../middleware/rbac.middleware.js";
 import { DriveService } from "../services/drive.service.js";
 import { DriveExportService } from "../services/drive-export.service.js";
+import { AuditLogService } from "../services/audit-log.service.js";
 import { exportRateLimiter, resultReleaseRateLimiter } from "../middleware/rate-limit.middleware.js";
 import {
   driveListQuerySchema,
@@ -41,6 +42,13 @@ router.post(
       req.auth!.userId,
       body,
     );
+    await AuditLogService.log({
+      tenantId: req.auth!.tenantId,
+      actorUserId: req.auth!.userId,
+      actorRole: req.auth!.role,
+      eventType: "drive_created",
+      metadata: { driveId: data.id, company: data.company, status: data.status },
+    });
     res.status(201).json(successResponse(data));
   }),
 );
@@ -62,6 +70,20 @@ router.get(
       req.params.driveId as string,
     );
     res.json(successResponse(data));
+  }),
+);
+
+router.get(
+  "/:driveId/export/resumes",
+  exportRateLimiter,
+  asyncHandler(async (req, res) => {
+    const { filename, csv } = await DriveExportService.buildResumeCsv(
+      req.auth!.tenantId,
+      req.params.driveId as string,
+    );
+    res.setHeader("Content-Type", "text/csv; charset=utf-8");
+    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+    res.send(csv);
   }),
 );
 
@@ -104,11 +126,19 @@ router.patch(
   "/:driveId",
   asyncHandler(async (req, res) => {
     const body = updateDriveSchema.parse(req.body);
+    const previous = await DriveService.getDriveById(req.auth!.tenantId, req.params.driveId as string);
     const data = await DriveService.updateDrive(
       req.auth!.tenantId,
       req.params.driveId as string,
       body,
     );
+    await AuditLogService.log({
+      tenantId: req.auth!.tenantId,
+      actorUserId: req.auth!.userId,
+      actorRole: req.auth!.role,
+      eventType: body.status && previous.status !== data.status ? "drive_status_changed" : "drive_updated",
+      metadata: { driveId: data.id, previousStatus: previous.status, status: data.status, criteriaChanged: body.criteria !== undefined },
+    });
     res.json(successResponse(data));
   }),
 );
@@ -129,6 +159,13 @@ router.post(
       req.params.driveId as string,
       req.auth!.userId,
     );
+    await AuditLogService.log({
+      tenantId: req.auth!.tenantId,
+      actorUserId: req.auth!.userId,
+      actorRole: req.auth!.role,
+      eventType: "drive_eligibility_recomputed",
+      metadata: { driveId: req.params.driveId as string, eligibleCount: data.eligibleCount, totalStudents: data.totalStudents, previewDigest: data.previewDigest },
+    });
     res.json(successResponse(data));
   }),
 );
@@ -157,6 +194,13 @@ router.post(
         allowOutcomeOverride: body.allowOutcomeOverride && req.auth!.role === "admin",
       },
     );
+    await AuditLogService.log({
+      tenantId: req.auth!.tenantId,
+      actorUserId: req.auth!.userId,
+      actorRole: req.auth!.role,
+      eventType: "drive_results_updated",
+      metadata: { driveId: req.params.driveId as string, updated: data.updated },
+    });
     res.json(successResponse(data));
   }),
 );

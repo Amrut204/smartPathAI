@@ -1,5 +1,6 @@
 import {
   DriveRepository,
+  buildDriveCriteriaDigest,
   type DriveCriteria,
   type EligibilityReasonCount,
 } from "../repositories/drive.repository.js";
@@ -52,20 +53,52 @@ async function buildEligibilityReport(tenantId: string, criteria: EligibilityCri
 
   const reasonCounts = emptyReasonCounts();
   const eligibleStudents = [];
+  const branchBreakdown = new Map<string, { branch: string; eligibleCount: number; ineligibleCount: number; totalStudents: number }>();
+  const sampleExcludedStudents: Array<{ studentId: string; fullName: string; branch: string; cgpa: number; attendancePct: number; reasons: EligibilityReasonCode[] }> = [];
 
   for (const student of students) {
+    const branchKey = String(student.branch ?? "Unknown");
+    const bucket = branchBreakdown.get(branchKey) ?? { branch: branchKey, eligibleCount: 0, ineligibleCount: 0, totalStudents: 0 };
+    bucket.totalStudents += 1;
+
     const override = overrideMap.get(student.id);
     if (override === "eligible") {
       eligibleStudents.push(student);
+      bucket.eligibleCount += 1;
+      branchBreakdown.set(branchKey, bucket);
       continue;
     }
     if (override === "not_eligible") {
       reasonCounts.manual_override_ineligible += 1;
+      bucket.ineligibleCount += 1;
+      if (sampleExcludedStudents.length < 8) {
+        sampleExcludedStudents.push({
+          studentId: student.id,
+          fullName: student.fullName,
+          branch: student.branch,
+          cgpa: student.cgpa,
+          attendancePct: student.attendancePct,
+          reasons: ["manual_override_ineligible"],
+        });
+      }
+      branchBreakdown.set(branchKey, bucket);
       continue;
     }
 
     if (criteria.excludePlacedStudents && placedStudentIds.has(student.id)) {
       reasonCounts.already_placed += 1;
+      bucket.ineligibleCount += 1;
+      if (sampleExcludedStudents.length < 8) {
+        sampleExcludedStudents.push({
+          studentId: student.id,
+          fullName: student.fullName,
+          branch: student.branch,
+          cgpa: student.cgpa,
+          attendancePct: student.attendancePct,
+          reasons: ["already_placed"],
+        });
+      }
+      branchBreakdown.set(branchKey, bucket);
       continue;
     }
 
@@ -82,12 +115,26 @@ async function buildEligibilityReport(tenantId: string, criteria: EligibilityCri
 
     if (evaluation.eligible) {
       eligibleStudents.push(student);
+      bucket.eligibleCount += 1;
+      branchBreakdown.set(branchKey, bucket);
       continue;
     }
 
     evaluation.reasons.forEach((reason) => {
       reasonCounts[reason] += 1;
     });
+    bucket.ineligibleCount += 1;
+    if (sampleExcludedStudents.length < 8) {
+      sampleExcludedStudents.push({
+        studentId: student.id,
+        fullName: student.fullName,
+        branch: student.branch,
+        cgpa: student.cgpa,
+        attendancePct: student.attendancePct,
+        reasons: evaluation.reasons,
+      });
+    }
+    branchBreakdown.set(branchKey, bucket);
   }
 
   const totalStudents = students.length;
@@ -103,6 +150,9 @@ async function buildEligibilityReport(tenantId: string, criteria: EligibilityCri
     reasons: toReasonSummary(reasonCounts),
     eligibleStudents,
     topEligibleStudents: eligibleStudents.slice(0, 10),
+    branchBreakdown: Array.from(branchBreakdown.values()).sort((a, b) => a.branch.localeCompare(b.branch)),
+    sampleExcludedStudents,
+    previewDigest: buildDriveCriteriaDigest(criteria),
   };
 }
 
@@ -118,6 +168,9 @@ export const EligibilityService = {
       eligibleRate: report.eligibleRate,
       reasons: report.reasons,
       topEligibleStudents: report.topEligibleStudents,
+      branchBreakdown: report.branchBreakdown,
+      sampleExcludedStudents: report.sampleExcludedStudents,
+      previewDigest: report.previewDigest,
     };
   },
 
@@ -139,6 +192,9 @@ export const EligibilityService = {
       eligibleCount: report.eligibleCount,
       ineligibleCount: report.ineligibleCount,
       reasons: report.reasons,
+      branchBreakdown: report.branchBreakdown,
+      sampleExcludedStudents: report.sampleExcludedStudents,
+      previewDigest: report.previewDigest,
       computedBy,
     });
 
@@ -152,6 +208,9 @@ export const EligibilityService = {
       snapshot,
       criteria: report.criteria,
       students: eligibleStudents,
+      branchBreakdown: report.branchBreakdown,
+      sampleExcludedStudents: report.sampleExcludedStudents,
+      previewDigest: report.previewDigest,
     };
   },
 };

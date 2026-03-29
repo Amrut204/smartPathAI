@@ -167,6 +167,8 @@ export const adminUpdateIntegrationsSchema = z.object({
   tenantId: z.string().trim().min(1).max(120),
   googleForm: optionalUrlSchema,
   googleSheet: optionalUrlSchema,
+  googleDriveSharedDriveId: optionalStringSchema,
+  googleDriveRootFolderId: optionalStringSchema,
   label: optionalStringSchema,
   notes: optionalStringSchema,
 });

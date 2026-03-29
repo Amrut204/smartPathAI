@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 
 import { AppError } from "../middleware/error-handler.js";
 import { getMongoDb } from "../utils/mongodb.js";
@@ -26,8 +26,14 @@ interface DriveWriteInput {
   roundsConducted?: string[];
   mouStatus?: "not_started" | "in_discussion" | "signed" | "not_applicable";
   reportingNotes?: string;
+  registrationInstructions?: string;
+  requiredDocuments?: string[];
+  location?: string;
+  mode?: "on_campus" | "off_campus" | "hybrid";
+  dressCode?: string;
   criteria: DriveCriteria;
-  status: "upcoming" | "active" | "completed" | "cancelled";
+  status: DriveLifecycle;
+  previewDigest?: string | null;
 }
 
 interface DriveResultIntakeInput {
@@ -41,12 +47,13 @@ interface DriveResultIntakeInput {
 interface DriveListQuery {
   limit: number;
   cursor?: string;
-  status?: "upcoming" | "active" | "completed" | "cancelled";
+  status?: DriveLifecycle;
 }
 
 interface DriveResultWrite {
   studentId: string;
   status: "eligible" | "applied" | "not_eligible";
+  applicationState?: DriveApplicationState;
   outcome: "pending" | "shortlisted" | "selected" | "rejected";
   remarks?: string;
   registered?: boolean;
@@ -64,6 +71,15 @@ interface DriveResultWrite {
   sourceNote?: string;
   nonPlacementReason?: string;
   actionPlan?: string;
+  rounds?: DriveResultRound[];
+}
+
+interface ResumeSnapshotWriteInput {
+  provider: string;
+  fileId?: string | null;
+  webLink: string;
+  filename?: string | null;
+  uploadedAt?: string | null;
 }
 
 interface DriveResultReleaseStatusUpdate {
@@ -110,7 +126,29 @@ export interface EligibilityReasonCount {
   count: number;
 }
 
+export type DriveLifecycle =
+  | "draft"
+  | "published"
+  | "registration_closed"
+  | "in_process"
+  | "results_pending"
+  | "completed"
+  | "archived"
+  | "cancelled";
+
+export type LegacyDriveStatus = "upcoming" | "active" | "completed" | "cancelled";
 type DriveResultStatus = "eligible" | "applied" | "not_eligible";
+export type DriveApplicationState = "not_applied" | "applied" | "withdrawn" | "absent";
+
+export interface DriveResultRound {
+  key: string;
+  label: string;
+  stageType: "screening" | "aptitude" | "group_discussion" | "technical_interview" | "hr_interview" | "final_decision" | "custom";
+  status: "pending" | "qualified" | "not_qualified" | "scheduled" | "completed";
+  decidedAt?: string | null;
+  releasedAt?: string | null;
+  notes?: string | null;
+}
 
 export interface DriveEligibilitySnapshot {
   id: string;
@@ -123,6 +161,9 @@ export interface DriveEligibilitySnapshot {
   reasons: EligibilityReasonCount[];
   computedAt: string;
   computedBy: string;
+  branchBreakdown?: Array<{ branch: string; eligibleCount: number; ineligibleCount: number; totalStudents: number }>;
+  sampleExcludedStudents?: Array<{ studentId: string; fullName: string; branch: string; cgpa: number; attendancePct: number; reasons: EligibilityReasonCount["code"][] }>;
+  previewDigest?: string;
 }
 
 export interface DriveResultReleaseStatusRow {
@@ -145,10 +186,105 @@ export interface DriveResultRowRecord {
   id: string;
   studentId: string;
   status: "eligible" | "applied" | "not_eligible";
+  applicationState: DriveApplicationState;
   outcome: "pending" | "shortlisted" | "selected" | "rejected";
   resultReleasedAt: string | null;
   offerLetterUrl: string | null;
   offerLetterReference: string | null;
+}
+
+export interface DriveResumeExportRow {
+  studentId: string;
+  fullName: string;
+  email: string;
+  rollNumber: string;
+  branch: string;
+  batch: string;
+  cgpa: number;
+  applicationState: DriveApplicationState;
+  outcome: "pending" | "shortlisted" | "selected" | "rejected";
+  resumeFilename: string | null;
+  resumeUrl: string;
+}
+
+const LEGACY_TO_CANONICAL_STATUS: Record<LegacyDriveStatus, DriveLifecycle> = {
+  upcoming: "published",
+  active: "in_process",
+  completed: "completed",
+  cancelled: "cancelled",
+};
+
+export function normalizeDriveLifecycle(value: unknown): DriveLifecycle {
+  const normalized = String(value ?? "").trim().toLowerCase();
+  if (normalized in LEGACY_TO_CANONICAL_STATUS) {
+    return LEGACY_TO_CANONICAL_STATUS[normalized as LegacyDriveStatus];
+  }
+  if (
+    normalized === "draft"
+    || normalized === "published"
+    || normalized === "registration_closed"
+    || normalized === "in_process"
+    || normalized === "results_pending"
+    || normalized === "completed"
+    || normalized === "archived"
+    || normalized === "cancelled"
+  ) {
+    return normalized;
+  }
+  return "draft";
+}
+
+function buildStatusFilter(status: DriveLifecycle) {
+  if (status === "published") return { $in: ["published", "upcoming"] };
+  if (status === "in_process") return { $in: ["in_process", "active"] };
+  return status;
+}
+
+export function buildDriveCriteriaDigest(criteria: DriveCriteria) {
+  const normalized = {
+    minCgpa: criteria.minCgpa ?? null,
+    maxBacklogs: criteria.maxBacklogs ?? null,
+    maxActiveBacklogs: criteria.maxActiveBacklogs ?? null,
+    maxTotalBacklogs: criteria.maxTotalBacklogs ?? null,
+    branches: Array.isArray(criteria.branches) ? [...criteria.branches].map(String).sort() : [],
+    minAttendance: criteria.minAttendance ?? null,
+    excludePlacedStudents: Boolean(criteria.excludePlacedStudents),
+  };
+  return createHash("sha256").update(JSON.stringify(normalized)).digest("hex");
+}
+
+function deriveApplicationState(row: Record<string, unknown>): DriveApplicationState {
+  const explicit = String(row.application_state ?? "").trim().toLowerCase();
+  if (explicit === "applied" || explicit === "withdrawn" || explicit === "absent" || explicit === "not_applied") {
+    return explicit;
+  }
+  const status = String(row.status ?? "").trim().toLowerCase();
+  if (status === "applied") return "applied";
+  return "not_applied";
+}
+
+function normalizeRounds(value: unknown): DriveResultRound[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((item): DriveResultRound | null => {
+      if (!item || typeof item !== "object") return null;
+      const entry = item as Record<string, unknown>;
+      const key = String(entry.key ?? "").trim();
+      const label = String(entry.label ?? "").trim();
+      const stageType = String(entry.stage_type ?? entry.stageType ?? "").trim();
+      const status = String(entry.status ?? "").trim();
+      if (!key || !label || !stageType || !status) return null;
+      return {
+        key,
+        label,
+        stageType: stageType as DriveResultRound["stageType"],
+        status: status as DriveResultRound["status"],
+        decidedAt: entry.decided_at ? String(entry.decided_at) : entry.decidedAt ? String(entry.decidedAt) : undefined,
+        releasedAt: entry.released_at ? String(entry.released_at) : entry.releasedAt ? String(entry.releasedAt) : undefined,
+        notes: entry.notes ? String(entry.notes) : null,
+      } satisfies DriveResultRound;
+    })
+    .filter((item): item is DriveResultRound => item !== null);
 }
 
 async function enrichStudents(
@@ -187,7 +323,7 @@ export const DriveRepository = {
     const db = await getMongoDb();
     const filter: Record<string, unknown> = { tenant_id: tenantId, deleted_at: null };
 
-    if (query.status) filter.status = query.status;
+    if (query.status) filter.status = buildStatusFilter(query.status);
     if (query.cursor) filter.id = { $lt: query.cursor };
 
     const data = await db.collection("drives").find(
@@ -207,6 +343,11 @@ export const DriveRepository = {
           rounds_conducted: 1,
           mou_status: 1,
           reporting_notes: 1,
+          registration_instructions: 1,
+          required_documents: 1,
+          location: 1,
+          mode: 1,
+          dress_code: 1,
           criteria: 1,
           status: 1,
           eligible_count: 1,
@@ -232,8 +373,13 @@ export const DriveRepository = {
         roundsConducted: Array.isArray(drive.rounds_conducted) ? drive.rounds_conducted.map((item) => String(item)) : [],
         mouStatus: drive.mou_status ? String(drive.mou_status) : "not_started",
         reportingNotes: drive.reporting_notes ? String(drive.reporting_notes) : null,
+        registrationInstructions: drive.registration_instructions ? String(drive.registration_instructions) : null,
+        requiredDocuments: Array.isArray(drive.required_documents) ? drive.required_documents.map((item) => String(item)) : [],
+        location: drive.location ? String(drive.location) : null,
+        mode: drive.mode ? String(drive.mode) : null,
+        dressCode: drive.dress_code ? String(drive.dress_code) : null,
         criteria: (drive.criteria ?? {}) as DriveCriteria,
-        status: String(drive.status),
+        status: normalizeDriveLifecycle(drive.status),
         eligibleCount: Number(drive.eligible_count ?? 0),
         createdAt: String(drive.created_at),
       })),
@@ -261,9 +407,16 @@ export const DriveRepository = {
       rounds_conducted: input.roundsConducted ?? [],
       mou_status: input.mouStatus ?? "not_started",
       reporting_notes: input.reportingNotes ?? null,
+      registration_instructions: input.registrationInstructions ?? null,
+      required_documents: input.requiredDocuments ?? [],
+      location: input.location ?? null,
+      mode: input.mode ?? null,
+      dress_code: input.dressCode ?? null,
       criteria: input.criteria,
       status: input.status,
       eligible_count: 0,
+      criteria_preview_digest: input.previewDigest ?? null,
+      criteria_previewed_at: input.previewDigest ? now : null,
       created_by: createdBy,
       created_at: now,
       updated_at: now,
@@ -299,6 +452,11 @@ export const DriveRepository = {
           rounds_conducted: 1,
           mou_status: 1,
           reporting_notes: 1,
+          registration_instructions: 1,
+          required_documents: 1,
+          location: 1,
+          mode: 1,
+          dress_code: 1,
           criteria: 1,
           status: 1,
           eligible_count: 1,
@@ -306,6 +464,8 @@ export const DriveRepository = {
           updated_at: 1,
           latest_eligibility_version: 1,
           latest_eligibility_computed_at: 1,
+          criteria_preview_digest: 1,
+          criteria_previewed_at: 1,
           result_source: 1,
           result_received_at: 1,
           result_received_by: 1,
@@ -335,11 +495,18 @@ export const DriveRepository = {
       roundsConducted: Array.isArray(drive.rounds_conducted) ? drive.rounds_conducted.map((item) => String(item)) : [],
       mouStatus: drive.mou_status ? String(drive.mou_status) : "not_started",
       reportingNotes: drive.reporting_notes ? String(drive.reporting_notes) : null,
+      registrationInstructions: drive.registration_instructions ? String(drive.registration_instructions) : null,
+      requiredDocuments: Array.isArray(drive.required_documents) ? drive.required_documents.map((item) => String(item)) : [],
+      location: drive.location ? String(drive.location) : null,
+      mode: drive.mode ? String(drive.mode) : null,
+      dressCode: drive.dress_code ? String(drive.dress_code) : null,
       criteria: (drive.criteria ?? {}) as DriveCriteria,
-      status: String(drive.status),
+      status: normalizeDriveLifecycle(drive.status),
       eligibleCount: Number(drive.eligible_count ?? 0),
       createdAt: String(drive.created_at),
       updatedAt: drive.updated_at ? String(drive.updated_at) : String(drive.created_at),
+      previewDigest: drive.criteria_preview_digest ? String(drive.criteria_preview_digest) : null,
+      previewedAt: drive.criteria_previewed_at ? String(drive.criteria_previewed_at) : null,
       eligibility: {
         latestVersion: drive.latest_eligibility_version ? Number(drive.latest_eligibility_version) : null,
         lastComputedAt: drive.latest_eligibility_computed_at
@@ -373,8 +540,14 @@ export const DriveRepository = {
       roundsConducted: string[];
       mouStatus: "not_started" | "in_discussion" | "signed" | "not_applicable";
       reportingNotes: string;
+      registrationInstructions: string;
+      requiredDocuments: string[];
+      location: string;
+      mode: "on_campus" | "off_campus" | "hybrid";
+      dressCode: string;
       criteria: DriveCriteria;
-      status: "upcoming" | "active" | "completed" | "cancelled";
+      status: DriveLifecycle;
+      previewDigest: string;
     }>,
   ) {
     const db = await getMongoDb();
@@ -391,8 +564,17 @@ export const DriveRepository = {
     if (updates.roundsConducted !== undefined) payload.rounds_conducted = updates.roundsConducted;
     if (updates.mouStatus !== undefined) payload.mou_status = updates.mouStatus;
     if (updates.reportingNotes !== undefined) payload.reporting_notes = updates.reportingNotes;
+    if (updates.registrationInstructions !== undefined) payload.registration_instructions = updates.registrationInstructions;
+    if (updates.requiredDocuments !== undefined) payload.required_documents = updates.requiredDocuments;
+    if (updates.location !== undefined) payload.location = updates.location;
+    if (updates.mode !== undefined) payload.mode = updates.mode;
+    if (updates.dressCode !== undefined) payload.dress_code = updates.dressCode;
     if (updates.criteria !== undefined) payload.criteria = updates.criteria;
     if (updates.status !== undefined) payload.status = updates.status;
+    if (updates.previewDigest !== undefined) {
+      payload.criteria_preview_digest = updates.previewDigest;
+      payload.criteria_previewed_at = updates.previewDigest ? payload.updated_at : null;
+    }
     payload.updated_at = new Date().toISOString();
 
     const result = await db.collection("drives").updateOne(
@@ -529,9 +711,10 @@ export const DriveRepository = {
 
     const existing = await db.collection("drive_results").find(
       { tenant_id: tenantId, drive_id: driveId },
-      { projection: { _id: 0, student_id: 1, status: 1, outcome: 1, eligibility_override: 1 } },
+      { projection: { _id: 0, student_id: 1, status: 1, outcome: 1, eligibility_override: 1, application_state: 1 } },
     ).toArray();
     const statusByStudent = new Map(existing.map((row) => [String(row.student_id), String(row.status ?? "")]));
+    const applicationStateByStudent = new Map(existing.map((row) => [String(row.student_id), deriveApplicationState(row as Record<string, unknown>)]));
 
     const overrideByStudent = new Map<string, "eligible" | "not_eligible">();
     existing.forEach((row) => {
@@ -561,6 +744,7 @@ export const DriveRepository = {
           update: {
             $set: {
               status: nextStatus,
+              application_state: applicationStateByStudent.get(studentId) ?? "not_applied",
               updated_at: now,
             },
             $setOnInsert: {
@@ -569,6 +753,7 @@ export const DriveRepository = {
               drive_id: driveId,
               student_id: studentId,
               status: nextStatus,
+              application_state: applicationStateByStudent.get(studentId) ?? "not_applied",
               outcome: "pending",
               remarks: null,
               eligibility_override: null,
@@ -588,7 +773,9 @@ export const DriveRepository = {
         if (eligibleSet.has(studentId)) return false;
         const status = String(row.status ?? "") as DriveResultStatus;
         const outcome = String(row.outcome ?? "");
+        const applicationState = applicationStateByStudent.get(studentId) ?? "not_applied";
         if (status === "applied") return false; // Keep applied rows stable across recomputes.
+        if (applicationState === "withdrawn") return false;
         if (outcome !== "pending") return false; // Preserve progressed outcomes.
         return status === "eligible";
       })
@@ -612,7 +799,12 @@ export const DriveRepository = {
     }
   },
 
-  async markDriveApplied(tenantId: string, driveId: string, studentId: string) {
+  async markDriveApplied(
+    tenantId: string,
+    driveId: string,
+    studentId: string,
+    resumeSnapshot?: ResumeSnapshotWriteInput | null,
+  ) {
     const db = await getMongoDb();
     const now = new Date().toISOString();
 
@@ -621,6 +813,15 @@ export const DriveRepository = {
       {
         $set: {
           status: "applied",
+          application_state: "applied",
+          ...(resumeSnapshot ? {
+            resume_snapshot_provider: resumeSnapshot.provider,
+            resume_drive_file_id_at_application: resumeSnapshot.fileId ?? null,
+            resume_drive_web_link_at_application: resumeSnapshot.webLink,
+            resume_filename_at_application: resumeSnapshot.filename ?? null,
+            resume_uploaded_at_application: resumeSnapshot.uploadedAt ?? null,
+            resume_snapshot_taken_at: now,
+          } : {}),
           updated_at: now,
         },
         $setOnInsert: {
@@ -647,6 +848,7 @@ export const DriveRepository = {
           id: 1,
           student_id: 1,
           status: 1,
+          application_state: 1,
           outcome: 1,
           result_released_at: 1,
           offer_letter_url: 1,
@@ -661,6 +863,7 @@ export const DriveRepository = {
       id: String(row.id),
       studentId: String(row.student_id),
       status: String(row.status) as DriveResultRowRecord["status"],
+      applicationState: deriveApplicationState(row as Record<string, unknown>),
       outcome: String(row.outcome) as DriveResultRowRecord["outcome"],
       resultReleasedAt: row.result_released_at ? String(row.result_released_at) : null,
       offerLetterUrl: row.offer_letter_url ? String(row.offer_letter_url) : null,
@@ -686,6 +889,7 @@ export const DriveRepository = {
       tenant_id: tenantId,
       drive_id: driveId,
       status: { $in: ["eligible", "applied"] },
+      application_state: { $ne: "withdrawn" },
     });
     await this.updateDriveEligibleCount(tenantId, driveId, count);
     return count;
@@ -708,6 +912,7 @@ export const DriveRepository = {
       {
         $set: {
           status: params.decision,
+          application_state: "not_applied",
           eligibility_override: {
             decision: params.decision,
             reason: params.reason,
@@ -722,6 +927,7 @@ export const DriveRepository = {
           tenant_id: params.tenantId,
           drive_id: params.driveId,
           student_id: params.studentId,
+          application_state: "not_applied",
           outcome: "pending",
           remarks: null,
           created_at: now,
@@ -760,6 +966,9 @@ export const DriveRepository = {
       ineligibleCount: number;
       reasons: EligibilityReasonCount[];
       computedBy: string;
+      branchBreakdown?: Array<{ branch: string; eligibleCount: number; ineligibleCount: number; totalStudents: number }>;
+      sampleExcludedStudents?: Array<{ studentId: string; fullName: string; branch: string; cgpa: number; attendancePct: number; reasons: string[] }>;
+      previewDigest?: string;
     },
   ) {
     const db = await getMongoDb();
@@ -782,6 +991,9 @@ export const DriveRepository = {
       eligible_count: input.eligibleCount,
       ineligible_count: input.ineligibleCount,
       reasons: input.reasons,
+      branch_breakdown: input.branchBreakdown ?? [],
+      sample_excluded_students: input.sampleExcludedStudents ?? [],
+      preview_digest: input.previewDigest ?? null,
       computed_by: input.computedBy,
       computed_at: now,
       created_at: now,
@@ -793,6 +1005,8 @@ export const DriveRepository = {
         $set: {
           latest_eligibility_version: version,
           latest_eligibility_computed_at: now,
+          criteria_preview_digest: input.previewDigest ?? null,
+          criteria_previewed_at: input.previewDigest ? now : null,
           updated_at: now,
         },
       },
@@ -809,6 +1023,9 @@ export const DriveRepository = {
       reasons: input.reasons,
       computedAt: now,
       computedBy: input.computedBy,
+      branchBreakdown: input.branchBreakdown ?? [],
+      sampleExcludedStudents: input.sampleExcludedStudents ?? [],
+      previewDigest: input.previewDigest ?? undefined,
     } satisfies DriveEligibilitySnapshot;
   },
 
@@ -827,6 +1044,9 @@ export const DriveRepository = {
           eligible_count: 1,
           ineligible_count: 1,
           reasons: 1,
+          branch_breakdown: 1,
+          sample_excluded_students: 1,
+          preview_digest: 1,
           computed_at: 1,
           computed_by: 1,
         },
@@ -842,6 +1062,27 @@ export const DriveRepository = {
       eligibleCount: Number(row.eligible_count ?? 0),
       ineligibleCount: Number(row.ineligible_count ?? 0),
       reasons: Array.isArray(row.reasons) ? (row.reasons as EligibilityReasonCount[]) : [],
+      branchBreakdown: Array.isArray(row.branch_breakdown)
+        ? row.branch_breakdown.map((item) => ({
+          branch: String((item as Record<string, unknown>).branch ?? ""),
+          eligibleCount: Number((item as Record<string, unknown>).eligibleCount ?? 0),
+          ineligibleCount: Number((item as Record<string, unknown>).ineligibleCount ?? 0),
+          totalStudents: Number((item as Record<string, unknown>).totalStudents ?? 0),
+        }))
+        : [],
+      sampleExcludedStudents: Array.isArray(row.sample_excluded_students)
+        ? row.sample_excluded_students.map((item) => ({
+          studentId: String((item as Record<string, unknown>).studentId ?? ""),
+          fullName: String((item as Record<string, unknown>).fullName ?? ""),
+          branch: String((item as Record<string, unknown>).branch ?? ""),
+          cgpa: Number((item as Record<string, unknown>).cgpa ?? 0),
+          attendancePct: Number((item as Record<string, unknown>).attendancePct ?? 0),
+          reasons: Array.isArray((item as Record<string, unknown>).reasons)
+            ? ((item as Record<string, unknown>).reasons as unknown[]).map((reason) => String(reason))
+            : [],
+        }))
+        : [],
+      previewDigest: row.preview_digest ? String(row.preview_digest) : undefined,
       computedAt: String(row.computed_at ?? ""),
       computedBy: String(row.computed_by ?? ""),
     })) satisfies DriveEligibilitySnapshot[];
@@ -850,16 +1091,18 @@ export const DriveRepository = {
   async listDriveResults(tenantId: string, driveId: string) {
     const db = await getMongoDb();
     const rows = await db.collection("drive_results").find(
-      { tenant_id: tenantId, drive_id: driveId, status: { $in: ["eligible", "applied"] } },
+      { tenant_id: tenantId, drive_id: driveId },
       {
         projection: {
           _id: 0,
           student_id: 1,
           status: 1,
+          application_state: 1,
           outcome: 1,
           remarks: 1,
           registered: 1,
           appeared: 1,
+          rounds: 1,
           shortlisted_round: 1,
           offer_date: 1,
           designation_offered: 1,
@@ -909,10 +1152,12 @@ export const DriveRepository = {
         return {
           ...student,
           status: String(row.status),
+          applicationState: deriveApplicationState(row as Record<string, unknown>),
           outcome: String(row.outcome),
           remarks: row.remarks ? String(row.remarks) : null,
           registered: row.registered === undefined || row.registered === null ? null : Boolean(row.registered),
           appeared: row.appeared === undefined || row.appeared === null ? null : Boolean(row.appeared),
+          rounds: normalizeRounds(row.rounds),
           shortlistedRound: row.shortlisted_round ? String(row.shortlisted_round) : null,
           offerDate: row.offer_date ? String(row.offer_date) : null,
           designationOffered: row.designation_offered ? String(row.designation_offered) : null,
@@ -950,10 +1195,20 @@ export const DriveRepository = {
         update: {
           $set: {
             status: update.status,
+            application_state: update.applicationState ?? (update.status === "applied" ? "applied" : "not_applied"),
             outcome: update.outcome,
             remarks: update.remarks ?? null,
             registered: update.registered ?? null,
             appeared: update.appeared ?? null,
+            rounds: (update.rounds ?? []).map((round) => ({
+              key: round.key,
+              label: round.label,
+              stage_type: round.stageType,
+              status: round.status,
+              decided_at: round.decidedAt ?? null,
+              released_at: round.releasedAt ?? null,
+              notes: round.notes ?? null,
+            })),
             shortlisted_round: update.shortlistedRound ?? null,
             offer_date: update.offerDate ?? null,
             designation_offered: update.designationOffered ?? null,
@@ -991,7 +1246,7 @@ export const DriveRepository = {
   async updateDriveStatus(
     tenantId: string,
     driveId: string,
-    status: "upcoming" | "active" | "completed" | "cancelled",
+    status: DriveLifecycle,
   ) {
     const db = await getMongoDb();
     const result = await db.collection("drives").updateOne(
@@ -1078,5 +1333,118 @@ export const DriveRepository = {
         offerLetterSharedBy: row.offerLetterSharedBy ?? null,
         updatedAt: row.updatedAt ?? null,
       })) satisfies DriveResultReleaseStatusRow[];
+  },
+
+  async listDriveResumeExportRows(tenantId: string, driveId: string) {
+    const db = await getMongoDb();
+    const rows = await db.collection("drive_results").find(
+      {
+        tenant_id: tenantId,
+        drive_id: driveId,
+        application_state: { $in: ["applied", "absent"] },
+      },
+      {
+        projection: {
+          _id: 0,
+          student_id: 1,
+          application_state: 1,
+          outcome: 1,
+          resume_filename_at_application: 1,
+          resume_drive_web_link_at_application: 1,
+        },
+      },
+    ).toArray();
+
+    const studentIds = rows.map((row) => String(row.student_id));
+    if (studentIds.length === 0) return [] satisfies DriveResumeExportRow[];
+
+    const students = await db.collection("students").find(
+      {
+        tenant_id: tenantId,
+        id: { $in: studentIds },
+      },
+      {
+        projection: {
+          _id: 0,
+          id: 1,
+          user_id: 1,
+          roll_number: 1,
+          branch: 1,
+          batch: 1,
+          cgpa: 1,
+          profile_data: 1,
+        },
+      },
+    ).toArray();
+
+    const users = await db.collection("users").find(
+      {
+        tenant_id: tenantId,
+        id: { $in: students.map((student) => String(student.user_id)) },
+      },
+      {
+        projection: {
+          _id: 0,
+          id: 1,
+          email: 1,
+          full_name: 1,
+        },
+      },
+    ).toArray();
+
+    const studentMap = new Map(students.map((student) => [String(student.id), student]));
+    const userMap = new Map(users.map((user) => [String(user.id), user]));
+
+    return rows
+      .map((row) => {
+        const student = studentMap.get(String(row.student_id));
+        const user = student ? userMap.get(String(student.user_id)) : null;
+        const profileData = student?.profile_data && typeof student.profile_data === "object"
+          ? student.profile_data as Record<string, unknown>
+          : {};
+        const resumeUrl = String(
+          row.resume_drive_web_link_at_application
+          ?? profileData.resumeDriveWebLink
+          ?? profileData.resumeUrl
+          ?? "",
+        ).trim();
+        if (!student || !user || !resumeUrl) return null;
+
+        return {
+          studentId: String(row.student_id),
+          fullName: String(user.full_name ?? ""),
+          email: String(user.email ?? ""),
+          rollNumber: String(student.roll_number ?? ""),
+          branch: String(student.branch ?? ""),
+          batch: String(student.batch ?? ""),
+          cgpa: Number(student.cgpa ?? 0),
+          applicationState: deriveApplicationState(row as Record<string, unknown>),
+          outcome: String(row.outcome ?? "pending") as DriveResumeExportRow["outcome"],
+          resumeFilename: row.resume_filename_at_application
+            ? String(row.resume_filename_at_application)
+            : profileData.resumeFilename
+              ? String(profileData.resumeFilename)
+              : null,
+          resumeUrl,
+        } satisfies DriveResumeExportRow;
+      })
+      .filter((row): row is DriveResumeExportRow => row !== null);
+  },
+
+  async markDriveWithdrawn(tenantId: string, driveId: string, studentId: string) {
+    const db = await getMongoDb();
+    const now = new Date().toISOString();
+
+    await db.collection("drive_results").updateOne(
+      { tenant_id: tenantId, drive_id: driveId, student_id: studentId },
+      {
+        $set: {
+          application_state: "withdrawn",
+          status: "eligible",
+          appeared: false,
+          updated_at: now,
+        },
+      },
+    );
   },
 };

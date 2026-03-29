@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { pilotFeedbackLinks } from "../../config/pilot-feedback";
 import { isClientFeatureEnabled } from "../../config/features";
+import { Brand } from "./Brand";
 import { Button } from "../ui";
 
 type NavbarRole = "student" | "tpo";
@@ -36,7 +37,6 @@ const adminLinks: NavLink[] = [
 
 interface NavbarProps {
   role: NavbarRole;
-  title: string;
   userName: string;
   showAdminLinks?: boolean;
   studentProfileCompletionPct?: number | null;
@@ -46,7 +46,6 @@ interface NavbarProps {
 
 export function Navbar({
   role,
-  title,
   userName,
   showAdminLinks = false,
   studentProfileCompletionPct = null,
@@ -84,11 +83,12 @@ export function Navbar({
   }, [location.pathname]);
 
   const showFeedbackButton = Boolean(pilotFeedbackLinks.googleFormUrl);
-  const showSupportButton = Boolean(pilotFeedbackLinks.whatsappUrl || pilotFeedbackLinks.supportEmailHref);
+  const showSupportButton = role === "student" || Boolean(pilotFeedbackLinks.whatsappUrl || pilotFeedbackLinks.supportEmailHref);
+  const homeHref = role === "student" ? "/dashboard" : showAdminLinks ? "/admin/hub" : "/tpo/dashboard";
 
   return (
     <nav className="navbar">
-      <div className="navbar-brand">{title}</div>
+      <Brand href={homeHref} variant="compact" className="navbar-brand" />
 
       <button
         className="navbar-toggle"
@@ -146,6 +146,11 @@ export function Navbar({
                 </button>
                 {supportOpen ? (
                   <div className="navbar-support-menu navbar-support-menu-mobile">
+                    {role === "student" ? (
+                      <Link to="/support">
+                        Request Support
+                      </Link>
+                    ) : null}
                     {pilotFeedbackLinks.whatsappUrl ? (
                       <a href={pilotFeedbackLinks.whatsappUrl} target="_blank" rel="noreferrer">
                         WhatsApp Support
@@ -205,6 +210,11 @@ export function Navbar({
             </button>
             {supportOpen ? (
               <div className="navbar-support-menu">
+                {role === "student" ? (
+                  <Link to="/support">
+                    Request Support
+                  </Link>
+                ) : null}
                 {pilotFeedbackLinks.whatsappUrl ? (
                   <a href={pilotFeedbackLinks.whatsappUrl} target="_blank" rel="noreferrer">
                     WhatsApp Support

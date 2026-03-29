@@ -1,7 +1,17 @@
 import { z } from "zod";
 
-export const driveStatusSchema = z.enum(["upcoming", "active", "completed", "cancelled"]);
+export const driveStatusSchema = z.enum([
+  "draft",
+  "published",
+  "registration_closed",
+  "in_process",
+  "results_pending",
+  "completed",
+  "archived",
+  "cancelled",
+]);
 export const driveOutcomeSchema = z.enum(["pending", "shortlisted", "selected", "rejected"]);
+export const driveApplicationStateSchema = z.enum(["not_applied", "applied", "withdrawn", "absent"]);
 export const driveMouStatusSchema = z.enum(["not_started", "in_discussion", "signed", "not_applicable"]);
 export const driveSelectionSourceSchema = z.enum(["on_campus", "off_campus", "self_reported"]);
 export const driveVerificationStatusSchema = z.enum(["pending", "verified", "rejected"]);
@@ -37,8 +47,14 @@ export const createDriveSchema = z.object({
   roundsConducted: z.array(z.string().trim().min(1).max(120)).max(12).optional(),
   mouStatus: driveMouStatusSchema.optional(),
   reportingNotes: z.string().trim().max(2000).optional(),
+  registrationInstructions: z.string().trim().max(3000).optional(),
+  requiredDocuments: z.array(z.string().trim().min(1).max(160)).max(20).optional(),
+  location: z.string().trim().min(1).max(160).optional(),
+  mode: z.enum(["on_campus", "off_campus", "hybrid"]).optional(),
+  dressCode: z.string().trim().max(240).optional(),
   criteria: driveCriteriaSchema.default({}),
-  status: driveStatusSchema.default("upcoming"),
+  status: driveStatusSchema.default("draft"),
+  previewDigest: z.string().trim().min(12).max(256).optional(),
 });
 
 export const previewDriveEligibilitySchema = z.object({
@@ -57,14 +73,21 @@ export const updateDriveSchema = z.object({
   roundsConducted: z.array(z.string().trim().min(1).max(120)).max(12).optional(),
   mouStatus: driveMouStatusSchema.optional(),
   reportingNotes: z.string().trim().max(2000).optional(),
+  registrationInstructions: z.string().trim().max(3000).optional(),
+  requiredDocuments: z.array(z.string().trim().min(1).max(160)).max(20).optional(),
+  location: z.string().trim().min(1).max(160).optional(),
+  mode: z.enum(["on_campus", "off_campus", "hybrid"]).optional(),
+  dressCode: z.string().trim().max(240).optional(),
   criteria: driveCriteriaSchema.optional(),
   status: driveStatusSchema.optional(),
+  previewDigest: z.string().trim().min(12).max(256).optional(),
 }).refine((value) => Object.keys(value).length > 0, { message: "At least one field is required" });
 
 export const updateDriveResultsSchema = z.object({
   updates: z.array(z.object({
     studentId: z.string().uuid(),
     outcome: driveOutcomeSchema,
+    applicationState: driveApplicationStateSchema.optional(),
     remarks: z.string().trim().max(500).optional(),
     registered: z.boolean().optional(),
     appeared: z.boolean().optional(),
@@ -81,6 +104,15 @@ export const updateDriveResultsSchema = z.object({
     sourceNote: z.string().trim().max(500).optional(),
     nonPlacementReason: z.string().trim().max(500).optional(),
     actionPlan: z.string().trim().max(500).optional(),
+    rounds: z.array(z.object({
+      key: z.string().trim().min(1).max(80),
+      label: z.string().trim().min(1).max(160),
+      stageType: z.enum(["screening", "aptitude", "group_discussion", "technical_interview", "hr_interview", "final_decision", "custom"]),
+      status: z.enum(["pending", "qualified", "not_qualified", "scheduled", "completed"]),
+      decidedAt: z.string().datetime().optional(),
+      releasedAt: z.string().datetime().optional(),
+      notes: z.string().trim().max(500).optional(),
+    })).max(20).optional(),
   })).min(1).max(500),
   resultIntake: z.object({
     source: driveResultSourceSchema.optional(),

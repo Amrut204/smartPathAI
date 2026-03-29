@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import { Brand } from "../../components/composites/Brand";
 import { useAuth } from "../../components/providers/AuthProvider";
 import { Badge, Button, Input } from "../../components/ui";
 
@@ -46,13 +47,7 @@ export default function SignupPage() {
     <section className="public-auth-shell">
       <div className="public-auth-layout public-auth-layout-signup">
         <aside className="public-auth-aside">
-          <Link to="/" className="marketing-brand public-auth-brand" aria-label="Smart Path home">
-            <span className="marketing-brand-mark">SP</span>
-            <span>
-              Smart Path
-              <small>Placement readiness platform</small>
-            </span>
-          </Link>
+          <Brand href="/" variant="full" descriptor="Placement readiness platform" className="public-auth-brand" />
 
           <Badge>Student onboarding</Badge>
           <h1>Join your college workspace and track your placement readiness with clarity.</h1>

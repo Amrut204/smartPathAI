@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
+import { Brand } from "../../components/composites/Brand";
 import { useAuth } from "../../components/providers/AuthProvider";
 import { Badge, Button, Input } from "../../components/ui";
 
@@ -32,13 +33,7 @@ export default function LoginPage() {
     <section className="public-auth-shell">
       <div className="public-auth-layout">
         <aside className="public-auth-aside">
-          <Link to="/" className="marketing-brand public-auth-brand" aria-label="Smart Path home">
-            <span className="marketing-brand-mark">SP</span>
-            <span>
-              Smart Path
-              <small>Placement readiness platform</small>
-            </span>
-          </Link>
+          <Brand href="/" variant="full" descriptor="Placement readiness platform" className="public-auth-brand" />
 
           <Badge>College readiness workflow</Badge>
           <h1>Placement support, preparation, and college operations in one workspace.</h1>
