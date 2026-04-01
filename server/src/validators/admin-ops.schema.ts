@@ -17,6 +17,17 @@ const optionalQueryBooleanSchema = z.preprocess((value) => {
 
 const optionalUrlSchema = z.union([z.string().trim().url().max(500), z.literal(""), z.null()]).optional();
 const optionalStringSchema = z.union([z.string().trim().max(500), z.literal(""), z.null()]).optional();
+const optionalStringArraySchema = z.preprocess((value) => {
+  if (value === undefined || value === null || value === "") return undefined;
+  if (Array.isArray(value)) return value;
+  if (typeof value === "string") {
+    return value
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+  return value;
+}, z.array(z.string().trim().min(1).max(120)).max(20).optional());
 
 export const adminTenantQuerySchema = z.object({
   tenantId: z.string().trim().min(1).max(120),
@@ -136,6 +147,10 @@ export const adminCreateExternalResourceSchema = z.object({
   durationSec: z.coerce.number().int().min(0).max(14_400).optional(),
   thumbnailUrl: optionalUrlSchema,
   isActive: optionalQueryBooleanSchema.default(true),
+  branchRelevance: optionalStringArraySchema,
+  careerTracks: optionalStringArraySchema,
+  recommendedFor: optionalStringArraySchema,
+  contentPackLabels: optionalStringArraySchema,
 });
 
 export const adminUploadResourceFieldsSchema = z.object({
@@ -147,6 +162,10 @@ export const adminUploadResourceFieldsSchema = z.object({
   durationSec: z.coerce.number().int().min(0).max(14_400).optional(),
   thumbnailUrl: optionalUrlSchema,
   isActive: optionalQueryBooleanSchema.default(true),
+  branchRelevance: optionalStringArraySchema,
+  careerTracks: optionalStringArraySchema,
+  recommendedFor: optionalStringArraySchema,
+  contentPackLabels: optionalStringArraySchema,
 });
 
 export const adminUpdateResourceSchema = z.object({
@@ -159,6 +178,10 @@ export const adminUpdateResourceSchema = z.object({
   thumbnailUrl: optionalUrlSchema,
   isActive: optionalQueryBooleanSchema,
   url: optionalUrlSchema,
+  branchRelevance: optionalStringArraySchema,
+  careerTracks: optionalStringArraySchema,
+  recommendedFor: optionalStringArraySchema,
+  contentPackLabels: optionalStringArraySchema,
 }).refine((value) => Object.keys(value).some((key) => key !== "tenantId"), {
   message: "At least one resource field is required",
 });

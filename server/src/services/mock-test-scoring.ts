@@ -5,6 +5,7 @@ export interface ParsedQuestion {
   options: string[];
   correctIndex: number;
   explanation: string | undefined;
+  skillTag: string | undefined;
 }
 
 function shuffle(items: number[]) {
@@ -37,6 +38,7 @@ export function parseQuestions(raw: unknown): ParsedQuestion[] {
         options: q.options.map((option) => String(option)),
         correctIndex: Number(q.correctIndex ?? -1),
         explanation: q.explanation ? String(q.explanation) : undefined,
+        skillTag: q.skillTag ? String(q.skillTag) : undefined,
       };
     })
     .filter((question): question is ParsedQuestion => question !== null);
@@ -56,6 +58,7 @@ export function randomizeQuestionsForAttempt(questions: ParsedQuestion[]): Parse
       options: randomizedOptions,
       correctIndex: randomizedCorrectIndex >= 0 ? randomizedCorrectIndex : question.correctIndex,
       explanation: question.explanation,
+      skillTag: question.skillTag,
     };
   });
 }

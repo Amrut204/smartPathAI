@@ -221,7 +221,25 @@ export const MockTestRepository = {
     const db = await getMongoDb();
     const data = await db.collection("student_attempts").findOne(
       { tenant_id: tenantId, student_id: studentId, id: attemptId },
-      { projection: { _id: 0, id: 1, test_id: 1, answers: 1, score: 1, time_taken_sec: 1, topic_breakdown: 1, status: 1, started_at: 1, submitted_at: 1, questions_snapshot: 1, integrity_summary: 1 } },
+      {
+        projection: {
+          _id: 0,
+          id: 1,
+          test_id: 1,
+          answers: 1,
+          draft_answers: 1,
+          current_question_index: 1,
+          score: 1,
+          time_taken_sec: 1,
+          topic_breakdown: 1,
+          skill_breakdown: 1,
+          status: 1,
+          started_at: 1,
+          submitted_at: 1,
+          questions_snapshot: 1,
+          integrity_summary: 1,
+        },
+      },
     );
 
     if (!data) {
@@ -236,7 +254,14 @@ export const MockTestRepository = {
     return db.collection("student_attempts").findOne(
       { tenant_id: tenantId, student_id: studentId, test_id: testId, status: "pending" },
       {
-        projection: { _id: 0, id: 1, started_at: 1, questions_snapshot: 1 },
+        projection: {
+          _id: 0,
+          id: 1,
+          started_at: 1,
+          questions_snapshot: 1,
+          draft_answers: 1,
+          current_question_index: 1,
+        },
         sort: { started_at: -1 },
       },
     );
@@ -256,16 +281,24 @@ export const MockTestRepository = {
       started_at: now,
       submitted_at: null,
       answers: [],
+      draft_answers: {},
+      current_question_index: 0,
       questions_snapshot: questionsSnapshot,
       score: 0,
       time_taken_sec: 0,
       topic_breakdown: {},
+      skill_breakdown: {},
       integrity_summary: null,
       idempotency_key: null,
       created_at: now,
     });
 
-    return { id, started_at: now };
+    return {
+      id,
+      started_at: now,
+      draft_answers: {},
+      current_question_index: 0,
+    };
   },
 
   async expirePendingAttempt(tenantId: string, studentId: string, attemptId: string, durationSec: number) {
@@ -290,6 +323,41 @@ export const MockTestRepository = {
     );
   },
 
+  async savePendingProgress(params: {
+    tenantId: string;
+    studentId: string;
+    attemptId: string;
+    answers: Record<string, number>;
+    currentQuestion: number;
+  }) {
+    const db = await getMongoDb();
+    const result = await db.collection("student_attempts").updateOne(
+      {
+        tenant_id: params.tenantId,
+        student_id: params.studentId,
+        id: params.attemptId,
+        status: "pending",
+      },
+      {
+        $set: {
+          draft_answers: params.answers,
+          current_question_index: params.currentQuestion,
+          updated_at: new Date().toISOString(),
+        },
+      },
+    );
+
+    if (result.matchedCount === 0) {
+      throw new AppError("ATTEMPT_NOT_FOUND", "Attempt not found", 404);
+    }
+
+    return {
+      attemptId: params.attemptId,
+      saved: true,
+      currentQuestion: params.currentQuestion,
+    };
+  },
+
   async submitAttempt(params: {
     tenantId: string;
     studentId: string;
@@ -298,6 +366,7 @@ export const MockTestRepository = {
     score: number;
     timeTakenSec: number;
     topicBreakdown: Record<string, unknown>;
+    skillBreakdown?: Record<string, unknown>;
     idempotencyKey: string;
     integritySummary?: Record<string, unknown> | null;
   }) {
@@ -317,10 +386,13 @@ export const MockTestRepository = {
           score: params.score,
           time_taken_sec: params.timeTakenSec,
           topic_breakdown: params.topicBreakdown,
+          skill_breakdown: params.skillBreakdown ?? {},
           idempotency_key: params.idempotencyKey,
           integrity_summary: params.integritySummary ?? null,
           status: "submitted",
           submitted_at: now,
+          draft_answers: {},
+          current_question_index: 0,
         },
       },
       { returnDocument: "after", projection: { _id: 0, id: 1, score: 1, time_taken_sec: 1, topic_breakdown: 1, submitted_at: 1 } },
@@ -406,5 +478,92 @@ export const MockTestRepository = {
         },
       },
     );
+  },
+
+  async upsertSkillMastery(params: {
+    tenantId: string;
+    studentId: string;
+    skillTag: string;
+    totalQuestions: number;
+    correctAnswers: number;
+  }) {
+    const db = await getMongoDb();
+    const existing = await db.collection("mock_skill_mastery").findOne(
+      { tenant_id: params.tenantId, student_id: params.studentId, skill_tag: params.skillTag },
+      { projection: { id: 1, total_questions: 1, correct_answers: 1 } },
+    );
+
+    const nextTotal = Number(existing?.total_questions ?? 0) + params.totalQuestions;
+    const nextCorrect = Number(existing?.correct_answers ?? 0) + params.correctAnswers;
+    const masteryLevel = nextTotal > 0 ? Number(((nextCorrect / nextTotal) * 100).toFixed(2)) : 0;
+    const now = new Date().toISOString();
+
+    if (!existing) {
+      await db.collection("mock_skill_mastery").insertOne({
+        id: randomUUID(),
+        tenant_id: params.tenantId,
+        student_id: params.studentId,
+        skill_tag: params.skillTag,
+        total_questions: nextTotal,
+        correct_answers: nextCorrect,
+        mastery_level: masteryLevel,
+        last_assessed: now,
+      });
+      return;
+    }
+
+    await db.collection("mock_skill_mastery").updateOne(
+      { id: String(existing.id) },
+      {
+        $set: {
+          total_questions: nextTotal,
+          correct_answers: nextCorrect,
+          mastery_level: masteryLevel,
+          last_assessed: now,
+        },
+      },
+    );
+  },
+
+  async getWeakSkills(tenantId: string, studentId: string, limit = 4) {
+    const db = await getMongoDb();
+    const rows = await db.collection("mock_skill_mastery").find(
+      { tenant_id: tenantId, student_id: studentId },
+      { projection: { _id: 0, skill_tag: 1, mastery_level: 1, total_questions: 1, correct_answers: 1, last_assessed: 1 } },
+    ).sort({ mastery_level: 1, total_questions: -1 }).limit(limit).toArray();
+
+    return rows.map((row) => ({
+      skillTag: String(row.skill_tag ?? ""),
+      masteryLevel: Number(row.mastery_level ?? 0),
+      totalQuestions: Number(row.total_questions ?? 0),
+      correctAnswers: Number(row.correct_answers ?? 0),
+      lastAssessed: row.last_assessed ? String(row.last_assessed) : null,
+    })).filter((row) => row.skillTag);
+  },
+
+  async getTestPercentileStats(tenantId: string, testId: string, score: number) {
+    const db = await getMongoDb();
+    const [population, belowOrEqual] = await Promise.all([
+      db.collection("student_attempts").countDocuments({
+        tenant_id: tenantId,
+        test_id: testId,
+        status: "submitted",
+      }),
+      db.collection("student_attempts").countDocuments({
+        tenant_id: tenantId,
+        test_id: testId,
+        status: "submitted",
+        score: { $lte: score },
+      }),
+    ]);
+
+    const percentileRank = population > 0
+      ? Number((((belowOrEqual / population) * 100)).toFixed(1))
+      : null;
+
+    return {
+      attemptPopulation: population,
+      percentileRank: population >= 15 ? percentileRank : null,
+    };
   },
 };

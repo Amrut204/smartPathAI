@@ -18,11 +18,19 @@ import {
   STUDENT_DECLARATION_POLICY_VERSION,
 } from "../utils/student-declaration.js";
 import { DriveRepository, normalizeDriveLifecycle } from "../repositories/drive.repository.js";
+import {
+  BRANCH_PACK_DEFINITIONS,
+  COMMON_PLACEMENT_KEYWORDS,
+  COMPANY_PREP_KEYWORDS,
+  INTERVIEW_PRACTICE_KEYWORDS,
+  TARGET_ROLE_KEYWORDS,
+} from "../config/branch-content.config.js";
 import { PointsService } from "./points.service.js";
 import { StudentActivityService } from "./student-activity.service.js";
 import { evaluateStudentEligibility, ELIGIBILITY_REASON_LABELS } from "./eligibility.logic.js";
 import { RiskAssessmentService } from "./risk-assessment.service.js";
 import { GoogleDriveResumeService } from "./google-drive-resume.service.js";
+import { getBranchPrepTrack, getCanonicalBranchCode, matchesBranchPrepTrackTag } from "../config/branch-prep.config.js";
 
 interface LogStudyHoursInput {
   tenantId: string;
@@ -174,6 +182,24 @@ type RecommendedResourceItem = StudentResourceItem & {
   recommendationBucket?: string;
   lastViewedAt?: string | null;
   progressPct?: number | null;
+};
+
+type RecommendedResourceFlags = {
+  weakTopicMatch: boolean;
+  branchMatch: boolean;
+  upcomingDriveMatch: boolean;
+  continueLearningMatch: boolean;
+};
+
+type ScoredRecommendedResourceItem = RecommendedResourceItem & {
+  recommendationFlags: RecommendedResourceFlags;
+};
+
+type ResourceRecommendationPack = {
+  id: string;
+  title: string;
+  description: string;
+  items: RecommendedResourceItem[];
 };
 
 function normalizeRecommendationText(value: unknown) {
@@ -976,15 +1002,8 @@ async function buildMyProfileResponseWithVisibility(profile: Awaited<ReturnType<
 }
 
 function selectRecommendedResources(
-  items: Array<RecommendedResourceItem & {
-    recommendationFlags: {
-      weakTopicMatch: boolean;
-      branchMatch: boolean;
-      upcomingDriveMatch: boolean;
-      continueLearningMatch: boolean;
-    };
-  }>,
-  predicate: (item: RecommendedResourceItem & { recommendationFlags: { weakTopicMatch: boolean; branchMatch: boolean; upcomingDriveMatch: boolean; continueLearningMatch: boolean } }) => boolean,
+  items: ScoredRecommendedResourceItem[],
+  predicate: (item: ScoredRecommendedResourceItem) => boolean,
   limit: number,
   bucket: string,
 ) {
@@ -997,6 +1016,116 @@ function selectRecommendedResources(
         ...item,
         recommendationBucket: bucket,
       })),
+  );
+}
+
+function matchesAnyKeyword(resource: StudentResourceItem, keywords: string[]) {
+  if (keywords.length === 0) return false;
+  const resourceMetadata = resource as StudentResourceItem & {
+    summaryShort?: string;
+    searchText?: string;
+    keyTopics?: string[];
+    keywords?: string[];
+  };
+  const haystack = buildRecommendationHaystack([
+    resource.title,
+    resource.description,
+    resourceMetadata.summaryShort,
+    resourceMetadata.searchText,
+    resource.studyDocument?.whatThisCovers,
+    resource.studyDocument?.topic,
+    resource.studyDocument?.subtopic,
+    ...(resource.studyDocument?.keyConcepts ?? []),
+    ...(resource.studyDocument?.interviewFocus ?? []),
+    ...(resource.studyDocument?.recommendedFor ?? []),
+    ...(resource.studyDocument?.careerTracks ?? []),
+    ...(resource.studyDocument?.branchRelevance ?? []),
+    ...(resource.studyDocument?.contentPacks ?? []),
+    ...(resourceMetadata.keyTopics ?? []),
+    ...(resourceMetadata.keywords ?? []),
+  ]);
+  return keywords.some((keyword) => haystack.includes(normalizeRecommendationText(keyword)));
+}
+
+function countBranchTaggedResources(items: StudentResourceItem[], branch: string) {
+  return items.filter((item) =>
+    (item.studyDocument?.branchRelevance ?? []).some((value) => matchesBranchPrepTrackTag(String(value), branch))
+  ).length;
+}
+
+function buildBranchResourcePacks(input: {
+  scoredResources: ScoredRecommendedResourceItem[];
+  branchCode: string | null;
+  limitPerPack: number;
+}) {
+  if (!input.branchCode) return [] as ResourceRecommendationPack[];
+
+  return BRANCH_PACK_DEFINITIONS
+    .filter((pack) => pack.branch === input.branchCode)
+    .map((pack) => ({
+      id: pack.id,
+      title: pack.title,
+      description: pack.description,
+      items: uniqueById(
+        input.scoredResources
+          .filter((item) =>
+            item.recommendationFlags.branchMatch
+              && (matchesAnyKeyword(item, pack.keywords)
+                || (item.studyDocument?.contentPacks ?? []).some((value) => normalizeRecommendationText(value) === normalizeRecommendationText(pack.title))),
+          )
+          .slice(0, input.limitPerPack),
+      ),
+    }))
+    .filter((pack) => pack.items.length >= 2);
+}
+
+function selectPlacementEssentials(scoredResources: ScoredRecommendedResourceItem[], limit: number) {
+  return selectRecommendedResources(
+    scoredResources,
+    (item) =>
+      !item.recommendationFlags.branchMatch
+        || matchesAnyKeyword(item, COMMON_PLACEMENT_KEYWORDS)
+        || item.recommendationFlags.weakTopicMatch
+        || item.recommendationFlags.continueLearningMatch,
+    limit,
+    "placement_essentials",
+  );
+}
+
+function selectCompanyPatternPrep(scoredResources: ScoredRecommendedResourceItem[], limit: number) {
+  return selectRecommendedResources(
+    scoredResources,
+    (item) => item.recommendationFlags.upcomingDriveMatch || matchesAnyKeyword(item, COMPANY_PREP_KEYWORDS),
+    limit,
+    "company_pattern_prep",
+  );
+}
+
+function selectInterviewPractice(scoredResources: ScoredRecommendedResourceItem[], limit: number) {
+  return selectRecommendedResources(
+    scoredResources,
+    (item) => matchesAnyKeyword(item, INTERVIEW_PRACTICE_KEYWORDS),
+    limit,
+    "interview_practice",
+  );
+}
+
+function selectTargetRoleBoost(scoredResources: ScoredRecommendedResourceItem[], targetRoles: string[], limit: number) {
+  const roleKeywords = targetRoles.flatMap((role) => {
+    const normalizedRole = normalizeRecommendationText(role);
+    if (normalizedRole.includes("software")) return TARGET_ROLE_KEYWORDS.software;
+    if (normalizedRole.includes("analyst")) return TARGET_ROLE_KEYWORDS.analyst;
+    if (normalizedRole.includes("graduate engineer") || normalizedRole === "get") return TARGET_ROLE_KEYWORDS.graduate_engineer_trainee;
+    return [role];
+  });
+
+  if (roleKeywords.length === 0) return [] as ScoredRecommendedResourceItem[];
+
+  return selectRecommendedResources(
+    scoredResources,
+    (item) => matchesAnyKeyword(item, roleKeywords),
+    limit,
+    "target_role_boost",
   );
 }
 
@@ -2127,25 +2256,34 @@ export const StudentService = {
     const resources = allResources.filter((resource) => matchesResourceFilterForRecommendation(resource, filter));
     const resourceIds = resources.map((resource) => resource.id);
     const recentThreshold = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
-
-    const popularityRows = resourceIds.length > 0
-      ? await db.collection("resource_view_events").aggregate([
-          {
-            $match: {
-              tenant_id: tenantId,
-              event_type: "open",
-              resource_id: { $in: resourceIds },
-              created_at: { $gte: recentThreshold },
+    const canonicalBranch = getCanonicalBranchCode(String(student.branch ?? ""));
+    const [popularityRows, activeBranchMockCount] = await Promise.all([
+      resourceIds.length > 0
+        ? db.collection("resource_view_events").aggregate([
+            {
+              $match: {
+                tenant_id: tenantId,
+                event_type: "open",
+                resource_id: { $in: resourceIds },
+                created_at: { $gte: recentThreshold },
+              },
             },
-          },
-          {
-            $group: {
-              _id: "$resource_id",
-              count: { $sum: 1 },
+            {
+              $group: {
+                _id: "$resource_id",
+                count: { $sum: 1 },
+              },
             },
-          },
-        ]).toArray()
-      : [];
+          ]).toArray()
+        : Promise.resolve([]),
+      canonicalBranch
+        ? db.collection("mock_tests").countDocuments({
+            is_active: true,
+            $or: [{ tenant_id: tenantId }, { tenant_id: null }],
+            primary_branches: canonicalBranch,
+          })
+        : Promise.resolve(0),
+    ]);
     const popularityMap = new Map(popularityRows.map((row) => [String(row._id), Number(row.count ?? 0)]));
 
     const scoredResources = resources
@@ -2162,15 +2300,31 @@ export const StudentService = {
 
     const bestForYouNow = selectRecommendedResources(scoredResources, () => true, limitPerSection, "best_for_you_now");
     const fixYourWeakAreas = selectRecommendedResources(scoredResources, (item) => item.recommendationFlags.weakTopicMatch, limitPerSection, "fix_weak_areas");
-    const prepareForUpcomingDrives = selectRecommendedResources(scoredResources, (item) => item.recommendationFlags.upcomingDriveMatch, limitPerSection, "prepare_upcoming_drives");
-    const basedOnYourBranch = selectRecommendedResources(scoredResources, (item) => item.recommendationFlags.branchMatch, limitPerSection, "based_on_branch");
-    const continueLearning = selectRecommendedResources(scoredResources, (item) => item.recommendationFlags.continueLearningMatch, limitPerSection, "continue_learning");
+    const branchCore = selectRecommendedResources(scoredResources, (item) => item.recommendationFlags.branchMatch, limitPerSection, "branch_core");
+    const placementEssentials = selectPlacementEssentials(scoredResources, limitPerSection);
+    const companyPatternPrep = selectCompanyPatternPrep(scoredResources, limitPerSection);
+    const interviewPractice = selectInterviewPractice(scoredResources, limitPerSection);
+    const targetRoleBoost = selectTargetRoleBoost(scoredResources, profileData.targetRoles, Math.max(4, Math.floor(limitPerSection / 2)));
+    const branchPacks = buildBranchResourcePacks({
+      scoredResources,
+      branchCode: canonicalBranch,
+      limitPerPack: Math.min(4, limitPerSection),
+    });
+    const branchResourceCount = canonicalBranch ? countBranchTaggedResources(resources, canonicalBranch) : 0;
+    const branchCoverageQualified = canonicalBranch
+      ? branchResourceCount >= 10 && activeBranchMockCount >= 5 && branchPacks.length >= 1
+      : false;
+    const forYourBranch = uniqueById([
+      ...branchCore,
+      ...targetRoleBoost,
+    ]).slice(0, limitPerSection);
     const usedIds = new Set([
       ...bestForYouNow,
+      ...forYourBranch,
+      ...placementEssentials,
+      ...companyPatternPrep,
+      ...interviewPractice,
       ...fixYourWeakAreas,
-      ...prepareForUpcomingDrives,
-      ...basedOnYourBranch,
-      ...continueLearning,
     ].map((item) => item.id));
     const exploreMore = uniqueById(
       scoredResources
@@ -2183,21 +2337,21 @@ export const StudentService = {
     );
 
     const stripFlags = (
-      items: Array<RecommendedResourceItem & {
-        recommendationFlags: {
-          weakTopicMatch: boolean;
-          branchMatch: boolean;
-          upcomingDriveMatch: boolean;
-          continueLearningMatch: boolean;
-        };
-      }>,
+      items: ScoredRecommendedResourceItem[],
     ) => items.map(({ recommendationFlags: _ignored, ...item }) => item);
 
     return {
       context: {
         branch: String(student.branch ?? ""),
+        canonicalBranch,
         branchTrackLabel: dashboard.branchTrack.label,
         targetRoles: profileData.targetRoles,
+        branchCoverageQualified,
+        branchCoverage: {
+          branchTaggedResources: branchResourceCount,
+          branchTaggedMockTests: activeBranchMockCount,
+          branchPackCount: branchPacks.length,
+        },
         upcomingDrives: dashboard.upcomingDrives.slice(0, 3).map((drive) => ({
           company: drive.company,
           role: drive.role,
@@ -2207,11 +2361,16 @@ export const StudentService = {
       sections: {
         bestForYouNow: stripFlags(bestForYouNow),
         fixYourWeakAreas: stripFlags(fixYourWeakAreas),
-        prepareForUpcomingDrives: stripFlags(prepareForUpcomingDrives),
-        basedOnYourBranch: stripFlags(basedOnYourBranch),
-        continueLearning: stripFlags(continueLearning),
+        forYourBranch: stripFlags(forYourBranch),
+        placementEssentials: stripFlags(placementEssentials),
+        companyPatternPrep: stripFlags(companyPatternPrep),
+        interviewPractice: stripFlags(interviewPractice),
         exploreMore: stripFlags(exploreMore),
       },
+      packs: branchPacks.map((pack) => ({
+        ...pack,
+        items: stripFlags(pack.items as ScoredRecommendedResourceItem[]),
+      })),
     };
   },
 

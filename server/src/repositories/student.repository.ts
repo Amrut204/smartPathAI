@@ -50,6 +50,7 @@ const studyDocumentContentCache = new Map<string, {
   subtopic?: string;
   branchRelevance?: string[];
   careerTracks?: string[];
+  contentPacks?: string[];
   difficulty?: string;
   whatThisCovers?: string;
   keyConcepts?: string[];
@@ -118,6 +119,7 @@ if (existsSync(studyDocumentManifestPath)) {
           subtopic?: string;
           branch_relevance?: string[];
           career_tracks?: string[];
+          content_pack_labels?: string[];
           difficulty?: string;
           what_this_covers?: string;
           key_concepts?: string[];
@@ -143,6 +145,7 @@ if (existsSync(studyDocumentManifestPath)) {
             subtopic: item.subtopic ? String(item.subtopic) : undefined,
             branchRelevance: Array.isArray(item.branch_relevance) ? item.branch_relevance.map((value) => String(value)) : undefined,
             careerTracks: Array.isArray(item.career_tracks) ? item.career_tracks.map((value) => String(value)) : undefined,
+            contentPacks: Array.isArray(item.content_pack_labels) ? item.content_pack_labels.map((value) => String(value)) : undefined,
             difficulty: item.difficulty ? String(item.difficulty) : undefined,
             whatThisCovers: item.what_this_covers ? String(item.what_this_covers) : undefined,
             keyConcepts: Array.isArray(item.key_concepts) ? item.key_concepts.map((value) => String(value)) : undefined,
@@ -281,6 +284,7 @@ async function loadStudyDocumentManifest() {
         subtopic?: string;
         branch_relevance?: string[];
         career_tracks?: string[];
+        content_pack_labels?: string[];
         difficulty?: string;
         what_this_covers?: string;
         key_concepts?: string[];
@@ -306,6 +310,7 @@ async function loadStudyDocumentManifest() {
           subtopic: item.subtopic ? String(item.subtopic) : undefined,
           branchRelevance: Array.isArray(item.branch_relevance) ? item.branch_relevance.map((value) => String(value)) : undefined,
           careerTracks: Array.isArray(item.career_tracks) ? item.career_tracks.map((value) => String(value)) : undefined,
+          contentPacks: Array.isArray(item.content_pack_labels) ? item.content_pack_labels.map((value) => String(value)) : undefined,
           difficulty: item.difficulty ? String(item.difficulty) : undefined,
           whatThisCovers: item.what_this_covers ? String(item.what_this_covers) : undefined,
           keyConcepts: Array.isArray(item.key_concepts) ? item.key_concepts.map((value) => String(value)) : undefined,
@@ -452,6 +457,7 @@ function buildStudyDocumentPayload(relativePath: string) {
     subtopic: document.subtopic,
     branchRelevance: document.branchRelevance ?? [],
     careerTracks: document.careerTracks ?? [],
+    contentPacks: document.contentPacks ?? [],
     difficulty: document.difficulty,
     whatThisCovers: document.whatThisCovers,
     keyConcepts: document.keyConcepts ?? [],
@@ -487,6 +493,52 @@ function cleanResourceDescription(description: string) {
     .trim();
 }
 
+function buildMergedStudyDocument(
+  resource: Record<string, unknown>,
+  studyDocument?: ReturnType<typeof buildStudyDocumentPayload>,
+) {
+  const resourceBranchRelevance = Array.isArray(resource.branch_relevance) ? resource.branch_relevance.map((value) => String(value)) : [];
+  const resourceCareerTracks = Array.isArray(resource.career_tracks) ? resource.career_tracks.map((value) => String(value)) : [];
+  const resourceContentPacks = Array.isArray(resource.content_pack_labels) ? resource.content_pack_labels.map((value) => String(value)) : [];
+  const resourceRecommendedFor = Array.isArray(resource.recommended_for) ? resource.recommended_for.map((value) => String(value)) : [];
+
+  if (!studyDocument) {
+    if (resourceBranchRelevance.length === 0 && resourceCareerTracks.length === 0 && resourceContentPacks.length === 0 && resourceRecommendedFor.length === 0) {
+      return undefined;
+    }
+
+    return {
+      title: undefined,
+      topic: undefined,
+      subtopic: undefined,
+      branchRelevance: resourceBranchRelevance,
+      careerTracks: resourceCareerTracks,
+      contentPacks: resourceContentPacks,
+      difficulty: undefined,
+      whatThisCovers: undefined,
+      keyConcepts: [],
+      importantDefinitions: [],
+      coreExplanation: undefined,
+      stepByStepUnderstanding: [],
+      interviewFocus: [],
+      commonMistakes: [],
+      quickRevisionPoints: [],
+      practicePrompts: [],
+      recommendedFor: resourceRecommendedFor,
+      searchText: undefined,
+      sourceQualityNotes: undefined,
+    };
+  }
+
+  return {
+    ...studyDocument,
+    branchRelevance: [...new Set([...(studyDocument.branchRelevance ?? []), ...resourceBranchRelevance])],
+    careerTracks: [...new Set([...(studyDocument.careerTracks ?? []), ...resourceCareerTracks])],
+    contentPacks: [...new Set([...(studyDocument.contentPacks ?? []), ...resourceContentPacks])],
+    recommendedFor: [...new Set([...(studyDocument.recommendedFor ?? []), ...resourceRecommendedFor])],
+  };
+}
+
 function toResourceDto(resource: Record<string, unknown>, options?: { includeSearchMetadata?: boolean }) {
   const resolvedUrl = resolveResourceUrlValue(
     resource.url ? String(resource.url) : "",
@@ -494,7 +546,7 @@ function toResourceDto(resource: Record<string, unknown>, options?: { includeSea
   );
   const localRelativePath = extractLocalRelativePathFromUrl(resolvedUrl);
   const onePageTriage = onePagePdfTriageMap.get(localRelativePath);
-  const studyDocument = buildStudyDocumentPayload(localRelativePath);
+  const studyDocument = buildMergedStudyDocument(resource, buildStudyDocumentPayload(localRelativePath));
   const title = cleanResourceTitle(String(resource.title));
   const description = cleanResourceDescription(resource.description ? String(resource.description) : "");
   const base = {
@@ -578,7 +630,7 @@ function toResourceDtoWithAsset(
   });
   const localRelativePath = extractLocalRelativePathFromUrl(resolvedUrl);
   const onePageTriage = onePagePdfTriageMap.get(localRelativePath);
-  const studyDocument = buildStudyDocumentPayload(localRelativePath);
+  const studyDocument = buildMergedStudyDocument(resource, buildStudyDocumentPayload(localRelativePath));
   const title = cleanResourceTitle(String(resource.title));
   const description = cleanResourceDescription(resource.description ? String(resource.description) : "");
 
@@ -697,6 +749,10 @@ function buildSharedResourcePipeline(params: {
         duration_sec: "$duration_sec",
         topic_id: "$topic_id",
         source_pdf: "$source_pdf",
+        branch_relevance: "$branch_relevance",
+        career_tracks: "$career_tracks",
+        content_pack_labels: "$content_pack_labels",
+        recommended_for: "$recommended_for",
         created_at: "$created_at",
         asset: "$asset",
         ...(includeSearchMetadata ? { search_index: "$search_index" } : {}),
@@ -988,7 +1044,7 @@ export const StudentRepository = {
 
     const studentPoints = Number(student.points ?? 0);
     const branch = String(student.branch ?? "");
-    const branchTrack = getBranchPrepTrack(branch);
+    const branchTrack = getBranchPrepTrack(branch, { fallback: "placement_essentials" });
     const [totalStudents, betterRankedCount, studiedTopicRows] = await Promise.all([
       db.collection("students").countDocuments({ tenant_id: tenantId }),
       db.collection("students").countDocuments({
@@ -1809,6 +1865,10 @@ export const StudentRepository = {
               topic_id: 1,
               source_pdf: 1,
               search_index: 1,
+              branch_relevance: 1,
+              career_tracks: 1,
+              content_pack_labels: 1,
+              recommended_for: 1,
             },
           },
         ).sort({ created_at: -1 }).limit(24).toArray()
@@ -2032,7 +2092,7 @@ export const StudentRepository = {
 
     const data = await db.collection("resources").find(
       filter,
-      { projection: { _id: 0, id: 1, title: 1, description: 1, url: 1, resource_type: 1, thumbnail_url: 1, duration_sec: 1, topic_id: 1, source_pdf: 1 } },
+      { projection: { _id: 0, id: 1, title: 1, description: 1, url: 1, resource_type: 1, thumbnail_url: 1, duration_sec: 1, topic_id: 1, source_pdf: 1, branch_relevance: 1, career_tracks: 1, content_pack_labels: 1, recommended_for: 1 } },
     ).sort({ created_at: -1 }).toArray();
 
     const legacy = data.map((resource) => toResourceDto(resource, { includeSearchMetadata: false }));
@@ -2102,6 +2162,10 @@ export const StudentRepository = {
           topic_id: 1,
           source_pdf: 1,
           search_index: 1,
+          branch_relevance: 1,
+          career_tracks: 1,
+          content_pack_labels: 1,
+          recommended_for: 1,
           asset: "$asset",
         },
       },
@@ -2122,7 +2186,7 @@ export const StudentRepository = {
 
     const legacy = await db.collection("resources").findOne(
       { tenant_id: tenantId, is_active: true, id: resourceId },
-      { projection: { _id: 0, id: 1, title: 1, description: 1, url: 1, resource_type: 1, thumbnail_url: 1, duration_sec: 1, topic_id: 1, source_pdf: 1, search_index: 1 } },
+      { projection: { _id: 0, id: 1, title: 1, description: 1, url: 1, resource_type: 1, thumbnail_url: 1, duration_sec: 1, topic_id: 1, source_pdf: 1, search_index: 1, branch_relevance: 1, career_tracks: 1, content_pack_labels: 1, recommended_for: 1 } },
     );
 
     if (!legacy) {
@@ -2280,7 +2344,7 @@ export const StudentRepository = {
 
     const resources = await db.collection("resources").find(
       filter,
-      { projection: { _id: 0, id: 1, title: 1, description: 1, url: 1, resource_type: 1, thumbnail_url: 1, duration_sec: 1, topic_id: 1, source_pdf: 1, search_index: 1 } },
+      { projection: { _id: 0, id: 1, title: 1, description: 1, url: 1, resource_type: 1, thumbnail_url: 1, duration_sec: 1, topic_id: 1, source_pdf: 1, search_index: 1, branch_relevance: 1, career_tracks: 1, content_pack_labels: 1, recommended_for: 1 } },
     ).sort({ created_at: -1 }).limit(350).toArray();
 
     const legacyResources = resources.map((resource) => toResourceDto(resource, { includeSearchMetadata: true }));

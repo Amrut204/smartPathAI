@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent, type MouseEvent } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 
 import { askAiOnce } from "../../hooks/use-ai-assistant";
@@ -182,6 +182,13 @@ export default function ResourcesPage() {
   const branchTrackFocusAreas = Array.isArray(dashboard?.branchTrack?.focusAreas) ? dashboard.branchTrack.focusAreas : [];
   const takedownEmail = pilotFeedbackLinks.supportEmail ?? "admin@campusdrive.me";
 
+  const scrollToLayer = (event: MouseEvent<HTMLButtonElement>, layerId: string) => {
+    event.preventDefault();
+    const target = document.getElementById(layerId);
+    if (!target) return;
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   useEffect(() => {
     startPerfMark("student-resources:first-visible");
     return () => finishPerfMark("student-resources:first-visible");
@@ -202,41 +209,47 @@ export default function ResourcesPage() {
     const payload = recommendations as ResourceRecommendationsPayload | undefined;
     if (!payload || topicFromUrl) return [] as Array<{
       id: string;
+      eyebrow: string;
       label: string;
       description: string;
+      accent: "branch" | "essentials" | "company" | "interview";
       items: ResourceItem[];
     }>;
 
     return [
       {
-        id: "best",
-        label: "Best For You Now",
-        description: "The strongest next-study picks based on your branch, weak areas, and preparation goals.",
-        items: payload.sections.bestForYouNow,
+        id: "branch",
+        eyebrow: "Layer 1",
+        label: "For Your Branch",
+        description: payload.context.branchCoverageQualified
+          ? `Branch-first picks aligned to ${payload.context.branchTrackLabel}.`
+          : `A focused branch starter view for ${payload.context.branchTrackLabel}, with common prep kept strong while branch depth grows.`,
+        accent: "branch",
+        items: payload.sections.forYourBranch,
       },
       {
-        id: "weak",
-        label: "Fix Your Weak Areas",
-        description: "Priority resources for the topics where you need the biggest lift.",
-        items: payload.sections.fixYourWeakAreas,
+        id: "essentials",
+        eyebrow: "Layer 2",
+        label: "Placement Essentials",
+        description: "Common prep that stays valuable across branches: aptitude, verbal, interview readiness, and foundational revision.",
+        accent: "essentials",
+        items: payload.sections.placementEssentials,
       },
       {
         id: "drive",
-        label: "Prepare For Upcoming Drives",
-        description: "Resources boosted for the companies and roles in your pipeline.",
-        items: payload.sections.prepareForUpcomingDrives,
+        eyebrow: "Layer 3",
+        label: "Company Pattern Prep",
+        description: "Resources boosted for the companies and roles currently ahead of you.",
+        accent: "company",
+        items: payload.sections.companyPatternPrep,
       },
       {
-        id: "branch",
-        label: "Based On Your Branch",
-        description: `Core picks aligned to ${payload.context.branchTrackLabel}.`,
-        items: payload.sections.basedOnYourBranch,
-      },
-      {
-        id: "continue",
-        label: "Continue Learning",
-        description: "Resume the resources you already opened so momentum is not wasted.",
-        items: payload.sections.continueLearning,
+        id: "interview",
+        eyebrow: "Layer 4",
+        label: "Interview Practice",
+        description: "Interview-oriented explanations, viva-style revision, and practical communication prep.",
+        accent: "interview",
+        items: payload.sections.interviewPractice,
       },
     ].filter((section) => section.items.length > 0);
   }, [recommendations, topicFromUrl]);
@@ -280,6 +293,16 @@ export default function ResourcesPage() {
           <p className="resources-kicker">Resource Library</p>
           <h1>Search and open placement study material from one place.</h1>
           <p>Use topic search and content-type filters to find the exact material you need, then continue reading from where you left off.</p>
+          {showExpandedResources && dashboard ? (
+            <div className="resources-hero-pills">
+              <span className="resources-hero-pill">Branch path: {branchTrackLabel}</span>
+              {branchTrackFocusAreas.slice(0, 3).map((item) => (
+                <span key={`focus-${item.topicName}`} className="resources-hero-pill resources-hero-pill-muted">
+                  {item.topicName}
+                </span>
+              ))}
+            </div>
+          ) : null}
         </div>
       </section>
 
@@ -340,6 +363,61 @@ export default function ResourcesPage() {
         </div>
       </section>
 
+      {showExpandedResources && !topicFromUrl && recommendations ? (
+        <section className="resources-discovery-strip">
+          <div className="resources-discovery-copy">
+            <p className="resources-kicker">How This Page Works</p>
+            <h2>Your library now follows a branch-first study flow.</h2>
+            <p>
+              We start with {recommendations.context.branchTrackLabel}, then widen into placement fundamentals,
+              company patterns, and interview preparation so the page feels useful even when branch depth is still growing.
+            </p>
+          </div>
+          <div className="resources-discovery-steps">
+            <button
+              type="button"
+              className="resources-discovery-step resources-discovery-step-branch"
+              onClick={(event) => scrollToLayer(event, "resources-layer-branch")}
+            >
+              <strong>1. For Your Branch</strong>
+              <span>Start with branch-relevant material first.</span>
+            </button>
+            <button
+              type="button"
+              className="resources-discovery-step resources-discovery-step-essentials"
+              onClick={(event) => scrollToLayer(event, "resources-layer-essentials")}
+            >
+              <strong>2. Placement Essentials</strong>
+              <span>Keep aptitude, verbal, and revision strong.</span>
+            </button>
+            <button
+              type="button"
+              className="resources-discovery-step resources-discovery-step-company"
+              onClick={(event) => scrollToLayer(event, "resources-layer-drive")}
+            >
+              <strong>3. Company Prep</strong>
+              <span>Bring in role and drive-specific preparation.</span>
+            </button>
+            <button
+              type="button"
+              className="resources-discovery-step resources-discovery-step-interview"
+              onClick={(event) => scrollToLayer(event, "resources-layer-interview")}
+            >
+              <strong>4. Interview Practice</strong>
+              <span>Round off with viva and interview support.</span>
+            </button>
+            <button
+              type="button"
+              className="resources-discovery-step"
+              onClick={(event) => scrollToLayer(event, "resources-layer-explore")}
+            >
+              <strong>5. Explore More</strong>
+              <span>Use the full library after the guided layers.</span>
+            </button>
+          </div>
+        </section>
+      ) : null}
+
       {showExpandedResources && !topicFromUrl && recommendationsLoading ? (
         <section className="resources-section">
           <div className="resources-section-header">
@@ -355,9 +433,14 @@ export default function ResourcesPage() {
       ) : null}
 
       {showExpandedResources && !topicFromUrl ? recommendationSections.map((section) => (
-        <section key={section.id} className="resources-section">
+        <section
+          key={section.id}
+          id={`resources-layer-${section.id}`}
+          className={`resources-section resources-section-${section.accent}`}
+        >
           <div className="resources-section-header">
             <div>
+              <p className="resources-section-eyebrow">{section.eyebrow}</p>
               <h2>{section.label}</h2>
               <p>{section.description}</p>
             </div>
@@ -371,6 +454,46 @@ export default function ResourcesPage() {
           </div>
         </section>
       )) : null}
+
+      {showExpandedResources && !topicFromUrl && (recommendations?.packs?.length ?? 0) > 0 ? (
+        <section className="resources-section resources-section-packs">
+          <div className="resources-section-header">
+            <div>
+              <p className="resources-section-eyebrow">Curated Sets</p>
+              <h2>Curated Branch Packs</h2>
+              <p>Grouped study sets so your branch content feels intentional, not like a thin file dump.</p>
+            </div>
+            <span className="resources-section-count">{recommendations?.packs.length ?? 0}</span>
+          </div>
+
+          <div className="resources-pack-grid">
+            {(recommendations?.packs ?? []).map((pack) => (
+              <Card key={pack.id} className="resources-pack-card">
+                <div className="resources-pack-head">
+                  <div>
+                    <h3>{pack.title}</h3>
+                    <p>{pack.description}</p>
+                  </div>
+                  <span className="resources-section-count">{pack.items.length}</span>
+                </div>
+                <div className="resources-pack-list">
+                  {pack.items.map((resource) => (
+                    <Link
+                      key={`${pack.id}_${resource.id}`}
+                      to={`/resources/view/${encodeURIComponent(resource.id)}`}
+                      state={{ resource }}
+                      className="resources-pack-link"
+                    >
+                      <strong>{resource.title}</strong>
+                      <span>{resourceTypeLabel(resource)}</span>
+                    </Link>
+                  ))}
+                </div>
+              </Card>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       {showExpandedResources && topicFromUrl && showAiStudyAssist ? (
         <section className="student-workspace-panel">
@@ -388,11 +511,12 @@ export default function ResourcesPage() {
         </section>
       ) : null}
 
-      <section className="resources-section">
+      <section id="resources-layer-explore" className="resources-section">
         <div className="resources-section-header">
           <div>
+            <p className="resources-section-eyebrow">{topicFromUrl ? "Topic Search" : "Full Library"}</p>
             <h2>{topicFromUrl ? "Search Results" : "Explore More"}</h2>
-            <p>{topicFromUrl ? "Matched materials from your topic search." : "Browse the filtered library beyond the top recommendations."}</p>
+            <p>{topicFromUrl ? "Matched materials from your topic search." : "Browse the wider library after the branch-first and placement-essential sections."}</p>
           </div>
           <span className="resources-section-count">{visibleResources.length}</span>
         </div>

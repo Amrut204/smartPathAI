@@ -9,6 +9,7 @@ import { MockTestService } from "../services/mock-test.service.js";
 import {
   listMockTestsQuerySchema,
   curatedMockTestsQuerySchema,
+  saveMockTestProgressSchema,
   submitMockTestSchema,
   createMockTestSchema,
   updateMockTestSchema,
@@ -75,6 +76,23 @@ router.get(
       req.auth!.userId,
       req.params.attemptId as string,
     );
+    res.json(successResponse(data));
+  }),
+);
+
+router.patch(
+  "/attempts/:attemptId/progress",
+  authorizeRole("student"),
+  asyncHandler(requireCompletedStudentProfile),
+  asyncHandler(async (req, res) => {
+    const body = saveMockTestProgressSchema.parse(req.body);
+    const data = await MockTestService.saveAttemptProgress({
+      tenantId: req.auth!.tenantId,
+      userId: req.auth!.userId,
+      attemptId: req.params.attemptId as string,
+      answers: body.answers,
+      currentQuestion: body.currentQuestion,
+    });
     res.json(successResponse(data));
   }),
 );

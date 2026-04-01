@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 
 import { Button, Card, Spinner } from "../../components/ui";
-import { startMockTest, submitMockTest } from "../../hooks/use-mock-tests";
+import { saveMockTestProgress, startMockTest, submitMockTest } from "../../hooks/use-mock-tests";
 import { useMockTestStore } from "../../stores/mock-test-store";
 
 function generateIdempotencyKey(): string {
@@ -37,7 +37,6 @@ export default function MockTestAttemptPage() {
     nextQuestion,
     previousQuestion,
     goToQuestion,
-    hydrate,
     markSubmitted,
     reset,
   } = useMockTestStore();
@@ -47,7 +46,9 @@ export default function MockTestAttemptPage() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [bootstrapping, setBootstrapping] = useState(true);
   const [integrityNotice, setIntegrityNotice] = useState<string | null>(null);
+  const [restoreNotice, setRestoreNotice] = useState<string | null>(null);
   const timeoutSubmitOnceRef = useRef(false);
+  const progressSaveTimerRef = useRef<number | null>(null);
   const integrityRef = useRef({
     copyEvents: 0,
     pasteEvents: 0,
@@ -124,26 +125,6 @@ export default function MockTestAttemptPage() {
       setBootstrapping(true);
       setSubmitError(null);
 
-      if (
-        requestedAttemptId &&
-        attemptId === requestedAttemptId &&
-        status === "in_progress" &&
-        questions.length > 0
-      ) {
-        setBootstrapping(false);
-        return;
-      }
-
-      if (requestedAttemptId) {
-        const restored = hydrate(requestedAttemptId);
-        if (restored) {
-          if (!cancelled) {
-            setBootstrapping(false);
-          }
-          return;
-        }
-      }
-
       reset();
 
       const started = await startMockTest(resolvedTestId);
@@ -151,15 +132,21 @@ export default function MockTestAttemptPage() {
         return;
       }
 
+      const savedAnswers = Object.fromEntries(
+        Object.entries(started.savedAnswers ?? {}).map(([key, value]) => [Number(key), Number(value)]),
+      );
       initializeAttempt({
         attemptId: started.attemptId,
         testId: resolvedTestId,
         questions: started.questions,
         startedAt: started.startedAt,
         durationSec: started.durationSec,
+        answers: savedAnswers,
+        currentQuestion: started.currentQuestion,
       });
       setTimeRemaining(started.durationSec);
       timeoutSubmitOnceRef.current = false;
+      setRestoreNotice(started.resumed ? "Recovered your in-progress attempt with saved answers." : null);
       navigate(`/mock-tests/${resolvedTestId}/attempt?attemptId=${started.attemptId}`, { replace: true });
       setBootstrapping(false);
     };
@@ -168,7 +155,33 @@ export default function MockTestAttemptPage() {
     return () => {
       cancelled = true;
     };
-  }, [hydrate, initializeAttempt, navigate, requestedAttemptId, reset, resolvedTestId]);
+  }, [initializeAttempt, navigate, requestedAttemptId, reset, resolvedTestId]);
+
+  useEffect(() => {
+    if (bootstrapping || status !== "in_progress" || !attemptId) {
+      return;
+    }
+
+    if (progressSaveTimerRef.current) {
+      window.clearTimeout(progressSaveTimerRef.current);
+    }
+
+    progressSaveTimerRef.current = window.setTimeout(() => {
+      void saveMockTestProgress(attemptId, {
+        answers: Object.fromEntries(Object.entries(answers).map(([key, value]) => [String(key), value])),
+        currentQuestion,
+      }).catch(() => {
+        // keep the local session copy even if the draft-save request fails
+      });
+    }, 500);
+
+    return () => {
+      if (progressSaveTimerRef.current) {
+        window.clearTimeout(progressSaveTimerRef.current);
+        progressSaveTimerRef.current = null;
+      }
+    };
+  }, [answers, attemptId, bootstrapping, currentQuestion, status]);
 
   useEffect(() => {
     if (bootstrapping || status !== "submitted" || !attemptId || !resolvedTestId) {
@@ -289,6 +302,7 @@ export default function MockTestAttemptPage() {
         <p className="mock-attempt-timer">
           Time remaining: <span>{formatDuration(timeRemaining)}</span>
         </p>
+        {restoreNotice ? <p className="success-text">{restoreNotice}</p> : null}
         <p>{question.text}</p>
         <div className="mock-attempt-options">
           {question.options.map((option, index) => (

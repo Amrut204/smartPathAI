@@ -1,0 +1,81 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "totalTopics": 20,
+    "totalQuestions": 1000,
+    "createdAt": "2026-03-29",
+    "focus": "non_cs_branch_core"
+  },
+  "providers": {
+    "claude": {
+      "model": "claude-sonnet-4",
+      "apiKeyEnv": "ANTHROPIC_API_KEY",
+      "endpoint": "https://api.anthropic.com/v1/messages",
+      "costPer1MInputTokens": 3,
+      "costPer1MOutputTokens": 15,
+      "promptStyle": "analytical_structured",
+      "topics": [
+        { "topic": "Thermodynamics Basics", "subject": "technical", "category": "mechanical", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.12 },
+        { "topic": "Structural Analysis", "subject": "technical", "category": "civil", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.12 },
+        { "topic": "Circuit Theory", "subject": "technical", "category": "electrical", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.12 },
+        { "topic": "Digital Electronics", "subject": "technical", "category": "electronics", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.12 }
+      ]
+    },
+    "gpt4": {
+      "model": "gpt-4o-mini",
+      "apiKeyEnv": "OPENAI_API_KEY",
+      "endpoint": "https://api.openai.com/v1/chat/completions",
+      "costPer1MInputTokens": 0.15,
+      "costPer1MOutputTokens": 0.6,
+      "promptStyle": "scenario_creative",
+      "topics": [
+        { "topic": "Manufacturing Processes", "subject": "technical", "category": "mechanical", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.005 },
+        { "topic": "Surveying", "subject": "technical", "category": "civil", "difficulty": "easy", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.005 },
+        { "topic": "Electrical Machines", "subject": "technical", "category": "electrical", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.005 },
+        { "topic": "Analog Electronics", "subject": "technical", "category": "electronics", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.005 }
+      ]
+    },
+    "gemini": {
+      "model": "gemini-1.5-flash",
+      "apiKeyEnv": "GOOGLE_API_KEY",
+      "endpoint": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
+      "costPer1MInputTokens": 0.075,
+      "costPer1MOutputTokens": 0.3,
+      "promptStyle": "comprehensive_detailed",
+      "topics": [
+        { "topic": "Fluid Mechanics", "subject": "technical", "category": "mechanical", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.003 },
+        { "topic": "Geotechnical Engineering", "subject": "technical", "category": "civil", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.003 },
+        { "topic": "Power Systems", "subject": "technical", "category": "electrical", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.003 },
+        { "topic": "Communication Systems", "subject": "technical", "category": "electronics", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.003 }
+      ]
+    },
+    "llama": {
+      "model": "meta-llama/Llama-3.1-70B-Instruct-Turbo",
+      "apiKeyEnv": "TOGETHER_API_KEY",
+      "endpoint": "https://api.together.xyz/v1/chat/completions",
+      "costPer1MInputTokens": 0.88,
+      "costPer1MOutputTokens": 0.88,
+      "promptStyle": "code_practical",
+      "topics": [
+        { "topic": "Strength of Materials", "subject": "technical", "category": "mechanical", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.007 },
+        { "topic": "Construction Management", "subject": "technical", "category": "civil", "difficulty": "easy", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.007 },
+        { "topic": "Control Systems", "subject": "technical", "category": "electrical", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.007 },
+        { "topic": "Signals and Systems", "subject": "technical", "category": "electronics", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 8000, "estimatedCost": 0.007 }
+      ]
+    },
+    "mistral": {
+      "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+      "apiKeyEnv": "TOGETHER_API_KEY",
+      "endpoint": "https://api.together.xyz/v1/chat/completions",
+      "costPer1MInputTokens": 0.6,
+      "costPer1MOutputTokens": 0.6,
+      "promptStyle": "pattern_efficient",
+      "topics": [
+        { "topic": "CAD and CAM Basics", "subject": "technical", "category": "mechanical", "difficulty": "easy", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.004 },
+        { "topic": "Transportation Engineering", "subject": "technical", "category": "civil", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.004 },
+        { "topic": "Power Electronics", "subject": "technical", "category": "electrical", "difficulty": "medium", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.004 },
+        { "topic": "Embedded Systems Basics", "subject": "technical", "category": "electronics", "difficulty": "easy", "count": 50, "priority": 1, "estimatedTokens": 7000, "estimatedCost": 0.004 }
+      ]
+    }
+  }
+}

@@ -13,6 +13,7 @@ import { StudentRepository } from "../repositories/student.repository.js";
 import { getMongoDb } from "../utils/mongodb.js";
 import { StudentActivityService } from "./student-activity.service.js";
 import { getBranchPrepTrack } from "../config/branch-prep.config.js";
+import { normalizeStudentProfileData } from "../utils/student-profile.js";
 import {
   inferMockTestBranches,
   inferMockTestIsCrossBranch,
@@ -21,6 +22,12 @@ import {
 } from "../config/mock-test-branch.config.js";
 
 const STUDENT_MIN_VISIBLE_QUESTION_COUNT = 10;
+const MOCK_BRANCH_SECTION_THRESHOLD = 5;
+const PERCENTILE_MIN_ATTEMPTS = 15;
+const RETRY_SCORE_THRESHOLD = 60;
+const RETRY_AGE_DAYS = 7;
+const PLACEMENT_ESSENTIAL_TRACKS = new Set(["aptitude", "verbal", "general"]);
+const INTERVIEW_KEYWORDS = ["interview", "viva", "hr round", "technical round", "communication", "discussion"];
 
 interface ListTestsInput {
   tenantId: string;
@@ -121,6 +128,24 @@ function uniqueMockTestsById<T extends { id: string }>(items: T[]) {
   });
 }
 
+function matchesAnyMockKeyword(item: DecoratedMockTestItem, keywords: string[]) {
+  const haystack = normalizeRecommendationText(`${item.title} ${item.topicName ?? ""} ${item.companyName ?? ""}`);
+  return keywords.some((keyword) => haystack.includes(normalizeRecommendationText(keyword)));
+}
+
+function stripRecommendationFlags(
+  items: Array<RecommendedMockTestItem & {
+    recommendationFlags: {
+      weakTopicMatch: boolean;
+      branchMatch: boolean;
+      driveMatch: boolean;
+      retryMatch: boolean;
+    };
+  }>,
+) {
+  return items.map(({ recommendationFlags: _ignored, ...item }) => item);
+}
+
 function resolveDifficultyFit(readinessScore: number, difficulty: string): "stretch" | "fit" | "easy" {
   const normalizedDifficulty = normalizeRecommendationText(difficulty);
   if (readinessScore < 40) {
@@ -203,7 +228,7 @@ function scoreMockTestRecommendation(
     }
   }
 
-  if ((item.avgScore ?? 0) > 0 && (item.avgScore ?? 0) < 65) {
+  if ((item.avgScore ?? 0) > 0 && (item.avgScore ?? 0) < RETRY_SCORE_THRESHOLD) {
     score += 18;
     retryMatch = true;
     reasons.push("Worth retrying to improve a lower recent score.");
@@ -225,7 +250,7 @@ function scoreMockTestRecommendation(
   const recentAttemptMs = item.lastSubmittedAt ? Date.parse(item.lastSubmittedAt) : Number.NaN;
   if (Number.isFinite(recentAttemptMs)) {
     const ageMs = Date.now() - recentAttemptMs;
-    if (ageMs < 7 * 24 * 60 * 60 * 1000 && !retryMatch) {
+    if (ageMs < RETRY_AGE_DAYS * 24 * 60 * 60 * 1000 && !retryMatch) {
       score -= 8;
       reasons.push("Tried recently, so other tests are boosted first.");
     }
@@ -246,6 +271,14 @@ function scoreMockTestRecommendation(
       retryMatch,
     },
   };
+}
+
+interface SaveProgressInput {
+  tenantId: string;
+  userId: string;
+  attemptId: string;
+  answers: Record<string, number>;
+  currentQuestion: number;
 }
 
 function selectRecommendedMockTests(
@@ -408,6 +441,13 @@ export const MockTestService = {
     const items = listed.items;
     if (input.role !== "student") {
       return {
+        context: {
+          branchTrackLabel: null,
+          targetRoles: [] as string[],
+          branchCoverageQualified: false,
+          upcomingDriveCount: 0,
+          hasPreDriveBundle: false,
+        },
         stats: {
           totalCatalog: items.length,
           hardSets: items.filter((item) => item.difficulty.toLowerCase() === "hard").length,
@@ -416,19 +456,17 @@ export const MockTestService = {
         },
         sections: {
           forYourBranch: [] as typeof items,
-          recommended: [] as typeof items,
-          companyFocused: sliceSection(items, (item) => Boolean(item.companyId), 6),
-          companyPrep: sliceSection(items, (item) => item.trackCategory === "company_prep", 8),
-          verbal: sliceSection(items, (item) => item.trackCategory === "verbal", 8),
-          aptitude: sliceSection(items, (item) => item.trackCategory === "aptitude", 8),
-          branchCore: sliceSection(items, (item) => item.trackCategory === "branch_core", 10),
-          crossBranch: sliceSection(items, (item) => item.trackCategory === "general", 12),
+          placementEssentials: sliceSection(items, (item) => PLACEMENT_ESSENTIAL_TRACKS.has(item.trackCategory ?? "general"), 8),
+          companyPatternPrep: sliceSection(items, (item) => item.trackCategory === "company_prep", 8),
+          interviewPractice: sliceSection(items, (item) => matchesAnyMockKeyword(item, INTERVIEW_KEYWORDS), 6),
+          exploreMore: sliceSection(items, () => true, 12),
         },
-        branchTrackLabel: null,
+        preDriveBundle: null,
       };
     }
 
     const student = await StudentRepository.getStudentByUserId(input.tenantId, input.userId);
+    const profileData = normalizeStudentProfileData(student.profile_data);
     const dashboard = await StudentRepository.getDashboardData(input.tenantId, String(student.id));
     const db = await getMongoDb();
     const attemptRows = items.length > 0
@@ -463,7 +501,7 @@ export const MockTestService = {
         lastSubmittedAt: existing.lastSubmittedAt ?? String(attempt.submitted_at ?? ""),
       });
     });
-    const branchTrack = getBranchPrepTrack(String(student.branch ?? ""));
+    const branchTrack = getBranchPrepTrack(String(student.branch ?? ""), { fallback: "placement_essentials" });
     const focusAreaNames = branchTrack.focusAreas.map((item) => item.topicName.toLowerCase());
     const scoredItems = items
       .map((item) => {
@@ -483,14 +521,32 @@ export const MockTestService = {
         });
       })
       .sort((left, right) => right.recommendationScore - left.recommendationScore);
-    const takeNext = selectRecommendedMockTests(scoredItems, () => true, 6, "take_next");
-    const weakTopicRecovery = selectRecommendedMockTests(scoredItems, (item) => item.recommendationFlags.weakTopicMatch, 6, "weak_topic_recovery");
-    const upcomingDrivePrep = selectRecommendedMockTests(scoredItems, (item) => item.recommendationFlags.driveMatch, 6, "upcoming_drive_prep");
     const forYourBranch = selectRecommendedMockTests(
       scoredItems,
       (item) => !item.isCrossBranch && item.recommendationFlags.branchMatch,
       8,
       "for_your_branch",
+    );
+    const placementEssentials = selectRecommendedMockTests(
+      scoredItems,
+      (item) =>
+        PLACEMENT_ESSENTIAL_TRACKS.has(item.trackCategory ?? "general")
+        || item.recommendationFlags.weakTopicMatch
+        || item.isCrossBranch,
+      8,
+      "placement_essentials",
+    );
+    const companyPatternPrep = selectRecommendedMockTests(
+      scoredItems,
+      (item) => item.recommendationFlags.driveMatch || item.trackCategory === "company_prep" || Boolean(item.companyId),
+      8,
+      "company_pattern_prep",
+    );
+    const interviewPractice = selectRecommendedMockTests(
+      scoredItems,
+      (item) => matchesAnyMockKeyword(item, INTERVIEW_KEYWORDS),
+      6,
+      "interview_practice",
     );
     const branchCorePractice = selectRecommendedMockTests(
       scoredItems,
@@ -498,25 +554,30 @@ export const MockTestService = {
       8,
       "branch_core_practice",
     );
-    const retakeForImprovement = selectRecommendedMockTests(scoredItems, (item) => item.recommendationFlags.retryMatch, 6, "retake_for_improvement");
-    const crossBranchPrep = selectRecommendedMockTests(
+    const branchCoverageQualified = forYourBranch.length >= MOCK_BRANCH_SECTION_THRESHOLD;
+    const effectiveBranchSection = branchCoverageQualified ? forYourBranch : branchCorePractice.slice(0, 6);
+    const preDriveBundleItems = selectRecommendedMockTests(
       scoredItems,
-      (item) => item.isCrossBranch || item.trackCategory === "general" || item.trackCategory === "aptitude" || item.trackCategory === "verbal",
-      10,
-      "cross_branch_prep",
+      (item) => item.recommendationFlags.driveMatch || item.trackCategory === "company_prep",
+      5,
+      "pre_drive_bundle",
     );
-    const stripFlags = (
-      sectionItems: Array<RecommendedMockTestItem & {
-        recommendationFlags: {
-          weakTopicMatch: boolean;
-          branchMatch: boolean;
-          driveMatch: boolean;
-          retryMatch: boolean;
-        };
-      }>,
-    ) => sectionItems.map(({ recommendationFlags: _ignored, ...item }) => item);
+    const usedIds = new Set([
+      ...effectiveBranchSection.map((item) => item.id),
+      ...placementEssentials.map((item) => item.id),
+      ...companyPatternPrep.map((item) => item.id),
+      ...interviewPractice.map((item) => item.id),
+    ]);
+    const exploreMore = scoredItems.filter((item) => !usedIds.has(item.id)).slice(0, 12);
 
     return {
+      context: {
+        branchTrackLabel: branchTrack.label,
+        targetRoles: profileData.targetRoles,
+        branchCoverageQualified,
+        upcomingDriveCount: dashboard.upcomingDrives.length,
+        hasPreDriveBundle: preDriveBundleItems.length > 0,
+      },
       stats: {
         totalCatalog: items.length,
         hardSets: items.filter((item) => item.difficulty.toLowerCase() === "hard").length,
@@ -524,22 +585,21 @@ export const MockTestService = {
         avgAttempts: items.length > 0 ? Number((items.reduce((sum, item) => sum + (item.attemptCount ?? 0), 0) / items.length).toFixed(1)) : 0,
       },
       sections: {
-        forYourBranch: stripFlags(forYourBranch),
-        recommended: stripFlags(takeNext),
-        companyFocused: stripFlags(selectRecommendedMockTests(scoredItems, (item) => Boolean(item.companyId), 6, "company_focused")),
-        companyPrep: stripFlags(selectRecommendedMockTests(scoredItems, (item) => item.trackCategory === "company_prep", 8, "company_prep")),
-        verbal: stripFlags(selectRecommendedMockTests(scoredItems, (item) => item.trackCategory === "verbal", 8, "verbal")),
-        aptitude: stripFlags(selectRecommendedMockTests(scoredItems, (item) => item.trackCategory === "aptitude", 8, "aptitude")),
-        branchCore: stripFlags(selectRecommendedMockTests(scoredItems, (item) => item.trackCategory === "branch_core", 10, "branch_core")),
-        crossBranch: stripFlags(crossBranchPrep),
-        takeNext: stripFlags(takeNext),
-        weakTopicRecovery: stripFlags(weakTopicRecovery),
-        upcomingDrivePrep: stripFlags(upcomingDrivePrep),
-        branchCorePractice: stripFlags(branchCorePractice),
-        crossBranchPrep: stripFlags(crossBranchPrep),
-        retakeForImprovement: stripFlags(retakeForImprovement),
+        forYourBranch: stripRecommendationFlags(effectiveBranchSection),
+        placementEssentials: stripRecommendationFlags(placementEssentials),
+        companyPatternPrep: stripRecommendationFlags(companyPatternPrep),
+        interviewPractice: stripRecommendationFlags(interviewPractice),
+        exploreMore: stripRecommendationFlags(exploreMore),
       },
-      branchTrackLabel: branchTrack.label,
+      preDriveBundle: preDriveBundleItems.length > 0
+        ? {
+            title: dashboard.upcomingDrives[0]
+              ? `Prepare for ${dashboard.upcomingDrives[0].company}${dashboard.upcomingDrives[0].role ? ` - ${dashboard.upcomingDrives[0].role}` : ""}`
+              : "Prepare for your next drive",
+            description: "A short bundle of tests assembled from upcoming drive signals, branch context, and common placement patterns.",
+            items: stripRecommendationFlags(preDriveBundleItems),
+          }
+        : null,
     };
   },
 
@@ -575,6 +635,7 @@ export const MockTestService = {
         options: string[];
         correctIndex: number;
         explanation?: string;
+        skillTag?: string;
       }>;
       isActive: boolean;
     },
@@ -667,10 +728,22 @@ export const MockTestService = {
         options: string[];
         correctIndex: number;
         explanation?: string;
+        skillTag?: string;
       }>;
     },
   ) {
     return MockTestRepository.upsertQuestions(tenantId, testId, input.questions, input.append);
+  },
+
+  async saveAttemptProgress(input: SaveProgressInput) {
+    const student = await StudentRepository.getStudentByUserId(input.tenantId, input.userId);
+    return MockTestRepository.savePendingProgress({
+      tenantId: input.tenantId,
+      studentId: String(student.id),
+      attemptId: input.attemptId,
+      answers: input.answers,
+      currentQuestion: input.currentQuestion,
+    });
   },
 
   async startAttempt(tenantId: string, userId: string, testId: string) {
@@ -712,6 +785,8 @@ export const MockTestService = {
       ? {
           id: String(existingPending.id),
           started_at: String(existingPending.started_at),
+          draft_answers: existingPending.draft_answers ?? {},
+          current_question_index: Number(existingPending.current_question_index ?? 0),
         }
       : await MockTestRepository.createPendingAttempt(
           tenantId,
@@ -750,6 +825,15 @@ export const MockTestService = {
       startedAt: String(attempt.started_at),
       serverTime: new Date().toISOString(),
       durationSec,
+      resumed: reusePending,
+      savedAnswers: attempt.draft_answers && typeof attempt.draft_answers === "object"
+        ? Object.fromEntries(
+            Object.entries(attempt.draft_answers as Record<string, unknown>)
+              .filter(([, value]) => Number.isInteger(value))
+              .map(([key, value]) => [key, Number(value)]),
+          )
+        : {},
+      currentQuestion: Number(attempt.current_question_index ?? 0),
       questions,
     };
   },
@@ -817,6 +901,16 @@ export const MockTestService = {
         total: totalQuestions,
       },
     };
+    const skillBreakdown = questions.reduce<Record<string, { correct: number; total: number }>>((acc, question, index) => {
+      const skillTag = String(question.skillTag ?? "").trim();
+      if (!skillTag) return acc;
+      const answer = answersWithOutcome.find((item) => item.questionIndex === index);
+      const current = acc[skillTag] ?? { correct: 0, total: 0 };
+      current.total += 1;
+      if (answer?.isCorrect) current.correct += 1;
+      acc[skillTag] = current;
+      return acc;
+    }, {});
 
     const submitted = await MockTestRepository.submitAttempt({
       tenantId: input.tenantId,
@@ -826,6 +920,7 @@ export const MockTestService = {
       score,
       timeTakenSec,
       topicBreakdown,
+      skillBreakdown,
       idempotencyKey: input.idempotencyKey,
       integritySummary,
     });
@@ -839,6 +934,18 @@ export const MockTestService = {
         correctAnswers: correctCount,
       });
     }
+
+    await Promise.all(
+      Object.entries(skillBreakdown).map(([skillTag, breakdown]) =>
+        MockTestRepository.upsertSkillMastery({
+          tenantId: input.tenantId,
+          studentId: String(student.id),
+          skillTag,
+          totalQuestions: Number(breakdown.total ?? 0),
+          correctAnswers: Number(breakdown.correct ?? 0),
+        })
+      ),
+    );
 
     const pointsAwarded = await PointsService.awardTestCompletionPoints({
       tenantId: input.tenantId,
@@ -902,6 +1009,7 @@ export const MockTestService = {
       score,
       timeTakenSec,
       topicBreakdown,
+      skillBreakdown,
       pointsAwarded,
       readinessScore,
       idempotent: false,
@@ -919,6 +1027,30 @@ export const MockTestService = {
       : test.questions;
     const questions = parseQuestions(questionSnapshot);
     const answers = Array.isArray(attempt.answers) ? attempt.answers : [];
+    const answeredIndexes = new Set(answers.map((answer) => Number(answer.questionIndex)));
+    const correctAnswers = answers.filter((answer) => Boolean(answer.isCorrect)).length;
+    const attemptedQuestions = answers.length;
+    const incorrectAnswers = Math.max(0, attemptedQuestions - correctAnswers);
+    const unattemptedQuestions = Math.max(0, questions.length - attemptedQuestions);
+    const [percentileStats, weakSkills, curated] = await Promise.all([
+      MockTestRepository.getTestPercentileStats(tenantId, String(attempt.test_id), Number(attempt.score ?? 0)),
+      MockTestRepository.getWeakSkills(tenantId, String(student.id), 4),
+      this.getCuratedTests({
+        tenantId,
+        userId,
+        role: "student",
+      }),
+    ]);
+    const retryAgeMs = attempt.submitted_at ? Date.now() - new Date(String(attempt.submitted_at)).getTime() : Number.POSITIVE_INFINITY;
+    const retrySuggested = Number(attempt.score ?? 0) < RETRY_SCORE_THRESHOLD
+      && retryAgeMs >= RETRY_AGE_DAYS * 24 * 60 * 60 * 1000;
+    const nextRecommendedTests = uniqueMockTestsById([
+      ...(curated.preDriveBundle?.items ?? []),
+      ...curated.sections.companyPatternPrep,
+      ...curated.sections.interviewPractice,
+      ...curated.sections.placementEssentials,
+      ...curated.sections.forYourBranch,
+    ]).filter((item) => item.id !== String(attempt.test_id)).slice(0, 4);
 
     return {
       attemptId: String(attempt.id),
@@ -927,13 +1059,25 @@ export const MockTestService = {
       score: Number(attempt.score ?? 0),
       timeTakenSec: Number(attempt.time_taken_sec ?? 0),
       topicBreakdown: attempt.topic_breakdown ?? {},
+      skillBreakdown: attempt.skill_breakdown ?? {},
       submittedAt: attempt.submitted_at ? String(attempt.submitted_at) : null,
+      attemptedQuestions,
+      correctAnswers,
+      incorrectAnswers,
+      unattemptedQuestions,
+      percentileRank: percentileStats.attemptPopulation >= PERCENTILE_MIN_ATTEMPTS ? percentileStats.percentileRank : null,
+      attemptPopulation: percentileStats.attemptPopulation,
+      weakAreas: weakSkills,
+      nextRecommendedTests,
+      retrySuggested,
       answers,
-      questions: questions.map((question) => ({
+      questions: questions.map((question, index) => ({
         text: question.text,
         options: question.options,
         correctIndex: question.correctIndex,
         explanation: question.explanation ?? "",
+        skillTag: question.skillTag ?? "",
+        attempted: answeredIndexes.has(index),
       })),
     };
   },

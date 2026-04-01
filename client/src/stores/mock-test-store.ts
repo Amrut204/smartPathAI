@@ -21,6 +21,8 @@ interface MockTestState {
     questions: MockTestQuestion[];
     startedAt: string;
     durationSec: number;
+    answers?: Record<number, number>;
+    currentQuestion?: number;
   }) => void;
 
   selectAnswer: (questionIndex: number, optionIndex: number) => void;
@@ -81,8 +83,8 @@ export const useMockTestStore = create<MockTestState>((set, get) => ({
       attemptId: params.attemptId,
       testId: params.testId,
       questions: params.questions,
-      answers: {},
-      currentQuestion: 0,
+      answers: params.answers ?? {},
+      currentQuestion: params.currentQuestion ?? 0,
       startedAt: params.startedAt,
       durationSec: params.durationSec,
       status: "in_progress",
@@ -102,18 +104,21 @@ export const useMockTestStore = create<MockTestState>((set, get) => ({
     set((state) => ({
       currentQuestion: Math.min(state.currentQuestion + 1, state.questions.length - 1),
     }));
+    saveToStorage(get());
   },
 
   previousQuestion: () => {
     set((state) => ({
       currentQuestion: Math.max(state.currentQuestion - 1, 0),
     }));
+    saveToStorage(get());
   },
 
   goToQuestion: (index) => {
     set((state) => ({
       currentQuestion: Math.max(0, Math.min(index, state.questions.length - 1)),
     }));
+    saveToStorage(get());
   },
 
   hydrate: (attemptId) => {

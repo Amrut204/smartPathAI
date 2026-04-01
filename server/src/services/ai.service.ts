@@ -113,7 +113,7 @@ export const AIService = {
     const student = await StudentRepository.getStudentByUserId(input.tenantId, input.userId);
     const db = await getMongoDb();
     const cleanedMessage = stripPii(input.message);
-    const branchTrack = getBranchPrepTrack(String(student.branch ?? ""));
+    const branchTrack = getBranchPrepTrack(String(student.branch ?? ""), { fallback: "placement_essentials" });
 
     const { userTokensToday, tenantTokensToday } = await getUsageToday(input.tenantId, String(student.id));
     const estimatedPromptTokens = estimateTokens(cleanedMessage);

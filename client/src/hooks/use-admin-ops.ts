@@ -159,6 +159,7 @@ export type AdminMockQuestion = {
   options: string[];
   correctIndex: number;
   explanation?: string;
+  skillTag?: string;
 };
 
 export type AdminResourceRow = {
@@ -173,6 +174,10 @@ export type AdminResourceRow = {
   topicName: string | null;
   isActive: boolean;
   sourcePdf: string | null;
+  branchRelevance: string[];
+  careerTracks: string[];
+  recommendedFor: string[];
+  contentPackLabels: string[];
 };
 
 export type AdminIntegrations = {
@@ -506,6 +511,10 @@ export async function adminCreateExternalResource(input: {
   durationSec?: number;
   thumbnailUrl?: string | null;
   isActive?: boolean;
+  branchRelevance?: string[];
+  careerTracks?: string[];
+  recommendedFor?: string[];
+  contentPackLabels?: string[];
 }) {
   const data = await sendJson<{ id: string }>("/api/v1/internal/admin-ops/resources/external", "POST", input);
   await Promise.all([
@@ -524,6 +533,10 @@ export async function adminUploadResource(input: {
   durationSec?: number;
   thumbnailUrl?: string | null;
   isActive?: boolean;
+  branchRelevance?: string[];
+  careerTracks?: string[];
+  recommendedFor?: string[];
+  contentPackLabels?: string[];
   file: File;
 }) {
   const form = new FormData();
@@ -535,6 +548,10 @@ export async function adminUploadResource(input: {
   form.append("durationSec", String(input.durationSec ?? 0));
   form.append("thumbnailUrl", input.thumbnailUrl ?? "");
   form.append("isActive", String(input.isActive ?? true));
+  form.append("branchRelevance", (input.branchRelevance ?? []).join(", "));
+  form.append("careerTracks", (input.careerTracks ?? []).join(", "));
+  form.append("recommendedFor", (input.recommendedFor ?? []).join(", "));
+  form.append("contentPackLabels", (input.contentPackLabels ?? []).join(", "));
   form.append("file", input.file);
 
   const response = await fetch("/api/v1/internal/admin-ops/resources/upload", {
@@ -562,6 +579,10 @@ export async function adminUpdateResource(input: {
   thumbnailUrl?: string | null;
   isActive?: boolean;
   url?: string | null;
+  branchRelevance?: string[];
+  careerTracks?: string[];
+  recommendedFor?: string[];
+  contentPackLabels?: string[];
 }) {
   const data = await sendJson<{ id: string }>(`/api/v1/internal/admin-ops/resources/${encodeURIComponent(input.resourceId)}`, "PATCH", input);
   await mutate(`/api/v1/internal/admin-ops/resources?tenantId=${encodeURIComponent(input.tenantId)}`);

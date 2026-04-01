@@ -53,6 +53,13 @@ export interface MockTestMetadata {
 }
 
 export interface CuratedMockTestsPayload {
+  context: {
+    branchTrackLabel: string | null;
+    targetRoles: string[];
+    branchCoverageQualified: boolean;
+    upcomingDriveCount: number;
+    hasPreDriveBundle: boolean;
+  };
   stats: {
     totalCatalog: number;
     hardSets: number;
@@ -61,21 +68,16 @@ export interface CuratedMockTestsPayload {
   };
   sections: {
     forYourBranch: MockTestListItem[];
-    recommended: MockTestListItem[];
-    companyFocused: MockTestListItem[];
-    companyPrep: MockTestListItem[];
-    verbal: MockTestListItem[];
-    aptitude: MockTestListItem[];
-    branchCore: MockTestListItem[];
-    crossBranch: MockTestListItem[];
-    takeNext: MockTestListItem[];
-    weakTopicRecovery: MockTestListItem[];
-    upcomingDrivePrep: MockTestListItem[];
-    branchCorePractice: MockTestListItem[];
-    crossBranchPrep: MockTestListItem[];
-    retakeForImprovement: MockTestListItem[];
+    placementEssentials: MockTestListItem[];
+    companyPatternPrep: MockTestListItem[];
+    interviewPractice: MockTestListItem[];
+    exploreMore: MockTestListItem[];
   };
-  branchTrackLabel: string | null;
+  preDriveBundle: {
+    title: string;
+    description: string;
+    items: MockTestListItem[];
+  } | null;
 }
 
 export interface MockTestStartPayload {
@@ -83,6 +85,9 @@ export interface MockTestStartPayload {
   startedAt: string;
   serverTime: string;
   durationSec: number;
+  resumed: boolean;
+  savedAnswers: Record<string, number>;
+  currentQuestion: number;
   questions: Array<{ text: string; options: string[] }>;
 }
 
@@ -91,6 +96,7 @@ export interface MockTestSubmitPayload {
   score: number;
   timeTakenSec: number;
   topicBreakdown: Record<string, unknown>;
+  skillBreakdown?: Record<string, unknown>;
   pointsAwarded: number;
   readinessScore: number;
   idempotent: boolean;
@@ -103,13 +109,31 @@ export interface MockTestResultPayload {
   score: number;
   timeTakenSec: number;
   topicBreakdown: Record<string, unknown>;
+  skillBreakdown: Record<string, unknown>;
   submittedAt: string | null;
+  attemptedQuestions: number;
+  correctAnswers: number;
+  incorrectAnswers: number;
+  unattemptedQuestions: number;
+  percentileRank: number | null;
+  attemptPopulation: number;
+  weakAreas: Array<{
+    skillTag: string;
+    masteryLevel: number;
+    totalQuestions: number;
+    correctAnswers: number;
+    lastAssessed: string | null;
+  }>;
+  nextRecommendedTests: MockTestListItem[];
+  retrySuggested: boolean;
   answers: Array<{ questionIndex: number; selectedOption: number; isCorrect: boolean }>;
   questions: Array<{
     text: string;
     options: string[];
     correctIndex: number;
     explanation: string;
+    skillTag: string;
+    attempted: boolean;
   }>;
 }
 
@@ -254,6 +278,33 @@ export async function submitMockTest(
   });
 
   const payload = (await response.json()) as ApiResponse<MockTestSubmitPayload>;
+
+  if (!payload.success) {
+    throw new Error(payload.error.message);
+  }
+
+  return payload.data;
+}
+
+export async function saveMockTestProgress(
+  attemptId: string,
+  input: {
+    answers: Record<string, number>;
+    currentQuestion: number;
+  },
+) {
+  const response = await fetch(`/api/v1/mock-tests/attempts/${attemptId}/progress`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: withCsrfHeader({ "Content-Type": "application/json" }),
+    body: JSON.stringify(input),
+  });
+
+  const payload = (await response.json()) as ApiResponse<{
+    attemptId: string;
+    saved: boolean;
+    currentQuestion: number;
+  }>;
 
   if (!payload.success) {
     throw new Error(payload.error.message);

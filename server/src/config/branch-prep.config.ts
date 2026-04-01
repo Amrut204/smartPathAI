@@ -12,6 +12,8 @@ export interface BranchPrepTrack {
   starterPrompts: string[];
 }
 
+export type CanonicalBranchCode = "CSE" | "IT" | "ECE" | "EEE" | "ME" | "Civil";
+
 export const BRANCH_PREP_TRACKS: Record<string, BranchPrepTrack> = {
   CSE: {
     branch: "CSE",
@@ -147,6 +149,29 @@ export const BRANCH_PREP_TRACKS: Record<string, BranchPrepTrack> = {
   },
 };
 
+export const PLACEMENT_ESSENTIALS_TRACK: BranchPrepTrack = {
+  branch: "GENERAL",
+  label: "Placement Essentials",
+  summary: "Common campus-placement preparation covering aptitude, verbal ability, interview readiness, and practical application strategy.",
+  focusAreas: [
+    { topicName: "Aptitude & Reasoning", reason: "Common first-round filter across campus drives." },
+    { topicName: "Quantitative Aptitude", reason: "Helps with service-based and analyst hiring rounds." },
+    { topicName: "Verbal Ability", reason: "Important for communication-heavy tests and interviews." },
+    { topicName: "Resume Building", reason: "Improves shortlist quality and profile readiness." },
+    { topicName: "HR Interview Preparation", reason: "Useful regardless of branch or role." },
+  ],
+  recommendedActions: [
+    "Keep aptitude and verbal practice active every week.",
+    "Balance common placement prep with one branch or role-specific topic in each study cycle.",
+    "Use interview practice to improve confidence and communication.",
+  ],
+  starterPrompts: [
+    "Create a 7-day placement essentials plan for campus drives",
+    "What should I revise first for aptitude, verbal, and HR interviews",
+    "Give me a common placement preparation plan for a non-CS student",
+  ],
+};
+
 function normalizeBranchValue(raw: string | null | undefined) {
   const value = String(raw ?? "").trim();
   const upper = value.toUpperCase();
@@ -176,32 +201,55 @@ function buildBranchAliasSet(branch: string | null | undefined) {
 
 const BRANCH_ALIAS_RULES: Array<{ test: RegExp; key: keyof typeof BRANCH_PREP_TRACKS }> = [
   { test: /^(CSE|CS|COMPUTERSCIENCE|COMPUTERSCIENCEENGINEERING)/i, key: "CSE" },
+  { test: /^(AIML|AI|ML|ARTIFICIALINTELLIGENCE|ARTIFICIALINTELLIGENCEANDMACHINELEARNING|AIDS|AIMLDS|DATASCIENCE|COMPUTERSCIENCEANDDESIGN|CSD|CSDS)/i, key: "CSE" },
   { test: /^(IT|INFORMATIONTECHNOLOGY)/i, key: "IT" },
   { test: /^(ECE|EC|EANDC|ELECTRONICS|ELECTRONICSANDCOMMUNICATION)/i, key: "ECE" },
+  { test: /^(IOT|INTERNETOFTHINGS|EMBEDDED|EMBEDDEDSYSTEMS|INSTRUMENTATION|ELECTRONICSANDINSTRUMENTATION|ENTC)/i, key: "ECE" },
   { test: /^(EEE|EE|ELECTRICAL|ELECTRICALANDELECTRONICS)/i, key: "EEE" },
+  { test: /^(ELECTRICALANDINSTRUMENTATION|EIE|POWER|POWERELECTRONICS)/i, key: "EEE" },
   { test: /^(ME|MECH|MECHANICAL)/i, key: "ME" },
+  { test: /^(ROBOTICS|MECHATRONICS|AUTOMOBILE|AUTOMATION|PRODUCTION)/i, key: "ME" },
   // Track key is "Civil" in this config.
   { test: /^(CIVIL|CE)/i, key: "Civil" },
 ];
 
-export function getBranchPrepTrack(branch: string | null | undefined) {
+export function getCanonicalBranchCode(branch: string | null | undefined): CanonicalBranchCode | null {
   const { upper, compact } = normalizeBranchValue(branch);
 
   if (!upper) {
-    return BRANCH_PREP_TRACKS.CSE;
+    return null;
   }
 
   const exactKey = Object.keys(BRANCH_PREP_TRACKS).find(
     (key) => key.toUpperCase() === upper,
   );
   if (exactKey) {
-    return BRANCH_PREP_TRACKS[exactKey];
+    return BRANCH_PREP_TRACKS[exactKey].branch as CanonicalBranchCode;
   }
 
   for (const rule of BRANCH_ALIAS_RULES) {
     if (rule.test.test(upper) || rule.test.test(compact)) {
-      return BRANCH_PREP_TRACKS[rule.key];
+      return BRANCH_PREP_TRACKS[rule.key].branch as CanonicalBranchCode;
     }
+  }
+
+  return null;
+}
+
+export function getBranchPrepTrack(
+  branch: string | null | undefined,
+  options?: { fallback?: "cse" | "placement_essentials" },
+) {
+  const canonicalBranchCode = getCanonicalBranchCode(branch);
+  if (canonicalBranchCode) {
+    const key = Object.keys(BRANCH_PREP_TRACKS).find(
+      (candidate) => BRANCH_PREP_TRACKS[candidate].branch === canonicalBranchCode,
+    );
+    if (key) return BRANCH_PREP_TRACKS[key];
+  }
+
+  if (options?.fallback === "placement_essentials") {
+    return PLACEMENT_ESSENTIALS_TRACK;
   }
 
   return BRANCH_PREP_TRACKS.CSE;

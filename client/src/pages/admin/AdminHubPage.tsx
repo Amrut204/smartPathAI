@@ -108,6 +108,13 @@ function formatPercent(value: number) {
   return `${Math.round(value * 100)}%`;
 }
 
+function splitCsv(value: string) {
+  return value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
 function downloadText(filename: string, content: string) {
   const blob = new Blob([content], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);
@@ -192,8 +199,8 @@ export default function AdminHubPage() {
   const [mockTestForm, setMockTestForm] = useState({ title: "", topicId: "", companyId: "", durationSec: "3600", difficulty: "medium", isActive: false, questionsJson: "[]" });
   const selectedMockTestQuestions = useAdminMockTestQuestions(activeTab === "mock-tests" ? selectedTenantId : null, activeTab === "mock-tests" ? selectedTestId : null);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
-  const [resourceForm, setResourceForm] = useState({ title: "", description: "", topicId: "", resourceType: "pdf", url: "", isActive: true });
-  const [externalForm, setExternalForm] = useState({ title: "", description: "", topicId: "", resourceType: "external_link", url: "", isActive: true });
+  const [resourceForm, setResourceForm] = useState({ title: "", description: "", topicId: "", resourceType: "pdf", url: "", isActive: true, branchRelevance: "", careerTracks: "", recommendedFor: "", contentPackLabels: "" });
+  const [externalForm, setExternalForm] = useState({ title: "", description: "", topicId: "", resourceType: "external_link", url: "", isActive: true, branchRelevance: "", careerTracks: "", recommendedFor: "", contentPackLabels: "" });
   const [integrationForm, setIntegrationForm] = useState({
     googleForm: "",
     googleSheet: "",
@@ -542,11 +549,11 @@ export default function AdminHubPage() {
               <label><span className="muted-text">Difficulty</span><Select value={mockTestForm.difficulty} onChange={(event) => setMockTestForm((current) => ({ ...current, difficulty: event.target.value }))}><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></Select></label>
               <label><span className="muted-text">Status</span><Select value={String(mockTestForm.isActive)} onChange={(event) => setMockTestForm((current) => ({ ...current, isActive: event.target.value === "true" }))}><option value="false">Draft</option><option value="true">Published</option></Select></label>
             </div>
-            <label><span className="muted-text">Questions JSON</span><textarea className="ui-input" rows={10} value={mockTestForm.questionsJson} onChange={(event) => setMockTestForm((current) => ({ ...current, questionsJson: event.target.value }))} placeholder='[{"text":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"..."}]' /></label>
+              <label><span className="muted-text">Questions JSON</span><textarea className="ui-input" rows={10} value={mockTestForm.questionsJson} onChange={(event) => setMockTestForm((current) => ({ ...current, questionsJson: event.target.value }))} placeholder='[{"text":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"...","skillTag":"Time and Work"}]' /></label>
             <div className="hero-actions" style={{ marginTop: 16 }}>
               <Button onClick={() => runAction("create-mock", async () => {
                 const tenantId = requireTenant();
-                const questions = JSON.parse(mockTestForm.questionsJson) as Array<{ text: string; options: string[]; correctIndex: number; explanation?: string }>;
+                const questions = JSON.parse(mockTestForm.questionsJson) as Array<{ text: string; options: string[]; correctIndex: number; explanation?: string; skillTag?: string }>;
                 if (!selectedTestId) {
                   await adminCreateMockTest({ tenantId, title: mockTestForm.title, topicId: mockTestForm.topicId || undefined, companyId: mockTestForm.companyId || undefined, durationSec: Number(mockTestForm.durationSec), difficulty: mockTestForm.difficulty as "easy" | "medium" | "hard", isActive: mockTestForm.isActive, questions });
                   setMessage("Mock test created.", "success");
@@ -629,13 +636,29 @@ export default function AdminHubPage() {
               <label><span className="muted-text">Topic</span><Select value={resourceForm.topicId} onChange={(event) => setResourceForm((current) => ({ ...current, topicId: event.target.value }))}><option value="">Select topic</option>{(workspace.data?.referenceData.topics ?? []).map((topic) => <option key={topic.id} value={topic.id}>{topic.name}</option>)}</Select></label>
               <label><span className="muted-text">File</span><input type="file" onChange={(event) => setUploadFile(event.target.files?.[0] ?? null)} /></label>
               <label style={{ gridColumn: "1 / -1" }}><span className="muted-text">Description</span><textarea className="ui-input" rows={3} value={resourceForm.description} onChange={(event) => setResourceForm((current) => ({ ...current, description: event.target.value }))} /></label>
+              <label><span className="muted-text">Branch relevance</span><Input value={resourceForm.branchRelevance} onChange={(event) => setResourceForm((current) => ({ ...current, branchRelevance: event.target.value }))} placeholder="Mechanical, Civil, ECE" /></label>
+              <label><span className="muted-text">Career tracks</span><Input value={resourceForm.careerTracks} onChange={(event) => setResourceForm((current) => ({ ...current, careerTracks: event.target.value }))} placeholder="Graduate Engineer Trainee, Analyst" /></label>
+              <label><span className="muted-text">Recommended for</span><Input value={resourceForm.recommendedFor} onChange={(event) => setResourceForm((current) => ({ ...current, recommendedFor: event.target.value }))} placeholder="Interview revision, aptitude prep" /></label>
+              <label><span className="muted-text">Pack labels</span><Input value={resourceForm.contentPackLabels} onChange={(event) => setResourceForm((current) => ({ ...current, contentPackLabels: event.target.value }))} placeholder="Mechanical Core Concepts Pack" /></label>
             </div>
             <div className="hero-actions"><Button onClick={() => runAction("upload-resource", async () => {
               const tenantId = requireTenant();
               if (!uploadFile) throw new Error("Choose a file before uploading.");
-              await adminUploadResource({ tenantId, title: resourceForm.title, description: resourceForm.description, topicId: resourceForm.topicId || null, resourceType: resourceForm.resourceType, file: uploadFile, isActive: resourceForm.isActive });
+              await adminUploadResource({
+                tenantId,
+                title: resourceForm.title,
+                description: resourceForm.description,
+                topicId: resourceForm.topicId || null,
+                resourceType: resourceForm.resourceType,
+                file: uploadFile,
+                isActive: resourceForm.isActive,
+                branchRelevance: splitCsv(resourceForm.branchRelevance),
+                careerTracks: splitCsv(resourceForm.careerTracks),
+                recommendedFor: splitCsv(resourceForm.recommendedFor),
+                contentPackLabels: splitCsv(resourceForm.contentPackLabels),
+              });
               setMessage("Resource uploaded to S3 and registered.", "success");
-              setResourceForm({ title: "", description: "", topicId: "", resourceType: "pdf", url: "", isActive: true });
+              setResourceForm({ title: "", description: "", topicId: "", resourceType: "pdf", url: "", isActive: true, branchRelevance: "", careerTracks: "", recommendedFor: "", contentPackLabels: "" });
               setUploadFile(null);
             })} disabled={busyAction === "upload-resource"}>Upload Resource</Button></div>
           </section>
@@ -647,12 +670,28 @@ export default function AdminHubPage() {
               <label><span className="muted-text">URL</span><Input value={externalForm.url} onChange={(event) => setExternalForm((current) => ({ ...current, url: event.target.value }))} /></label>
               <label><span className="muted-text">Topic</span><Select value={externalForm.topicId} onChange={(event) => setExternalForm((current) => ({ ...current, topicId: event.target.value }))}><option value="">Select topic</option>{(workspace.data?.referenceData.topics ?? []).map((topic) => <option key={topic.id} value={topic.id}>{topic.name}</option>)}</Select></label>
               <label style={{ gridColumn: "1 / -1" }}><span className="muted-text">Description</span><textarea className="ui-input" rows={3} value={externalForm.description} onChange={(event) => setExternalForm((current) => ({ ...current, description: event.target.value }))} /></label>
+              <label><span className="muted-text">Branch relevance</span><Input value={externalForm.branchRelevance} onChange={(event) => setExternalForm((current) => ({ ...current, branchRelevance: event.target.value }))} placeholder="Mechanical, Civil, ECE" /></label>
+              <label><span className="muted-text">Career tracks</span><Input value={externalForm.careerTracks} onChange={(event) => setExternalForm((current) => ({ ...current, careerTracks: event.target.value }))} placeholder="Graduate Engineer Trainee, Analyst" /></label>
+              <label><span className="muted-text">Recommended for</span><Input value={externalForm.recommendedFor} onChange={(event) => setExternalForm((current) => ({ ...current, recommendedFor: event.target.value }))} placeholder="Interview revision, aptitude prep" /></label>
+              <label><span className="muted-text">Pack labels</span><Input value={externalForm.contentPackLabels} onChange={(event) => setExternalForm((current) => ({ ...current, contentPackLabels: event.target.value }))} placeholder="Civil Interview Quick Revision" /></label>
             </div>
             <div className="hero-actions"><Button onClick={() => runAction("external-resource", async () => {
               const tenantId = requireTenant();
-              await adminCreateExternalResource({ tenantId, title: externalForm.title, description: externalForm.description, url: externalForm.url, resourceType: externalForm.resourceType, topicId: externalForm.topicId || null, isActive: externalForm.isActive });
+              await adminCreateExternalResource({
+                tenantId,
+                title: externalForm.title,
+                description: externalForm.description,
+                url: externalForm.url,
+                resourceType: externalForm.resourceType,
+                topicId: externalForm.topicId || null,
+                isActive: externalForm.isActive,
+                branchRelevance: splitCsv(externalForm.branchRelevance),
+                careerTracks: splitCsv(externalForm.careerTracks),
+                recommendedFor: splitCsv(externalForm.recommendedFor),
+                contentPackLabels: splitCsv(externalForm.contentPackLabels),
+              });
               setMessage("External resource added.", "success");
-              setExternalForm({ title: "", description: "", topicId: "", resourceType: "external_link", url: "", isActive: true });
+              setExternalForm({ title: "", description: "", topicId: "", resourceType: "external_link", url: "", isActive: true, branchRelevance: "", careerTracks: "", recommendedFor: "", contentPackLabels: "" });
             })} disabled={busyAction === "external-resource"}>Save External Resource</Button></div>
           </section>
 
@@ -661,13 +700,14 @@ export default function AdminHubPage() {
             {!selectedTenantId || resources.isLoading ? <p className="muted-text">Loading resources...</p> : resources.error || !resources.data ? <p className="error-text">Unable to load resources.</p> : (
               <div className="tpo-ranking-table-wrap">
                 <Table>
-                  <thead><tr><th>Title</th><th>Type</th><th>Topic</th><th>Status</th><th>Action</th></tr></thead>
+                  <thead><tr><th>Title</th><th>Type</th><th>Topic</th><th>Branch Relevance</th><th>Status</th><th>Action</th></tr></thead>
                   <tbody>
                     {resources.data.map((resource) => (
                       <tr key={resource.id}>
                         <td>{resource.title}</td>
                         <td>{resource.resourceType}</td>
                         <td>{resource.topicName ?? "-"}</td>
+                        <td>{resource.branchRelevance.length > 0 ? resource.branchRelevance.join(", ") : "Common"}</td>
                         <td>{resource.isActive ? "Published" : "Archived"}</td>
                         <td>
                           <Button variant="ghost" onClick={() => runAction(`resource-${resource.id}`, async () => {

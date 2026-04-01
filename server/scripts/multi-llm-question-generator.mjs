@@ -15,7 +15,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const GENERATION_DIR = path.join(__dirname, "question_generation");
 const RAW_DIR = path.join(GENERATION_DIR, "raw");
 const STATE_PATH = path.join(GENERATION_DIR, "state.json");
-const TOPICS_PATH = path.join(GENERATION_DIR, "topics.json");
+const DEFAULT_TOPICS_PATH = path.join(GENERATION_DIR, "topics.json");
 const REPORT_PATH = path.join(GENERATION_DIR, "generation-report.json");
 
 const INR_PER_USD = 83;
@@ -49,6 +49,7 @@ function parseArgs(argv) {
     resume: false,
     dryRun: false,
     offline: false,
+    configPath: null,
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -60,6 +61,8 @@ function parseArgs(argv) {
     else if (value.startsWith("--provider=")) args.provider = value.split("=")[1];
     else if (value === "--topic") args.topic = argv[index + 1] ?? null;
     else if (value.startsWith("--topic=")) args.topic = value.split("=")[1];
+    else if (value === "--config") args.configPath = argv[index + 1] ?? null;
+    else if (value.startsWith("--config=")) args.configPath = value.split("=")[1];
   }
 
   return args;
@@ -636,8 +639,9 @@ async function generateTopic({ providerName, providerConfig, topicConfig, state,
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  const config = await readJson(TOPICS_PATH, null);
-  if (!config) throw new Error(`Missing topics config at ${TOPICS_PATH}`);
+  const topicsPath = args.configPath ? path.resolve(process.cwd(), args.configPath) : DEFAULT_TOPICS_PATH;
+  const config = await readJson(topicsPath, null);
+  if (!config) throw new Error(`Missing topics config at ${topicsPath}`);
 
   await ensureLayout(config);
   const existingState = await readJson(STATE_PATH, null);

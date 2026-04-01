@@ -37,6 +37,7 @@ export interface ResourceItem {
     subtopic?: string;
     branchRelevance?: string[];
     careerTracks?: string[];
+    contentPacks?: string[];
     difficulty?: string;
     whatThisCovers?: string;
     keyConcepts?: string[];
@@ -215,8 +216,15 @@ export function useTopicSearch(topicQuery: string | null) {
 export interface ResourceRecommendationsPayload {
   context: {
     branch: string;
+    canonicalBranch: string | null;
     branchTrackLabel: string;
     targetRoles: string[];
+    branchCoverageQualified: boolean;
+    branchCoverage: {
+      branchTaggedResources: number;
+      branchTaggedMockTests: number;
+      branchPackCount: number;
+    };
     upcomingDrives: Array<{
       company: string;
       role: string;
@@ -226,11 +234,18 @@ export interface ResourceRecommendationsPayload {
   sections: {
     bestForYouNow: ResourceItem[];
     fixYourWeakAreas: ResourceItem[];
-    prepareForUpcomingDrives: ResourceItem[];
-    basedOnYourBranch: ResourceItem[];
-    continueLearning: ResourceItem[];
+    forYourBranch: ResourceItem[];
+    placementEssentials: ResourceItem[];
+    companyPatternPrep: ResourceItem[];
+    interviewPractice: ResourceItem[];
     exploreMore: ResourceItem[];
   };
+  packs: Array<{
+    id: string;
+    title: string;
+    description: string;
+    items: ResourceItem[];
+  }>;
 }
 
 export function useResourceRecommendations(filter: ResourceListFilter = "all") {

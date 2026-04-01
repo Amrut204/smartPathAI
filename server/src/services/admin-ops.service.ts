@@ -986,7 +986,7 @@ export const AdminOpsService = {
     companyId?: string;
     durationSec: number;
     difficulty: "easy" | "medium" | "hard";
-    questions: Array<{ text: string; options: string[]; correctIndex: number; explanation?: string }>;
+    questions: Array<{ text: string; options: string[]; correctIndex: number; explanation?: string; skillTag?: string }>;
     isActive: boolean;
   }) {
     const tenantId = assertSelectedTenantId(input.tenantId);
@@ -1029,7 +1029,7 @@ export const AdminOpsService = {
     tenantId: string;
     testId: string;
     append: boolean;
-    questions: Array<{ text: string; options: string[]; correctIndex: number; explanation?: string }>;
+    questions: Array<{ text: string; options: string[]; correctIndex: number; explanation?: string; skillTag?: string }>;
   }) {
     const tenantId = assertSelectedTenantId(input.tenantId);
     await assertTenantExists(tenantId);
@@ -1044,7 +1044,7 @@ export const AdminOpsService = {
     const topicMap = new Map(topics.map((item) => [item.id, item.name]));
     const rows = await db.collection("resources").find(
       { tenant_id: selectedTenantId },
-      { projection: { _id: 0, id: 1, title: 1, description: 1, url: 1, resource_type: 1, thumbnail_url: 1, duration_sec: 1, topic_id: 1, is_active: 1, created_at: 1, source_pdf: 1 } },
+      { projection: { _id: 0, id: 1, title: 1, description: 1, url: 1, resource_type: 1, thumbnail_url: 1, duration_sec: 1, topic_id: 1, is_active: 1, created_at: 1, source_pdf: 1, branch_relevance: 1, career_tracks: 1, recommended_for: 1, content_pack_labels: 1 } },
     ).sort({ created_at: -1 }).limit(200).toArray();
 
     return rows.map((row) => ({
@@ -1059,6 +1059,10 @@ export const AdminOpsService = {
       topicName: row.topic_id ? topicMap.get(String(row.topic_id)) ?? null : null,
       isActive: Boolean(row.is_active),
       sourcePdf: row.source_pdf ? String(row.source_pdf) : null,
+      branchRelevance: Array.isArray(row.branch_relevance) ? row.branch_relevance.map((value) => String(value)) : [],
+      careerTracks: Array.isArray(row.career_tracks) ? row.career_tracks.map((value) => String(value)) : [],
+      recommendedFor: Array.isArray(row.recommended_for) ? row.recommended_for.map((value) => String(value)) : [],
+      contentPackLabels: Array.isArray(row.content_pack_labels) ? row.content_pack_labels.map((value) => String(value)) : [],
     }));
   },
 
@@ -1073,6 +1077,10 @@ export const AdminOpsService = {
     durationSec?: number;
     thumbnailUrl?: string | null;
     isActive?: boolean;
+    branchRelevance?: string[];
+    careerTracks?: string[];
+    recommendedFor?: string[];
+    contentPackLabels?: string[];
   }) {
     const tenantId = assertSelectedTenantId(input.tenantId);
     await assertTenantExists(tenantId);
@@ -1091,6 +1099,10 @@ export const AdminOpsService = {
       thumbnail_url: input.thumbnailUrl ?? null,
       duration_sec: Number(input.durationSec ?? 0),
       topic_id: input.topicId ?? null,
+      branch_relevance: input.branchRelevance ?? [],
+      career_tracks: input.careerTracks ?? [],
+      recommended_for: input.recommendedFor ?? [],
+      content_pack_labels: input.contentPackLabels ?? [],
       source_pdf: null,
       is_active: input.isActive ?? true,
       created_at: now,
@@ -1113,6 +1125,10 @@ export const AdminOpsService = {
     fileName: string;
     fileBuffer: Buffer;
     thumbnailUrl?: string | null;
+    branchRelevance?: string[];
+    careerTracks?: string[];
+    recommendedFor?: string[];
+    contentPackLabels?: string[];
   }) {
     const tenantId = assertSelectedTenantId(input.tenantId);
     await assertTenantExists(tenantId);
@@ -1154,6 +1170,10 @@ export const AdminOpsService = {
       thumbnail_url: input.thumbnailUrl ?? null,
       duration_sec: Number(input.durationSec ?? 0),
       topic_id: input.topicId ?? null,
+      branch_relevance: input.branchRelevance ?? [],
+      career_tracks: input.careerTracks ?? [],
+      recommended_for: input.recommendedFor ?? [],
+      content_pack_labels: input.contentPackLabels ?? [],
       source_pdf: uploaded.key,
       asset_id: assetId,
       is_active: input.isActive ?? true,
@@ -1181,6 +1201,10 @@ export const AdminOpsService = {
     thumbnailUrl?: string | null;
     isActive?: boolean;
     url?: string;
+    branchRelevance?: string[];
+    careerTracks?: string[];
+    recommendedFor?: string[];
+    contentPackLabels?: string[];
   }) {
     const tenantId = assertSelectedTenantId(input.tenantId);
     await assertTenantExists(tenantId);
@@ -1194,6 +1218,10 @@ export const AdminOpsService = {
     if (input.thumbnailUrl !== undefined) update.thumbnail_url = input.thumbnailUrl;
     if (input.isActive !== undefined) update.is_active = input.isActive;
     if (input.url !== undefined) update.url = input.url;
+    if (input.branchRelevance !== undefined) update.branch_relevance = input.branchRelevance;
+    if (input.careerTracks !== undefined) update.career_tracks = input.careerTracks;
+    if (input.recommendedFor !== undefined) update.recommended_for = input.recommendedFor;
+    if (input.contentPackLabels !== undefined) update.content_pack_labels = input.contentPackLabels;
 
     const result = await db.collection("resources").updateOne(
       { tenant_id: tenantId, id: input.resourceId },
