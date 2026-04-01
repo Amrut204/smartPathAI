@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { randomUUID } from "node:crypto";
 import path from "node:path";
 import pdfParse from "pdf-parse";
 
@@ -25,12 +26,20 @@ import {
   INTERVIEW_PRACTICE_KEYWORDS,
   TARGET_ROLE_KEYWORDS,
 } from "../config/branch-content.config.js";
+import {
+  buildProfileOptions,
+  normalizeProfileDegree,
+  normalizeProfileLocations,
+  normalizeProfileTargetRoles,
+} from "../config/profile-options.config.js";
 import { PointsService } from "./points.service.js";
 import { StudentActivityService } from "./student-activity.service.js";
 import { evaluateStudentEligibility, ELIGIBILITY_REASON_LABELS } from "./eligibility.logic.js";
 import { RiskAssessmentService } from "./risk-assessment.service.js";
 import { GoogleDriveResumeService } from "./google-drive-resume.service.js";
 import { getBranchPrepTrack, getCanonicalBranchCode, matchesBranchPrepTrackTag } from "../config/branch-prep.config.js";
+import { AuditLogService } from "./audit-log.service.js";
+import { MockTestService } from "./mock-test.service.js";
 
 interface LogStudyHoursInput {
   tenantId: string;
@@ -58,6 +67,8 @@ type TpoVisibilityRow = {
 };
 
 type TopicProgressStatus = "incomplete" | "in_progress" | "complete";
+type ProfileUnlockRequestStatus = "pending" | "approved" | "denied" | "resolved";
+type ProfileUnlockReasonCategory = "academic_record" | "resume_update" | "certification_correction" | "contact_update" | "other";
 
 function buildMyProfileResponse(profile: Awaited<ReturnType<typeof StudentRepository.getStudentProfile>>) {
   const summary = buildStudentProfileSummary({
@@ -97,6 +108,7 @@ function buildMyProfileResponse(profile: Awaited<ReturnType<typeof StudentReposi
       },
     },
     profileCertificationPreview,
+    sectionStates: summary.sectionStates,
     requiredFields: summary.requiredFields,
     missingRequiredFields: summary.missingRequiredFields,
     missingSeededFields: summary.missingSeededFields,
@@ -129,6 +141,156 @@ function normalizeSemesterValue(value: unknown): number | null {
   const parsed = Number(raw);
   if (!Number.isInteger(parsed) || parsed < 1 || parsed > 8) return null;
   return parsed;
+}
+
+function buildProfileFieldTrust(base: ReturnType<typeof buildMyProfileResponse>) {
+  const locked = Boolean(base.declarationStatus.profileCertification.isLocked);
+  const seededKeys = new Set(base.requiredFields.filter((field) => field.owner === "seeded").map((field) => field.key));
+  const keys = [
+    "fullName",
+    "collegeEmail",
+    "prn",
+    "rollNumber",
+    "branch",
+    "batch",
+    "degree",
+    "currentSemester",
+    "cgpa",
+    "activeBacklogs",
+    "totalHistoricalBacklogs",
+    "attendancePct",
+    "phone",
+    "personalEmail",
+    "resumeUrl",
+    "targetRoles",
+    "preferredLocations",
+    "willingToRelocate",
+  ] as const;
+
+  return Object.fromEntries(keys.map((key) => [
+    key,
+    seededKeys.has(key)
+      ? { source: "college_verified", label: "College-verified", locked }
+      : { source: "student_provided", label: locked ? "Locked after certification" : "Student-provided", locked },
+  ]));
+}
+
+const PROFILE_FIELD_HELP: Record<string, string> = {
+  branch: "Used for branch-first resources and mock recommendations.",
+  cgpa: "Used for drive eligibility checks.",
+  activeBacklogs: "Used for drive eligibility checks.",
+  totalHistoricalBacklogs: "Used for drive eligibility checks.",
+  attendancePct: "Used for drive eligibility checks.",
+  resumeUrl: "Used in drive applications and resume exports.",
+  targetRoles: "Used to recommend resources and mock tests.",
+};
+
+function buildProfileReadinessBanner(base: ReturnType<typeof buildMyProfileResponse>) {
+  const profile = base.studentEditableProfile;
+  const certification = base.declarationStatus.profileCertification;
+  const hasResume = Boolean(profile.resumeDriveWebLink || profile.resumeUrl);
+
+  if (certification.isLocked) {
+    return {
+      tone: "attention",
+      title: "Profile locked after certification",
+      message: "Your certified profile is read-only until the placement office approves an unlock request.",
+      action: "Request unlock",
+    };
+  }
+
+  if (certification.requiresRecertification) {
+    return {
+      tone: "warning",
+      title: "Needs recertification after changes",
+      message: "Review your updated profile and certify it again before using drive applications.",
+      action: "Review and certify",
+    };
+  }
+
+  if (!base.profileCompleteness.isComplete || !certification.isCertified) {
+    return {
+      tone: "warning",
+      title: "Declaration incomplete",
+      message: "Complete the required fields and certify your profile to stay drive-ready.",
+      action: "Complete profile",
+    };
+  }
+
+  if (!hasResume) {
+    return {
+      tone: "warning",
+      title: "Resume missing",
+      message: "Upload a resume before applying to drives or exporting profile-ready application data.",
+      action: "Upload resume",
+    };
+  }
+
+  return {
+    tone: "success",
+    title: "Ready for most drives",
+    message: "Your profile, certification, and resume are in place for current drive workflows.",
+    action: "View drives",
+  };
+}
+
+function groupEligibilityBlockers(reasons: string[]) {
+  const grouped = new Map<string, number>();
+  reasons.forEach((reason) => grouped.set(reason, (grouped.get(reason) ?? 0) + 1));
+  return [...grouped.entries()].map(([code, count]) => ({
+    code,
+    count,
+    label: ELIGIBILITY_REASON_LABELS[code as keyof typeof ELIGIBILITY_REASON_LABELS] ?? code,
+  }));
+}
+
+async function getLatestProfileUnlockRequest(tenantId: string, studentId: string) {
+  const db = await getMongoDb();
+  const request = await db.collection("profile_unlock_requests").findOne(
+    { tenant_id: tenantId, student_id: studentId },
+    { projection: { _id: 0 }, sort: { created_at: -1 } },
+  );
+
+  if (!request) return null;
+
+  return {
+    id: String(request.id),
+    status: String(request.status ?? "pending") as ProfileUnlockRequestStatus,
+    reasonCategory: String(request.reason_category ?? "other") as ProfileUnlockReasonCategory,
+    requestedFields: Array.isArray(request.requested_fields) ? request.requested_fields.map((value) => String(value)) : [],
+    explanation: String(request.explanation ?? ""),
+    responseNote: request.response_note ? String(request.response_note) : "",
+    createdAt: String(request.created_at ?? ""),
+    decidedAt: request.decided_at ? String(request.decided_at) : null,
+    decidedBy: request.decided_by ? String(request.decided_by) : null,
+    resolvedAt: request.resolved_at ? String(request.resolved_at) : null,
+  };
+}
+
+async function resolveApprovedUnlockRequests(params: {
+  tenantId: string;
+  studentId: string;
+  actorUserId: string;
+  note: string;
+}) {
+  const db = await getMongoDb();
+  const now = new Date().toISOString();
+  await db.collection("profile_unlock_requests").updateMany(
+    {
+      tenant_id: params.tenantId,
+      student_id: params.studentId,
+      status: "approved",
+      resolved_at: null,
+    },
+    {
+      $set: {
+        status: "resolved",
+        resolved_at: now,
+        response_note: params.note,
+        updated_at: now,
+      },
+    },
+  );
 }
 
 function parseCsvLine(line: string): string[] {
@@ -992,12 +1154,469 @@ async function buildTpoVisibilitySummary(profile: Awaited<ReturnType<typeof Stud
   };
 }
 
-async function buildMyProfileResponseWithVisibility(profile: Awaited<ReturnType<typeof StudentRepository.getStudentProfile>>) {
+async function buildProfileExperience(profile: Awaited<ReturnType<typeof StudentRepository.getStudentProfile>>) {
   const base = buildMyProfileResponse(profile);
-  const tpoVisibilitySummary = await buildTpoVisibilitySummary(profile);
+  const tenantId = String(profile.tenant_id);
+  const studentId = String(profile.id);
+  const todayIso = new Date().toISOString().slice(0, 10);
+  const db = await getMongoDb();
+  const tenant = await MongoAuthRepository.findTenantById(tenantId);
+  const tenantBranches = normalizeTenantBranches(tenant?.config);
+  const currentDegree = base.studentEditableProfile.degree;
+  const currentProfile = normalizeStudentProfileData(profile.profile_data);
+  const hasResume = hasResumeOnProfile(currentProfile);
+
+  const [resumeUsageCount, upcomingDrives, unlockRequest] = await Promise.all([
+    db.collection("drive_results").countDocuments({
+      tenant_id: tenantId,
+      student_id: studentId,
+      $or: [
+        { resume_drive_file_id_at_application: { $type: "string" } },
+        { resume_drive_web_link_at_application: { $type: "string" } },
+      ],
+    }),
+    db.collection("drives").find(
+      { tenant_id: tenantId, deleted_at: null, drive_date: { $gte: todayIso }, status: "published" },
+      { projection: { _id: 0, id: 1, company: 1, role: 1, drive_date: 1, criteria: 1, status: 1 } },
+    ).sort({ drive_date: 1 }).limit(12).toArray(),
+    getLatestProfileUnlockRequest(tenantId, studentId),
+  ]);
+
+  const actualEligibilityReasons: string[] = [];
+  const blockerCounts = new Map<string, number>();
+  let readyDriveCount = 0;
+  let criteriaEligibleCount = 0;
+  let completionUnlockCount = 0;
+  let certificationUnlockCount = 0;
+  let resumeUnlockCount = 0;
+
+  for (const drive of upcomingDrives) {
+    const evaluation = evaluateStudentEligibility(
+      {
+        cgpa: Number(profile.cgpa ?? 0),
+        activeBacklogs: Number(profile.backlogs ?? 0),
+        totalBacklogs: Number((profile as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
+        branch: String(profile.branch ?? ""),
+        attendancePct: Number(profile.attendance_pct ?? 0),
+      },
+      (drive.criteria ?? {}) as {
+        minCgpa?: number;
+        maxBacklogs?: number;
+        maxActiveBacklogs?: number;
+        maxTotalBacklogs?: number;
+        branches?: string[];
+        minAttendance?: number;
+        excludePlacedStudents?: boolean;
+      },
+    );
+
+    if (!evaluation.eligible) {
+      evaluation.reasons.forEach((reason) => {
+        blockerCounts.set(reason, (blockerCounts.get(reason) ?? 0) + 1);
+        actualEligibilityReasons.push(reason);
+      });
+      continue;
+    }
+
+    criteriaEligibleCount += 1;
+    if (!base.profileCompleteness.isComplete) {
+      completionUnlockCount += 1;
+      blockerCounts.set("profile_incomplete", (blockerCounts.get("profile_incomplete") ?? 0) + 1);
+      continue;
+    }
+    if (!base.declarationStatus.profileCertification.isCertified) {
+      certificationUnlockCount += 1;
+      blockerCounts.set("profile_certification", (blockerCounts.get("profile_certification") ?? 0) + 1);
+      continue;
+    }
+    if (!hasResume) {
+      resumeUnlockCount += 1;
+      blockerCounts.set("missing_resume", (blockerCounts.get("missing_resume") ?? 0) + 1);
+      continue;
+    }
+    readyDriveCount += 1;
+  }
+
+  const nextAction = completionUnlockCount > 0
+    ? {
+        label: "Completing required profile fields",
+        unlockCount: completionUnlockCount,
+      }
+    : !base.declarationStatus.profileCertification.isCertified && certificationUnlockCount > 0
+      ? {
+          label: "Certifying your profile",
+          unlockCount: certificationUnlockCount,
+        }
+      : !hasResume && resumeUnlockCount > 0
+        ? {
+            label: "Uploading your resume",
+            unlockCount: resumeUnlockCount,
+          }
+        : null;
+
+  const blockerSummary = [...blockerCounts.entries()]
+    .map(([code, count]) => ({
+      code,
+      count,
+      label:
+        code === "missing_resume"
+          ? "Resume missing"
+          : code === "profile_certification"
+            ? "Profile certification pending"
+            : code === "profile_incomplete"
+              ? "Required profile fields missing"
+              : ELIGIBILITY_REASON_LABELS[code as keyof typeof ELIGIBILITY_REASON_LABELS] ?? code,
+    }))
+    .sort((left, right) => right.count - left.count);
+
+  const verificationSection = base.sectionStates.find((section) => section.key === "verification");
+  if (verificationSection) {
+    verificationSection.status = base.declarationStatus.profileCertification.isCertified
+      ? "complete"
+      : base.profileCompleteness.isComplete
+        ? "needs_review"
+        : "missing_required";
+    verificationSection.summary = base.declarationStatus.profileCertification.isCertified
+      ? "Certified"
+      : base.profileCompleteness.isComplete
+        ? "Ready to certify"
+        : "Complete required fields first";
+  }
+
+  return {
+    ...base,
+    fieldTrust: buildProfileFieldTrust(base),
+    fieldHelp: PROFILE_FIELD_HELP,
+    readinessBanner: buildProfileReadinessBanner(base),
+    liveEligibility: {
+      totalUpcomingDrives: upcomingDrives.length,
+      criteriaEligibleDrives: criteriaEligibleCount,
+      readyForApplicationDrives: readyDriveCount,
+      nextAction,
+      blockers: blockerSummary,
+      groupedEligibilityReasons: groupEligibilityBlockers(actualEligibilityReasons),
+    },
+    profileOptions: buildProfileOptions({
+      branchOptions: [...tenantBranches, base.studentEditableProfile.branch].filter(Boolean),
+      degreeOptions: [currentDegree].filter(Boolean),
+    }),
+    resumeInsights: {
+      hasManagedResume: Boolean(base.studentEditableProfile.resumeDriveWebLink),
+      hasLegacyResumeLink: Boolean(base.studentEditableProfile.resumeUrl && !base.studentEditableProfile.resumeDriveWebLink),
+      usageCount: resumeUsageCount,
+      fileSizeLabel: base.studentEditableProfile.resumeSizeBytes
+        ? `${(base.studentEditableProfile.resumeSizeBytes / 1024).toFixed(0)} KB`
+        : "",
+    },
+    preferenceVisibility: {
+      targetRoles: { visibility: "tpo_visible", label: "Visible to placement office" },
+      preferredLocations: { visibility: "tpo_visible", label: "Visible to placement office" },
+      willingToRelocate: { visibility: "tpo_visible", label: "Visible to placement office" },
+    },
+    unlockRequest,
+  };
+}
+
+async function buildMyProfileResponseWithVisibility(profile: Awaited<ReturnType<typeof StudentRepository.getStudentProfile>>) {
+  const [base, tpoVisibilitySummary] = await Promise.all([
+    buildProfileExperience(profile),
+    buildTpoVisibilitySummary(profile),
+  ]);
   return {
     ...base,
     tpoVisibilitySummary,
+  };
+}
+
+type StudentActionItem = {
+  id: string;
+  type:
+    | "complete_profile"
+    | "certify_profile"
+    | "upload_resume"
+    | "resume_pending_test"
+    | "prepare_drive"
+    | "continue_resource"
+    | "take_mock"
+    | "browse_resources";
+  title: string;
+  explanation: string;
+  targetPath: string;
+  ctaLabel: string;
+  priority: number;
+  meta?: Record<string, string | number | boolean | null>;
+};
+
+type StudentBlockerItem = {
+  code: string;
+  label: string;
+  count: number;
+  explanation: string;
+  targetPath: string;
+  ctaLabel: string;
+};
+
+async function getPendingAttemptSummary(tenantId: string, studentId: string) {
+  const db = await getMongoDb();
+  const pending = await db.collection("student_attempts").findOne(
+    {
+      tenant_id: tenantId,
+      student_id: studentId,
+      status: "pending",
+    },
+    {
+      projection: {
+        _id: 0,
+        id: 1,
+        test_id: 1,
+        started_at: 1,
+        updated_at: 1,
+        current_question_index: 1,
+        draft_answers: 1,
+        questions_snapshot: 1,
+      },
+      sort: { updated_at: -1, started_at: -1 },
+    },
+  );
+
+  if (!pending) return null;
+
+  const test = await db.collection("mock_tests").findOne(
+    {
+      id: String(pending.test_id),
+      $or: [{ tenant_id: tenantId }, { tenant_id: null }],
+    },
+    {
+      projection: { _id: 0, id: 1, title: 1, difficulty: 1, duration_sec: 1 },
+    },
+  );
+
+  const draftAnswers = pending.draft_answers && typeof pending.draft_answers === "object"
+    ? pending.draft_answers as Record<string, unknown>
+    : {};
+  const answeredCount = Object.values(draftAnswers).filter((value) => Number.isInteger(value)).length;
+  const totalQuestions = Array.isArray(pending.questions_snapshot) ? pending.questions_snapshot.length : 0;
+
+  return {
+    attemptId: String(pending.id),
+    testId: String(pending.test_id),
+    title: String(test?.title ?? "Pending mock test"),
+    difficulty: String(test?.difficulty ?? "medium"),
+    durationSec: Number(test?.duration_sec ?? 0),
+    startedAt: pending.started_at ? String(pending.started_at) : null,
+    updatedAt: pending.updated_at ? String(pending.updated_at) : null,
+    currentQuestion: Number(pending.current_question_index ?? 0),
+    answeredCount,
+    totalQuestions,
+  };
+}
+
+function mapProfileBlockers(blockers: Awaited<ReturnType<typeof buildProfileExperience>>["liveEligibility"]["blockers"]): StudentBlockerItem[] {
+  return blockers.map((blocker) => {
+    if (blocker.code === "missing_resume") {
+      return {
+        ...blocker,
+        explanation: "Upload your resume to unlock more drive applications and keep exports ready.",
+        targetPath: "/profile",
+        ctaLabel: "Upload resume",
+      };
+    }
+
+    if (blocker.code === "profile_certification") {
+      return {
+        ...blocker,
+        explanation: "Certify your profile so published drives can use your latest declared data.",
+        targetPath: "/profile",
+        ctaLabel: "Review and certify",
+      };
+    }
+
+    if (blocker.code === "profile_incomplete") {
+      return {
+        ...blocker,
+        explanation: "Finish the required profile details first so the placement workflow can trust your data.",
+        targetPath: "/profile",
+        ctaLabel: "Complete profile",
+      };
+    }
+
+    return {
+      ...blocker,
+      explanation: "Review the current drive criteria and your academic details to understand this blocker.",
+      targetPath: "/drives",
+      ctaLabel: "Review drives",
+    };
+  });
+}
+
+function buildStudentActionFeed(params: {
+  profileExperience: Awaited<ReturnType<typeof buildProfileExperience>>;
+  dashboard: Awaited<ReturnType<typeof StudentRepository.getDashboardData>>;
+  pendingAttempt: Awaited<ReturnType<typeof getPendingAttemptSummary>>;
+  featuredDrivePrep: {
+    driveId: string;
+    company: string;
+    role: string;
+    driveDate: string;
+    daysRemaining: number | null;
+  } | null;
+}): StudentActionItem[] {
+  const { profileExperience, dashboard, pendingAttempt, featuredDrivePrep } = params;
+  const actions: StudentActionItem[] = [];
+  const profilePath = "/profile";
+
+  if (!profileExperience.profileCompleteness.isComplete) {
+    const missingLabel = profileExperience.missingRequiredFields[0]?.label ?? "required profile details";
+    actions.push({
+      id: "complete-profile",
+      type: "complete_profile",
+      title: "Complete your profile",
+      explanation: `Finish ${missingLabel} so your placement readiness and drive eligibility stay accurate.`,
+      targetPath: profilePath,
+      ctaLabel: "Open profile",
+      priority: 10,
+    });
+  }
+
+  if (!profileExperience.declarationStatus.profileCertification.isCertified) {
+    actions.push({
+      id: "certify-profile",
+      type: "certify_profile",
+      title: "Certify your profile",
+      explanation: "Your current details need certification before you can apply confidently to drives.",
+      targetPath: profilePath,
+      ctaLabel: "Review and certify",
+      priority: 20,
+    });
+  }
+
+  if (!profileExperience.resumeInsights.hasManagedResume && !profileExperience.resumeInsights.hasLegacyResumeLink) {
+    actions.push({
+      id: "upload-resume",
+      type: "upload_resume",
+      title: "Upload your resume",
+      explanation: "A managed resume unlocks more drives and ensures the right snapshot is attached when you apply.",
+      targetPath: profilePath,
+      ctaLabel: "Upload resume",
+      priority: 30,
+    });
+  }
+
+  if (pendingAttempt) {
+    actions.push({
+      id: "resume-pending-test",
+      type: "resume_pending_test",
+      title: "Resume your pending mock test",
+      explanation: `${pendingAttempt.title} is still open with ${pendingAttempt.answeredCount}/${pendingAttempt.totalQuestions || "?"} questions saved.`,
+      targetPath: `/mock-tests/${encodeURIComponent(pendingAttempt.testId)}`,
+      ctaLabel: "Resume test",
+      priority: 40,
+      meta: {
+        attemptId: pendingAttempt.attemptId,
+        answeredCount: pendingAttempt.answeredCount,
+        totalQuestions: pendingAttempt.totalQuestions,
+      },
+    });
+  }
+
+  if (featuredDrivePrep) {
+    actions.push({
+      id: `prepare-drive-${featuredDrivePrep.driveId}`,
+      type: "prepare_drive",
+      title: "Prepare for your next drive",
+      explanation: `${featuredDrivePrep.company}${featuredDrivePrep.role ? ` - ${featuredDrivePrep.role}` : ""} is next${featuredDrivePrep.daysRemaining === null ? "" : ` in ${featuredDrivePrep.daysRemaining} day(s)`}.`,
+      targetPath: "/drives",
+      ctaLabel: "Open drives",
+      priority: 50,
+      meta: {
+        driveId: featuredDrivePrep.driveId,
+        daysRemaining: featuredDrivePrep.daysRemaining,
+      },
+    });
+  }
+
+  const recentResource = dashboard.resourceUsage.recentResources[0];
+  if (recentResource) {
+    actions.push({
+      id: `continue-resource-${recentResource.resourceId}`,
+      type: "continue_resource",
+      title: "Continue reading",
+      explanation: `Pick up ${recentResource.title} from where you left off instead of restarting from scratch.`,
+      targetPath: `/resources/view/${encodeURIComponent(recentResource.resourceId)}`,
+      ctaLabel: "Continue resource",
+      priority: 60,
+      meta: {
+        progressPct: recentResource.progressPct,
+      },
+    });
+  } else if (profileExperience.canAccessResources) {
+    actions.push({
+      id: "browse-resources",
+      type: "browse_resources",
+      title: "Open a recommended resource",
+      explanation: "Start one focused resource so Smart Path can guide you from real study activity, not profile data alone.",
+      targetPath: "/resources",
+      ctaLabel: "Browse resources",
+      priority: 70,
+    });
+  }
+
+  if (profileExperience.canAccessMockTests && dashboard.recommendedTest) {
+    actions.push({
+      id: `take-mock-${dashboard.recommendedTest.id}`,
+      type: "take_mock",
+      title: "Take your next mock test",
+      explanation: `${dashboard.recommendedTest.title} matches your current preparation pattern and helps keep your readiness signal fresh.`,
+      targetPath: `/mock-tests/${encodeURIComponent(dashboard.recommendedTest.id)}`,
+      ctaLabel: "Open mock test",
+      priority: 80,
+      meta: {
+        testId: dashboard.recommendedTest.id,
+        difficulty: dashboard.recommendedTest.difficulty,
+      },
+    });
+  }
+
+  return actions.sort((left, right) => left.priority - right.priority);
+}
+
+function buildGenericPrepBundle(params: {
+  drive: { id: string; company: string; role: string; driveDate: string };
+  curatedMocks: Awaited<ReturnType<typeof MockTestService.getCuratedTests>> | null;
+  resources: null | {
+    sections: {
+      companyPatternPrep: RecommendedResourceItem[];
+      interviewPractice: RecommendedResourceItem[];
+      placementEssentials: RecommendedResourceItem[];
+      forYourBranch: RecommendedResourceItem[];
+    };
+  };
+}) {
+  const { drive, curatedMocks, resources } = params;
+  if (!curatedMocks && !resources) return null;
+
+  const mockTests = uniqueById([
+    ...(curatedMocks?.preDriveBundle?.items ?? []),
+    ...(curatedMocks?.sections.companyPatternPrep ?? []),
+    ...(curatedMocks?.sections.placementEssentials ?? []),
+    ...(curatedMocks?.sections.forYourBranch ?? []),
+  ]).slice(0, 3);
+
+  const resourceItems = uniqueById([
+    ...(resources?.sections.companyPatternPrep ?? []),
+    ...(resources?.sections.interviewPractice ?? []),
+    ...(resources?.sections.placementEssentials ?? []),
+    ...(resources?.sections.forYourBranch ?? []),
+  ]).slice(0, 3);
+
+  if (mockTests.length === 0 && resourceItems.length === 0) {
+    return null;
+  }
+
+  return {
+    summary: `${drive.company}${drive.role ? ` - ${drive.role}` : ""} prep, blending company signals, branch context, and placement essentials.`,
+    mockTests,
+    resources: resourceItems,
   };
 }
 
@@ -1247,11 +1866,22 @@ export const StudentService = {
     const db = await getMongoDb();
     const student = await StudentRepository.getStudentByUserId(tenantId, userId);
     const profile = await StudentRepository.getStudentProfile(tenantId, userId);
-    const profileCertified = buildMyProfileResponse(profile).declarationStatus.profileCertification.isCertified;
+    const profileExperience = await buildProfileExperience(profile);
+    const profileCertified = profileExperience.declarationStatus.profileCertification.isCertified;
+    const hasResume = profileExperience.resumeInsights.hasManagedResume || profileExperience.resumeInsights.hasLegacyResumeLink;
     const drives = await db.collection("drives").find(
       { tenant_id: tenantId, deleted_at: null },
       { projection: { _id: 0, id: 1, company: 1, role: 1, drive_date: 1, criteria: 1, status: 1, eligible_count: 1 } },
     ).sort({ drive_date: 1 }).toArray();
+
+    const [resourceRecommendations, curatedMocks] = await Promise.all([
+      profileExperience.canAccessResources
+        ? this.getRecommendedResources(tenantId, userId, { filter: "all" })
+        : Promise.resolve(null),
+      profileExperience.canAccessMockTests
+        ? MockTestService.getCuratedTests({ tenantId, userId, role: "student" })
+        : Promise.resolve(null),
+    ]);
 
     const driveIds = drives.map((drive) => String(drive.id));
     const results = driveIds.length > 0
@@ -1262,29 +1892,88 @@ export const StudentService = {
       : [];
     const resultMap = new Map(results.map((item) => [String(item.drive_id), item]));
 
-      return drives.map((drive) => {
-        const lifecycle = normalizeDriveLifecycle(drive.status);
-        const evaluation = evaluateStudentEligibility(
-          {
-            cgpa: Number(student.cgpa ?? 0),
-            activeBacklogs: Number(student.backlogs ?? 0),
-            totalBacklogs: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
-            branch: String(student.branch ?? ""),
-            attendancePct: Number(student.attendance_pct ?? 0),
-          },
-          (drive.criteria ?? {}) as {
-            minCgpa?: number;
-            maxBacklogs?: number;
-            maxActiveBacklogs?: number;
-            maxTotalBacklogs?: number;
-            branches?: string[];
-            minAttendance?: number;
-            excludePlacedStudents?: boolean;
-          },
-        );
-        const row = resultMap.get(String(drive.id));
-        const isReleased = Boolean(row?.result_released_at);
-        const applicationState = String(row?.application_state ?? (row?.status === "applied" ? "applied" : "not_applied"));
+    return drives.map((drive) => {
+      const lifecycle = normalizeDriveLifecycle(drive.status);
+      const evaluation = evaluateStudentEligibility(
+        {
+          cgpa: Number(student.cgpa ?? 0),
+          activeBacklogs: Number(student.backlogs ?? 0),
+          totalBacklogs: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
+          branch: String(student.branch ?? ""),
+          attendancePct: Number(student.attendance_pct ?? 0),
+        },
+        (drive.criteria ?? {}) as {
+          minCgpa?: number;
+          maxBacklogs?: number;
+          maxActiveBacklogs?: number;
+          maxTotalBacklogs?: number;
+          branches?: string[];
+          minAttendance?: number;
+          excludePlacedStudents?: boolean;
+        },
+      );
+      const row = resultMap.get(String(drive.id));
+      const isReleased = Boolean(row?.result_released_at);
+      const applicationState = String(row?.application_state ?? (row?.status === "applied" ? "applied" : "not_applied"));
+      const canApplyNow = evaluation.eligible && profileCertified && hasResume && applicationState !== "applied";
+      const actionHint = (() => {
+        if (applicationState === "applied") {
+          return {
+            label: "Application submitted",
+            explanation: "Your resume snapshot is attached. Use the prep bundle below to stay ready for the next round.",
+            targetPath: "/mock-tests",
+            ctaLabel: "Open preparation",
+          };
+        }
+        if (!evaluation.eligible) {
+          return {
+            label: "Review eligibility blockers",
+            explanation: "This drive is blocked by the academic criteria shown below. Fix what you can and watch future drives.",
+            targetPath: "/profile",
+            ctaLabel: "Review profile",
+          };
+        }
+        if (!profileExperience.profileCompleteness.isComplete) {
+          return {
+            label: "Complete profile to apply",
+            explanation: "Your academic fit is fine, but the placement workflow still needs all required profile fields.",
+            targetPath: "/profile",
+            ctaLabel: "Complete profile",
+          };
+        }
+        if (!profileCertified) {
+          return {
+            label: "Certify profile to apply",
+            explanation: "Your details match the criteria, but the placement office still needs your certified declaration.",
+            targetPath: "/profile",
+            ctaLabel: "Review and certify",
+          };
+        }
+        if (!hasResume) {
+          return {
+            label: "Upload resume to apply",
+            explanation: "This drive needs your current resume before you can submit a valid application.",
+            targetPath: "/profile",
+            ctaLabel: "Upload resume",
+          };
+        }
+        return {
+          label: "Ready to apply",
+          explanation: "Your current profile and resume are ready for this drive. Open the declaration and apply when you are ready.",
+          targetPath: "/drives",
+          ctaLabel: "Apply now",
+        };
+      })();
+      const prepBundle = buildGenericPrepBundle({
+        drive: {
+          id: String(drive.id),
+          company: String(drive.company ?? ""),
+          role: String(drive.role ?? ""),
+          driveDate: String(drive.drive_date ?? ""),
+        },
+        curatedMocks,
+        resources: resourceRecommendations,
+      });
 
       return {
         id: String(drive.id),
@@ -1334,6 +2023,13 @@ export const StudentService = {
         resultReleasedAt: isReleased ? String(row?.result_released_at ?? "") : null,
         offerLetterUrl: isReleased && row?.offer_letter_url ? String(row.offer_letter_url) : null,
         offerLetterReference: isReleased && row?.offer_letter_reference ? String(row.offer_letter_reference) : null,
+        canApplyNow,
+        readinessSupport: {
+          profileCertified,
+          hasResume,
+        },
+        actionHint,
+        prepBundle,
         timeline: {
           registrationStatus: lifecycle === "published" ? "open" : lifecycle === "registration_closed" ? "closed" : lifecycle,
           applicationState,
@@ -1603,8 +2299,64 @@ export const StudentService = {
 
   async getDashboard(tenantId: string, userId: string) {
     const student = await StudentRepository.getStudentByUserId(tenantId, userId);
+    const studentId = String(student.id);
+    const [dashboard, profile, pendingAttempt, resourceRecommendations, curatedMocks] = await Promise.all([
+      StudentRepository.getDashboardData(tenantId, studentId),
+      StudentRepository.getStudentProfile(tenantId, userId),
+      getPendingAttemptSummary(tenantId, studentId),
+      this.getRecommendedResources(tenantId, userId, { filter: "all" }),
+      MockTestService.getCuratedTests({ tenantId, userId, role: "student" }),
+    ]);
+    const profileExperience = await buildProfileExperience(profile);
+    const nearestDrive = dashboard.upcomingDrives[0] ?? null;
+    const daysRemaining = nearestDrive
+      ? Math.max(
+          0,
+          Math.ceil((new Date(nearestDrive.driveDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)),
+        )
+      : null;
+    const featuredDrivePrep = nearestDrive
+      ? {
+          driveId: nearestDrive.id,
+          company: nearestDrive.company,
+          role: nearestDrive.role,
+          driveDate: nearestDrive.driveDate,
+          daysRemaining,
+          summary: `${nearestDrive.company}${nearestDrive.role ? ` - ${nearestDrive.role}` : ""} is the nearest upcoming drive, so this is the strongest place to focus next.`,
+          mockTests: uniqueById([
+            ...(curatedMocks.preDriveBundle?.items ?? []),
+            ...curatedMocks.sections.companyPatternPrep,
+            ...curatedMocks.sections.placementEssentials,
+          ]).slice(0, 3),
+          resources: uniqueById([
+            ...resourceRecommendations.sections.companyPatternPrep,
+            ...resourceRecommendations.sections.interviewPractice,
+            ...resourceRecommendations.sections.placementEssentials,
+          ]).slice(0, 3),
+        }
+      : null;
 
-    return StudentRepository.getDashboardData(tenantId, String(student.id));
+    return {
+      ...dashboard,
+      readinessBanner: profileExperience.readinessBanner,
+      activeBlockers: mapProfileBlockers(profileExperience.liveEligibility.blockers),
+      nextBestActions: buildStudentActionFeed({
+        profileExperience,
+        dashboard,
+        pendingAttempt,
+        featuredDrivePrep: featuredDrivePrep
+          ? {
+              driveId: featuredDrivePrep.driveId,
+              company: featuredDrivePrep.company,
+              role: featuredDrivePrep.role,
+              driveDate: featuredDrivePrep.driveDate,
+              daysRemaining: featuredDrivePrep.daysRemaining,
+            }
+          : null,
+      }),
+      pendingAttempt,
+      featuredDrivePrep,
+    };
   },
 
   async logStudyHours(input: LogStudyHoursInput) {
@@ -1839,7 +2591,163 @@ export const StudentService = {
       module: "Profile",
     });
 
+    await resolveApprovedUnlockRequests({
+      tenantId: params.tenantId,
+      studentId: String(updated.id),
+      actorUserId: params.userId,
+      note: "Student recertified the profile after the unlock approval.",
+    });
+
     return buildMyProfileResponseWithVisibility(updated);
+  },
+
+  async getMyProfileUnlockRequest(tenantId: string, userId: string) {
+    const student = await StudentRepository.getStudentByUserId(tenantId, userId);
+    return {
+      unlockRequest: await getLatestProfileUnlockRequest(tenantId, String(student.id)),
+    };
+  },
+
+  async requestProfileUnlock(params: {
+    tenantId: string;
+    userId: string;
+    reasonCategory: ProfileUnlockReasonCategory;
+    requestedFields?: string[];
+    explanation: string;
+  }) {
+    const db = await getMongoDb();
+    const profile = await StudentRepository.getStudentProfile(params.tenantId, params.userId);
+    const currentProfileResponse = buildMyProfileResponse(profile);
+    if (!currentProfileResponse.declarationStatus.profileCertification.isLocked) {
+      throw new AppError("PROFILE_NOT_LOCKED", "Your profile is already editable right now.", 409);
+    }
+
+    const existing = await getLatestProfileUnlockRequest(params.tenantId, String(profile.id));
+    if (existing?.status === "pending") {
+      throw new AppError("PROFILE_UNLOCK_ALREADY_REQUESTED", "An unlock request is already pending review.", 409);
+    }
+
+    const now = new Date().toISOString();
+    const requestId = randomUUID();
+    await db.collection("profile_unlock_requests").insertOne({
+      id: requestId,
+      tenant_id: params.tenantId,
+      student_id: String(profile.id),
+      requested_by_user_id: params.userId,
+      status: "pending",
+      reason_category: params.reasonCategory,
+      requested_fields: (params.requestedFields ?? []).slice(0, 10),
+      explanation: params.explanation.trim(),
+      response_note: null,
+      decided_at: null,
+      decided_by: null,
+      resolved_at: null,
+      created_at: now,
+      updated_at: now,
+    });
+
+    await AuditLogService.log({
+      tenantId: params.tenantId,
+      actorUserId: params.userId,
+      actorRole: "student",
+      eventType: "student_support_requested",
+      metadata: {
+        requestId,
+        reasonCategory: params.reasonCategory,
+        requestedFields: params.requestedFields ?? [],
+        supportType: "profile_unlock_request",
+      },
+    });
+
+    return this.getMyProfileUnlockRequest(params.tenantId, params.userId);
+  },
+
+  async reviewProfileUnlockRequest(params: {
+    tenantId: string;
+    studentId: string;
+    actorUserId: string;
+    actorRole: string;
+    requestId: string;
+    decision: "approved" | "denied";
+    responseNote?: string;
+  }) {
+    const db = await getMongoDb();
+    const request = await db.collection("profile_unlock_requests").findOne(
+      {
+        tenant_id: params.tenantId,
+        student_id: params.studentId,
+        id: params.requestId,
+      },
+      { projection: { _id: 0 } },
+    );
+
+    if (!request) {
+      throw new AppError("PROFILE_UNLOCK_REQUEST_NOT_FOUND", "Unlock request not found.", 404);
+    }
+
+    if (String(request.status ?? "pending") !== "pending") {
+      throw new AppError("PROFILE_UNLOCK_REQUEST_FINALIZED", "This unlock request has already been reviewed.", 409);
+    }
+
+    const student = await db.collection("students").findOne(
+      { tenant_id: params.tenantId, id: params.studentId },
+      { projection: { _id: 0, id: 1, user_id: 1, profile_data: 1, roll_number: 1, branch: 1, batch: 1, cgpa: 1, backlogs: 1, backlogs_total: 1, attendance_pct: 1, skills: 1 } },
+    );
+
+    if (!student) {
+      throw new AppError("STUDENT_NOT_FOUND", "Student not found for this unlock request.", 404);
+    }
+
+    const now = new Date().toISOString();
+    if (params.decision === "approved") {
+      await db.collection("students").updateOne(
+        { tenant_id: params.tenantId, id: params.studentId },
+        {
+          $set: {
+            profile_data: buildDeclarationProfileDataPatch({
+              profileData: (student.profile_data ?? {}) as Record<string, unknown>,
+              declaration: {
+                profileEditUnlockedAt: now,
+                profileEditUnlockedBy: params.actorUserId,
+                profileCertificationInvalidatedAt: now,
+                profileCertificationInvalidationReason: params.responseNote?.trim() || "Profile unlocked for student corrections.",
+              },
+            }),
+          },
+        },
+      );
+    }
+
+    await db.collection("profile_unlock_requests").updateOne(
+      { tenant_id: params.tenantId, student_id: params.studentId, id: params.requestId },
+      {
+        $set: {
+          status: params.decision,
+          response_note: params.responseNote?.trim() || null,
+          decided_at: now,
+          decided_by: params.actorUserId,
+          updated_at: now,
+        },
+      },
+    );
+
+    await AuditLogService.log({
+      tenantId: params.tenantId,
+      actorUserId: params.actorUserId,
+      actorRole: params.actorRole,
+      eventType: "admin_ops_student_updated",
+      metadata: {
+        studentId: params.studentId,
+        requestId: params.requestId,
+        decision: params.decision,
+      },
+    });
+
+    return {
+      requestId: params.requestId,
+      decision: params.decision,
+      updatedStudent: await this.getStudentByIdForTpo(params.tenantId, params.studentId),
+    };
   },
 
   async updateMyProfile(params: {
@@ -1886,6 +2794,9 @@ export const StudentService = {
     const tenant = await MongoAuthRepository.findTenantById(params.tenantId);
     const tenantBranches = normalizeTenantBranches(tenant?.config);
     const nextBranch = params.branch !== undefined ? String(params.branch).trim() : String(before.branch ?? "").trim();
+    const normalizedDegree = params.degree !== undefined ? normalizeProfileDegree(params.degree) : undefined;
+    const normalizedTargetRoles = params.targetRoles !== undefined ? normalizeProfileTargetRoles(params.targetRoles) : undefined;
+    const normalizedPreferredLocations = params.preferredLocations !== undefined ? normalizeProfileLocations(params.preferredLocations) : undefined;
     if (tenantBranches.length > 0 && nextBranch && !tenantBranches.includes(nextBranch)) {
       throw new AppError(
         "BRANCH_NOT_ALLOWED",
@@ -1915,14 +2826,14 @@ export const StudentService = {
     const mergedProfileDataBase = {
       ...((before.profile_data ?? {}) as Record<string, unknown>),
       ...(params.prn !== undefined ? { prn: params.prn } : {}),
-      ...(params.degree !== undefined ? { degree: params.degree } : {}),
+      ...(params.degree !== undefined ? { degree: normalizedDegree } : {}),
       ...(params.currentSemester !== undefined ? { currentSemester: params.currentSemester } : {}),
       ...(params.totalHistoricalBacklogs !== undefined ? { totalHistoricalBacklogs: params.totalHistoricalBacklogs } : {}),
       ...(params.phone !== undefined ? { phone: params.phone } : {}),
       ...(params.personalEmail !== undefined ? { personalEmail: params.personalEmail } : {}),
       ...(params.resumeUrl !== undefined ? { resumeUrl: params.resumeUrl } : {}),
-      ...(params.targetRoles !== undefined ? { targetRoles: params.targetRoles } : {}),
-      ...(params.preferredLocations !== undefined ? { preferredLocations: params.preferredLocations } : {}),
+      ...(params.targetRoles !== undefined ? { targetRoles: normalizedTargetRoles } : {}),
+      ...(params.preferredLocations !== undefined ? { preferredLocations: normalizedPreferredLocations } : {}),
       ...(params.willingToRelocate !== undefined ? { willingToRelocate: params.willingToRelocate } : {}),
       ...(params.linkedIn !== undefined ? { linkedIn: params.linkedIn } : {}),
       ...(params.githubUrl !== undefined ? { githubUrl: params.githubUrl } : {}),
@@ -2025,6 +2936,13 @@ export const StudentService = {
       module: "Profile",
     });
 
+    await resolveApprovedUnlockRequests({
+      tenantId: params.tenantId,
+      studentId: String(updatedProfile.id),
+      actorUserId: params.userId,
+      note: "Student updated the profile after the unlock approval.",
+    });
+
     return this.getMyProfile(params.tenantId, params.userId);
   },
 
@@ -2101,6 +3019,13 @@ export const StudentService = {
       },
       impactScore: 20,
       module: "Profile",
+    });
+
+    await resolveApprovedUnlockRequests({
+      tenantId: params.tenantId,
+      studentId: String(updatedProfile.id),
+      actorUserId: params.userId,
+      note: "Student uploaded a new resume after the unlock approval.",
     });
 
     return this.getMyProfile(params.tenantId, params.userId);
@@ -2580,6 +3505,7 @@ export const StudentService = {
   async getStudentByIdForTpo(tenantId: string, studentId: string) {
     const detail = await StudentRepository.getStudentByIdForTpo(tenantId, studentId);
     const driveDeclarations = await StudentRepository.listStudentDriveDeclarations(tenantId, studentId);
+    const unlockRequest = await getLatestProfileUnlockRequest(tenantId, studentId);
     const driveDeclarationMap = new Map(driveDeclarations.map((item) => [item.driveId, item]));
     const summary = buildStudentProfileSummary({
       student: {
@@ -2629,6 +3555,7 @@ export const StudentService = {
       missingRequiredFields: summary.missingRequiredFields,
       missingStudentFields: summary.missingStudentFields,
       pendingCollegeFields: summary.pendingCollegeFields,
+      unlockRequest,
       driveParticipation: detail.driveParticipation.map((entry) => ({
         ...entry,
         declarationAcceptedAt: driveDeclarationMap.get(entry.driveId)?.acceptedAt ?? null,

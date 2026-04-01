@@ -1,15 +1,37 @@
+import { mutate } from "swr";
 import { Link } from "react-router-dom";
 
 import { Badge, Button, Card, Skeleton, Table } from "../../components/ui";
-import { RiskDashboard } from "../../components/RiskDashboard";
-import { usePilotTpoDashboard } from "../../hooks/use-pilot-dashboard";
-import {
-  approveSupportRequest,
-  denySupportRequest,
-  resolveStudentSupportRequest,
-  useTpoStudentSupportInbox,
-  useTpoSupportInbox,
-} from "../../hooks/use-support";
+import { useTpoControlCenter } from "../../hooks/use-analytics";
+import { computeDriveEligibility } from "../../hooks/use-drives";
+import { approveSupportRequest, denySupportRequest, resolveStudentSupportRequest } from "../../hooks/use-support";
+import { reviewStudentUnlockRequest } from "../../hooks/use-tpo-students";
+
+function formatDate(value: string | null | undefined) {
+  if (!value) return "Not scheduled";
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return parsed.toLocaleDateString();
+}
+
+function formatDateTime(value: string | null | undefined) {
+  if (!value) return "Not available";
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return parsed.toLocaleString();
+}
+
+function badgeVariantFromPriority(priority: string) {
+  if (priority === "high") return "danger" as const;
+  if (priority === "medium") return "warning" as const;
+  return "default" as const;
+}
+
+function badgeVariantFromRisk(score: number) {
+  if (score >= 60) return "danger" as const;
+  if (score >= 35) return "warning" as const;
+  return "success" as const;
+}
 
 function TpoDashboardSkeleton() {
   return (
@@ -28,191 +50,423 @@ function TpoDashboardSkeleton() {
           ))}
         </div>
       </Card>
+      <div className="tpo-ops-grid">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <Card key={`tpo-dashboard-section-${index}`} className="tpo-list-card">
+            <div style={{ display: "grid", gap: 12 }}>
+              <Skeleton size="md" />
+              <Skeleton size="sm" />
+              <Skeleton size="sm" />
+              <Skeleton size="sm" />
+            </div>
+          </Card>
+        ))}
+      </div>
     </section>
   );
 }
 
 export default function TpoDashboardPage() {
-  const { data, isLoading, error } = usePilotTpoDashboard();
-  const supportAccessInbox = useTpoSupportInbox(true);
-  const studentSupportInbox = useTpoStudentSupportInbox(true);
-  const pendingSupportAccess = (supportAccessInbox.data ?? []).filter((item) => item.status === "pending");
-  const openStudentRequests = (studentSupportInbox.data ?? []).filter((item) => item.status === "open");
+  const { data, isLoading, error } = useTpoControlCenter();
 
-  if (isLoading) {
-    return <TpoDashboardSkeleton />;
-  }
+  if (isLoading) return <TpoDashboardSkeleton />;
+  if (error || !data) return <Card>Unable to load the TPO operations dashboard.</Card>;
 
-  if (error || !data) {
-    return <Card>Unable to load TPO dashboard.</Card>;
-  }
+  const queueSummary = [
+    {
+      label: "Unlock Requests",
+      value: data.dashboardQueues.profileUnlockRequests.count,
+      helper: "Students waiting for profile correction approval.",
+    },
+    {
+      label: "Student Support",
+      value: data.dashboardQueues.studentSupportRequests.count,
+      helper: "Open help requests from students.",
+    },
+    {
+      label: "Support Access",
+      value: data.dashboardQueues.supportAccessRequests.count,
+      helper: "Pending admin support access approvals.",
+    },
+    {
+      label: "Communication Tasks",
+      value: data.dashboardQueues.communicationTasks.count,
+      helper: "Drive follow-up items that need outreach or release action.",
+    },
+  ];
 
-  const upcomingDrives = Array.isArray(data.upcomingDrives) ? data.upcomingDrives : [];
-  const studentsNeedingAttention = Array.isArray(data.studentsNeedingAttention) ? data.studentsNeedingAttention : [];
+  const needsAttentionItems = [
+    ...data.dashboardQueues.profileUnlockRequests.items.slice(0, 3),
+    ...data.dashboardQueues.studentSupportRequests.items.slice(0, 3),
+    ...data.dashboardQueues.communicationTasks.items.slice(0, 3),
+  ]
+    .sort((a, b) => {
+      const priorityWeight = (value: string) => (value === "high" ? 2 : value === "medium" ? 1 : 0);
+      return priorityWeight(b.priority) - priorityWeight(a.priority);
+    })
+    .slice(0, 8);
+
+  const followUpStudents = [
+    ...data.actionCenter.studentsToContactToday,
+    ...data.actionCenter.readyButInactive,
+    ...data.actionCenter.lowReadinessNearDriveImpact,
+  ]
+    .filter((student, index, list) => list.findIndex((candidate) => candidate.studentId === student.studentId) === index)
+    .slice(0, 12);
 
   return (
     <section className="tpo-dashboard control-center-page">
       <Card className="career-hero-card control-center-hero-card">
-        <h1>Smart Path Dashboard</h1>
-        <p className="muted-text">
-          The pilot view focuses on what matters most today: active drives, student readiness, and follow-up actions.
-        </p>
+        <div className="tpo-ops-hero">
+          <div className="tpo-ops-hero-copy">
+            <p className="workspace-eyebrow">TPO Operations Console</p>
+            <h1>Run placement operations from one dashboard.</h1>
+            <p className="muted-text">
+              We are surfacing the queues, drive risk, and student readiness states that need intervention today so you can act without
+              hopping across half the product first.
+            </p>
+          </div>
+          <div className="hero-actions">
+            <Link to="/tpo/drives/create">
+              <Button>Create Drive</Button>
+            </Link>
+            <Link to="/tpo/communication">
+              <Button variant="secondary">Open Communication</Button>
+            </Link>
+            <Link to="/tpo/reports">
+              <Button variant="secondary">Open Reports</Button>
+            </Link>
+          </div>
+        </div>
+        <div className="tpo-ops-signal-strip">
+          <Link className="tpo-ops-signal" to="/tpo/interventions/eligible-not-applied">
+            <span>Eligible not applied</span>
+            <strong>{data.actionCenter.eligibleButNotApplied.length}</strong>
+          </Link>
+          <Link className="tpo-ops-signal" to="/tpo/students">
+            <span>Unlock requests</span>
+            <strong>{data.dashboardQueues.profileUnlockRequests.count}</strong>
+          </Link>
+          <Link className="tpo-ops-signal" to="/tpo/drives">
+            <span>Low-apply drives</span>
+            <strong>{data.drivePreparedness.items.filter((drive) => drive.lowApplyRisk).length}</strong>
+          </Link>
+          <Link className="tpo-ops-signal" to="/tpo/communication">
+            <span>Communication tasks</span>
+            <strong>{data.dashboardQueues.communicationTasks.count}</strong>
+          </Link>
+        </div>
         <div className="control-center-pill-grid">
           <div className="control-center-pill">
             <span>Total Students</span>
-            <strong>{Number(data.summary.totalStudents ?? 0)}</strong>
+            <strong>{data.summary.totalStudents}</strong>
+          </div>
+          <div className="control-center-pill">
+            <span>Active 7d</span>
+            <strong>{data.summary.activeStudents7d}</strong>
           </div>
           <div className="control-center-pill">
             <span>Upcoming Drives</span>
-            <strong>{Number(data.summary.upcomingDrives ?? 0)}</strong>
+            <strong>{data.summary.upcomingDrives}</strong>
           </div>
           <div className="control-center-pill">
-            <span>Students Eligible</span>
-            <strong>{Number(data.summary.eligibleStudents ?? 0)}</strong>
+            <span>Avg Readiness</span>
+            <strong>{data.summary.avgReadiness}</strong>
           </div>
           <div className="control-center-pill">
-            <span>Mocks This Week</span>
-            <strong>{Number(data.summary.mockTestsTakenThisWeek ?? 0)}</strong>
+            <span>At Risk</span>
+            <strong>{data.summary.atRiskStudents}</strong>
           </div>
           <div className="control-center-pill">
-            <span>High Readiness</span>
-            <strong>{Number(data.readiness.high ?? 0)}</strong>
+            <span>Eligible For Upcoming</span>
+            <strong>{data.readinessFunnel.eligibleForUpcomingDrives}</strong>
           </div>
-          <div className="control-center-pill">
-            <span>Medium Readiness</span>
-            <strong>{Number(data.readiness.medium ?? 0)}</strong>
-          </div>
-          <div className="control-center-pill">
-            <span>Low Readiness</span>
-            <strong>{Number(data.readiness.low ?? 0)}</strong>
-          </div>
-        </div>
-        <div className="hero-actions">
-          <Link to="/tpo/drives/create">
-            <Button>Create Drive</Button>
-          </Link>
-          <Link to="/tpo/reports">
-            <Button variant="secondary">Open Reports</Button>
-          </Link>
-          <Link to="/tpo/communication">
-            <Button variant="secondary">Send Reminder</Button>
-          </Link>
         </div>
       </Card>
 
-      <div className="tpo-insights-grid">
-        <Card className="tpo-list-card">
-          <h2>Upcoming Drives</h2>
-          {upcomingDrives.length === 0 ? (
-            <p className="muted-text">No upcoming drives yet.</p>
+      <Card className="tpo-list-card">
+        <div className="workspace-panel-header">
+          <div>
+            <p className="workspace-eyebrow">Needs Attention Today</p>
+            <h2>Top queues and follow-up items</h2>
+          </div>
+          <div className="hero-actions">
+            <Link to="/tpo/students">
+              <Button variant="secondary">Open Students</Button>
+            </Link>
+            <Link to="/tpo/drives">
+              <Button variant="secondary">Open Drives</Button>
+            </Link>
+          </div>
+        </div>
+        <div className="tpo-queue-summary-grid">
+          {queueSummary.map((item) => (
+            <div key={item.label} className="tpo-queue-summary-card">
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+              <p className="muted-text">{item.helper}</p>
+            </div>
+          ))}
+        </div>
+        <div className="tpo-action-list">
+          {needsAttentionItems.length === 0 ? (
+            <p className="muted-text">No urgent queues right now.</p>
           ) : (
-            <ul className="tpo-list">
-              {upcomingDrives.map((item) => (
-                <li key={item.driveId}>
-                  <Link to={`/tpo/drives/${item.driveId}`}>{item.company}</Link>
-                  {item.role ? ` (${item.role})` : ""} - {new Date(item.driveDate).toLocaleDateString()} - {item.eligibleStudents} eligible
-                </li>
-              ))}
-            </ul>
+            needsAttentionItems.map((item) => (
+              <div key={item.id} className="tpo-action-row">
+                <div>
+                  <div className="tpo-action-row-head">
+                    <strong>{item.title}</strong>
+                    <Badge variant={badgeVariantFromPriority(item.priority)}>{item.priority}</Badge>
+                  </div>
+                  <p className="muted-text">{item.summary}</p>
+                </div>
+                <Link to={item.targetPath}>
+                  <Button variant="secondary">{item.ctaLabel}</Button>
+                </Link>
+              </div>
+            ))
           )}
-        </Card>
+        </div>
+      </Card>
 
-        <Card className="tpo-list-card">
-          <h2>Readiness Mix</h2>
-          <ul className="tpo-list">
-            <li>High readiness: {Number(data.readiness.high ?? 0)}</li>
-            <li>Medium readiness: {Number(data.readiness.medium ?? 0)}</li>
-            <li>Low readiness: {Number(data.readiness.low ?? 0)}</li>
-          </ul>
-        </Card>
-
-        <Card className="tpo-list-card">
-          <h2>Student Support Requests</h2>
-          {studentSupportInbox.isLoading ? (
-            <p className="muted-text">Loading requests...</p>
-          ) : studentSupportInbox.error ? (
-            <p className="error-text">Unable to load support requests.</p>
+      <Card className="tpo-list-card">
+        <div className="workspace-panel-header">
+          <div>
+            <p className="workspace-eyebrow">Active Drive Health</p>
+            <h2>Live drive operations</h2>
+          </div>
+          <p className="muted-text">Each card shows eligibility coverage, application movement, export readiness, and next direct actions.</p>
+        </div>
+        <div className="tpo-drive-health-grid">
+          {data.drivePreparedness.items.length === 0 ? (
+            <p className="muted-text">No active or upcoming drives yet.</p>
           ) : (
-            <ul className="tpo-list">
-              {openStudentRequests.length === 0 ? (
-                <li className="muted-text">No open student requests.</li>
-              ) : null}
-              {openStudentRequests.slice(0, 5).map((req) => (
-                <li key={req.id} style={{ display: "grid", gap: 8 }}>
+            data.drivePreparedness.items.map((drive) => (
+              <div key={drive.driveId} className="tpo-drive-health-card">
+                <div className="tpo-drive-health-head">
                   <div>
-                    <strong>{req.subject}</strong>{" "}
-                    <span className="muted-text">
-                      from {req.student_name} ({req.student_email}) - {new Date(req.created_at).toLocaleString()}
-                    </span>
-                    <div className="muted-text" style={{ marginTop: 6 }}>
-                      {req.message}
-                    </div>
+                    <strong>{drive.company}</strong>
+                    <p className="muted-text">
+                      {drive.role ? `${drive.role} · ` : ""}
+                      {formatDate(drive.driveDate)}
+                    </p>
                   </div>
-                  <div className="hero-actions">
-                    <Button
-                      onClick={async () => {
-                        const note = prompt("Add a short resolution note for the student:", "Resolved by placement office");
-                        if (!note || !note.trim()) return;
-                        await resolveStudentSupportRequest(req.id, note.trim());
-                      }}
-                    >
-                      Mark Resolved
-                    </Button>
+                  <div className="tpo-drive-health-badges">
+                    <Badge variant={badgeVariantFromRisk(drive.driveRiskScore)}>Risk {drive.driveRiskScore}</Badge>
+                    <Badge variant={drive.lowApplyRisk ? "warning" : "default"}>{drive.status.replace(/_/g, " ")}</Badge>
                   </div>
-                </li>
-              ))}
-            </ul>
+                </div>
+                <div className="tpo-drive-health-metrics">
+                  <div><span>Eligible</span><strong>{drive.eligibleStudents}</strong></div>
+                  <div><span>Applied</span><strong>{drive.appliedCount}</strong></div>
+                  <div><span>Eligible Not Applied</span><strong>{drive.eligibleButNotAppliedCount}</strong></div>
+                  <div><span>Days Remaining</span><strong>{drive.daysRemaining ?? "NA"}</strong></div>
+                </div>
+                <div className="tpo-drive-health-meta">
+                  <div>
+                    <span>Resume export</span>
+                    <strong>{drive.resumeExportReady ? "Ready" : `${drive.exportReadyApplicants}/${drive.appliedCount} ready`}</strong>
+                  </div>
+                  <div>
+                    <span>Results</span>
+                    <strong>{drive.resultPublicationState.replace(/_/g, " ")}</strong>
+                  </div>
+                  <div>
+                    <span>Eligible but weak</span>
+                    <strong>{drive.drilldown.eligibleButWeak}</strong>
+                  </div>
+                  <div>
+                    <span>No recent activity</span>
+                    <strong>{drive.drilldown.noRecentActivity}</strong>
+                  </div>
+                </div>
+                <div className="hero-actions">
+                  <Link to={`/tpo/drives/${drive.driveId}`}>
+                    <Button variant="secondary">Open Drive</Button>
+                  </Link>
+                  <Button
+                    variant="secondary"
+                    onClick={async () => {
+                      try {
+                        await computeDriveEligibility(drive.driveId);
+                        await mutate("/api/v1/tpo/dashboard/control-center");
+                      } catch (actionError) {
+                        window.alert(actionError instanceof Error ? actionError.message : "Unable to compute eligibility right now.");
+                      }
+                    }}
+                  >
+                    Compute Eligibility
+                  </Button>
+                  <a href={`/api/v1/drives/${drive.driveId}/export?format=csv`}>
+                    <Button variant="secondary">Export Eligible CSV</Button>
+                  </a>
+                  <a href={`/api/v1/drives/${drive.driveId}/export/resumes`}>
+                    <Button variant="secondary">Export Resumes</Button>
+                  </a>
+                  <Link to={`/tpo/drives/${drive.driveId}/results`}>
+                    <Button variant="secondary">Manage Results</Button>
+                  </Link>
+                  <Link to="/tpo/communication">
+                    <Button variant="secondary">Send Reminder</Button>
+                  </Link>
+                </div>
+              </div>
+            ))
           )}
-          {!supportAccessInbox.error && pendingSupportAccess.length > 0 ? (
-            <>
-              <p className="muted-text" style={{ marginTop: 14 }}>
-                Admin support access requests
-              </p>
-              <ul className="tpo-list">
-                {pendingSupportAccess.slice(0, 3).map((req) => (
-                  <li key={req.id} style={{ display: "grid", gap: 8 }}>
-                    <div>
-                      <strong>Admin access request</strong>{" "}
-                      <span className="muted-text">
-                        from {req.requested_by_email} ({new Date(req.created_at).toLocaleString()})
-                      </span>
-                      <div className="muted-text" style={{ marginTop: 6 }}>
-                        {req.reason}
-                      </div>
-                    </div>
-                    <div className="hero-actions">
-                      <Button
-                        onClick={async () => {
-                          await approveSupportRequest(req.id, 60);
-                        }}
-                      >
-                        Approve (60m)
-                      </Button>
-                      <Button
-                        variant="secondary"
-                        onClick={async () => {
-                          if (!confirm("Deny this support access request?")) return;
-                          await denySupportRequest(req.id, "Denied by TPO");
-                        }}
-                      >
-                        Deny
-                      </Button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </>
-          ) : null}
-          <p className="muted-text" style={{ marginTop: 10 }}>
-            Student requests are visible to the placement office. Admin access approvals remain time-limited and audited.
-          </p>
+        </div>
+      </Card>
+
+      <div className="tpo-ops-grid">
+        <Card className="tpo-list-card">
+          <div className="workspace-panel-header">
+            <div>
+              <p className="workspace-eyebrow">Student Readiness Funnel</p>
+              <h2>Where the batch is getting blocked</h2>
+            </div>
+          </div>
+          <div className="tpo-funnel-grid">
+            <div className="tpo-funnel-step"><span>Total Students</span><strong>{data.readinessFunnel.totalStudents}</strong></div>
+            <div className="tpo-funnel-step"><span>Profile Complete</span><strong>{data.readinessFunnel.completeProfiles}</strong></div>
+            <div className="tpo-funnel-step"><span>Certified</span><strong>{data.readinessFunnel.certifiedProfiles}</strong></div>
+            <div className="tpo-funnel-step"><span>Resume Ready</span><strong>{data.readinessFunnel.resumeReadyProfiles}</strong></div>
+            <div className="tpo-funnel-step"><span>Eligible</span><strong>{data.readinessFunnel.eligibleForUpcomingDrives}</strong></div>
+            <div className="tpo-funnel-step"><span>Applied Recently</span><strong>{data.readinessFunnel.appliedRecently}</strong></div>
+          </div>
+          <div className="tpo-blocker-grid">
+            <div><span>Missing resume</span><strong>{data.blockerSegments.missingResume}</strong></div>
+            <div><span>Uncertified</span><strong>{data.blockerSegments.uncertified}</strong></div>
+            <div><span>Incomplete profile</span><strong>{data.blockerSegments.incompleteProfile}</strong></div>
+            <div><span>Academically blocked</span><strong>{data.blockerSegments.academicallyBlocked}</strong></div>
+            <div><span>Low engagement</span><strong>{data.blockerSegments.lowEngagement}</strong></div>
+          </div>
+        </Card>
+
+        <Card className="tpo-list-card">
+          <div className="workspace-panel-header">
+            <div>
+              <p className="workspace-eyebrow">Intervention Queues</p>
+              <h2>Queues that need a response</h2>
+            </div>
+          </div>
+          <div className="tpo-action-list">
+            {data.dashboardQueues.profileUnlockRequests.items.slice(0, 4).map((item) => (
+              <div key={item.id} className="tpo-action-row">
+                <div>
+                  <strong>{item.studentName}</strong>
+                  <p className="muted-text">
+                    {item.reasonCategory.replace(/_/g, " ")} · {formatDateTime(item.createdAt)}
+                  </p>
+                </div>
+                <div className="hero-actions">
+                  <Button
+                    onClick={async () => {
+                      try {
+                        await reviewStudentUnlockRequest({
+                          studentId: item.studentId,
+                          requestId: item.requestId,
+                          decision: "approved",
+                        });
+                        await mutate("/api/v1/tpo/dashboard/control-center");
+                      } catch (actionError) {
+                        window.alert(actionError instanceof Error ? actionError.message : "Unable to approve unlock request.");
+                      }
+                    }}
+                  >
+                    Approve
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={async () => {
+                      const note = window.prompt("Add an optional note for the student:", "Please update only the requested fields.");
+                      try {
+                        await reviewStudentUnlockRequest({
+                          studentId: item.studentId,
+                          requestId: item.requestId,
+                          decision: "denied",
+                          responseNote: note ?? undefined,
+                        });
+                        await mutate("/api/v1/tpo/dashboard/control-center");
+                      } catch (actionError) {
+                        window.alert(actionError instanceof Error ? actionError.message : "Unable to deny unlock request.");
+                      }
+                    }}
+                  >
+                    Deny
+                  </Button>
+                </div>
+              </div>
+            ))}
+            {data.dashboardQueues.studentSupportRequests.items.slice(0, 3).map((item) => (
+              <div key={item.id} className="tpo-action-row">
+                <div>
+                  <strong>{item.subject}</strong>
+                  <p className="muted-text">
+                    {item.studentName} · {formatDateTime(item.createdAt)}
+                  </p>
+                </div>
+                <Button
+                  onClick={async () => {
+                    const note = window.prompt("Add a short resolution note for the student:", "Resolved by placement office");
+                    if (!note || !note.trim()) return;
+                    try {
+                      await resolveStudentSupportRequest(item.requestId, note.trim());
+                      await mutate("/api/v1/tpo/dashboard/control-center");
+                    } catch (actionError) {
+                      window.alert(actionError instanceof Error ? actionError.message : "Unable to resolve support request.");
+                    }
+                  }}
+                >
+                  Mark Resolved
+                </Button>
+              </div>
+            ))}
+            {data.dashboardQueues.supportAccessRequests.items.slice(0, 3).map((item) => (
+              <div key={item.id} className="tpo-action-row">
+                <div>
+                  <strong>{item.requestedByEmail}</strong>
+                  <p className="muted-text">{item.reason}</p>
+                </div>
+                <div className="hero-actions">
+                  <Button
+                    onClick={async () => {
+                      try {
+                        await approveSupportRequest(item.requestId, 60);
+                        await mutate("/api/v1/tpo/dashboard/control-center");
+                      } catch (actionError) {
+                        window.alert(actionError instanceof Error ? actionError.message : "Unable to approve support access.");
+                      }
+                    }}
+                  >
+                    Approve (60m)
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={async () => {
+                      try {
+                        await denySupportRequest(item.requestId, "Denied by TPO");
+                        await mutate("/api/v1/tpo/dashboard/control-center");
+                      } catch (actionError) {
+                        window.alert(actionError instanceof Error ? actionError.message : "Unable to deny support access.");
+                      }
+                    }}
+                  >
+                    Deny
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
         </Card>
       </div>
 
-      <RiskDashboard />
-
-      <Card>
-        <h2>Students Needing Attention</h2>
+      <Card className="tpo-list-card">
+        <div className="workspace-panel-header">
+          <div>
+            <p className="workspace-eyebrow">Students Needing Follow-up</p>
+            <h2>Ready but inactive, or eligible but underprepared</h2>
+          </div>
+        </div>
         <div className="tpo-ranking-table-wrap">
           <Table>
             <thead>
@@ -220,36 +474,110 @@ export default function TpoDashboardPage() {
                 <th>Student</th>
                 <th>Branch</th>
                 <th>Batch</th>
-                <th>CGPA</th>
+                <th>Risk</th>
                 <th>Profile</th>
-                <th>Mocks</th>
-                <th>Active 7d</th>
+                <th>Resume</th>
+                <th>Certified</th>
                 <th>Next Action</th>
               </tr>
             </thead>
             <tbody>
-              {studentsNeedingAttention.map((student) => (
-                <tr key={student.studentId}>
-                  <td>
-                    <Link to={`/tpo/students/${student.studentId}`}>{student.fullName}</Link>
-                  </td>
-                  <td>{student.branch}</td>
-                  <td>{student.batch}</td>
-                  <td>{Number(student.cgpa ?? 0).toFixed(1)}</td>
-                  <td>{Number(student.profileCompletenessPct ?? 0).toFixed(0)}%</td>
-                  <td>{Number(student.mockAttempts ?? 0)}</td>
-                  <td>
-                    <Badge variant={student.isActive7d ? "success" : "warning"}>
-                      {student.isActive7d ? "Active" : "Inactive"}
-                    </Badge>
-                  </td>
-                  <td>{student.nextRecommendedAction}</td>
+              {followUpStudents.length === 0 ? (
+                <tr>
+                  <td colSpan={8} className="muted-text">No follow-up students right now.</td>
                 </tr>
-              ))}
+              ) : (
+                followUpStudents.map((student) => {
+                  const fullRow = data.operationsBoard.items.find((item) => item.studentId === student.studentId);
+                  return (
+                    <tr key={student.studentId}>
+                      <td>
+                        <Link to={`/tpo/students/${student.studentId}`}>{student.fullName}</Link>
+                      </td>
+                      <td>{fullRow?.branch ?? "—"}</td>
+                      <td>{fullRow?.batch ?? "—"}</td>
+                      <td>
+                        <Badge variant={badgeVariantFromRisk(fullRow?.riskScore ?? 0)}>
+                          {fullRow?.riskLevel ?? "Monitor"}
+                        </Badge>
+                      </td>
+                      <td>{fullRow ? `${fullRow.profileCompletenessPct}%` : "—"}</td>
+                      <td>{fullRow?.hasResumeReady ? "Ready" : "Missing"}</td>
+                      <td>{fullRow?.isProfileCertified ? "Certified" : "Pending"}</td>
+                      <td>{student.nextRecommendedAction}</td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </Table>
         </div>
       </Card>
+
+      <div className="tpo-ops-grid">
+        <Card className="tpo-list-card">
+          <div className="workspace-panel-header">
+            <div>
+              <p className="workspace-eyebrow">Drive-Specific Intervention</p>
+              <h2>Eligible but not applied</h2>
+            </div>
+            <Link to="/tpo/interventions/eligible-not-applied">
+              <Button variant="secondary">Open full queue</Button>
+            </Link>
+          </div>
+          <div className="tpo-action-list">
+            {data.actionCenter.eligibleButNotApplied.length === 0 ? (
+              <p className="muted-text">No eligible-but-not-applied drive queues right now.</p>
+            ) : (
+              data.actionCenter.eligibleButNotApplied.map((drive) => (
+                <div key={drive.driveId} className="tpo-action-row">
+                  <div>
+                    <strong>{drive.company}</strong>
+                    <p className="muted-text">
+                      {drive.eligibleButNotAppliedCount} eligible students still have not applied · {formatDate(drive.driveDate)}
+                    </p>
+                  </div>
+                  <Link to={`/tpo/drives/${drive.driveId}`}>
+                    <Button variant="secondary">Open Drive</Button>
+                  </Link>
+                </div>
+              ))
+            )}
+          </div>
+        </Card>
+
+        <Card className="tpo-list-card">
+          <div className="workspace-panel-header">
+            <div>
+              <p className="workspace-eyebrow">Secondary Trends</p>
+              <h2>Compact signals, kept below operations</h2>
+            </div>
+          </div>
+          <div className="tpo-blocker-grid">
+            <div>
+              <span>Readiness trend points</span>
+              <strong>{data.trends.readinessTrend.length}</strong>
+            </div>
+            <div>
+              <span>Batch mixes</span>
+              <strong>{data.trends.batchActivity.length}</strong>
+            </div>
+            <div>
+              <span>Weak-topic clusters</span>
+              <strong>{data.trends.weakTopicsByBranch.length}</strong>
+            </div>
+          </div>
+          <div className="tpo-action-list">
+            {(data.alerts.topAlerts.length > 0 ? data.alerts.topAlerts : ["No major alert spikes at the moment."]).map((alert) => (
+              <div key={alert} className="tpo-action-row">
+                <div>
+                  <strong>{alert}</strong>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      </div>
     </section>
   );
 }

@@ -145,6 +145,11 @@ export default function DashboardPage() {
   const popupAnnouncement = unreadAnnouncements.find((item) => item.popupEligible) ?? null;
   const showAdvancedMetrics = isClientFeatureEnabled("studentAdvancedMetrics");
   const riskRecommendations = Array.isArray(riskScore?.recommendations) ? riskScore.recommendations : [];
+  const readinessBanner = richDashboard?.readinessBanner ?? profileData?.readinessBanner ?? null;
+  const sharedNextActions = Array.isArray(richDashboard?.nextBestActions) ? richDashboard.nextBestActions : [];
+  const activeBlockers = Array.isArray(richDashboard?.activeBlockers) ? richDashboard.activeBlockers : [];
+  const pendingAttempt = richDashboard?.pendingAttempt ?? null;
+  const featuredDrivePrep = richDashboard?.featuredDrivePrep ?? null;
   const nearestUpcomingDrive = [...upcomingDrives]
     .filter((drive) => {
       const driveDate = new Date(String(drive.driveDate ?? ""));
@@ -196,62 +201,63 @@ export default function DashboardPage() {
     setOrientationDismissed(true);
   };
 
-  const nextAction = (() => {
+  const fallbackNextAction = (() => {
     if (profileCompletenessPct < 100) {
       const pending = missingStudentFields[0]?.label ?? "required profile details";
       return {
-        label: "Complete your profile",
-        detail: `Finish ${pending} to keep practice modules and drive access fully available.`,
+        title: "Complete your profile",
+        explanation: `Finish ${pending} to keep practice modules and drive access fully available.`,
         ctaLabel: "Open profile",
-        href: "/profile",
+        targetPath: "/profile",
       };
     }
 
     if (mockTestsTaken7d === 0 && canAccessMockTests) {
       return {
-        label: "Take your next mock test",
-        detail: recommendedMockTest
+        title: "Take your next mock test",
+        explanation: recommendedMockTest
           ? `${recommendedMockTest.title} is a strong next step based on your current progress.`
           : "Start one mock test this week to keep your readiness signal fresh.",
         ctaLabel: recommendedMockTest ? "Open suggested mock" : "Browse mock tests",
-        href: recommendedMockTest ? `/mock-tests/${encodeURIComponent(recommendedMockTest.id)}` : "/mock-tests",
+        targetPath: recommendedMockTest ? `/mock-tests/${encodeURIComponent(recommendedMockTest.id)}` : "/mock-tests",
       };
     }
 
     if (richerRecentResources.length === 0 && canAccessResources) {
       return {
-        label: "Open a recommended resource",
-        detail: "Start one focused study resource so the app can guide you from real activity instead of profile data only.",
+        title: "Open a recommended resource",
+        explanation: "Start one focused study resource so the app can guide you from real activity instead of profile data only.",
         ctaLabel: "Browse resources",
-        href: "/resources",
+        targetPath: "/resources",
       };
     }
 
     if (nearestUpcomingDrive) {
       return {
-        label: "Prepare for your next drive",
-        detail: `${nearestUpcomingDrive.company}${nearestUpcomingDrive.role ? ` - ${nearestUpcomingDrive.role}` : ""} is the nearest active opportunity.`,
+        title: "Prepare for your next drive",
+        explanation: `${nearestUpcomingDrive.company}${nearestUpcomingDrive.role ? ` - ${nearestUpcomingDrive.role}` : ""} is the nearest active opportunity.`,
         ctaLabel: "Check drives",
-        href: "/drives",
+        targetPath: "/drives",
       };
     }
 
     if (richerRecentResources[0]) {
       return {
-        label: "Resume where you left off",
-        detail: `Continue ${richerRecentResources[0].title} instead of starting a new topic from scratch.`,
+        title: "Resume where you left off",
+        explanation: `Continue ${richerRecentResources[0].title} instead of starting a new topic from scratch.`,
         ctaLabel: "Continue reading",
-        href: `/resources/view/${encodeURIComponent(richerRecentResources[0].resourceId)}`,
+        targetPath: `/resources/view/${encodeURIComponent(richerRecentResources[0].resourceId)}`,
       };
     }
 
     return {
-      label: "Keep your preparation active",
-      detail: "Review announcements, drives, and your recent practice so your profile stays ready for the next opportunity.",
+      title: "Keep your preparation active",
+      explanation: "Review announcements, drives, and your recent practice so your profile stays ready for the next opportunity.",
       ctaLabel: "Go to drives",
-      href: "/drives",
+      targetPath: "/drives",
     };
   })();
+  const nextAction = sharedNextActions[0] ?? fallbackNextAction;
 
   return (
     <section className="student-workspace-shell">
@@ -293,6 +299,20 @@ export default function DashboardPage() {
           </Link>
         </div>
       </header>
+
+      {readinessBanner ? (
+        <section className={`student-workspace-panel student-guidance-banner student-guidance-banner-${readinessBanner.tone}`}>
+          <div className="student-workspace-panel-head">
+            <div>
+              <h2>{readinessBanner.title}</h2>
+              <p>{readinessBanner.message}</p>
+            </div>
+            <Link to={readinessBanner.action === "View drives" ? "/drives" : "/profile"} className="ui-button ghost">
+              {readinessBanner.action}
+            </Link>
+          </div>
+        </section>
+      ) : null}
 
       {shouldShowOrientation ? (
         <section className="student-workspace-panel">
@@ -353,11 +373,11 @@ export default function DashboardPage() {
             <div className="student-dashboard-next-primary-head">
               <div>
                 <span>Recommended move</span>
-                <strong>{nextAction.label}</strong>
+                <strong>{nextAction.title}</strong>
               </div>
-              <Link to={nextAction.href} className="ui-button secondary">{nextAction.ctaLabel}</Link>
+              <Link to={nextAction.targetPath} className="ui-button secondary">{nextAction.ctaLabel}</Link>
             </div>
-            <p>{nextAction.detail}</p>
+            <p>{nextAction.explanation}</p>
           </div>
 
           <div className="student-dashboard-next-meta">
@@ -375,6 +395,19 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+        {sharedNextActions.length > 1 ? (
+          <div className="student-dashboard-action-feed">
+            {sharedNextActions.slice(1, 4).map((action) => (
+              <div key={action.id} className="student-dashboard-action-card">
+                <div>
+                  <strong>{action.title}</strong>
+                  <p>{action.explanation}</p>
+                </div>
+                <Link to={action.targetPath} className="ui-button ghost">{action.ctaLabel}</Link>
+              </div>
+            ))}
+          </div>
+        ) : null}
         {nearestUpcomingDrive ? (
           <p className="student-dashboard-next-footnote muted-text">
             {nearestUpcomingDrive.company}
@@ -384,6 +417,93 @@ export default function DashboardPage() {
           </p>
         ) : null}
       </section>
+
+      {activeBlockers.length > 0 ? (
+        <section className="student-workspace-panel">
+          <div className="student-workspace-panel-head">
+            <div>
+              <h2>What is blocking you right now</h2>
+              <p>These blockers come from your current profile and the published drives at your college.</p>
+            </div>
+          </div>
+          <div className="student-dashboard-action-feed">
+            {activeBlockers.slice(0, 4).map((blocker) => (
+              <div key={blocker.code} className="student-dashboard-action-card">
+                <div>
+                  <strong>{blocker.label}</strong>
+                  <p>{blocker.explanation}</p>
+                  <span className="muted-text">{blocker.count} drive(s) currently affected</span>
+                </div>
+                <Link to={blocker.targetPath} className="ui-button ghost">{blocker.ctaLabel}</Link>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {featuredDrivePrep ? (
+        <section className="student-workspace-panel">
+          <div className="student-workspace-panel-head">
+            <div>
+              <h2>Prepare for your next drive</h2>
+              <p>{featuredDrivePrep.summary}</p>
+            </div>
+            <Link to="/drives" className="ui-button ghost">Open drives</Link>
+          </div>
+          <div className="student-dashboard-prep-grid">
+            <div className="student-dashboard-prep-card">
+              <span>Nearest drive</span>
+              <strong>{featuredDrivePrep.company}{featuredDrivePrep.role ? ` - ${featuredDrivePrep.role}` : ""}</strong>
+              <p>{new Date(featuredDrivePrep.driveDate).toLocaleDateString()} {featuredDrivePrep.daysRemaining === null ? "" : `- ${featuredDrivePrep.daysRemaining} day(s) left`}</p>
+            </div>
+            <div className="student-dashboard-prep-card">
+              <span>Recommended mocks</span>
+              {featuredDrivePrep.mockTests.length > 0 ? (
+                <ul>
+                  {featuredDrivePrep.mockTests.map((test) => (
+                    <li key={test.id}>
+                      <Link to={`/mock-tests/${test.id}`}>{test.title}</Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No mock bundle yet. Keep your common prep active.</p>
+              )}
+            </div>
+            <div className="student-dashboard-prep-card">
+              <span>Recommended resources</span>
+              {featuredDrivePrep.resources.length > 0 ? (
+                <ul>
+                  {featuredDrivePrep.resources.map((resource) => (
+                    <li key={resource.id}>
+                      <Link to={`/resources/view/${encodeURIComponent(resource.id)}`}>{resource.title}</Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No resource bundle yet. Start with placement essentials.</p>
+              )}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {pendingAttempt ? (
+        <section className="student-workspace-panel">
+          <div className="student-workspace-panel-head">
+            <div>
+              <h2>Resume pending mock test</h2>
+              <p>{pendingAttempt.title} still has saved answers and can be resumed from where you left it.</p>
+            </div>
+            <Link to={`/mock-tests/${pendingAttempt.testId}`} className="ui-button ghost">Resume test</Link>
+          </div>
+          <div className="student-workspace-inline-note">
+            <span>Answered {pendingAttempt.answeredCount}/{pendingAttempt.totalQuestions || "?"}</span>
+            <span>Difficulty: {pendingAttempt.difficulty}</span>
+            <span>Current question: {pendingAttempt.currentQuestion + 1}</span>
+          </div>
+        </section>
+      ) : null}
 
       {showAdvancedMetrics && riskScore ? (
         <section className="student-workspace-panel">

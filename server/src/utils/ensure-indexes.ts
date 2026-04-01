@@ -118,6 +118,8 @@ export async function ensureCoreIndexes(): Promise<void> {
     ensureIndex({ collection: "drive_results", keys: { tenant_id: 1, drive_id: 1, student_id: 1 }, options: { unique: true } }),
     ensureIndex({ collection: "drive_results", keys: { tenant_id: 1, student_id: 1, updated_at: -1 } }),
     ensureIndex({ collection: "student_drive_declarations", keys: { tenant_id: 1, student_id: 1, drive_id: 1 }, options: { unique: true } }),
+    ensureIndex({ collection: "profile_unlock_requests", keys: { tenant_id: 1, student_id: 1, created_at: -1 } }),
+    ensureIndex({ collection: "profile_unlock_requests", keys: { tenant_id: 1, status: 1, updated_at: -1 } }),
 
     ensureIndex({ collection: "drive_eligibility_snapshots", keys: { tenant_id: 1, drive_id: 1, version: 1 }, options: { unique: true } }),
     ensureIndex({ collection: "drive_eligibility_snapshots", keys: { tenant_id: 1, drive_id: 1, computed_at: -1 } }),

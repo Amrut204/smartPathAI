@@ -34,7 +34,6 @@ router.get(
 
 router.get(
   "/dashboard/control-center",
-  requireFeature("tpoAdvancedInsights"),
   asyncHandler(async (req, res) => {
     const data = await TpoControlCenterService.getControlCenter(req.auth!.tenantId);
     res.json(successResponse(data));

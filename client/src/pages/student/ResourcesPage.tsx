@@ -180,6 +180,12 @@ export default function ResourcesPage() {
   const showAiStudyAssist = isClientFeatureEnabled("studentAiStudyAssist");
   const branchTrackLabel = dashboard?.branchTrack?.label ?? "your track";
   const branchTrackFocusAreas = Array.isArray(dashboard?.branchTrack?.focusAreas) ? dashboard.branchTrack.focusAreas : [];
+  const recentResourceRail = Array.isArray(dashboard?.resourceUsage?.recentResources)
+    ? dashboard.resourceUsage.recentResources
+    : [];
+  const resourceAction = Array.isArray(dashboard?.nextBestActions)
+    ? dashboard.nextBestActions.find((item) => item.type === "continue_resource" || item.type === "browse_resources")
+    : null;
   const takedownEmail = pilotFeedbackLinks.supportEmail ?? "admin@campusdrive.me";
 
   const scrollToLayer = (event: MouseEvent<HTMLButtonElement>, layerId: string) => {
@@ -414,6 +420,32 @@ export default function ResourcesPage() {
               <strong>5. Explore More</strong>
               <span>Use the full library after the guided layers.</span>
             </button>
+          </div>
+        </section>
+      ) : null}
+
+      {!topicFromUrl && recentResourceRail.length > 0 ? (
+        <section className="student-workspace-panel">
+          <div className="student-workspace-panel-head">
+            <div>
+              <h2>Continue reading</h2>
+              <p>Keep momentum by reopening the resources you already started.</p>
+            </div>
+            {resourceAction ? (
+              <Link to={resourceAction.targetPath} className="ui-button ghost">{resourceAction.ctaLabel}</Link>
+            ) : null}
+          </div>
+          <div className="student-dashboard-prep-grid">
+            {recentResourceRail.slice(0, 3).map((resource) => (
+              <div key={`recent-resource-${resource.resourceId}`} className="student-dashboard-prep-card">
+                <span>{resource.resourceType}</span>
+                <strong>{resource.title}</strong>
+                <p>
+                  {resource.progressPct !== null && resource.progressPct !== undefined ? `Progress ${Math.round(resource.progressPct)}%` : "Recently opened"}
+                </p>
+                <Link to={`/resources/view/${encodeURIComponent(resource.resourceId)}`} className="ui-button ghost">Continue</Link>
+              </div>
+            ))}
           </div>
         </section>
       ) : null}

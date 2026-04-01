@@ -28,6 +28,24 @@ const optionalQueryBooleanSchema = z.preprocess((value) => {
   }
   return value;
 }, z.boolean().optional());
+const profileUnlockRequestedFieldSchema = z.enum([
+  "prn",
+  "rollNumber",
+  "branch",
+  "batch",
+  "degree",
+  "currentSemester",
+  "cgpa",
+  "activeBacklogs",
+  "totalHistoricalBacklogs",
+  "attendancePct",
+  "phone",
+  "personalEmail",
+  "resumeUrl",
+  "targetRoles",
+  "preferredLocations",
+  "willingToRelocate",
+]);
 
 export const updateStudentProfileSchema = z.object({
   skills: z.array(z.string().trim().min(1).max(60)).max(20).optional(),
@@ -66,6 +84,17 @@ export const studentOnboardingDeclarationSchema = z.object({
 
 export const studentProfileCertificationSchema = z.object({
   typedValue: z.string().trim().min(1).max(120),
+});
+
+export const studentProfileUnlockRequestSchema = z.object({
+  reasonCategory: z.enum(["academic_record", "resume_update", "certification_correction", "contact_update", "other"]),
+  requestedFields: z.array(profileUnlockRequestedFieldSchema).max(10).optional(),
+  explanation: z.string().trim().min(10).max(1000),
+});
+
+export const reviewStudentProfileUnlockRequestSchema = z.object({
+  decision: z.enum(["approved", "denied"]),
+  responseNote: z.string().trim().max(1000).optional(),
 });
 
 export const studentDriveApplySchema = z.object({

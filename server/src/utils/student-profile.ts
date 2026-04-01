@@ -1,3 +1,9 @@
+import {
+  normalizeProfileDegree,
+  normalizeProfileLocations,
+  normalizeProfileTargetRoles,
+} from "../config/profile-options.config.js";
+
 type StudentLike = {
   [key: string]: unknown;
   roll_number?: unknown;
@@ -18,6 +24,7 @@ type UserLike = {
 };
 
 export type ProfileFieldOwner = "seeded" | "student";
+export type ProfileSectionStatus = "complete" | "needs_review" | "missing_required";
 
 export type ProfileFieldKey =
   | "fullName"
@@ -135,6 +142,12 @@ export type StudentProfileSummary = {
     completedRequiredFields: number;
     totalRequiredFields: number;
   };
+  sectionStates: Array<{
+    key: "academic" | "placement" | "resume" | "preferences" | "verification";
+    label: string;
+    status: ProfileSectionStatus;
+    summary: string;
+  }>;
   requiredFields: ProfileCompletionField[];
   missingRequiredFields: ProfileCompletionField[];
   missingSeededFields: ProfileCompletionField[];
@@ -221,7 +234,7 @@ export function normalizeStudentProfileData(profileData: unknown): NormalizedStu
 
   return {
     prn: getFirstString(raw, ["prn", "prnNumber", "prn_number", "registrationNumber", "registration_number"]),
-    degree: getFirstString(raw, ["degree", "program", "course"]),
+    degree: normalizeProfileDegree(getFirstString(raw, ["degree", "program", "course"])),
     currentSemester: getFirstString(raw, ["currentSemester", "current_semester", "semester", "currentYear", "current_year"]),
     totalHistoricalBacklogs: getFirstNumber(raw, ["totalHistoricalBacklogs", "total_historical_backlogs", "totalBacklogs", "backlogs_total"]),
     phone: getFirstString(raw, ["phone", "phoneNumber", "phone_number", "mobile", "mobileNumber"]),
@@ -234,8 +247,8 @@ export function normalizeStudentProfileData(profileData: unknown): NormalizedStu
     resumeMimeType: getFirstString(raw, ["resumeMimeType", "resume_mime_type"]),
     resumeSizeBytes: getFirstNumber(raw, ["resumeSizeBytes", "resume_size_bytes"]),
     resumeUploadedAt: getFirstString(raw, ["resumeUploadedAt", "resume_uploaded_at"]),
-    targetRoles: getFirstArray(raw, ["targetRoles", "target_roles", "preferredRoles", "preferred_roles"]),
-    preferredLocations: getFirstArray(raw, ["preferredLocations", "preferred_locations", "locationPreferences", "location_preferences"]),
+    targetRoles: normalizeProfileTargetRoles(getFirstArray(raw, ["targetRoles", "target_roles", "preferredRoles", "preferred_roles"])),
+    preferredLocations: normalizeProfileLocations(getFirstArray(raw, ["preferredLocations", "preferred_locations", "locationPreferences", "location_preferences"])),
     willingToRelocate: getFirstBoolean(raw, ["willingToRelocate", "willing_to_relocate", "relocationPreference", "relocation_preference"]),
     linkedIn: getFirstString(raw, ["linkedIn", "linkedin", "linked_in"]),
     githubUrl: getFirstString(raw, ["githubUrl", "github_url", "github", "codingProfileUrl", "coding_profile_url"]),
@@ -279,23 +292,23 @@ export function buildStudentProfileSummary(input: {
   const skills = asStringArray(input.student.skills);
 
   const requiredFields: ProfileCompletionField[] = [
-    { key: "fullName", label: "Student name", owner: "student", complete: isPresentString(fullName) },
-    { key: "collegeEmail", label: "College email", owner: "student", complete: isPresentString(collegeEmail) },
+    { key: "fullName", label: "Student name", owner: "seeded", complete: isPresentString(fullName) },
+    { key: "collegeEmail", label: "College email", owner: "seeded", complete: isPresentString(collegeEmail) },
     { key: "prn", label: "PRN", owner: "student", complete: isPresentString(normalized.prn) },
-    { key: "rollNumber", label: "Roll number", owner: "student", complete: isPresentString(rollNumber) },
-    { key: "branch", label: "Branch", owner: "student", complete: isPresentString(branch) },
-    { key: "batch", label: "Batch", owner: "student", complete: isPresentString(batch) },
+    { key: "rollNumber", label: "Roll number", owner: "seeded", complete: isPresentString(rollNumber) },
+    { key: "branch", label: "Branch", owner: "seeded", complete: isPresentString(branch) },
+    { key: "batch", label: "Batch", owner: "seeded", complete: isPresentString(batch) },
     { key: "degree", label: "Degree", owner: "student", complete: isPresentString(normalized.degree) },
     { key: "currentSemester", label: "Current semester", owner: "student", complete: isPresentString(normalized.currentSemester) },
-    { key: "cgpa", label: "CGPA", owner: "student", complete: isPresentNumber(cgpa) },
-    { key: "activeBacklogs", label: "Active backlogs", owner: "student", complete: isPresentNumber(activeBacklogs) },
+    { key: "cgpa", label: "CGPA", owner: "seeded", complete: isPresentNumber(cgpa) },
+    { key: "activeBacklogs", label: "Active backlogs", owner: "seeded", complete: isPresentNumber(activeBacklogs) },
     {
       key: "totalHistoricalBacklogs",
       label: "Total historical backlogs",
-      owner: "student",
+      owner: "seeded",
       complete: isPresentNumber(totalHistoricalBacklogs),
     },
-    { key: "attendancePct", label: "Attendance", owner: "student", complete: isPresentNumber(attendancePct) },
+    { key: "attendancePct", label: "Attendance", owner: "seeded", complete: isPresentNumber(attendancePct) },
     { key: "phone", label: "Phone number", owner: "student", complete: isPresentString(normalized.phone) },
     { key: "personalEmail", label: "Personal email", owner: "student", complete: isPresentString(normalized.personalEmail) },
     { key: "resumeUrl", label: "Resume", owner: "student", complete: isPresentString(normalized.resumeUrl) || isPresentString(normalized.resumeDriveWebLink) },
@@ -315,13 +328,41 @@ export function buildStudentProfileSummary(input: {
   ];
 
   const missingRequiredFields = requiredFields.filter((field) => !field.complete);
-  const missingSeededFields: ProfileCompletionField[] = [];
-  const missingStudentFields = missingRequiredFields.map((field) => ({ ...field, owner: "student" as const }));
+  const missingSeededFields = missingRequiredFields.filter((field) => field.owner === "seeded");
+  const missingStudentFields = missingRequiredFields.filter((field) => field.owner === "student");
   const completedRequiredFields = requiredFields.length - missingRequiredFields.length;
   const pct = requiredFields.length > 0
     ? Math.round((completedRequiredFields / requiredFields.length) * 100)
     : 0;
   const isComplete = missingRequiredFields.length === 0;
+
+  const academicFields = requiredFields.filter((field) =>
+    ["prn", "rollNumber", "branch", "batch", "degree", "currentSemester", "cgpa", "activeBacklogs", "totalHistoricalBacklogs", "attendancePct"].includes(field.key),
+  );
+  const placementFields = requiredFields.filter((field) => ["phone", "personalEmail"].includes(field.key));
+  const resumeFields = requiredFields.filter((field) => ["resumeUrl"].includes(field.key));
+  const preferenceFields = requiredFields.filter((field) => ["targetRoles", "preferredLocations", "willingToRelocate"].includes(field.key));
+  const verificationFields = requiredFields.filter((field) => ["dataConsentAccepted", "accuracyDeclarationAccepted"].includes(field.key));
+
+  const buildSectionStatus = (
+    key: "academic" | "placement" | "resume" | "preferences" | "verification",
+    label: string,
+    fields: ProfileCompletionField[],
+    recommendedComplete = true,
+  ) => {
+    const hasMissing = fields.some((field) => !field.complete);
+    const status: ProfileSectionStatus = hasMissing ? "missing_required" : recommendedComplete ? "complete" : "needs_review";
+    return {
+      key,
+      label,
+      status,
+      summary: hasMissing
+        ? `${fields.filter((field) => !field.complete).length} required item${fields.filter((field) => !field.complete).length === 1 ? "" : "s"} missing`
+        : recommendedComplete
+          ? "Complete"
+          : "Needs review",
+    };
+  };
 
   return {
     seededProfile: {
@@ -380,6 +421,13 @@ export function buildStudentProfileSummary(input: {
       completedRequiredFields,
       totalRequiredFields: requiredFields.length,
     },
+    sectionStates: [
+      buildSectionStatus("academic", "Academic Details", academicFields),
+      buildSectionStatus("placement", "Placement Details", placementFields),
+      buildSectionStatus("resume", "Resume & Links", resumeFields, isPresentString(normalized.linkedIn) || isPresentString(normalized.githubUrl) || isPresentString(normalized.portfolioUrl)),
+      buildSectionStatus("preferences", "Preferences", preferenceFields),
+      buildSectionStatus("verification", "Verification", verificationFields, normalized.dataConsentAccepted && normalized.accuracyDeclarationAccepted),
+    ],
     requiredFields,
     missingRequiredFields,
     missingSeededFields,

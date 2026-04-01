@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { Button, Input, Select } from "../../components/ui";
 import { updateDriveResults } from "../../hooks/use-drives";
-import { useTpoStudentById } from "../../hooks/use-tpo-students";
+import { reviewStudentUnlockRequest, useTpoStudentById } from "../../hooks/use-tpo-students";
 
 const sections = [
   { id: "overview", label: "Overview" },
@@ -36,6 +36,8 @@ export default function TpoStudentDetailPage() {
   const [activeSection, setActiveSection] = useState<SectionId>("overview");
   const [selectedDriveId, setSelectedDriveId] = useState("");
   const [proofStatus, setProofStatus] = useState<string | null>(null);
+  const [unlockReviewNote, setUnlockReviewNote] = useState("");
+  const [unlockReviewBusy, setUnlockReviewBusy] = useState(false);
   const [proofDraft, setProofDraft] = useState({
     offerLetterReference: "",
     offerLetterUrl: "",
@@ -69,6 +71,7 @@ export default function TpoStudentDetailPage() {
   }
 
   const selectedDrive = data.driveParticipation.find((entry) => entry.driveId === selectedDriveId) ?? null;
+  const unlockRequest = data.unlockRequest;
 
   const onSaveProof = async () => {
     if (!selectedDrive) {
@@ -102,6 +105,27 @@ export default function TpoStudentDetailPage() {
       setProofStatus("Offer details updated.");
     } catch (saveError) {
       setProofStatus(saveError instanceof Error ? saveError.message : "Unable to update offer details");
+    }
+  };
+
+  const onReviewUnlock = async (decision: "approved" | "denied") => {
+    if (!unlockRequest) return;
+    setProofStatus(null);
+    setUnlockReviewBusy(true);
+    try {
+      await reviewStudentUnlockRequest({
+        studentId,
+        requestId: unlockRequest.id,
+        decision,
+        responseNote: unlockReviewNote.trim() || undefined,
+      });
+      await mutate();
+      setUnlockReviewNote("");
+      setProofStatus(`Unlock request ${decision}.`);
+    } catch (reviewError) {
+      setProofStatus(reviewError instanceof Error ? reviewError.message : "Unable to review unlock request");
+    } finally {
+      setUnlockReviewBusy(false);
     }
   };
 
@@ -294,6 +318,55 @@ export default function TpoStudentDetailPage() {
               <p className="muted-text">These are self-service items the student must complete before their profile is fully usable.</p>
               {renderList((Array.isArray(data.missingRequiredFields) ? data.missingRequiredFields : []).map((field) => field.label))}
             </div>
+          </div>
+
+          <div className="workspace-block">
+            <h2>Profile Unlock Workflow</h2>
+            {!unlockRequest ? (
+              <p className="muted-text">No profile unlock requests have been submitted by this student yet.</p>
+            ) : (
+              <div className="workspace-split-grid">
+                <div className="workspace-block">
+                  <dl className="workspace-definition-grid">
+                    <div><dt>Status</dt><dd>{unlockRequest.status}</dd></div>
+                    <div><dt>Reason category</dt><dd>{unlockRequest.reasonCategory}</dd></div>
+                    <div><dt>Submitted</dt><dd>{formatDateTime(unlockRequest.createdAt)}</dd></div>
+                    <div><dt>Requested fields</dt><dd>{unlockRequest.requestedFields.length > 0 ? unlockRequest.requestedFields.join(", ") : "Not specified"}</dd></div>
+                    <div><dt>Explanation</dt><dd>{unlockRequest.explanation || "Not provided"}</dd></div>
+                    <div><dt>Response note</dt><dd>{unlockRequest.responseNote || "Not provided"}</dd></div>
+                  </dl>
+                </div>
+
+                <div className="workspace-block">
+                  <h3>Review request</h3>
+                  {unlockRequest.status === "pending" ? (
+                    <>
+                      <label>
+                        <span className="muted-text">Decision note</span>
+                        <Input
+                          value={unlockReviewNote}
+                          onChange={(event) => setUnlockReviewNote(event.target.value)}
+                          placeholder="Optional note for the student"
+                        />
+                      </label>
+                      <div className="hero-actions" style={{ marginTop: "1rem" }}>
+                        <Button type="button" disabled={unlockReviewBusy} onClick={() => onReviewUnlock("approved")}>
+                          {unlockReviewBusy ? "Saving..." : "Approve unlock"}
+                        </Button>
+                        <Button type="button" variant="secondary" disabled={unlockReviewBusy} onClick={() => onReviewUnlock("denied")}>
+                          Deny request
+                        </Button>
+                      </div>
+                    </>
+                  ) : (
+                    <p className="muted-text">
+                      This request has already been reviewed.
+                      {unlockRequest.decidedAt ? ` Decision recorded on ${formatDateTime(unlockRequest.decidedAt)}.` : ""}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       ) : null}

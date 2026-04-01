@@ -94,6 +94,12 @@ export interface StudentProfile {
     completedRequiredFields: number;
     totalRequiredFields: number;
   };
+  sectionStates: Array<{
+    key: "academic" | "placement" | "resume" | "preferences" | "verification";
+    label: string;
+    status: "complete" | "needs_review" | "missing_required";
+    summary: string;
+  }>;
   declarationStatus: {
     policyVersion: string;
     onboarding: {
@@ -173,6 +179,52 @@ export interface StudentProfile {
     label: string;
     complete: boolean;
   }>;
+  fieldTrust: Record<string, { source: "student_provided" | "college_verified"; label: string; locked: boolean }>;
+  fieldHelp: Record<string, string>;
+  readinessBanner: {
+    tone: "success" | "warning" | "attention";
+    title: string;
+    message: string;
+    action: string;
+  };
+  liveEligibility: {
+    totalUpcomingDrives: number;
+    criteriaEligibleDrives: number;
+    readyForApplicationDrives: number;
+    nextAction: { label: string; unlockCount: number } | null;
+    blockers: Array<{ code: string; label: string; count: number }>;
+    groupedEligibilityReasons: Array<{ code: string; label: string; count: number }>;
+  };
+  profileOptions: {
+    branchOptions: string[];
+    degreeOptions: string[];
+    targetRoleOptions: string[];
+    preferredLocationOptions: string[];
+    willingnessOptions: string[];
+  };
+  resumeInsights: {
+    hasManagedResume: boolean;
+    hasLegacyResumeLink: boolean;
+    usageCount: number;
+    fileSizeLabel: string;
+  };
+  preferenceVisibility: {
+    targetRoles: { visibility: "tpo_visible" | "platform_only"; label: string };
+    preferredLocations: { visibility: "tpo_visible" | "platform_only"; label: string };
+    willingToRelocate: { visibility: "tpo_visible" | "platform_only"; label: string };
+  };
+  unlockRequest: null | {
+    id: string;
+    status: "pending" | "approved" | "denied" | "resolved";
+    reasonCategory: "academic_record" | "resume_update" | "certification_correction" | "contact_update" | "other";
+    requestedFields: string[];
+    explanation: string;
+    responseNote: string;
+    createdAt: string;
+    decidedAt: string | null;
+    decidedBy: string | null;
+    resolvedAt: string | null;
+  };
   tpoVisibilitySummary: {
     title: string;
     description: string;
@@ -350,5 +402,26 @@ export async function uploadStudentResume(file: File): Promise<StudentProfile> {
   await mutate("/api/v1/students/me/pilot-dashboard");
   await mutate("/api/v1/students/my-risk-score");
 
+  return payload.data;
+}
+
+export async function requestProfileUnlock(input: {
+  reasonCategory: "academic_record" | "resume_update" | "certification_correction" | "contact_update" | "other";
+  requestedFields?: string[];
+  explanation: string;
+}) {
+  const response = await fetch("/api/v1/students/me/profile-unlock-request", {
+    method: "POST",
+    credentials: "include",
+    headers: withCsrfHeader({ "Content-Type": "application/json" }),
+    body: JSON.stringify(input),
+  });
+
+  const payload = (await response.json()) as ApiResponse<{ unlockRequest: StudentProfile["unlockRequest"] }>;
+  if (!payload.success) {
+    throw new Error(buildApiErrorMessage(payload));
+  }
+
+  await mutate("/api/v1/students/me");
   return payload.data;
 }

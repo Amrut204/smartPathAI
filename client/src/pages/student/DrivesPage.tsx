@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { useSWRConfig } from "swr";
 
 import { Badge, Button, Modal, Tabs } from "../../components/ui";
@@ -236,11 +237,68 @@ export default function DrivesPage() {
                   </p>
                 ) : null}
 
+                {drive.readinessSupport ? (
+                  <p className="student-workspace-meta">
+                    Resume attached: {drive.readinessSupport.hasResume ? "Yes" : "No"} - Profile certified: {drive.readinessSupport.profileCertified ? "Yes" : "No"}
+                  </p>
+                ) : null}
+
                 {drive.applicationState === "applied" ? (
                   <p className="success-text">Application submitted. Your resume snapshot is attached to this drive.</p>
                 ) : null}
 
-                {drive.isEligible && drive.applicationState !== "applied" ? (
+                {!drive.canApplyNow && drive.actionHint ? (
+                  <div className="student-drive-guidance-card">
+                    <div>
+                      <strong>{drive.actionHint.label}</strong>
+                      <p>{drive.actionHint.explanation}</p>
+                    </div>
+                    <Link to={drive.actionHint.targetPath} className="ui-button ghost">
+                      {drive.actionHint.ctaLabel}
+                    </Link>
+                  </div>
+                ) : null}
+
+                {drive.prepBundle ? (
+                  <div className="student-drive-prep-panel">
+                    <div className="student-drive-prep-head">
+                      <strong>What to do next for this drive</strong>
+                      <p>{drive.prepBundle.summary}</p>
+                    </div>
+                    <div className="student-drive-prep-grid">
+                      <div>
+                        <span>Mock tests</span>
+                        {drive.prepBundle.mockTests.length > 0 ? (
+                          <ul>
+                            {drive.prepBundle.mockTests.map((test) => (
+                              <li key={`${drive.id}-mock-${test.id}`}>
+                                <Link to={`/mock-tests/${test.id}`}>{test.title}</Link>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="muted-text">No mock bundle yet.</p>
+                        )}
+                      </div>
+                      <div>
+                        <span>Resources</span>
+                        {drive.prepBundle.resources.length > 0 ? (
+                          <ul>
+                            {drive.prepBundle.resources.map((resource) => (
+                              <li key={`${drive.id}-resource-${resource.id}`}>
+                                <Link to={`/resources/view/${encodeURIComponent(resource.id)}`}>{resource.title}</Link>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="muted-text">No resource bundle yet.</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+
+                {drive.canApplyNow && drive.applicationState !== "applied" ? (
                   <div className="hero-actions student-workspace-drive-actions">
                     <Button
                       disabled={busyDriveId === drive.id}

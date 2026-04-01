@@ -77,6 +77,31 @@ export interface PilotStudentDrive {
   myStatus: string;
   applicationState?: "not_applied" | "applied" | "withdrawn" | "absent";
   canWithdraw?: boolean;
+  canApplyNow?: boolean;
+  readinessSupport?: {
+    profileCertified: boolean;
+    hasResume: boolean;
+  };
+  actionHint?: {
+    label: string;
+    explanation: string;
+    targetPath: string;
+    ctaLabel: string;
+  };
+  prepBundle?: {
+    summary: string;
+    mockTests: Array<{
+      id: string;
+      title: string;
+      difficulty: string;
+      durationSec: number;
+    }>;
+    resources: Array<{
+      id: string;
+      title: string;
+      resourceType: string;
+    }>;
+  } | null;
   myOutcome: string;
   remarks: string | null;
   timeline?: {

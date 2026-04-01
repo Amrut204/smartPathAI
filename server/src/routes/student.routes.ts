@@ -21,6 +21,8 @@ import {
   studentDriveWithdrawSchema,
   studentOnboardingDeclarationSchema,
   studentProfileCertificationSchema,
+  studentProfileUnlockRequestSchema,
+  reviewStudentProfileUnlockRequestSchema,
   leaderboardQuerySchema,
   pointsHistoryQuerySchema,
   tpoStudentListQuerySchema,
@@ -157,6 +159,31 @@ router.patch(
       ...body,
     });
     res.json(successResponse(updated));
+  }),
+);
+
+router.get(
+  "/me/profile-unlock-request",
+  authorizeRole("student"),
+  asyncHandler(async (req, res) => {
+    const data = await StudentService.getMyProfileUnlockRequest(req.auth!.tenantId, req.auth!.userId);
+    res.json(successResponse(data));
+  }),
+);
+
+router.post(
+  "/me/profile-unlock-request",
+  authorizeRole("student"),
+  asyncHandler(async (req, res) => {
+    const body = studentProfileUnlockRequestSchema.parse(req.body);
+    const data = await StudentService.requestProfileUnlock({
+      tenantId: req.auth!.tenantId,
+      userId: req.auth!.userId,
+      reasonCategory: body.reasonCategory,
+      requestedFields: body.requestedFields,
+      explanation: body.explanation,
+    });
+    res.json(successResponse(data));
   }),
 );
 
@@ -472,6 +499,24 @@ router.patch(
       req.params.studentId as string,
       body,
     );
+    res.json(successResponse(data));
+  }),
+);
+
+router.patch(
+  "/:studentId/profile-unlock-request/:requestId",
+  authorizeRole("tpo", "admin"),
+  asyncHandler(async (req, res) => {
+    const body = reviewStudentProfileUnlockRequestSchema.parse(req.body);
+    const data = await StudentService.reviewProfileUnlockRequest({
+      tenantId: req.auth!.tenantId,
+      studentId: String(req.params.studentId),
+      requestId: String(req.params.requestId),
+      actorUserId: req.auth!.userId,
+      actorRole: req.auth!.role,
+      decision: body.decision,
+      responseNote: body.responseNote,
+    });
     res.json(successResponse(data));
   }),
 );

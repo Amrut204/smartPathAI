@@ -87,6 +87,18 @@ export interface TpoStudentDetail {
   missingRequiredFields: Array<{ key: string; label: string; owner: "seeded" | "student"; complete: boolean }>;
   missingStudentFields: Array<{ key: string; label: string; owner: "student"; complete: boolean }>;
   pendingCollegeFields: Array<{ key: string; label: string; owner: "seeded"; complete: boolean }>;
+  unlockRequest: null | {
+    id: string;
+    status: "pending" | "approved" | "denied" | "resolved";
+    reasonCategory: "academic_record" | "resume_update" | "certification_correction" | "contact_update" | "other";
+    requestedFields: string[];
+    explanation: string;
+    responseNote: string;
+    createdAt: string;
+    decidedAt: string | null;
+    decidedBy: string | null;
+    resolvedAt: string | null;
+  };
   attempts: Array<{
     id: string;
     testId: string;
@@ -218,6 +230,31 @@ export async function updateTpoStudent(studentId: string, updates: Record<string
 
   await Promise.all([mutate(`/api/v1/students/${studentId}`), mutate((key) => typeof key === "string" && key.startsWith("/api/v1/students?"))]);
 
+  return payload.data;
+}
+
+export async function reviewStudentUnlockRequest(input: {
+  studentId: string;
+  requestId: string;
+  decision: "approved" | "denied";
+  responseNote?: string;
+}) {
+  const response = await fetch(`/api/v1/students/${encodeURIComponent(input.studentId)}/profile-unlock-request/${encodeURIComponent(input.requestId)}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: withCsrfHeader({ "Content-Type": "application/json" }),
+    body: JSON.stringify({
+      decision: input.decision,
+      responseNote: input.responseNote,
+    }),
+  });
+
+  const payload = (await response.json()) as ApiResponse<Record<string, unknown>>;
+  if (!payload.success) {
+    throw new Error(payload.error.message);
+  }
+
+  await Promise.all([mutate(`/api/v1/students/${input.studentId}`), mutate((key) => typeof key === "string" && key.startsWith("/api/v1/students?"))]);
   return payload.data;
 }
 

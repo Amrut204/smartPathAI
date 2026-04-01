@@ -4,6 +4,7 @@ import { useMemo, useState, type MouseEvent } from "react";
 import { PilotFeedbackStrip } from "../../components/composites/PilotFeedbackStrip";
 import { Badge, Button, Card, Select, Spinner } from "../../components/ui";
 import { isClientFeatureEnabled } from "../../config/features";
+import { useStudentDashboard } from "../../hooks/use-student-dashboard";
 import {
   useCuratedMockTests,
   type MockTestListItem,
@@ -114,7 +115,12 @@ export default function MockTestsPage() {
   });
   const { data: topicOptions, isLoading: topicOptionsLoading } = useMockTestTopicOptions();
   const { data: companyOptions, isLoading: companyOptionsLoading } = useMockTestCompanyOptions();
+  const { data: dashboard } = useStudentDashboard();
   const showExpandedMockCatalog = isClientFeatureEnabled("studentExpandedMockCatalog");
+  const pendingAttempt = dashboard?.pendingAttempt ?? null;
+  const mockAction = Array.isArray(dashboard?.nextBestActions)
+    ? dashboard.nextBestActions.find((item) => item.type === "resume_pending_test" || item.type === "take_mock")
+    : null;
 
   const topicMap = useMemo(
     () => new Map((topicOptions ?? []).map((topic) => [topic.id, topic.name])),
@@ -281,6 +287,25 @@ export default function MockTestsPage() {
           </label>
         </div>
       </section>
+
+      {pendingAttempt ? (
+        <section className="student-workspace-panel">
+          <div className="student-workspace-panel-head">
+            <div>
+              <h2>Resume pending test</h2>
+              <p>{pendingAttempt.title} still has saved answers, so you can continue instead of starting over.</p>
+            </div>
+            <Link to={`/mock-tests/${pendingAttempt.testId}`} className="ui-button ghost">
+              {mockAction?.ctaLabel ?? "Resume test"}
+            </Link>
+          </div>
+          <div className="student-workspace-inline-note">
+            <span>Answered {pendingAttempt.answeredCount}/{pendingAttempt.totalQuestions || "?"}</span>
+            <span>Current question {pendingAttempt.currentQuestion + 1}</span>
+            <span>Difficulty {pendingAttempt.difficulty}</span>
+          </div>
+        </section>
+      ) : null}
 
       {isLoadingInitial ? <div className="student-workspace-panel app-state-card"><Spinner /><p className="muted-text">Loading tests...</p></div> : null}
       {error ? <div className="student-workspace-panel app-state-card app-state-card-error"><h2>Unable to load tests</h2></div> : null}

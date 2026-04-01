@@ -201,7 +201,96 @@ export function useTpoControlCenter() {
         nextRecommendedAction: string;
         driveEligibleUpcoming: boolean;
         driveImpact: string;
+        isProfileCertified: boolean;
+        hasResumeReady: boolean;
+        isProfileComplete: boolean;
+        appliedRecently: boolean;
       }>;
+    };
+    readinessFunnel: {
+      totalStudents: number;
+      completeProfiles: number;
+      certifiedProfiles: number;
+      resumeReadyProfiles: number;
+      eligibleForUpcomingDrives: number;
+      appliedRecently: number;
+    };
+    blockerSegments: {
+      missingResume: number;
+      uncertified: number;
+      incompleteProfile: number;
+      academicallyBlocked: number;
+      lowEngagement: number;
+    };
+    dashboardQueues: {
+      profileUnlockRequests: {
+        count: number;
+        items: Array<{
+          id: string;
+          type: string;
+          title: string;
+          summary: string;
+          priority: string;
+          targetPath: string;
+          ctaLabel: string;
+          studentId: string;
+          studentName: string;
+          studentEmail: string;
+          reasonCategory: string;
+          requestedFields: string[];
+          createdAt: string;
+          requestId: string;
+        }>;
+      };
+      studentSupportRequests: {
+        count: number;
+        items: Array<{
+          id: string;
+          type: string;
+          title: string;
+          summary: string;
+          priority: string;
+          targetPath: string;
+          ctaLabel: string;
+          requestId: string;
+          studentId: string;
+          studentName: string;
+          studentEmail: string;
+          subject: string;
+          message: string;
+          createdAt: string;
+        }>;
+      };
+      supportAccessRequests: {
+        count: number;
+        items: Array<{
+          id: string;
+          type: string;
+          title: string;
+          summary: string;
+          priority: string;
+          targetPath: string;
+          ctaLabel: string;
+          requestId: string;
+          requestedByEmail: string;
+          reason: string;
+          createdAt: string;
+        }>;
+      };
+      communicationTasks: {
+        count: number;
+        items: Array<{
+          id: string;
+          type: string;
+          title: string;
+          summary: string;
+          priority: string;
+          targetPath: string;
+          ctaLabel: string;
+          driveId: string;
+          driveName: string;
+        }>;
+      };
     };
     riskSummary: {
       totalAtRisk: number;
@@ -227,8 +316,28 @@ export function useTpoControlCenter() {
         company: string;
         role: string | null;
         driveDate: string;
+        status: string;
+        daysRemaining: number | null;
         eligibleStudents: number;
         notEligibleStudents: number;
+        appliedCount: number;
+        eligibleButNotAppliedCount: number;
+        eligibleButNotAppliedStudents: Array<{
+          studentId: string;
+          fullName: string;
+          email: string;
+          branch: string;
+          batch: string;
+          readinessScore: number;
+          profileCompletenessPct: number;
+          hasResumeReady: boolean;
+          isProfileCertified: boolean;
+          nextRecommendedAction: string;
+        }>;
+        exportReadyApplicants: number;
+        resumeExportReady: boolean;
+        resultPublicationState: string;
+        lowApplyRisk: boolean;
         incompleteProfileStudents: number;
         noRelevantMockStudents: number;
         avgReadinessEligible: number;
@@ -324,6 +433,9 @@ export function useTpoControlCenter() {
     };
     actionCenter: {
       studentsToContactToday: Array<{ studentId: string; fullName: string; riskLevel: string; nextRecommendedAction: string }>;
+      eligibleButNotApplied: Array<{ driveId: string; company: string; role: string | null; driveDate: string; eligibleButNotAppliedCount: number; daysRemaining: number | null; students: Array<{ studentId: string; fullName: string; email: string; branch: string; batch: string; readinessScore: number; profileCompletenessPct: number; hasResumeReady: boolean; isProfileCertified: boolean; nextRecommendedAction: string }>; nextRecommendedAction: string }>;
+      readyButInactive: Array<{ studentId: string; fullName: string; riskLevel: string; nextRecommendedAction: string }>;
+      lowReadinessNearDriveImpact: Array<{ studentId: string; fullName: string; riskLevel: string; nextRecommendedAction: string }>;
       studentsNeedingMockPush: Array<{ studentId: string; fullName: string; mockAvg: number; mockAttempts: number; nextRecommendedAction: string }>;
       studentsNeedingInterviewCoaching: Array<{ studentId: string; fullName: string; interviewScore: number | null; nextRecommendedAction: string }>;
       studentsNeedingProfileCompletion: Array<{ studentId: string; fullName: string; profileCompletenessPct: number; nextRecommendedAction: string }>;

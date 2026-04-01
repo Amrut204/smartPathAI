@@ -66,6 +66,69 @@ export interface StudentDashboard {
       progressPct: number | null;
     }>;
   };
+  readinessBanner: {
+    tone: "success" | "warning" | "attention";
+    title: string;
+    message: string;
+    action: string;
+  };
+  activeBlockers: Array<{
+    code: string;
+    label: string;
+    count: number;
+    explanation: string;
+    targetPath: string;
+    ctaLabel: string;
+  }>;
+  nextBestActions: Array<{
+    id: string;
+    type:
+      | "complete_profile"
+      | "certify_profile"
+      | "upload_resume"
+      | "resume_pending_test"
+      | "prepare_drive"
+      | "continue_resource"
+      | "take_mock"
+      | "browse_resources";
+    title: string;
+    explanation: string;
+    targetPath: string;
+    ctaLabel: string;
+    priority: number;
+    meta?: Record<string, string | number | boolean | null>;
+  }>;
+  pendingAttempt: null | {
+    attemptId: string;
+    testId: string;
+    title: string;
+    difficulty: string;
+    durationSec: number;
+    startedAt: string | null;
+    updatedAt: string | null;
+    currentQuestion: number;
+    answeredCount: number;
+    totalQuestions: number;
+  };
+  featuredDrivePrep: null | {
+    driveId: string;
+    company: string;
+    role: string;
+    driveDate: string;
+    daysRemaining: number | null;
+    summary: string;
+    mockTests: Array<{
+      id: string;
+      title: string;
+      difficulty: string;
+      durationSec: number;
+    }>;
+    resources: Array<{
+      id: string;
+      title: string;
+      resourceType: string;
+    }>;
+  };
 }
 
 export function useStudentDashboard() {

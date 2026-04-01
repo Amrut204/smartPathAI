@@ -79,7 +79,7 @@ function prefetchForRole(role: UserProfile["role"]) {
         import("../../pages/tpo/TpoDrivesPage"),
       );
       apiWarmups.push(
-        "/api/v1/tpo/dashboard/mvp",
+        "/api/v1/tpo/dashboard/control-center",
         "/api/v1/students?limit=25",
       );
     } else {
