@@ -143,6 +143,10 @@ export default function TpoDashboardPage() {
             <span>Eligible not applied</span>
             <strong>{data.actionCenter.eligibleButNotApplied.length}</strong>
           </Link>
+          <Link className="tpo-ops-signal" to="/tpo/interventions/needs-mock-push">
+            <span>Needs mock push</span>
+            <strong>{data.actionCenter.lowReadinessNearDriveImpact.length}</strong>
+          </Link>
           <Link className="tpo-ops-signal" to="/tpo/students">
             <span>Unlock requests</span>
             <strong>{data.dashboardQueues.profileUnlockRequests.count}</strong>
@@ -539,6 +543,37 @@ export default function TpoDashboardPage() {
                   </div>
                   <Link to={`/tpo/drives/${drive.driveId}`}>
                     <Button variant="secondary">Open Drive</Button>
+                  </Link>
+                </div>
+              ))
+            )}
+          </div>
+        </Card>
+
+        <Card className="tpo-list-card">
+          <div className="workspace-panel-header">
+            <div>
+              <p className="workspace-eyebrow">Practice Intervention</p>
+              <h2>Needs mock push</h2>
+            </div>
+            <Link to="/tpo/interventions/needs-mock-push">
+              <Button variant="secondary">Open full queue</Button>
+            </Link>
+          </div>
+          <div className="tpo-action-list">
+            {data.actionCenter.lowReadinessNearDriveImpact.length === 0 ? (
+              <p className="muted-text">No students need an urgent mock push right now.</p>
+            ) : (
+              data.actionCenter.lowReadinessNearDriveImpact.map((student) => (
+                <div key={student.studentId} className="tpo-action-row">
+                  <div>
+                    <strong>{student.fullName}</strong>
+                    <p className="muted-text">
+                      {student.riskLevel} risk · {student.nextRecommendedAction}
+                    </p>
+                  </div>
+                  <Link to={`/tpo/students/${student.studentId}`}>
+                    <Button variant="secondary">Open Student</Button>
                   </Link>
                 </div>
               ))

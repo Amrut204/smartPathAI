@@ -100,6 +100,7 @@ export async function previewCommunication(input: {
     branch?: string;
     minCgpa?: number;
     maxRecipients?: number;
+    studentIds?: string[];
   };
 }) {
   const response = await fetch("/api/v1/communication/preview", {
@@ -150,6 +151,7 @@ export async function sendCommunication(input: {
     branch?: string;
     minCgpa?: number;
     maxRecipients?: number;
+    studentIds?: string[];
   };
 }) {
   const response = await fetch("/api/v1/communication/send", {

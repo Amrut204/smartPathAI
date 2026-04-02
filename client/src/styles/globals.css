@@ -4074,6 +4074,191 @@ textarea {
   font-size: 0.88rem;
 }
 
+.tpo-students-ops-hero {
+  display: grid;
+  gap: 1rem;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 32%),
+    linear-gradient(180deg, #ffffff, #f8fbff);
+}
+
+.tpo-students-mode-strip,
+.tpo-students-bulk-bar,
+.tpo-communication-direct-audience {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(20, 34, 53, 0.08);
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.tpo-mode-toggle-group,
+.tpo-students-kpi-strip,
+.tpo-students-saved-views {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.tpo-students-hero-summary {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.tpo-students-hero-summary span {
+  color: var(--color-text-muted);
+}
+
+.tpo-students-kpi-pill {
+  min-width: 150px;
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(37, 99, 235, 0.14);
+  background: rgba(243, 248, 255, 0.88);
+}
+
+.tpo-students-kpi-pill strong {
+  font-size: 1.15rem;
+}
+
+.tpo-students-kpi-pill span {
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+}
+
+.tpo-saved-view-pill {
+  min-width: 220px;
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.95rem 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(20, 34, 53, 0.08);
+  background: rgba(255, 255, 255, 0.8);
+  text-align: left;
+  transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.tpo-saved-view-pill span {
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+}
+
+.tpo-saved-view-pill.active {
+  border-color: rgba(37, 99, 235, 0.28);
+  background: rgba(235, 244, 255, 0.9);
+  box-shadow: 0 16px 32px rgba(37, 99, 235, 0.12);
+}
+
+.tpo-saved-view-pill:hover {
+  transform: translateY(-1px);
+}
+
+.tpo-students-bulk-bar {
+  position: sticky;
+  top: 1rem;
+  z-index: 5;
+}
+
+.tpo-student-ops-stack,
+.tpo-student-actions {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.tpo-student-readiness-stack strong {
+  color: var(--color-heading);
+}
+
+.link-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-brand-600);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.tpo-student-inline-panel {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(245, 249, 255, 0.88);
+}
+
+.tpo-student-inline-grid {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.tpo-student-inline-grid p {
+  margin: 0.2rem 0 0;
+  color: var(--color-text-muted);
+}
+
+.tpo-student-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 39;
+  border: 0;
+  background: rgba(8, 15, 29, 0.36);
+}
+
+.tpo-student-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  width: min(420px, 94vw);
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+  padding: 1.25rem;
+  overflow-y: auto;
+  border-left: 1px solid rgba(20, 34, 53, 0.08);
+  background:
+    radial-gradient(circle at top right, rgba(37, 99, 235, 0.12), transparent 32%),
+    linear-gradient(180deg, #ffffff, #f8fbff);
+  box-shadow: -18px 0 40px rgba(12, 20, 36, 0.18);
+}
+
+.tpo-student-drawer-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.tpo-student-drawer-grid {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.tpo-student-drawer-grid > div {
+  padding: 0.95rem 1rem;
+  border: 1px solid rgba(20, 34, 53, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.tpo-student-drawer-grid p {
+  margin: 0.25rem 0 0;
+  color: var(--color-text-muted);
+}
+
+.tpo-student-drawer-meta {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
 .tpo-reports-grid {
   display: grid;
   gap: 1rem;
@@ -6242,6 +6427,27 @@ textarea {
 
   .tpo-toggle-grid {
     grid-template-columns: 1fr;
+  }
+
+  .tpo-students-mode-strip,
+  .tpo-students-bulk-bar,
+  .tpo-communication-direct-audience {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tpo-student-inline-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tpo-students-kpi-pill,
+  .tpo-saved-view-pill {
+    min-width: 100%;
+  }
+
+  .tpo-student-drawer-head {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .tpo-reports-grid {

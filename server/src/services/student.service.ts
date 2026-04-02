@@ -3495,7 +3495,13 @@ export const StudentService = {
       targetRole?: string;
       preferredLocation?: string;
       willingToRelocate?: boolean;
-      sortBy: "cgpa" | "created_at" | "readiness_score" | "profile_completeness";
+      eligibleForUpcomingDrive?: boolean;
+      isCertified?: boolean;
+      hasResume?: boolean;
+      isActive7d?: boolean;
+      appliedRecently?: boolean;
+      needsIntervention?: boolean;
+      sortBy: "cgpa" | "created_at" | "readiness_score" | "profile_completeness" | "risk_score" | "upcoming_drive_impact" | "activity";
       sortDir: "asc" | "desc";
     },
   ) {

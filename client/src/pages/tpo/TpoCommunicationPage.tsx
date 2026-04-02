@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { Badge, Button, Input, Select, Table, Tabs } from "../../components/ui";
 import {
@@ -117,6 +118,7 @@ function toIsoDateTime(value: string) {
 }
 
 export default function TpoCommunicationPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { data: templates } = useCommunicationTemplates();
   const { data: drives } = useDrives();
   const { data: history, isLoading: historyLoading } = useCommunicationHistory();
@@ -149,6 +151,7 @@ export default function TpoCommunicationPage() {
   const [announcementMessage, setAnnouncementMessage] = useState("");
   const [announcementPriority, setAnnouncementPriority] = useState<AnnouncementPriority>("important");
   const [announcementExpiresAt, setAnnouncementExpiresAt] = useState("");
+  const [selectedStudentIds, setSelectedStudentIds] = useState<string[]>([]);
 
   const selectedTemplate = useMemo(
     () => (templates ?? []).find((template) => template.id === templateId) ?? null,
@@ -185,6 +188,23 @@ export default function TpoCommunicationPage() {
     setStatus(null);
   }, [mode]);
 
+  useEffect(() => {
+    const studentIds = (searchParams.get("studentIds") ?? "")
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean);
+    const presetParam = searchParams.get("preset");
+    const modeParam = searchParams.get("mode");
+
+    setSelectedStudentIds(studentIds);
+    if (modeParam === "announcements" || modeParam === "email") {
+      setMode(modeParam);
+    }
+    if (presetParam && presetParam in presetLibrary) {
+      setPreset(presetParam as MessagePreset);
+    }
+  }, [searchParams]);
+
   const buildFilters = () => ({
     driveId: driveId || undefined,
     eligibleOnly,
@@ -192,6 +212,7 @@ export default function TpoCommunicationPage() {
     batch: batch || undefined,
     minCgpa: minCgpa ? Number(minCgpa) : undefined,
     maxRecipients: maxRecipients ? Number(maxRecipients) : undefined,
+    studentIds: selectedStudentIds.length > 0 ? selectedStudentIds : undefined,
   });
 
   const buildEmailPayload = () => ({
@@ -214,6 +235,14 @@ export default function TpoCommunicationPage() {
   const invalidatePreviews = () => {
     setEmailPreview(null);
     setAnnouncementPreviewData(null);
+  };
+
+  const clearSelectedStudents = () => {
+    const next = new URLSearchParams(searchParams);
+    next.delete("studentIds");
+    next.delete("preset");
+    next.delete("mode");
+    setSearchParams(next, { replace: true });
   };
 
   const onPreviewEmail = async () => {
@@ -362,6 +391,17 @@ export default function TpoCommunicationPage() {
 
       <section className="tpo-communication-simple-grid">
         <div className="tpo-communication-main">
+          {selectedStudentIds.length > 0 ? (
+            <section className="tpo-communication-panel tpo-communication-direct-audience">
+              <div>
+                <p className="workspace-eyebrow">Direct Audience</p>
+                <h2>{selectedStudentIds.length} selected student{selectedStudentIds.length === 1 ? "" : "s"}</h2>
+                <p className="muted-text">This reminder was opened from the Students intervention workspace. Drive, branch, and batch filters still work as narrower filters on top of the selected audience.</p>
+              </div>
+              <Button variant="ghost" onClick={clearSelectedStudents}>Clear selection</Button>
+            </section>
+          ) : null}
+
           {mode === "email" ? (
             <>
               <section className="tpo-communication-panel">

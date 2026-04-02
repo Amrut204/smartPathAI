@@ -36,6 +36,7 @@ const TpoDriveCreatePage = lazy(() => import("./pages/tpo/TpoDriveCreatePage"));
 const TpoDriveDetailPage = lazy(() => import("./pages/tpo/TpoDriveDetailPage"));
 const TpoDriveResultsPage = lazy(() => import("./pages/tpo/TpoDriveResultsPage"));
 const TpoEligibleNotAppliedPage = lazy(() => import("./pages/tpo/TpoEligibleNotAppliedPage"));
+const TpoNeedsMockPushPage = lazy(() => import("./pages/tpo/TpoNeedsMockPushPage"));
 const TpoReportsPage = lazy(() => import("./pages/tpo/TpoReportsPage"));
 const TpoCommunicationPage = lazy(() => import("./pages/tpo/TpoCommunicationPage"));
 const TpoCommunicationComposePage = lazy(() => import("./pages/tpo/TpoCommunicationComposePage"));
@@ -332,6 +333,7 @@ const router = createBrowserRouter([
           { path: "/tpo/students/:studentId", element: renderRoute(<TpoStudentDetailPage />) },
           { path: "/tpo/drives", element: renderRoute(<TpoDrivesPage />) },
           { path: "/tpo/interventions/eligible-not-applied", element: renderRoute(<TpoEligibleNotAppliedPage />) },
+          { path: "/tpo/interventions/needs-mock-push", element: renderRoute(<TpoNeedsMockPushPage />) },
           { path: "/tpo/drives/create", element: renderRoute(<TpoDriveCreatePage />) },
           { path: "/tpo/drives/:driveId", element: renderRoute(<TpoDriveDetailPage />) },
           { path: "/tpo/drives/:driveId/results", element: renderRoute(<TpoDriveResultsPage />) },

@@ -13,6 +13,7 @@ const audienceFiltersSchema = z.object({
   minCgpa: z.number().min(0).max(10).optional(),
   maxRecipients: z.coerce.number().int().min(1).max(5000).optional(),
   emails: z.array(z.string().trim().email()).min(1).max(100).optional(),
+  studentIds: z.array(z.string().uuid()).min(1).max(500).optional(),
 });
 
 export const createEmailTemplateSchema = z.object({

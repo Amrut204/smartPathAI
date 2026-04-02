@@ -42,6 +42,21 @@ export interface TpoStudentRow {
   waitingOnCollege: boolean;
   canAccessResources: boolean;
   canAccessMockTests: boolean;
+  isProfileCertified: boolean;
+  isProfileLocked: boolean;
+  hasResumeReady: boolean;
+  isActive7d: boolean;
+  appliedRecently: boolean;
+  eligibleUpcomingDriveCount: number;
+  blockedUpcomingDriveCount: number;
+  nearestUpcomingDriveDate: string | null;
+  primaryBlocker: string | null;
+  needsIntervention: boolean;
+  interventionLabel: string;
+  lastActiveAt: string | null;
+  riskScore: number;
+  mockAttempts30d: number;
+  lastMockSubmittedAt: string | null;
   targetRoles: string[];
   preferredLocations: string[];
   willingToRelocate: boolean | null;
@@ -171,7 +186,13 @@ export function useTpoStudents(query?: {
   targetRole?: string;
   preferredLocation?: string;
   willingToRelocate?: boolean;
-  sortBy?: "cgpa" | "created_at" | "readiness_score" | "profile_completeness";
+  eligibleForUpcomingDrive?: boolean;
+  isCertified?: boolean;
+  hasResume?: boolean;
+  isActive7d?: boolean;
+  appliedRecently?: boolean;
+  needsIntervention?: boolean;
+  sortBy?: "cgpa" | "created_at" | "readiness_score" | "profile_completeness" | "risk_score" | "upcoming_drive_impact" | "activity";
   sortDir?: "asc" | "desc";
   limit?: number;
 }) {
@@ -201,6 +222,12 @@ export function useTpoStudents(query?: {
   if (query?.targetRole) params.set("targetRole", query.targetRole);
   if (query?.preferredLocation) params.set("preferredLocation", query.preferredLocation);
   if (query?.willingToRelocate !== undefined) params.set("willingToRelocate", String(query.willingToRelocate));
+  if (query?.eligibleForUpcomingDrive !== undefined) params.set("eligibleForUpcomingDrive", String(query.eligibleForUpcomingDrive));
+  if (query?.isCertified !== undefined) params.set("isCertified", String(query.isCertified));
+  if (query?.hasResume !== undefined) params.set("hasResume", String(query.hasResume));
+  if (query?.isActive7d !== undefined) params.set("isActive7d", String(query.isActive7d));
+  if (query?.appliedRecently !== undefined) params.set("appliedRecently", String(query.appliedRecently));
+  if (query?.needsIntervention !== undefined) params.set("needsIntervention", String(query.needsIntervention));
   if (query?.sortBy) params.set("sortBy", query.sortBy);
   if (query?.sortDir) params.set("sortDir", query.sortDir);
 

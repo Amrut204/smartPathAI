@@ -38,6 +38,7 @@ type CommunicationFilters = {
   minCgpa?: number;
   maxRecipients?: number;
   emails?: string[];
+  studentIds?: string[];
 };
 
 type DeliveryMetrics = {
@@ -475,8 +476,18 @@ async function resolveRecipients(
   if (filters?.minCgpa !== undefined) {
     studentFilter.cgpa = { $gte: filters.minCgpa };
   }
+  if (filters?.studentIds?.length) {
+    studentFilter.id = { $in: filters.studentIds };
+  }
   if (studentIds && studentIds.length > 0) {
-    studentFilter.id = { $in: studentIds };
+    if (studentFilter.id && typeof studentFilter.id === "object" && "$in" in studentFilter.id) {
+      const existingIds = Array.isArray((studentFilter.id as { $in?: unknown[] }).$in)
+        ? (studentFilter.id as { $in?: unknown[] }).$in!.map((value) => String(value))
+        : [];
+      studentFilter.id = { $in: studentIds.filter((id) => existingIds.includes(id)) };
+    } else {
+      studentFilter.id = { $in: studentIds };
+    }
   }
 
   const students = await db.collection("students").find(
@@ -550,6 +561,9 @@ function summarizeAudience(filters?: CommunicationFilters) {
   }
   if (filters.emails?.length) {
     parts.push(`${filters.emails.length} direct email${filters.emails.length === 1 ? "" : "s"}`);
+  }
+  if (filters.studentIds?.length) {
+    parts.push(`${filters.studentIds.length} selected student${filters.studentIds.length === 1 ? "" : "s"}`);
   }
   if (parts.length === 0) {
     return "All students";

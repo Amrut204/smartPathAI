@@ -152,7 +152,13 @@ export const tpoStudentListQuerySchema = z
     targetRole: z.string().trim().min(1).max(120).optional(),
     preferredLocation: z.string().trim().min(1).max(120).optional(),
     willingToRelocate: optionalQueryBooleanSchema,
-    sortBy: z.enum(["cgpa", "created_at", "readiness_score", "profile_completeness"]).default("created_at"),
+    eligibleForUpcomingDrive: optionalQueryBooleanSchema,
+    isCertified: optionalQueryBooleanSchema,
+    hasResume: optionalQueryBooleanSchema,
+    isActive7d: optionalQueryBooleanSchema,
+    appliedRecently: optionalQueryBooleanSchema,
+    needsIntervention: optionalQueryBooleanSchema,
+    sortBy: z.enum(["cgpa", "created_at", "readiness_score", "profile_completeness", "risk_score", "upcoming_drive_impact", "activity"]).default("created_at"),
     sortDir: z.enum(["asc", "desc"]).default("desc"),
   })
   .superRefine((value, ctx) => {

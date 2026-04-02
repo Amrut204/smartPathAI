@@ -2391,32 +2391,83 @@ export const StudentRepository = {
       targetRole?: string;
       preferredLocation?: string;
       willingToRelocate?: boolean;
-      sortBy: "cgpa" | "created_at" | "readiness_score" | "profile_completeness";
+      eligibleForUpcomingDrive?: boolean;
+      isCertified?: boolean;
+      hasResume?: boolean;
+      isActive7d?: boolean;
+      appliedRecently?: boolean;
+      needsIntervention?: boolean;
+      sortBy: "cgpa" | "created_at" | "readiness_score" | "profile_completeness" | "risk_score" | "upcoming_drive_impact" | "activity";
       sortDir: "asc" | "desc";
     },
   ) {
     const db = await getMongoDb();
-    const data = await db.collection("students").find(
-      { tenant_id: tenantId },
-      {
-        projection: {
-          _id: 0,
-          id: 1,
-          user_id: 1,
-          roll_number: 1,
-          branch: 1,
-          batch: 1,
-          cgpa: 1,
-          backlogs: 1,
-          backlogs_total: 1,
-          attendance_pct: 1,
-          readiness_score: 1,
-          profile_data: 1,
-          skills: 1,
-          created_at: 1,
+    const todayIso = new Date().toISOString().slice(0, 10);
+    const start7 = new Date(Date.now() - (7 * 86_400_000)).toISOString().slice(0, 10);
+    const start14 = new Date(Date.now() - (14 * 86_400_000)).toISOString().slice(0, 10);
+    const start30 = new Date(Date.now() - (30 * 86_400_000)).toISOString().slice(0, 10);
+
+    const [
+      data,
+      drives,
+      driveResults,
+      resourceViewEvents,
+      attempts,
+      aiConversations,
+    ] = await Promise.all([
+      db.collection("students").find(
+        { tenant_id: tenantId },
+        {
+          projection: {
+            _id: 0,
+            id: 1,
+            user_id: 1,
+            roll_number: 1,
+            branch: 1,
+            batch: 1,
+            cgpa: 1,
+            backlogs: 1,
+            backlogs_total: 1,
+            attendance_pct: 1,
+            readiness_score: 1,
+            profile_data: 1,
+            skills: 1,
+            created_at: 1,
+          },
         },
-      },
-    ).toArray();
+      ).toArray(),
+      db.collection("drives").find(
+        { tenant_id: tenantId, deleted_at: null },
+        { projection: { _id: 0, id: 1, drive_date: 1, company: 1, role: 1, status: 1 } },
+      ).toArray(),
+      db.collection("drive_results").find(
+        { tenant_id: tenantId },
+        {
+          projection: {
+            _id: 0,
+            student_id: 1,
+            drive_id: 1,
+            status: 1,
+            outcome: 1,
+            application_state: 1,
+            created_at: 1,
+            updated_at: 1,
+          },
+        },
+      ).toArray(),
+      db.collection("resource_view_events").find(
+        { tenant_id: tenantId, created_at: { $gte: `${start30}T00:00:00.000Z` } },
+        { projection: { _id: 0, student_id: 1, created_at: 1 } },
+      ).toArray(),
+      db.collection("student_attempts").find(
+        { tenant_id: tenantId, status: "submitted", submitted_at: { $gte: `${start30}T00:00:00.000Z` } },
+        { projection: { _id: 0, student_id: 1, submitted_at: 1, score: 1 } },
+      ).toArray(),
+      db.collection("ai_conversations").find(
+        { tenant_id: tenantId, updated_at: { $gte: `${start30}T00:00:00.000Z` } },
+        { projection: { _id: 0, student_id: 1, updated_at: 1 } },
+      ).toArray(),
+    ]);
 
     const userIds = data.map((row) => String(row.user_id));
     const users = userIds.length > 0
@@ -2431,6 +2482,48 @@ export const StudentRepository = {
     const prnQuery = params.prn?.trim().toLowerCase() ?? "";
     const targetRoleQuery = params.targetRole?.trim().toLowerCase() ?? "";
     const preferredLocationQuery = params.preferredLocation?.trim().toLowerCase() ?? "";
+    const upcomingDriveMap = new Map(
+      drives
+        .filter((drive) => String(drive.status ?? "") === "upcoming" || String(drive.drive_date ?? "") >= todayIso)
+        .map((drive) => [String(drive.id), {
+          driveDate: String(drive.drive_date ?? ""),
+          company: String(drive.company ?? ""),
+          role: drive.role ? String(drive.role) : null,
+          status: String(drive.status ?? ""),
+        }]),
+    );
+    const driveResultsByStudent = new Map<string, Array<Record<string, unknown>>>();
+    const resourceViewsByStudent = new Map<string, string[]>();
+    const attemptsByStudent = new Map<string, Array<{ submittedAt: string; score: number }>>();
+    const aiByStudent = new Map<string, string[]>();
+
+    driveResults.forEach((entry) => {
+      const key = String(entry.student_id ?? "");
+      const list = driveResultsByStudent.get(key) ?? [];
+      list.push(entry as Record<string, unknown>);
+      driveResultsByStudent.set(key, list);
+    });
+    resourceViewEvents.forEach((entry) => {
+      const key = String(entry.student_id ?? "");
+      const list = resourceViewsByStudent.get(key) ?? [];
+      list.push(String(entry.created_at ?? ""));
+      resourceViewsByStudent.set(key, list);
+    });
+    attempts.forEach((entry) => {
+      const key = String(entry.student_id ?? "");
+      const list = attemptsByStudent.get(key) ?? [];
+      list.push({
+        submittedAt: String(entry.submitted_at ?? ""),
+        score: Number(entry.score ?? 0),
+      });
+      attemptsByStudent.set(key, list);
+    });
+    aiConversations.forEach((entry) => {
+      const key = String(entry.student_id ?? "");
+      const list = aiByStudent.get(key) ?? [];
+      list.push(String(entry.updated_at ?? ""));
+      aiByStudent.set(key, list);
+    });
 
     const allItems = data.map((row) => {
       const user = userMap.get(String(row.user_id));
@@ -2449,9 +2542,97 @@ export const StudentRepository = {
           email: user?.email,
         },
       });
+      const studentId = String(row.id);
+      const profileCertified = declarationStatus.profileCertification.isCertified;
+      const hasResumeReady = Boolean(
+        summary.studentEditableProfile.resumeStorageProvider
+        || summary.studentEditableProfile.resumeDriveFileId
+        || summary.studentEditableProfile.resumeDriveWebLink
+        || summary.studentEditableProfile.resumeUrl,
+      );
+      const driveList = (driveResultsByStudent.get(studentId) ?? [])
+        .filter((item) => upcomingDriveMap.has(String(item.drive_id ?? "")));
+      const activitySignals = [
+        ...(resourceViewsByStudent.get(studentId) ?? []),
+        ...(attemptsByStudent.get(studentId) ?? []).map((item) => item.submittedAt),
+        ...(aiByStudent.get(studentId) ?? []),
+        ...driveList.flatMap((item) => [String(item.updated_at ?? ""), String(item.created_at ?? "")]),
+      ];
+      const lastActiveAt = maxIsoDate(activitySignals);
+      const isActive7d = Boolean(lastActiveAt && lastActiveAt.slice(0, 10) >= start7);
+      const attempts30d = attemptsByStudent.get(studentId) ?? [];
+      const lastMockSubmittedAt = maxIsoDate(attempts30d.map((item) => item.submittedAt));
+      const recentMockAttempts14d = attempts30d.filter((item) => item.submittedAt.slice(0, 10) >= start14).length;
+      const mockAvg = attempts30d.length > 0
+        ? Number((attempts30d.reduce((sum, item) => sum + item.score, 0) / attempts30d.length).toFixed(2))
+        : 0;
+      const eligibleUpcomingDriveIds = new Set(
+        driveList
+          .filter((item) => String(item.status ?? "") === "eligible" || ["shortlisted", "selected"].includes(String(item.outcome ?? "")))
+          .map((item) => String(item.drive_id ?? "")),
+      );
+      const blockedUpcomingDriveIds = new Set(
+        driveList
+          .filter((item) => !eligibleUpcomingDriveIds.has(String(item.drive_id ?? "")))
+          .map((item) => String(item.drive_id ?? "")),
+      );
+      const nearestUpcomingDriveDate = [...new Set(
+        driveList
+          .map((item) => upcomingDriveMap.get(String(item.drive_id ?? ""))?.driveDate ?? "")
+          .filter(Boolean),
+      )].sort((left, right) => left.localeCompare(right))[0] ?? null;
+      const appliedRecently = driveList.some((item) => {
+        const applicationState = String(item.application_state ?? "");
+        const appliedAt = String(item.updated_at ?? item.created_at ?? "");
+        return applicationState === "applied" && appliedAt.slice(0, 10) >= start30;
+      });
+      const profileComplete = summary.profileCompleteness.pct >= 100;
+
+      let interventionLabel = "Stable";
+      if (!hasResumeReady) {
+        interventionLabel = "Resume missing";
+      } else if (!profileCertified) {
+        interventionLabel = "Uncertified";
+      } else if (!profileComplete) {
+        interventionLabel = "Incomplete profile";
+      } else if (eligibleUpcomingDriveIds.size > 0 && !appliedRecently) {
+        interventionLabel = "Eligible but not applied";
+      } else if (profileComplete && profileCertified && hasResumeReady && !isActive7d) {
+        interventionLabel = "Ready but inactive";
+      } else if (blockedUpcomingDriveIds.size > 0 && eligibleUpcomingDriveIds.size === 0) {
+        interventionLabel = "Academically blocked";
+      } else if (recentMockAttempts14d === 0 || mockAvg < 55) {
+        interventionLabel = "Needs mock push";
+      }
+
+      let primaryBlocker: string | null = null;
+      if (!hasResumeReady) {
+        primaryBlocker = "Resume missing";
+      } else if (!profileCertified) {
+        primaryBlocker = "Profile certification pending";
+      } else if (!profileComplete) {
+        primaryBlocker = "Profile incomplete";
+      } else if (blockedUpcomingDriveIds.size > 0 && Number(row.backlogs ?? 0) > 0) {
+        primaryBlocker = "Backlog criteria";
+      } else if (blockedUpcomingDriveIds.size > 0) {
+        primaryBlocker = "Drive criteria not met";
+      } else if (!isActive7d) {
+        primaryBlocker = "No recent activity";
+      }
+
+      let riskScore = 0;
+      if (!hasResumeReady) riskScore += 30;
+      if (!profileCertified) riskScore += 25;
+      if (!profileComplete) riskScore += 20;
+      if (!isActive7d) riskScore += 15;
+      if (eligibleUpcomingDriveIds.size > 0 && !appliedRecently) riskScore += 20;
+      if ((recentMockAttempts14d === 0 || mockAvg < 55) && eligibleUpcomingDriveIds.size > 0) riskScore += 10;
+      if (blockedUpcomingDriveIds.size > 0 && eligibleUpcomingDriveIds.size === 0) riskScore += 10;
+      riskScore = Math.min(riskScore, 100);
+      const needsIntervention = riskScore > 0 || interventionLabel !== "Stable";
 
       return {
-        id: String(row.id),
+        id: studentId,
         userId: String(row.user_id),
         createdAt: String(row.created_at ?? ""),
         fullName: String(user?.full_name ?? ""),
@@ -2467,13 +2648,26 @@ export const StudentRepository = {
         readinessScore: Number(row.readiness_score ?? 0),
         profileCompletenessPct: summary.profileCompleteness.pct,
         missingRequiredCount: summary.missingRequiredFields.length,
-        missingResume: summary.missingRequiredFields.some((field) => field.key === "resumeUrl"),
+        missingResume: !hasResumeReady,
         waitingOnStudent: summary.missingStudentFields.length > 0,
         waitingOnCollege: summary.pendingCollegeFields.length > 0,
         canAccessResources: summary.canAccessResources,
         canAccessMockTests: summary.canAccessMockTests,
-        isProfileCertified: declarationStatus.profileCertification.isCertified,
+        isProfileCertified: profileCertified,
         isProfileLocked: declarationStatus.profileCertification.isLocked,
+        hasResumeReady,
+        isActive7d,
+        appliedRecently,
+        eligibleUpcomingDriveCount: eligibleUpcomingDriveIds.size,
+        blockedUpcomingDriveCount: blockedUpcomingDriveIds.size,
+        nearestUpcomingDriveDate,
+        primaryBlocker,
+        needsIntervention,
+        interventionLabel,
+        lastActiveAt,
+        riskScore,
+        mockAttempts30d: attempts30d.length,
+        lastMockSubmittedAt,
         targetRoles: summary.studentEditableProfile.targetRoles,
         preferredLocations: summary.studentEditableProfile.preferredLocations,
         willingToRelocate: summary.studentEditableProfile.willingToRelocate,
@@ -2527,6 +2721,12 @@ export const StudentRepository = {
         && !item.preferredLocations.some((location) => location.toLowerCase().includes(preferredLocationQuery))
       ) return false;
       if (params.willingToRelocate !== undefined && item.willingToRelocate !== params.willingToRelocate) return false;
+      if (params.eligibleForUpcomingDrive !== undefined && (item.eligibleUpcomingDriveCount > 0) !== params.eligibleForUpcomingDrive) return false;
+      if (params.isCertified !== undefined && item.isProfileCertified !== params.isCertified) return false;
+      if (params.hasResume !== undefined && item.hasResumeReady !== params.hasResume) return false;
+      if (params.isActive7d !== undefined && item.isActive7d !== params.isActive7d) return false;
+      if (params.appliedRecently !== undefined && item.appliedRecently !== params.appliedRecently) return false;
+      if (params.needsIntervention !== undefined && item.needsIntervention !== params.needsIntervention) return false;
 
       return true;
     });
@@ -2535,10 +2735,25 @@ export const StudentRepository = {
     const sortedItems = [...allItems].sort((left, right) => {
       const compareNumber = (a: number, b: number) => (a === b ? 0 : a > b ? 1 : -1);
       const compareString = (a: string, b: string) => a.localeCompare(b);
+      const compareNullableString = (a: string | null, b: string | null) => {
+        if (!a && !b) return 0;
+        if (!a) return 1;
+        if (!b) return -1;
+        return a.localeCompare(b);
+      };
 
       let result = 0;
       if (params.sortBy === "cgpa") {
         result = compareNumber(left.cgpa, right.cgpa);
+      } else if (params.sortBy === "risk_score") {
+        result = compareNumber(left.riskScore, right.riskScore);
+      } else if (params.sortBy === "upcoming_drive_impact") {
+        result = compareNumber(left.eligibleUpcomingDriveCount, right.eligibleUpcomingDriveCount);
+        if (result === 0) {
+          result = compareNullableString(left.nearestUpcomingDriveDate, right.nearestUpcomingDriveDate) * -1;
+        }
+      } else if (params.sortBy === "activity") {
+        result = compareNullableString(left.lastActiveAt, right.lastActiveAt);
       } else if (params.sortBy === "readiness_score") {
         result = compareNumber(left.readinessScore, right.readinessScore);
       } else if (params.sortBy === "profile_completeness") {
