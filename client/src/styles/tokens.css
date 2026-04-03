@@ -50,7 +50,7 @@
 
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-spring: 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-spring: 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
 
   --breakpoint-mobile: 768px;
   --breakpoint-tablet: 1024px;

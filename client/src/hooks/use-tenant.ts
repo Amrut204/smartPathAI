@@ -24,6 +24,10 @@ export type TenantEmailSettings = {
   replyToEmail?: string;
 };
 
+export type TenantPlacementPolicy = {
+  excludePlacedStudentsByDefault?: boolean;
+};
+
 export function useTenantSettings() {
   return useSWR<{
     id: string;
@@ -32,6 +36,7 @@ export function useTenantSettings() {
     config: {
       emailSettings?: TenantEmailSettings;
       branches?: string[];
+      placementPolicy?: TenantPlacementPolicy;
     };
   }>("/api/v1/tenants/me", fetcher, {
     revalidateOnFocus: false,
@@ -53,6 +58,34 @@ export async function updateTenantEmailSettings(input: TenantEmailSettings) {
     config: {
       emailSettings?: TenantEmailSettings;
       branches?: string[];
+      placementPolicy?: TenantPlacementPolicy;
+    };
+  }>;
+
+  if (!payload.success) {
+    throw new Error(payload.error.message);
+  }
+
+  await mutate("/api/v1/tenants/me");
+  return payload.data;
+}
+
+export async function updateTenantPlacementPolicy(input: { excludePlacedStudentsByDefault: boolean }) {
+  const response = await fetch("/api/v1/tenants/me/placement-policy", {
+    method: "PATCH",
+    credentials: "include",
+    headers: withCsrfHeader({ "Content-Type": "application/json" }),
+    body: JSON.stringify(input),
+  });
+
+  const payload = await response.json() as ApiResponse<{
+    id: string;
+    name: string;
+    slug: string;
+    config: {
+      emailSettings?: TenantEmailSettings;
+      branches?: string[];
+      placementPolicy?: TenantPlacementPolicy;
     };
   }>;
 

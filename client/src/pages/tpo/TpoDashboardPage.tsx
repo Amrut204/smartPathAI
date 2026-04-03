@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { mutate } from "swr";
 import { Link } from "react-router-dom";
 
 import { Badge, Button, Card, ConfirmActionModal, Skeleton, Table } from "../../components/ui";
+import { AnimatedNumber } from "../../components/motion/AnimatedNumber";
 import { useTpoControlCenter } from "../../hooks/use-analytics";
 import { computeDriveEligibility } from "../../hooks/use-drives";
 import { approveSupportRequest, denySupportRequest, resolveStudentSupportRequest } from "../../hooks/use-support";
 import { reviewStudentUnlockRequest } from "../../hooks/use-tpo-students";
 import { tpoWhatsNewEntries } from "../../config/tpo-whats-new";
+import { useAuth } from "../../components/providers/AuthProvider";
 
 function formatDate(value: string | null | undefined) {
   if (!value) return "Not scheduled";
@@ -70,11 +72,22 @@ function TpoDashboardSkeleton() {
 
 export default function TpoDashboardPage() {
   const { data, isLoading, error } = useTpoControlCenter();
+  const { profile } = useAuth();
   const [pendingExport, setPendingExport] = useState<null | {
     title: string;
     href: string;
     details: string[];
   }>(null);
+  const onboardingStorageKey = useMemo(
+    () => profile ? `tpo-dashboard-onboarding-dismissed:${profile.tenant_id}:${profile.id}` : null,
+    [profile],
+  );
+  const [onboardingDismissed, setOnboardingDismissed] = useState(false);
+
+  useEffect(() => {
+    if (!onboardingStorageKey) return;
+    setOnboardingDismissed(localStorage.getItem(onboardingStorageKey) === "true");
+  }, [onboardingStorageKey]);
 
   const confirmExport = () => {
     if (!pendingExport) return;
@@ -84,6 +97,15 @@ export default function TpoDashboardPage() {
 
   if (isLoading) return <TpoDashboardSkeleton />;
   if (error || !data) return <Card>Unable to load the TPO operations dashboard.</Card>;
+
+  const isFullyEmptyTenant = data.summary.totalStudents === 0 && data.summary.totalDrives === 0;
+  const checklistSteps = [
+    { id: "students", label: "Import students", href: "/tpo/students/upload", complete: data.summary.totalStudents > 0 },
+    { id: "drives", label: "Create your first drive", href: "/tpo/drives/create", complete: data.summary.totalDrives > 0 },
+    { id: "announcements", label: "Send an announcement", href: "/tpo/communication", complete: data.summary.outreachStartedCount > 0 },
+    { id: "ready", label: "You are ready", href: null, complete: data.summary.totalStudents > 0 && data.summary.totalDrives > 0 && data.summary.outreachStartedCount > 0 },
+  ];
+  const checklistComplete = checklistSteps.every((step) => step.complete);
 
   const queueSummary = [
     {
@@ -127,6 +149,73 @@ export default function TpoDashboardPage() {
     .filter((student, index, list) => list.findIndex((candidate) => candidate.studentId === student.studentId) === index)
     .slice(0, 12);
 
+  if (isFullyEmptyTenant && !onboardingDismissed) {
+    return (
+      <section className="tpo-dashboard control-center-page">
+        <Card className="career-hero-card control-center-hero-card">
+          <div className="workspace-panel-header">
+            <div>
+              <p className="workspace-eyebrow">First Run Setup</p>
+              <h1>Let&apos;s get this placement workspace ready.</h1>
+              <p className="muted-text">
+                A brand new TPO account should not feel broken or empty. We guide the first operational steps here, then hand over to
+                the full dashboard once your college data starts flowing.
+              </p>
+            </div>
+            <Link to="/tpo/whats-new">
+              <Button variant="secondary">What&apos;s New</Button>
+            </Link>
+          </div>
+          <div className="tpo-action-list">
+            {checklistSteps.map((step, index) => (
+              <div key={step.id} className="tpo-action-row">
+                <div>
+                  <div className="tpo-action-row-head">
+                    <strong>{index + 1}. {step.label}</strong>
+                    <Badge variant={step.complete ? "success" : "warning"}>
+                      {step.complete ? "Done" : "Pending"}
+                    </Badge>
+                  </div>
+                  <p className="muted-text">
+                    {step.id === "students" ? "Upload your student roster so readiness, eligibility, and profile tracking can start." : null}
+                    {step.id === "drives" ? "Create your first drive to unlock eligibility computation, applications, and result workflows." : null}
+                    {step.id === "announcements" ? "Send one announcement so students know the portal is live and ready to use." : null}
+                    {step.id === "ready" ? "Once the first three steps are complete, the full dashboard becomes your daily operations console." : null}
+                  </p>
+                </div>
+                {step.href ? (
+                  <Link to={step.href}>
+                    <Button variant={step.complete ? "secondary" : "primary"}>
+                      {step.complete ? "Review" : "Open"}
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button variant="secondary" disabled>
+                    Ready state
+                  </Button>
+                )}
+              </div>
+            ))}
+          </div>
+          {checklistComplete ? (
+            <div className="hero-actions">
+              <Button
+                onClick={() => {
+                  if (onboardingStorageKey) {
+                    localStorage.setItem(onboardingStorageKey, "true");
+                  }
+                  setOnboardingDismissed(true);
+                }}
+              >
+                Dismiss checklist
+              </Button>
+            </div>
+          ) : null}
+        </Card>
+      </section>
+    );
+  }
+
   return (
     <section className="tpo-dashboard control-center-page">
       <Card className="career-hero-card control-center-hero-card">
@@ -157,37 +246,39 @@ export default function TpoDashboardPage() {
         <div className="tpo-ops-signal-strip">
           <Link className="tpo-ops-signal" to="/tpo/interventions/eligible-not-applied">
             <span>Eligible not applied</span>
-            <strong>{data.actionCenter.eligibleButNotApplied.length}</strong>
+            <strong><AnimatedNumber value={data.actionCenter.eligibleButNotApplied.length} /></strong>
           </Link>
           <Link className="tpo-ops-signal" to="/tpo/interventions/needs-mock-push">
             <span>Needs mock push</span>
-            <strong>{data.actionCenter.lowReadinessNearDriveImpact.length}</strong>
+            <strong><AnimatedNumber value={data.actionCenter.lowReadinessNearDriveImpact.length} /></strong>
           </Link>
           <Link className="tpo-ops-signal" to="/tpo/students">
             <span>Unlock requests</span>
-            <strong>{data.dashboardQueues.profileUnlockRequests.count}</strong>
+            <strong><AnimatedNumber value={data.dashboardQueues.profileUnlockRequests.count} /></strong>
           </Link>
           <Link className="tpo-ops-signal" to="/tpo/drives">
             <span>Low-apply drives</span>
-            <strong>{data.drivePreparedness.items.filter((drive) => drive.lowApplyRisk).length}</strong>
+            <strong><AnimatedNumber value={data.drivePreparedness.items.filter((drive) => drive.lowApplyRisk).length} /></strong>
           </Link>
           <Link className="tpo-ops-signal" to="/tpo/communication">
             <span>Communication tasks</span>
-            <strong>{data.dashboardQueues.communicationTasks.count}</strong>
+            <strong><AnimatedNumber value={data.dashboardQueues.communicationTasks.count} /></strong>
           </Link>
         </div>
         <div className="control-center-pill-grid">
           <div className="control-center-pill">
             <span>Total Students</span>
-            <strong>{data.summary.totalStudents}</strong>
+            <strong><AnimatedNumber value={data.summary.totalStudents} /></strong>
+            {data.summary.totalStudents === 0 ? <p className="muted-text">Import your student list to start using the operations dashboard.</p> : null}
           </div>
           <div className="control-center-pill">
             <span>Active 7d</span>
-            <strong>{data.summary.activeStudents7d}</strong>
+            <strong><AnimatedNumber value={data.summary.activeStudents7d} /></strong>
           </div>
           <div className="control-center-pill">
             <span>Upcoming Drives</span>
-            <strong>{data.summary.upcomingDrives}</strong>
+            <strong><AnimatedNumber value={data.summary.upcomingDrives} /></strong>
+            {data.summary.totalDrives === 0 ? <p className="muted-text">Create your first drive to activate eligibility and applications.</p> : null}
           </div>
           <div className="control-center-pill">
             <span>Avg Readiness</span>
@@ -195,11 +286,11 @@ export default function TpoDashboardPage() {
           </div>
           <div className="control-center-pill">
             <span>At Risk</span>
-            <strong>{data.summary.atRiskStudents}</strong>
+            <strong><AnimatedNumber value={data.summary.atRiskStudents} /></strong>
           </div>
           <div className="control-center-pill">
             <span>Eligible For Upcoming</span>
-            <strong>{data.readinessFunnel.eligibleForUpcomingDrives}</strong>
+            <strong><AnimatedNumber value={data.readinessFunnel.eligibleForUpcomingDrives} /></strong>
           </div>
         </div>
       </Card>
@@ -255,7 +346,13 @@ export default function TpoDashboardPage() {
             <div key={item.label} className="tpo-queue-summary-card">
               <span>{item.label}</span>
               <strong>{item.value}</strong>
-              <p className="muted-text">{item.helper}</p>
+              <p className="muted-text">
+                {item.value === 0 && item.label === "Student Support"
+                  ? "Open student support requests will appear here once students begin using the portal."
+                  : item.value === 0 && item.label === "Communication Tasks"
+                    ? "Drive reminders and result-release follow-up will appear here after outreach starts."
+                    : item.helper}
+              </p>
             </div>
           ))}
         </div>
@@ -291,7 +388,7 @@ export default function TpoDashboardPage() {
         </div>
         <div className="tpo-drive-health-grid">
           {data.drivePreparedness.items.length === 0 ? (
-            <p className="muted-text">No active or upcoming drives yet.</p>
+            <p className="muted-text">No active or upcoming drives yet. Create your first drive to start eligibility, applications, and export workflows.</p>
           ) : (
             data.drivePreparedness.items.map((drive) => (
               <div key={drive.driveId} className="tpo-drive-health-card">
@@ -299,7 +396,7 @@ export default function TpoDashboardPage() {
                   <div>
                     <strong>{drive.company}</strong>
                     <p className="muted-text">
-                      {drive.role ? `${drive.role} · ` : ""}
+                      {drive.role ? `${drive.role} | ` : ""}
                       {formatDate(drive.driveDate)}
                     </p>
                   </div>
@@ -409,7 +506,7 @@ export default function TpoDashboardPage() {
                 <div>
                   <strong>{entry.title}</strong>
                   <p className="muted-text">
-                    {new Date(entry.date).toLocaleDateString()} · {entry.workflow}
+                    {new Date(entry.date).toLocaleDateString()} | {entry.workflow}
                   </p>
                   <p className="muted-text">{entry.summary}</p>
                 </div>
@@ -455,7 +552,7 @@ export default function TpoDashboardPage() {
                 <div>
                   <strong>{item.studentName}</strong>
                   <p className="muted-text">
-                    {item.reasonCategory.replace(/_/g, " ")} · {formatDateTime(item.createdAt)}
+                    {item.reasonCategory.replace(/_/g, " ")} | {formatDateTime(item.createdAt)}
                   </p>
                 </div>
                 <div className="hero-actions">
@@ -502,7 +599,7 @@ export default function TpoDashboardPage() {
                 <div>
                   <strong>{item.subject}</strong>
                   <p className="muted-text">
-                    {item.studentName} · {formatDateTime(item.createdAt)}
+                    {item.studentName} | {formatDateTime(item.createdAt)}
                   </p>
                 </div>
                 <Button
@@ -594,14 +691,14 @@ export default function TpoDashboardPage() {
                       <td>
                         <Link to={`/tpo/students/${student.studentId}`}>{student.fullName}</Link>
                       </td>
-                      <td>{fullRow?.branch ?? "—"}</td>
-                      <td>{fullRow?.batch ?? "—"}</td>
+                      <td>{fullRow?.branch ?? "-"}</td>
+                      <td>{fullRow?.batch ?? "-"}</td>
                       <td>
                         <Badge variant={badgeVariantFromRisk(fullRow?.riskScore ?? 0)}>
                           {fullRow?.riskLevel ?? "Monitor"}
                         </Badge>
                       </td>
-                      <td>{fullRow ? `${fullRow.profileCompletenessPct}%` : "—"}</td>
+                      <td>{fullRow ? `${fullRow.profileCompletenessPct}%` : "-"}</td>
                       <td>{fullRow?.hasResumeReady ? "Ready" : "Missing"}</td>
                       <td>{fullRow?.isProfileCertified ? "Certified" : "Pending"}</td>
                       <td>{student.nextRecommendedAction}</td>
@@ -634,7 +731,7 @@ export default function TpoDashboardPage() {
                   <div>
                     <strong>{drive.company}</strong>
                     <p className="muted-text">
-                      {drive.eligibleButNotAppliedCount} eligible students still have not applied · {formatDate(drive.driveDate)}
+                      {drive.eligibleButNotAppliedCount} eligible students still have not applied | {formatDate(drive.driveDate)}
                     </p>
                   </div>
                   <Link to={`/tpo/drives/${drive.driveId}`}>
@@ -665,7 +762,7 @@ export default function TpoDashboardPage() {
                   <div>
                     <strong>{student.fullName}</strong>
                     <p className="muted-text">
-                      {student.riskLevel} risk · {student.nextRecommendedAction}
+                      {student.riskLevel} risk | {student.nextRecommendedAction}
                     </p>
                   </div>
                   <Link to={`/tpo/students/${student.studentId}`}>

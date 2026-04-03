@@ -196,6 +196,10 @@ export type AdminEmailSettings = {
   replyToEmail: string | null;
 };
 
+export type AdminPlacementPolicy = {
+  excludePlacedStudentsByDefault: boolean;
+};
+
 export function useAdminTenants() {
   return useSWR<AdminTenantSummary[]>("/api/v1/internal/admin-ops/tenants", fetcher, {
     revalidateOnFocus: false,
@@ -256,6 +260,11 @@ export function useAdminIntegrations(tenantId: string | null) {
 export function useAdminEmailSettings(tenantId: string | null) {
   const key = tenantId ? `/api/v1/internal/admin-ops/email-settings?tenantId=${encodeURIComponent(tenantId)}` : null;
   return useSWR<AdminEmailSettings>(key, fetcher, { revalidateOnFocus: false });
+}
+
+export function useAdminPlacementPolicy(tenantId: string | null) {
+  const key = tenantId ? `/api/v1/internal/admin-ops/placement-policy?tenantId=${encodeURIComponent(tenantId)}` : null;
+  return useSWR<AdminPlacementPolicy>(key, fetcher, { revalidateOnFocus: false });
 }
 
 export async function adminPreviewStudentCsv(input: { tenantId: string; csv: string }) {
@@ -606,6 +615,13 @@ export async function adminSaveIntegrations(input: {
 export async function adminSaveEmailSettings(input: { tenantId: string; fromName?: string | null; fromEmail?: string | null; replyToEmail?: string | null }) {
   const data = await sendJson<AdminEmailSettings>("/api/v1/internal/admin-ops/email-settings", "PUT", input);
   await mutate(`/api/v1/internal/admin-ops/email-settings?tenantId=${encodeURIComponent(input.tenantId)}`);
+  return data;
+}
+
+export async function adminSavePlacementPolicy(input: { tenantId: string; excludePlacedStudentsByDefault: boolean }) {
+  const data = await sendJson<AdminPlacementPolicy>("/api/v1/internal/admin-ops/placement-policy", "PUT", input);
+  await mutate(`/api/v1/internal/admin-ops/placement-policy?tenantId=${encodeURIComponent(input.tenantId)}`);
+  await mutate(`/api/v1/internal/admin-ops/workspace?tenantId=${encodeURIComponent(input.tenantId)}`);
   return data;
 }
 

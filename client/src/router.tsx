@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate, Outlet, RouterProvider, useLocation, use
 
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Navbar } from "./components/composites/Navbar";
+import { AnimatedPage } from "./components/motion/AnimatedPage";
 import { StudentFooter } from "./components/composites/StudentFooter";
 import { useAuth } from "./components/providers/AuthProvider";
 import { useStudentProfile } from "./hooks/use-student-profile";
@@ -51,7 +52,7 @@ function renderRoute(node: ReactNode) {
         </div>
       }
     >
-      {node}
+      <AnimatedPage>{node}</AnimatedPage>
     </Suspense>
   );
 }

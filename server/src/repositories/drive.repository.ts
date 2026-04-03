@@ -674,11 +674,11 @@ export const DriveRepository = {
 
   async listPlacedStudentIds(tenantId: string) {
     const db = await getMongoDb();
-    const rows = await db.collection("drive_results").find(
-      { tenant_id: tenantId, outcome: "selected" },
-      { projection: { _id: 0, student_id: 1 } },
+    const rows = await db.collection("students").find(
+      { tenant_id: tenantId, "profile_data.placementStatus.isPlaced": true },
+      { projection: { _id: 0, id: 1 } },
     ).toArray();
-    return rows.map((row) => String(row.student_id));
+    return rows.map((row) => String(row.id));
   },
 
   async getEligibilityOverrideMap(tenantId: string, driveId: string) {

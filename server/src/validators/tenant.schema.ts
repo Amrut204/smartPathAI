@@ -8,3 +8,7 @@ export const updateTenantEmailSettingsSchema = z.object({
   fromEmail: optionalEmailSchema,
   replyToEmail: optionalEmailSchema,
 });
+
+export const updateTenantPlacementPolicySchema = z.object({
+  excludePlacedStudentsByDefault: z.boolean(),
+});

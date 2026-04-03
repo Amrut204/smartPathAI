@@ -97,6 +97,19 @@ export const reviewStudentProfileUnlockRequestSchema = z.object({
   responseNote: z.string().trim().max(1000).optional(),
 });
 
+export const reviewStudentPlacementStatusSchema = z.object({
+  isPlaced: z.boolean(),
+  placedCompany: z.string().trim().min(1).max(160).optional(),
+  placedRole: z.string().trim().min(1).max(160).optional(),
+  placedPackageLpa: z.number().min(0).max(100).optional(),
+  sourceDriveId: z.string().uuid().optional(),
+  reason: z.string().trim().min(5).max(1000),
+}).superRefine((value, ctx) => {
+  if (value.isPlaced && !value.placedCompany) {
+    ctx.addIssue({ code: "custom", message: "placedCompany is required when isPlaced=true", path: ["placedCompany"] });
+  }
+});
+
 export const studentDriveApplySchema = z.object({
   confirmDeclaration: z.literal(true),
 });
@@ -155,6 +168,7 @@ export const tpoStudentListQuerySchema = z
     eligibleForUpcomingDrive: optionalQueryBooleanSchema,
     isCertified: optionalQueryBooleanSchema,
     hasResume: optionalQueryBooleanSchema,
+    isPlaced: optionalQueryBooleanSchema,
     isActive7d: optionalQueryBooleanSchema,
     appliedRecently: optionalQueryBooleanSchema,
     needsIntervention: optionalQueryBooleanSchema,

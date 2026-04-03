@@ -6,6 +6,7 @@ import {
   type DriveLifecycle,
   type DriveResultRound,
 } from "../repositories/drive.repository.js";
+import { StudentRepository } from "../repositories/student.repository.js";
 import { EligibilityService } from "./eligibility.service.js";
 import { AppError } from "../middleware/error-handler.js";
 import { StudentActivityService } from "./student-activity.service.js";
@@ -781,6 +782,23 @@ export const DriveService = {
         resultNotificationStatus: "queued",
       })),
     );
+
+    if (selectedRows.length > 0) {
+      await Promise.all(
+        selectedRows.map((row) =>
+          StudentRepository.upsertPlacementStatusFromDriveResult({
+            tenantId: input.tenantId,
+            studentId: row.id,
+            driveId: input.driveId,
+            company: drive.company,
+            role: drive.role,
+            packageLpa: row.finalCtcLpa ?? null,
+            placedAt: now,
+            actorUserId: input.actorUserId,
+          }),
+        ),
+      );
+    }
 
     const communications: Array<{
       communicationId: string;

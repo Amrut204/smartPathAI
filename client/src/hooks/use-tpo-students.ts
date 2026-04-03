@@ -44,6 +44,16 @@ export interface TpoStudentRow {
   canAccessMockTests: boolean;
   isProfileCertified: boolean;
   isProfileLocked: boolean;
+  placementStatus: {
+    isPlaced: boolean;
+    placedAt: string | null;
+    placedCompany: string | null;
+    placedRole: string | null;
+    placedPackageLpa: number | null;
+    sourceDriveId: string | null;
+    correctionReason: string | null;
+    correctedAt: string | null;
+  };
   hasResumeReady: boolean;
   isActive7d: boolean;
   appliedRecently: boolean;
@@ -77,6 +87,28 @@ export interface TpoStudentDetail {
   skills: string[];
   readinessScore: number;
   profileData: Record<string, unknown>;
+  placementStatus: {
+    isPlaced: boolean;
+    placedAt: string | null;
+    placedCompany: string | null;
+    placedRole: string | null;
+    placedPackageLpa: number | null;
+    sourceDriveId: string | null;
+    correctionReason: string | null;
+    correctedAt: string | null;
+  };
+  placementHistory: Array<{
+    id: string;
+    status: string;
+    company: string | null;
+    role: string | null;
+    packageLpa: number | null;
+    placedAt: string | null;
+    sourceDriveId: string | null;
+    correctionReason: string | null;
+    createdAt: string;
+    createdBy: string | null;
+  }>;
   profileCompletenessPct: number;
   declarationStatus: {
     policyVersion: string;
@@ -204,6 +236,7 @@ export function useTpoStudents(query?: {
   eligibleForUpcomingDrive?: boolean;
   isCertified?: boolean;
   hasResume?: boolean;
+  isPlaced?: boolean;
   isActive7d?: boolean;
   appliedRecently?: boolean;
   needsIntervention?: boolean;
@@ -240,6 +273,7 @@ export function useTpoStudents(query?: {
   if (query?.eligibleForUpcomingDrive !== undefined) params.set("eligibleForUpcomingDrive", String(query.eligibleForUpcomingDrive));
   if (query?.isCertified !== undefined) params.set("isCertified", String(query.isCertified));
   if (query?.hasResume !== undefined) params.set("hasResume", String(query.hasResume));
+  if (query?.isPlaced !== undefined) params.set("isPlaced", String(query.isPlaced));
   if (query?.isActive7d !== undefined) params.set("isActive7d", String(query.isActive7d));
   if (query?.appliedRecently !== undefined) params.set("appliedRecently", String(query.appliedRecently));
   if (query?.needsIntervention !== undefined) params.set("needsIntervention", String(query.needsIntervention));
@@ -297,6 +331,31 @@ export async function reviewStudentUnlockRequest(input: {
       decision: input.decision,
       responseNote: input.responseNote,
     }),
+  });
+
+  const payload = (await response.json()) as ApiResponse<Record<string, unknown>>;
+  if (!payload.success) {
+    throw new Error(payload.error.message);
+  }
+
+  await Promise.all([mutate(`/api/v1/students/${input.studentId}`), mutate((key) => typeof key === "string" && key.startsWith("/api/v1/students?"))]);
+  return payload.data;
+}
+
+export async function reviewStudentPlacementStatus(input: {
+  studentId: string;
+  isPlaced: boolean;
+  placedCompany?: string;
+  placedRole?: string;
+  placedPackageLpa?: number;
+  sourceDriveId?: string;
+  reason: string;
+}) {
+  const response = await fetch(`/api/v1/students/${encodeURIComponent(input.studentId)}/placement-status`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: withCsrfHeader({ "Content-Type": "application/json" }),
+    body: JSON.stringify(input),
   });
 
   const payload = (await response.json()) as ApiResponse<Record<string, unknown>>;

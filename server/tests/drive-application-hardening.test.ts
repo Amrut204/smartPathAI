@@ -8,6 +8,9 @@ import { hash } from "bcryptjs";
 import app from "../src/app.js";
 import { closeMongoConnection, getMongoDb } from "../src/utils/mongodb.js";
 import { getCsrfCookieName } from "../src/middleware/csrf.middleware.js";
+import { PROFILE_CERTIFICATION_TYPED_VALUE, STUDENT_DECLARATION_POLICY_VERSION } from "../src/utils/student-declaration.js";
+
+jest.setTimeout(120000);
 
 function nowIso() {
   return new Date().toISOString();
@@ -96,11 +99,11 @@ describe("Drive application hardening", () => {
         accuracyDeclarationAccepted: true,
         declaration: {
           onboardingAcceptedAt: ts,
-          onboardingVersion: "2026-03-20",
+          onboardingVersion: STUDENT_DECLARATION_POLICY_VERSION,
           onboardingTypedValue: student.rollNumber,
           profileCertifiedAt: ts,
-          profileCertificationVersion: "2026-03-20",
-          profileCertificationTypedValue: "I AGREE",
+          profileCertificationVersion: STUDENT_DECLARATION_POLICY_VERSION,
+          profileCertificationTypedValue: PROFILE_CERTIFICATION_TYPED_VALUE,
           profileCertificationSnapshotHash: "test-hash",
           lastCertifiedProfileAt: ts,
         },

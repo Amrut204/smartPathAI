@@ -4,6 +4,7 @@ import {
   type DriveCriteria,
   type EligibilityReasonCount,
 } from "../repositories/drive.repository.js";
+import { MongoAuthRepository } from "../repositories/mongo-auth.repository.js";
 import {
   ELIGIBILITY_REASON_LABELS,
   evaluateStudentEligibility,
@@ -36,16 +37,25 @@ function toReasonSummary(reasonCounts: Record<EligibilityReasonCode, number>): E
 }
 
 async function buildEligibilityReport(tenantId: string, criteria: EligibilityCriteria, driveId?: string) {
-  const students = await DriveRepository.listStudentsForEligibilityPool(tenantId);
+  const [students, tenant] = await Promise.all([
+    DriveRepository.listStudentsForEligibilityPool(tenantId),
+    MongoAuthRepository.findTenantById(tenantId),
+  ]);
+  const tenantConfig = tenant?.config && typeof tenant.config === "object"
+    ? tenant.config as Record<string, unknown>
+    : {};
+  const placementPolicy = tenantConfig.placementPolicy && typeof tenantConfig.placementPolicy === "object"
+    ? tenantConfig.placementPolicy as Record<string, unknown>
+    : {};
+  const excludePlacedStudentsByDefault = placementPolicy.excludePlacedStudentsByDefault === true;
+  const effectiveExcludePlacedStudents = excludePlacedStudentsByDefault || criteria.excludePlacedStudents === true;
 
   // Manual overrides are drive-specific, not part of the preview flow.
   const overrideMap = driveId
     ? await DriveRepository.getEligibilityOverrideMap(tenantId, driveId)
     : new Map<string, "eligible" | "not_eligible">();
 
-  // "Already placed" is tenant policy / drive policy.
-  // We interpret outcome==="selected" as "placed" for now (offer secured).
-  const placedStudentIds = criteria.excludePlacedStudents
+  const placedStudentIds = effectiveExcludePlacedStudents
     ? new Set(
         (await DriveRepository.listPlacedStudentIds(tenantId)).map(String),
       )
@@ -85,7 +95,7 @@ async function buildEligibilityReport(tenantId: string, criteria: EligibilityCri
       continue;
     }
 
-    if (criteria.excludePlacedStudents && placedStudentIds.has(student.id)) {
+    if (effectiveExcludePlacedStudents && placedStudentIds.has(student.id)) {
       reasonCounts.already_placed += 1;
       bucket.ineligibleCount += 1;
       if (sampleExcludedStudents.length < 8) {

@@ -1334,6 +1334,43 @@ export const AdminOpsService = {
     return this.getTenantEmailSettings(tenantId);
   },
 
+  async getTenantPlacementPolicy(tenantId: string) {
+    const selectedTenantId = assertSelectedTenantId(tenantId);
+    const tenant = await assertTenantExists(selectedTenantId);
+    const config = tenant.config && typeof tenant.config === "object" ? tenant.config as Record<string, unknown> : {};
+    const placementPolicy = config.placementPolicy && typeof config.placementPolicy === "object"
+      ? config.placementPolicy as Record<string, unknown>
+      : {};
+
+    return {
+      excludePlacedStudentsByDefault: placementPolicy.excludePlacedStudentsByDefault === true,
+    };
+  },
+
+  async saveTenantPlacementPolicy(input: {
+    tenantId: string;
+    excludePlacedStudentsByDefault: boolean;
+  }) {
+    const tenantId = assertSelectedTenantId(input.tenantId);
+    const tenant = await assertTenantExists(tenantId);
+    const config = tenant.config && typeof tenant.config === "object" ? tenant.config as Record<string, unknown> : {};
+    const currentPlacementPolicy = config.placementPolicy && typeof config.placementPolicy === "object"
+      ? config.placementPolicy as Record<string, unknown>
+      : {};
+
+    await MongoAuthRepository.updateTenantConfig(tenantId, {
+      config: {
+        ...config,
+        placementPolicy: {
+          ...currentPlacementPolicy,
+          excludePlacedStudentsByDefault: input.excludePlacedStudentsByDefault,
+        },
+      },
+    });
+
+    return this.getTenantPlacementPolicy(tenantId);
+  },
+
   async listJobs(tenantId: string) {
     const selectedTenantId = assertSelectedTenantId(tenantId);
     await assertTenantExists(selectedTenantId);

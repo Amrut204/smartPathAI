@@ -140,6 +140,8 @@ async function computeControlCenter(tenantId: string) {
     profileUnlockRequests,
     studentSupportRequests,
     supportAccessRequests,
+    publishedAnnouncementCount,
+    sentCommunicationCount,
   ] = await Promise.all([
     db.collection("students").find(
       { tenant_id: tenantId },
@@ -267,6 +269,8 @@ async function computeControlCenter(tenantId: string) {
         },
       },
     ).sort({ created_at: 1 }).limit(20).toArray(),
+    db.collection("announcements").countDocuments({ tenant_id: tenantId, status: "published" }),
+    db.collection("communications").countDocuments({ tenant_id: tenantId, status: { $in: ["sent", "partial"] } }),
   ]);
 
   const userMap = new Map(users.map((user) => [String(user.id), { fullName: String(user.full_name ?? ""), email: String(user.email ?? "") }]));
@@ -1343,6 +1347,7 @@ async function computeControlCenter(tenantId: string) {
   return {
     summary: {
       totalStudents,
+      totalDrives: drives.length,
       activeStudents7d,
       avgReadiness,
       upcomingDrives: upcomingDriveItems.length,
@@ -1351,6 +1356,7 @@ async function computeControlCenter(tenantId: string) {
       resourceOpens7d: resourceOpenEvents7d.length,
       studentsUsingResources7d,
       avgResourceReadingMinutes7d,
+      outreachStartedCount: publishedAnnouncementCount + sentCommunicationCount,
     },
     trends: {
       readinessTrend,

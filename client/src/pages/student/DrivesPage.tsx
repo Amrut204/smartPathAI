@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { useSWRConfig } from "swr";
 
@@ -36,6 +36,7 @@ export default function DrivesPage() {
   const [continuityState, setContinuityState] = useState<DriveContinuityState | null>(null);
   const [previewDriveId, setPreviewDriveId] = useState<string | null>(null);
   const [previewStatus, setPreviewStatus] = useState<string | null>(null);
+  const [animateDriveCards, setAnimateDriveCards] = useState(false);
   const [preview, setPreview] = useState<null | {
     driveId: string;
     company: string;
@@ -71,6 +72,15 @@ export default function DrivesPage() {
     if (activeView === "attention") return items.filter((drive) => !drive.isEligible || drive.reasons.length > 0);
     return items;
   }, [activeView, data]);
+
+  useEffect(() => {
+    if (!isLoading && data && !animateDriveCards) {
+      setAnimateDriveCards(true);
+      const timeout = window.setTimeout(() => setAnimateDriveCards(false), 640);
+      return () => window.clearTimeout(timeout);
+    }
+    return undefined;
+  }, [animateDriveCards, data, isLoading]);
 
   if (isLoading) {
     return <section className="student-workspace-shell"><div className="student-workspace-panel">Loading drives...</div></section>;
@@ -222,6 +232,7 @@ export default function DrivesPage() {
       setWithdrawingDriveId(null);
     }
   };
+  const driveStaggerStep = filteredDrives.length > 0 ? 300 / filteredDrives.length : 0;
 
   return (
     <section className="student-workspace-shell">
@@ -315,8 +326,12 @@ export default function DrivesPage() {
           <p className="muted-text">No drives in this view right now.</p>
         ) : (
           <div className="student-workspace-list">
-            {filteredDrives.map((drive) => (
-              <article key={drive.id} className="student-workspace-drive">
+            {filteredDrives.map((drive, index) => (
+              <article
+                key={drive.id}
+                className={`student-workspace-drive${animateDriveCards ? " motion-stagger-enter" : ""}`.trim()}
+                style={animateDriveCards ? ({ "--motion-delay": `${Math.min(300, Math.round(index * driveStaggerStep))}ms` } as CSSProperties) : undefined}
+              >
                 <div className="student-workspace-row student-workspace-drive-head">
                   <div>
                     <strong>{drive.company}{drive.role ? ` - ${drive.role}` : ""}</strong>

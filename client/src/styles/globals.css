@@ -1,7 +1,154 @@
 @import "./tokens.css";
 
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 * {
   box-sizing: border-box;
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes stagger-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes feedback-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes announcement-dot-pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.3);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes skeleton-shimmer {
+  from {
+    background-position: -200% 0;
+  }
+
+  to {
+    background-position: 200% 0;
+  }
+}
+
+.animated-page {
+  animation: page-fade-in 200ms ease-out both;
+}
+
+.motion-stagger-enter {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: stagger-rise-in 180ms ease-out both;
+  animation-delay: var(--motion-delay, 0ms);
+}
+
+.motion-feedback-enter,
+.ui-toast,
+.error-text,
+.success-text,
+.student-profile-inline-alert,
+.student-profile-alert,
+.student-continuity-banner,
+.student-network-banner,
+.student-guidance-banner {
+  animation: feedback-enter 150ms ease-out both;
+}
+
+.motion-skeleton-card {
+  overflow: hidden;
+}
+
+.motion-skeleton-media,
+.motion-skeleton-line,
+.motion-skeleton-chip {
+  background-color: var(--color-surface-muted);
+  background-image: linear-gradient(
+    90deg,
+    var(--color-surface-muted) 0%,
+    color-mix(in oklab, var(--color-surface-muted) 78%, white) 50%,
+    var(--color-surface-muted) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.2s linear infinite;
+}
+
+.motion-skeleton-media {
+  min-height: 160px;
+  border-radius: 18px;
+}
+
+.motion-skeleton-line {
+  border-radius: 999px;
+}
+
+.motion-skeleton-line.is-title {
+  height: 1.05rem;
+  width: 72%;
+}
+
+.motion-skeleton-line.is-body {
+  height: 0.82rem;
+  width: 100%;
+}
+
+.motion-skeleton-line.is-body-short {
+  height: 0.82rem;
+  width: 62%;
+}
+
+.motion-skeleton-line.is-stat {
+  height: 1.2rem;
+  width: 40%;
+}
+
+.motion-skeleton-chip {
+  height: 1.75rem;
+  width: 5.5rem;
+  border-radius: 999px;
 }
 
 html,
@@ -5354,11 +5501,18 @@ textarea {
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition:
+    transform 80ms ease-out,
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
-.ui-button:active {
-  transform: translateY(1px);
+.ui-button.primary:active,
+button.ui-button[type="submit"]:active,
+.hero-actions .ui-button:active {
+  transform: scale(0.97);
 }
 
 .ui-button:hover {
@@ -7840,6 +7994,7 @@ input {
 .navbar-link-dot {
   background: var(--color-danger);
   box-shadow: none;
+  animation: announcement-dot-pulse 400ms ease-out 1 both;
 }
 
 .navbar-user {
@@ -7907,10 +8062,22 @@ input {
   font-size: 0.92rem;
   font-weight: 600;
   box-shadow: none;
+  transition:
+    transform 80ms ease-out,
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .ui-button:hover {
   transform: none;
+}
+
+.ui-button.primary:active,
+button.ui-button[type="submit"]:active,
+.hero-actions .ui-button:active {
+  transform: scale(0.97);
 }
 
 .ui-button.primary {

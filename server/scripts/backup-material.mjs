@@ -11,6 +11,7 @@ import {
   pruneBackups,
   timestampLabel,
 } from "./pilot-backup/_common.mjs";
+import { uploadDirectoryToR2, uploadFileToR2 } from "./r2-backup.mjs";
 
 function resolveMaterialRoot() {
   const candidates = [
@@ -87,12 +88,34 @@ async function main() {
       snapshotDir,
       pathsFile: pathsFile ? path.resolve(pathsFile) : null,
       copiedFiles: pathsFile ? copiedFiles : null,
+      offMachineDestination: "cloudflare-r2://backups/material/",
     };
+    const manifestPath = path.join(snapshotDir, "backup-manifest.json");
     await fs.promises.writeFile(
-      path.join(snapshotDir, "backup-manifest.json"),
+      manifestPath,
       JSON.stringify(manifest, null, 2),
       "utf8",
     );
+
+    const uploadedFiles = await uploadDirectoryToR2({
+      localDir: snapshotDir,
+      keyPrefix: `material/${snapshotName}`,
+    });
+    await fs.promises.writeFile(
+      manifestPath,
+      JSON.stringify({
+        ...manifest,
+        remoteManifest: {
+          key: `material/${snapshotName}/backup-manifest.json`,
+        },
+        remoteFileCount: uploadedFiles.length,
+      }, null, 2),
+      "utf8",
+    );
+    await uploadFileToR2({
+      localPath: manifestPath,
+      key: `material/${snapshotName}/backup-manifest.json`,
+    });
 
     const entries = await collectEntries(outputDir, (name) => name.startsWith("material-backup-"));
     const retention = pruneBackups(entries, { keepRecent, keepWeekly });

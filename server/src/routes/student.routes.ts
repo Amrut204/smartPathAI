@@ -23,6 +23,7 @@ import {
   studentProfileCertificationSchema,
   studentProfileUnlockRequestSchema,
   reviewStudentProfileUnlockRequestSchema,
+  reviewStudentPlacementStatusSchema,
   leaderboardQuerySchema,
   pointsHistoryQuerySchema,
   tpoStudentListQuerySchema,
@@ -535,6 +536,27 @@ router.patch(
       actorRole: req.auth!.role,
       decision: body.decision,
       responseNote: body.responseNote,
+    });
+    res.json(successResponse(data));
+  }),
+);
+
+router.patch(
+  "/:studentId/placement-status",
+  authorizeRole("tpo", "admin"),
+  asyncHandler(async (req, res) => {
+    const body = reviewStudentPlacementStatusSchema.parse(req.body);
+    const data = await StudentService.reviewPlacementStatus({
+      tenantId: req.auth!.tenantId,
+      studentId: String(req.params.studentId),
+      actorUserId: req.auth!.userId,
+      actorRole: req.auth!.role,
+      isPlaced: body.isPlaced,
+      placedCompany: body.placedCompany,
+      placedRole: body.placedRole,
+      placedPackageLpa: body.placedPackageLpa,
+      sourceDriveId: body.sourceDriveId,
+      reason: body.reason,
     });
     res.json(successResponse(data));
   }),

@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { Button, Input, Select } from "../../components/ui";
 import { updateDriveResults } from "../../hooks/use-drives";
-import { reviewStudentUnlockRequest, useTpoStudentAudit, useTpoStudentById } from "../../hooks/use-tpo-students";
+import { reviewStudentPlacementStatus, reviewStudentUnlockRequest, useTpoStudentAudit, useTpoStudentById } from "../../hooks/use-tpo-students";
 
 const sections = [
   { id: "overview", label: "Overview" },
@@ -59,6 +59,15 @@ export default function TpoStudentDetailPage() {
   const [proofStatus, setProofStatus] = useState<string | null>(null);
   const [unlockReviewNote, setUnlockReviewNote] = useState("");
   const [unlockReviewBusy, setUnlockReviewBusy] = useState(false);
+  const [placementReviewBusy, setPlacementReviewBusy] = useState(false);
+  const [placementReviewDraft, setPlacementReviewDraft] = useState({
+    isPlaced: false,
+    placedCompany: "",
+    placedRole: "",
+    placedPackageLpa: "",
+    sourceDriveId: "",
+    reason: "",
+  });
   const [proofDraft, setProofDraft] = useState({
     offerLetterReference: "",
     offerLetterUrl: "",
@@ -93,6 +102,7 @@ export default function TpoStudentDetailPage() {
 
   const selectedDrive = data.driveParticipation.find((entry) => entry.driveId === selectedDriveId) ?? null;
   const unlockRequest = data.unlockRequest;
+  const placementStatus = data.placementStatus;
 
   const onSaveProof = async () => {
     if (!selectedDrive) {
@@ -147,6 +157,38 @@ export default function TpoStudentDetailPage() {
       setProofStatus(reviewError instanceof Error ? reviewError.message : "Unable to review unlock request");
     } finally {
       setUnlockReviewBusy(false);
+    }
+  };
+
+  const onSavePlacementStatus = async (nextPlaced: boolean) => {
+    setPlacementReviewBusy(true);
+    setProofStatus(null);
+    try {
+      await reviewStudentPlacementStatus({
+        studentId,
+        isPlaced: nextPlaced,
+        placedCompany: nextPlaced ? (placementReviewDraft.placedCompany || placementStatus.placedCompany || selectedDrive?.company || "").trim() : undefined,
+        placedRole: nextPlaced ? (placementReviewDraft.placedRole || placementStatus.placedRole || selectedDrive?.role || "").trim() : undefined,
+        placedPackageLpa: nextPlaced
+          ? (() => {
+              const raw = placementReviewDraft.placedPackageLpa || (placementStatus.placedPackageLpa ?? "").toString();
+              return raw ? Number(raw) : undefined;
+            })()
+          : undefined,
+        sourceDriveId: placementReviewDraft.sourceDriveId || placementStatus.sourceDriveId || selectedDrive?.driveId || undefined,
+        reason: placementReviewDraft.reason.trim(),
+      });
+      await mutate();
+      setPlacementReviewDraft((current) => ({
+        ...current,
+        reason: "",
+        isPlaced: nextPlaced,
+      }));
+      setProofStatus(nextPlaced ? "Placement summary updated." : "Placement summary cleared.");
+    } catch (placementError) {
+      setProofStatus(placementError instanceof Error ? placementError.message : "Unable to review placement summary");
+    } finally {
+      setPlacementReviewBusy(false);
     }
   };
 
@@ -248,6 +290,57 @@ export default function TpoStudentDetailPage() {
             <div>
               <h2>Offer Proof Tracker</h2>
               <p className="muted-text">Track placement outcomes and supporting proof without mixing this into student-owned profile fields.</p>
+            </div>
+          </div>
+          <div className="workspace-block" style={{ marginBottom: 16 }}>
+            <h3>Placement Summary</h3>
+            <p className="muted-text">
+              Current student-level placement state used for placed badges and future eligibility checks.
+            </p>
+            <dl className="workspace-definition-grid">
+              <div><dt>Placed</dt><dd>{placementStatus.isPlaced ? "Yes" : "No"}</dd></div>
+              <div><dt>Company</dt><dd>{placementStatus.placedCompany ?? "Not set"}</dd></div>
+              <div><dt>Role</dt><dd>{placementStatus.placedRole ?? "Not set"}</dd></div>
+              <div><dt>Package</dt><dd>{placementStatus.placedPackageLpa != null ? `${placementStatus.placedPackageLpa} LPA` : "Not set"}</dd></div>
+              <div><dt>Placed At</dt><dd>{formatDateTime(placementStatus.placedAt)}</dd></div>
+              <div><dt>Source Drive</dt><dd>{placementStatus.sourceDriveId ?? "Not set"}</dd></div>
+            </dl>
+            <div className="form-grid">
+              <label>
+                <span className="muted-text">Placed Company</span>
+                <Input value={placementReviewDraft.placedCompany || placementStatus.placedCompany || ""} onChange={(event) => setPlacementReviewDraft((current) => ({ ...current, placedCompany: event.target.value }))} />
+              </label>
+              <label>
+                <span className="muted-text">Placed Role</span>
+                <Input value={placementReviewDraft.placedRole || placementStatus.placedRole || ""} onChange={(event) => setPlacementReviewDraft((current) => ({ ...current, placedRole: event.target.value }))} />
+              </label>
+              <label>
+                <span className="muted-text">Placed Package (LPA)</span>
+                <Input type="number" min="0" step="0.1" value={placementReviewDraft.placedPackageLpa || (placementStatus.placedPackageLpa ?? "").toString()} onChange={(event) => setPlacementReviewDraft((current) => ({ ...current, placedPackageLpa: event.target.value }))} />
+              </label>
+              <label>
+                <span className="muted-text">Source Drive</span>
+                <Select value={placementReviewDraft.sourceDriveId || placementStatus.sourceDriveId || ""} onChange={(event) => setPlacementReviewDraft((current) => ({ ...current, sourceDriveId: event.target.value }))}>
+                  <option value="">Select source drive</option>
+                  {data.driveParticipation.map((entry) => (
+                    <option key={entry.driveId} value={entry.driveId}>
+                      {entry.company} {entry.role ? `(${entry.role})` : ""}
+                    </option>
+                  ))}
+                </Select>
+              </label>
+              <label style={{ gridColumn: "1 / -1" }}>
+                <span className="muted-text">Correction reason</span>
+                <Input value={placementReviewDraft.reason} onChange={(event) => setPlacementReviewDraft((current) => ({ ...current, reason: event.target.value }))} placeholder="Explain why this placement summary is being corrected." />
+              </label>
+            </div>
+            <div className="hero-actions">
+              <Button disabled={placementReviewBusy || placementReviewDraft.reason.trim().length < 5} onClick={() => onSavePlacementStatus(true)}>
+                Save placement summary
+              </Button>
+              <Button variant="secondary" disabled={placementReviewBusy || placementReviewDraft.reason.trim().length < 5} onClick={() => onSavePlacementStatus(false)}>
+                Clear placement summary
+              </Button>
             </div>
           </div>
           <div className="form-grid">

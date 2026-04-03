@@ -13,8 +13,10 @@ import {
   nowIso,
   parseFlag,
   pruneBackups,
+  resolveExpectedDriveApplicationCount,
   timestampLabel,
 } from "./pilot-backup/_common.mjs";
+import { uploadFileToR2 } from "./r2-backup.mjs";
 
 const gzipAsync = promisify(gzip);
 
@@ -71,6 +73,66 @@ async function exportCollectionsToJsonGzip({ mongoUri, dbName, archivePath }) {
   }
 }
 
+async function buildDriveApplicationCheckpoint({ mongoUri, dbName }) {
+  const client = new MongoClient(mongoUri);
+  await client.connect();
+
+  try {
+    const db = client.db(dbName);
+    const todayIso = new Date().toISOString().slice(0, 10);
+    const drives = await db.collection("drives").find(
+      {
+        deleted_at: null,
+        status: { $in: ["published", "upcoming", "active"] },
+        drive_date: { $gte: todayIso },
+      },
+      {
+        projection: {
+          _id: 0,
+          id: 1,
+          company: 1,
+          role: 1,
+          drive_date: 1,
+        },
+      },
+    ).sort({ drive_date: -1 }).limit(5).toArray();
+
+    if (drives.length === 0) {
+      return null;
+    }
+
+    const driveIds = drives.map((drive) => String(drive.id));
+    const counts = await db.collection("drive_results").aggregate([
+      {
+        $match: {
+          drive_id: { $in: driveIds },
+          status: { $in: ["eligible", "applied"] },
+          application_state: "applied",
+        },
+      },
+      {
+        $group: {
+          _id: "$drive_id",
+          applicationCount: { $sum: 1 },
+        },
+      },
+    ]).toArray();
+
+    const countMap = new Map(counts.map((row) => [String(row._id), Number(row.applicationCount ?? 0)]));
+    return resolveExpectedDriveApplicationCount(
+      drives.map((drive) => ({
+        driveId: String(drive.id),
+        company: String(drive.company ?? ""),
+        role: drive.role ? String(drive.role) : null,
+        driveDate: String(drive.drive_date ?? ""),
+        applicationCount: countMap.get(String(drive.id)) ?? 0,
+      })),
+    );
+  } finally {
+    await client.close();
+  }
+}
+
 async function main() {
   const argv = process.argv.slice(2);
   const dryRun = hasFlag(argv, "dry-run");
@@ -79,6 +141,7 @@ async function main() {
   const outputDir = path.resolve(parseFlag(argv, "output-dir", defaultBackupRoot("mongo")));
   const keepRecent = Number(parseFlag(argv, "keep-recent", "7")) || 7;
   const keepWeekly = Number(parseFlag(argv, "keep-weekly", "4")) || 4;
+  const checkpoint = await buildDriveApplicationCheckpoint({ mongoUri, dbName }).catch(() => null);
 
   let fileName = `mongo-backup-${dbName}-${timestampLabel()}.archive.gz`;
   const archivePath = path.join(outputDir, fileName);
@@ -130,8 +193,34 @@ async function main() {
     dbName,
     archivePath: finalArchivePath,
     backupMode,
+    offMachineDestination: "cloudflare-r2://backups/mongo/",
+    activeDriveApplicationCheckpoint: checkpoint,
   };
-  await fs.promises.writeFile(`${finalArchivePath}.json`, JSON.stringify(metadata, null, 2), "utf8");
+  const metadataPath = `${finalArchivePath}.json`;
+  await fs.promises.writeFile(metadataPath, JSON.stringify(metadata, null, 2), "utf8");
+
+  const uploadedArchive = await uploadFileToR2({
+    localPath: finalArchivePath,
+    key: `mongo/${path.basename(finalArchivePath)}`,
+    metadata: checkpoint?.driveId
+      ? {
+          checkpoint_drive_id: checkpoint.driveId,
+          checkpoint_count: String(checkpoint.applicationCount),
+        }
+      : undefined,
+  });
+  await fs.promises.writeFile(metadataPath, JSON.stringify({
+    ...metadata,
+    remoteArchive: uploadedArchive,
+    remoteMetadata: {
+      bucket: uploadedArchive.bucket,
+      key: `mongo/${path.basename(metadataPath)}`,
+    },
+  }, null, 2), "utf8");
+  const uploadedMetadata = await uploadFileToR2({
+    localPath: metadataPath,
+    key: `mongo/${path.basename(metadataPath)}`,
+  });
 
   const entries = await collectEntries(outputDir, (name) => name.startsWith(`mongo-backup-${dbName}-`) && (
     name.endsWith(".archive.gz")
@@ -166,6 +255,8 @@ async function main() {
   }
 
   console.log(`[${nowIso()}] mongo backup complete`);
+  console.log(`uploadedArchive=${uploadedArchive.bucket}/${uploadedArchive.key}`);
+  console.log(`uploadedMetadata=${uploadedMetadata.bucket}/${uploadedMetadata.key}`);
 }
 
 main().catch((error) => {

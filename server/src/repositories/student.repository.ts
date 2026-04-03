@@ -42,6 +42,16 @@ type StudentRecord = {
   full_name?: unknown;
   college_email?: unknown;
 };
+type PlacementStatusSummary = {
+  isPlaced: boolean;
+  placedAt: string | null;
+  placedCompany: string | null;
+  placedRole: string | null;
+  placedPackageLpa: number | null;
+  sourceDriveId: string | null;
+  correctionReason: string | null;
+  correctedAt: string | null;
+};
 const studyDocumentManifestStatusCache = new Map<string, string>();
 const studyDocumentContentCache = new Map<string, {
   status: string;
@@ -252,6 +262,39 @@ function normalizeLocalRelativePath(value: string | null | undefined) {
     .replace(/^material\//i, "")
     .replace(/^\/+/g, "")
     .toLowerCase();
+}
+
+function emptyPlacementStatus(): PlacementStatusSummary {
+  return {
+    isPlaced: false,
+    placedAt: null,
+    placedCompany: null,
+    placedRole: null,
+    placedPackageLpa: null,
+    sourceDriveId: null,
+    correctionReason: null,
+    correctedAt: null,
+  };
+}
+
+function normalizePlacementStatus(profileData: unknown): PlacementStatusSummary {
+  const record = profileData && typeof profileData === "object"
+    ? profileData as Record<string, unknown>
+    : {};
+  const raw = record.placementStatus && typeof record.placementStatus === "object"
+    ? record.placementStatus as Record<string, unknown>
+    : {};
+
+  return {
+    isPlaced: raw.isPlaced === true,
+    placedAt: raw.placedAt ? String(raw.placedAt) : null,
+    placedCompany: raw.placedCompany ? String(raw.placedCompany) : null,
+    placedRole: raw.placedRole ? String(raw.placedRole) : null,
+    placedPackageLpa: raw.placedPackageLpa === undefined || raw.placedPackageLpa === null ? null : Number(raw.placedPackageLpa),
+    sourceDriveId: raw.sourceDriveId ? String(raw.sourceDriveId) : null,
+    correctionReason: raw.correctionReason ? String(raw.correctionReason) : null,
+    correctedAt: raw.correctedAt ? String(raw.correctedAt) : null,
+  };
 }
 
 function readManifestLines(filePath: string) {
@@ -1458,6 +1501,159 @@ export const StudentRepository = {
     return this.getStudentProfile(params.tenantId, params.userId);
   },
 
+  async upsertPlacementStatusFromDriveResult(params: {
+    tenantId: string;
+    studentId: string;
+    driveId: string;
+    company: string;
+    role?: string | null;
+    packageLpa?: number | null;
+    placedAt: string;
+    actorUserId: string;
+  }) {
+    const db = await getMongoDb();
+    const existingStudent = await db.collection("students").findOne(
+      { tenant_id: params.tenantId, id: params.studentId },
+      { projection: { _id: 0, profile_data: 1 } },
+    );
+
+    if (!existingStudent) {
+      throw new AppError("STUDENT_NOT_FOUND", "Student not found", 404);
+    }
+
+    const existingProfileData = (existingStudent.profile_data ?? {}) as Record<string, unknown>;
+    const nextPlacementStatus = {
+      isPlaced: true,
+      placedAt: params.placedAt,
+      placedCompany: params.company,
+      placedRole: params.role ?? null,
+      placedPackageLpa: params.packageLpa ?? null,
+      sourceDriveId: params.driveId,
+      correctionReason: null,
+      correctedAt: null,
+    };
+
+    await db.collection("students").updateOne(
+      { tenant_id: params.tenantId, id: params.studentId },
+      {
+        $set: {
+          profile_data: {
+            ...existingProfileData,
+            placementStatus: nextPlacementStatus,
+          },
+          updated_at: params.placedAt,
+        },
+      },
+    );
+
+    await db.collection("student_placement_history").updateOne(
+      {
+        tenant_id: params.tenantId,
+        student_id: params.studentId,
+        source_drive_id: params.driveId,
+        status: "placed",
+      },
+      {
+        $set: {
+          company: params.company,
+          role: params.role ?? null,
+          package_lpa: params.packageLpa ?? null,
+          placed_at: params.placedAt,
+          updated_at: params.placedAt,
+          created_by: params.actorUserId,
+          status: "placed",
+        },
+        $setOnInsert: {
+          id: randomUUID(),
+          tenant_id: params.tenantId,
+          student_id: params.studentId,
+          source_drive_id: params.driveId,
+          created_at: params.placedAt,
+        },
+      },
+      { upsert: true },
+    );
+
+    return nextPlacementStatus;
+  },
+
+  async reviewPlacementStatus(params: {
+    tenantId: string;
+    studentId: string;
+    actorUserId: string;
+    isPlaced: boolean;
+    placedCompany?: string | null;
+    placedRole?: string | null;
+    placedPackageLpa?: number | null;
+    sourceDriveId?: string | null;
+    reason: string;
+  }) {
+    const db = await getMongoDb();
+    const now = new Date().toISOString();
+    const existingStudent = await db.collection("students").findOne(
+      { tenant_id: params.tenantId, id: params.studentId },
+      { projection: { _id: 0, profile_data: 1 } },
+    );
+
+    if (!existingStudent) {
+      throw new AppError("STUDENT_NOT_FOUND", "Student not found", 404);
+    }
+
+    const existingProfileData = (existingStudent.profile_data ?? {}) as Record<string, unknown>;
+    const placementStatus = params.isPlaced
+      ? {
+          isPlaced: true,
+          placedAt: now,
+          placedCompany: params.placedCompany ?? null,
+          placedRole: params.placedRole ?? null,
+          placedPackageLpa: params.placedPackageLpa ?? null,
+          sourceDriveId: params.sourceDriveId ?? null,
+          correctionReason: params.reason,
+          correctedAt: now,
+        }
+      : {
+          isPlaced: false,
+          placedAt: null,
+          placedCompany: null,
+          placedRole: null,
+          placedPackageLpa: null,
+          sourceDriveId: params.sourceDriveId ?? null,
+          correctionReason: params.reason,
+          correctedAt: now,
+        };
+
+    await db.collection("students").updateOne(
+      { tenant_id: params.tenantId, id: params.studentId },
+      {
+        $set: {
+          profile_data: {
+            ...existingProfileData,
+            placementStatus,
+          },
+          updated_at: now,
+        },
+      },
+    );
+
+    await db.collection("student_placement_history").insertOne({
+      id: randomUUID(),
+      tenant_id: params.tenantId,
+      student_id: params.studentId,
+      source_drive_id: params.sourceDriveId ?? null,
+      company: params.placedCompany ?? null,
+      role: params.placedRole ?? null,
+      package_lpa: params.placedPackageLpa ?? null,
+      placed_at: placementStatus.placedAt,
+      status: params.isPlaced ? "placed" : "corrected",
+      correction_reason: params.reason,
+      created_by: params.actorUserId,
+      created_at: now,
+      updated_at: now,
+    });
+
+    return normalizePlacementStatus({ placementStatus });
+  },
+
   async upsertStudentDriveDeclaration(params: {
     tenantId: string;
     studentId: string;
@@ -2394,6 +2590,7 @@ export const StudentRepository = {
       eligibleForUpcomingDrive?: boolean;
       isCertified?: boolean;
       hasResume?: boolean;
+      isPlaced?: boolean;
       isActive7d?: boolean;
       appliedRecently?: boolean;
       needsIntervention?: boolean;
@@ -2528,6 +2725,7 @@ export const StudentRepository = {
     const allItems = data.map((row) => {
       const user = userMap.get(String(row.user_id));
       const normalizedProfile = normalizeStudentProfileData(row.profile_data);
+      const placementStatus = normalizePlacementStatus(row.profile_data);
       const summary = buildStudentProfileSummary({
         student: row as Record<string, unknown>,
         user: {
@@ -2591,6 +2789,8 @@ export const StudentRepository = {
       let interventionLabel = "Stable";
       if (!hasResumeReady) {
         interventionLabel = "Resume missing";
+      } else if (placementStatus.isPlaced) {
+        interventionLabel = "Placed";
       } else if (!profileCertified) {
         interventionLabel = "Uncertified";
       } else if (!profileComplete) {
@@ -2608,6 +2808,8 @@ export const StudentRepository = {
       let primaryBlocker: string | null = null;
       if (!hasResumeReady) {
         primaryBlocker = "Resume missing";
+      } else if (placementStatus.isPlaced) {
+        primaryBlocker = "Already placed";
       } else if (!profileCertified) {
         primaryBlocker = "Profile certification pending";
       } else if (!profileComplete) {
@@ -2622,6 +2824,7 @@ export const StudentRepository = {
 
       let riskScore = 0;
       if (!hasResumeReady) riskScore += 30;
+      if (placementStatus.isPlaced) riskScore = Math.max(0, riskScore - 25);
       if (!profileCertified) riskScore += 25;
       if (!profileComplete) riskScore += 20;
       if (!isActive7d) riskScore += 15;
@@ -2629,7 +2832,7 @@ export const StudentRepository = {
       if ((recentMockAttempts14d === 0 || mockAvg < 55) && eligibleUpcomingDriveIds.size > 0) riskScore += 10;
       if (blockedUpcomingDriveIds.size > 0 && eligibleUpcomingDriveIds.size === 0) riskScore += 10;
       riskScore = Math.min(riskScore, 100);
-      const needsIntervention = riskScore > 0 || interventionLabel !== "Stable";
+      const needsIntervention = placementStatus.isPlaced ? false : riskScore > 0 || interventionLabel !== "Stable";
 
       return {
         id: studentId,
@@ -2655,6 +2858,7 @@ export const StudentRepository = {
         canAccessMockTests: summary.canAccessMockTests,
         isProfileCertified: profileCertified,
         isProfileLocked: declarationStatus.profileCertification.isLocked,
+        placementStatus,
         hasResumeReady,
         isActive7d,
         appliedRecently,
@@ -2724,6 +2928,7 @@ export const StudentRepository = {
       if (params.eligibleForUpcomingDrive !== undefined && (item.eligibleUpcomingDriveCount > 0) !== params.eligibleForUpcomingDrive) return false;
       if (params.isCertified !== undefined && item.isProfileCertified !== params.isCertified) return false;
       if (params.hasResume !== undefined && item.hasResumeReady !== params.hasResume) return false;
+      if (params.isPlaced !== undefined && item.placementStatus.isPlaced !== params.isPlaced) return false;
       if (params.isActive7d !== undefined && item.isActive7d !== params.isActive7d) return false;
       if (params.appliedRecently !== undefined && item.appliedRecently !== params.appliedRecently) return false;
       if (params.needsIntervention !== undefined && item.needsIntervention !== params.needsIntervention) return false;
@@ -2795,7 +3000,7 @@ export const StudentRepository = {
       throw new AppError("STUDENT_NOT_FOUND", "Student not found", 404);
     }
 
-    const [user, attempts, mastery, driveResults] = await Promise.all([
+    const [user, attempts, mastery, driveResults, placementHistory] = await Promise.all([
       db.collection("users").findOne(
         { tenant_id: tenantId, id: String(student.user_id) },
         { projection: { full_name: 1, email: 1 } },
@@ -2840,6 +3045,10 @@ export const StudentRepository = {
           },
         },
       ).sort({ updated_at: -1 }).toArray(),
+      db.collection("student_placement_history").find(
+        { tenant_id: tenantId, student_id: studentId },
+        { projection: { _id: 0 } },
+      ).sort({ created_at: -1 }).limit(20).toArray(),
     ]);
 
     const testIds = [...new Set(attempts.map((attempt) => String(attempt.test_id)))];
@@ -2886,6 +3095,19 @@ export const StudentRepository = {
       skills: (student.skills ?? []) as string[],
       readinessScore: Number(student.readiness_score ?? 0),
       profileData: (student.profile_data ?? {}) as Record<string, unknown>,
+      placementStatus: normalizePlacementStatus(student.profile_data),
+      placementHistory: placementHistory.map((entry) => ({
+        id: String(entry.id ?? ""),
+        status: String(entry.status ?? ""),
+        company: entry.company ? String(entry.company) : null,
+        role: entry.role ? String(entry.role) : null,
+        packageLpa: entry.package_lpa === undefined || entry.package_lpa === null ? null : Number(entry.package_lpa),
+        placedAt: entry.placed_at ? String(entry.placed_at) : null,
+        sourceDriveId: entry.source_drive_id ? String(entry.source_drive_id) : null,
+        correctionReason: entry.correction_reason ? String(entry.correction_reason) : null,
+        createdAt: String(entry.created_at ?? ""),
+        createdBy: entry.created_by ? String(entry.created_by) : null,
+      })),
       attempts: attempts.map((attempt) => ({
         id: String(attempt.id),
         testId: String(attempt.test_id),

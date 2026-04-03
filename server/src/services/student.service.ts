@@ -118,6 +118,24 @@ function buildMyProfileResponse(profile: Awaited<ReturnType<typeof StudentReposi
     recommendedFields: summary.recommendedFields,
     canAccessResources: summary.canAccessResources,
     canAccessMockTests: summary.canAccessMockTests,
+    placementStatus: (() => {
+      const profileData = profile.profile_data && typeof profile.profile_data === "object"
+        ? profile.profile_data as Record<string, unknown>
+        : {};
+      const raw = profileData.placementStatus && typeof profileData.placementStatus === "object"
+        ? profileData.placementStatus as Record<string, unknown>
+        : {};
+      return {
+        isPlaced: raw.isPlaced === true,
+        placedAt: raw.placedAt ? String(raw.placedAt) : null,
+        placedCompany: raw.placedCompany ? String(raw.placedCompany) : null,
+        placedRole: raw.placedRole ? String(raw.placedRole) : null,
+        placedPackageLpa: raw.placedPackageLpa === undefined || raw.placedPackageLpa === null ? null : Number(raw.placedPackageLpa),
+        sourceDriveId: raw.sourceDriveId ? String(raw.sourceDriveId) : null,
+        correctionReason: raw.correctionReason ? String(raw.correctionReason) : null,
+        correctedAt: raw.correctedAt ? String(raw.correctedAt) : null,
+      };
+    })(),
   };
 }
 
@@ -243,6 +261,62 @@ function groupEligibilityBlockers(reasons: string[]) {
     count,
     label: ELIGIBILITY_REASON_LABELS[code as keyof typeof ELIGIBILITY_REASON_LABELS] ?? code,
   }));
+}
+
+function getTenantPlacementPolicy(config: unknown) {
+  const tenantConfig = config && typeof config === "object"
+    ? config as Record<string, unknown>
+    : {};
+  const placementPolicy = tenantConfig.placementPolicy && typeof tenantConfig.placementPolicy === "object"
+    ? tenantConfig.placementPolicy as Record<string, unknown>
+    : {};
+
+  return {
+    excludePlacedStudentsByDefault: placementPolicy.excludePlacedStudentsByDefault === true,
+  };
+}
+
+async function evaluateEligibilityWithPlacementPolicy(params: {
+  tenantId: string;
+  criteria: {
+    minCgpa?: number;
+    maxBacklogs?: number;
+    maxActiveBacklogs?: number;
+    maxTotalBacklogs?: number;
+    branches?: string[];
+    minAttendance?: number;
+    excludePlacedStudents?: boolean;
+  };
+  student: {
+    cgpa: number;
+    activeBacklogs: number;
+    totalBacklogs: number;
+    branch: string;
+    attendancePct: number;
+  };
+  isPlaced: boolean;
+}) {
+  const tenant = await MongoAuthRepository.findTenantById(params.tenantId);
+  const placementPolicy = getTenantPlacementPolicy(tenant?.config);
+  const effectiveExcludePlacedStudents = placementPolicy.excludePlacedStudentsByDefault || params.criteria.excludePlacedStudents === true;
+  const evaluation = evaluateStudentEligibility(params.student, params.criteria);
+
+  if (!effectiveExcludePlacedStudents || !params.isPlaced) {
+    return {
+      ...evaluation,
+      effectiveExcludePlacedStudents,
+    };
+  }
+
+  const reasons = evaluation.reasons.includes("already_placed")
+    ? evaluation.reasons
+    : ["already_placed", ...evaluation.reasons];
+
+  return {
+    eligible: false,
+    reasons,
+    effectiveExcludePlacedStudents,
+  };
 }
 
 async function getLatestProfileUnlockRequest(tenantId: string, studentId: string) {
@@ -1192,15 +1266,16 @@ async function buildProfileExperience(profile: Awaited<ReturnType<typeof Student
   let resumeUnlockCount = 0;
 
   for (const drive of upcomingDrives) {
-    const evaluation = evaluateStudentEligibility(
-      {
+    const evaluation = await evaluateEligibilityWithPlacementPolicy({
+      tenantId,
+      student: {
         cgpa: Number(profile.cgpa ?? 0),
         activeBacklogs: Number(profile.backlogs ?? 0),
         totalBacklogs: Number((profile as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
         branch: String(profile.branch ?? ""),
         attendancePct: Number(profile.attendance_pct ?? 0),
       },
-      (drive.criteria ?? {}) as {
+      criteria: (drive.criteria ?? {}) as {
         minCgpa?: number;
         maxBacklogs?: number;
         maxActiveBacklogs?: number;
@@ -1209,7 +1284,8 @@ async function buildProfileExperience(profile: Awaited<ReturnType<typeof Student
         minAttendance?: number;
         excludePlacedStudents?: boolean;
       },
-    );
+      isPlaced: base.placementStatus.isPlaced,
+    });
 
     if (!evaluation.eligible) {
       evaluation.reasons.forEach((reason) => {
@@ -1651,15 +1727,16 @@ async function collectStudentDriveReadinessNotificationContext(params: {
   };
 
   for (const drive of drives) {
-    const evaluation = evaluateStudentEligibility(
-      {
+    const evaluation = await evaluateEligibilityWithPlacementPolicy({
+      tenantId: params.tenantId,
+      student: {
         cgpa: Number(student.cgpa ?? 0),
         activeBacklogs: Number(student.backlogs ?? 0),
         totalBacklogs: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
         branch: String(student.branch ?? ""),
         attendancePct: Number(student.attendance_pct ?? 0),
       },
-      (drive.criteria ?? {}) as {
+      criteria: (drive.criteria ?? {}) as {
         minCgpa?: number;
         maxBacklogs?: number;
         maxActiveBacklogs?: number;
@@ -1668,7 +1745,8 @@ async function collectStudentDriveReadinessNotificationContext(params: {
         minAttendance?: number;
         excludePlacedStudents?: boolean;
       },
-    );
+      isPlaced: params.profileResponse.placementStatus.isPlaced,
+    });
 
     if (!evaluation.eligible) continue;
 
@@ -1996,26 +2074,31 @@ export const StudentService = {
     });
     const profileCompletenessPct = profileSummary.profileCompleteness.pct;
     const driveResultMap = new Map(driveResults.map((item) => [String(item.drive_id), item]));
-    const eligibleUpcomingDrives = upcomingDrives.filter((drive) =>
-      evaluateStudentEligibility(
-        {
-          cgpa: Number(student.cgpa ?? 0),
-          activeBacklogs: Number(student.backlogs ?? 0),
-          totalBacklogs: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
-          branch: String(student.branch ?? ""),
-          attendancePct: Number(student.attendance_pct ?? 0),
-        },
-        (drive.criteria ?? {}) as {
-          minCgpa?: number;
-          maxBacklogs?: number;
-          maxActiveBacklogs?: number;
-          maxTotalBacklogs?: number;
-          branches?: string[];
-          minAttendance?: number;
-          excludePlacedStudents?: boolean;
-        },
-      ).eligible,
-    ).length;
+    const eligibilityChecks = await Promise.all(
+      upcomingDrives.map((drive) =>
+        evaluateEligibilityWithPlacementPolicy({
+          tenantId,
+          student: {
+            cgpa: Number(student.cgpa ?? 0),
+            activeBacklogs: Number(student.backlogs ?? 0),
+            totalBacklogs: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
+            branch: String(student.branch ?? ""),
+            attendancePct: Number(student.attendance_pct ?? 0),
+          },
+          criteria: (drive.criteria ?? {}) as {
+            minCgpa?: number;
+            maxBacklogs?: number;
+            maxActiveBacklogs?: number;
+            maxTotalBacklogs?: number;
+            branches?: string[];
+            minAttendance?: number;
+            excludePlacedStudents?: boolean;
+          },
+          isPlaced: Boolean((student.profile_data as Record<string, unknown> | undefined)?.placementStatus && ((student.profile_data as Record<string, unknown>).placementStatus as Record<string, unknown>).isPlaced === true),
+        }),
+      ),
+    );
+    const eligibleUpcomingDrives = eligibilityChecks.filter((item) => item.eligible).length;
 
     return {
       studentName: String(user?.full_name ?? "Student"),
@@ -2092,17 +2175,18 @@ export const StudentService = {
       : [];
     const resultMap = new Map(results.map((item) => [String(item.drive_id), item]));
 
-    return drives.map((drive) => {
+    return Promise.all(drives.map(async (drive) => {
       const lifecycle = normalizeDriveLifecycle(drive.status);
-      const evaluation = evaluateStudentEligibility(
-        {
+      const evaluation = await evaluateEligibilityWithPlacementPolicy({
+        tenantId,
+        student: {
           cgpa: Number(student.cgpa ?? 0),
           activeBacklogs: Number(student.backlogs ?? 0),
           totalBacklogs: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
           branch: String(student.branch ?? ""),
           attendancePct: Number(student.attendance_pct ?? 0),
         },
-        (drive.criteria ?? {}) as {
+        criteria: (drive.criteria ?? {}) as {
           minCgpa?: number;
           maxBacklogs?: number;
           maxActiveBacklogs?: number;
@@ -2111,7 +2195,8 @@ export const StudentService = {
           minAttendance?: number;
           excludePlacedStudents?: boolean;
         },
-      );
+        isPlaced: profileExperience.placementStatus.isPlaced,
+      });
       const row = resultMap.get(String(drive.id));
       const isReleased = Boolean(row?.result_released_at);
       const applicationState = String(row?.application_state ?? (row?.status === "applied" ? "applied" : "not_applied"));
@@ -2188,7 +2273,7 @@ export const StudentService = {
           finalVerdict: evaluation.eligible ? "eligible" : "not_eligible",
           blockingReasons: evaluation.reasons.map((reason) => ({
             code: reason,
-            label: ELIGIBILITY_REASON_LABELS[reason],
+            label: ELIGIBILITY_REASON_LABELS[reason as keyof typeof ELIGIBILITY_REASON_LABELS] ?? reason,
           })),
           advisoryNotes: evaluation.eligible
             ? ["You match the current drive criteria."]
@@ -2204,7 +2289,7 @@ export const StudentService = {
         },
         reasons: evaluation.reasons.map((reason) => ({
           code: reason,
-          label: ELIGIBILITY_REASON_LABELS[reason],
+          label: ELIGIBILITY_REASON_LABELS[reason as keyof typeof ELIGIBILITY_REASON_LABELS] ?? reason,
         })),
         criteria: {
           minCgpa: Number(drive.criteria?.minCgpa ?? 0),
@@ -2213,7 +2298,7 @@ export const StudentService = {
           maxTotalBacklogs: Number(drive.criteria?.maxTotalBacklogs ?? 0),
           branches: Array.isArray(drive.criteria?.branches) ? drive.criteria.branches : [],
           minAttendance: Number(drive.criteria?.minAttendance ?? 0),
-          excludePlacedStudents: Boolean(drive.criteria?.excludePlacedStudents),
+          excludePlacedStudents: Boolean(evaluation.effectiveExcludePlacedStudents),
         },
         myStatus: String(row?.status ?? "not_computed"),
         applicationState,
@@ -2236,7 +2321,7 @@ export const StudentService = {
           profileCertified,
         },
       };
-    });
+    }));
   },
 
   async getDriveDeclarationPreview(tenantId: string, userId: string, driveId: string) {
@@ -2263,16 +2348,18 @@ export const StudentService = {
       excludePlacedStudents?: boolean;
     };
 
-    const evaluation = evaluateStudentEligibility(
-      {
+    const evaluation = await evaluateEligibilityWithPlacementPolicy({
+      tenantId,
+      criteria,
+      student: {
         cgpa: Number(student.cgpa ?? 0),
         activeBacklogs: Number(student.backlogs ?? 0),
         totalBacklogs: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
         branch: String(student.branch ?? ""),
         attendancePct: Number(student.attendance_pct ?? 0),
       },
-      criteria,
-    );
+      isPlaced: myProfile.placementStatus.isPlaced,
+    });
 
     return {
       driveId: String(drive.id),
@@ -2283,7 +2370,7 @@ export const StudentService = {
       eligible: evaluation.eligible,
       reasons: evaluation.reasons.map((reason) => ({
         code: reason,
-        label: ELIGIBILITY_REASON_LABELS[reason],
+        label: ELIGIBILITY_REASON_LABELS[reason as keyof typeof ELIGIBILITY_REASON_LABELS] ?? reason,
       })),
       criteria: {
         minCgpa: criteria.minCgpa ?? null,
@@ -2291,7 +2378,7 @@ export const StudentService = {
         maxTotalBacklogs: criteria.maxTotalBacklogs ?? null,
         minAttendance: criteria.minAttendance ?? null,
         branches: Array.isArray(criteria.branches) ? criteria.branches : [],
-        excludePlacedStudents: criteria.excludePlacedStudents ?? false,
+        excludePlacedStudents: evaluation.effectiveExcludePlacedStudents,
       },
       studentValues: {
         cgpa: Number(student.cgpa ?? 0),
@@ -2312,10 +2399,12 @@ export const StudentService = {
     driveId: string;
     confirmDeclaration: boolean;
   }) {
+    const drive = await DriveRepository.getDriveById(params.tenantId, params.driveId);
     const preview = await this.getDriveDeclarationPreview(params.tenantId, params.userId, params.driveId);
     const profile = await StudentRepository.getStudentProfile(params.tenantId, params.userId);
     const student = await StudentRepository.getStudentByUserId(params.tenantId, params.userId);
-    const drive = await DriveRepository.getDriveById(params.tenantId, params.driveId);
+    const todayIso = new Date().toISOString().slice(0, 10);
+    const driveDate = String(drive.driveDate ?? "");
 
     if (!params.confirmDeclaration) {
       throw new AppError("DECLARATION_CONFIRMATION_REQUIRED", "Confirm the declaration before applying to this drive.", 400);
@@ -2334,6 +2423,10 @@ export const StudentService = {
         field: "eligibility",
         message: reason.label,
       })));
+    }
+
+    if (driveDate && driveDate < todayIso) {
+      throw new AppError("DRIVE_DEADLINE_PASSED", "The application deadline for this drive has already passed.", 409);
     }
 
     if (normalizeDriveLifecycle(drive.status) !== "published") {
@@ -3739,6 +3832,7 @@ export const StudentService = {
       eligibleForUpcomingDrive?: boolean;
       isCertified?: boolean;
       hasResume?: boolean;
+      isPlaced?: boolean;
       isActive7d?: boolean;
       appliedRecently?: boolean;
       needsIntervention?: boolean;
@@ -3828,6 +3922,40 @@ export const StudentService = {
     },
   ) {
     return StudentRepository.updateStudentAcademicForTpo(tenantId, studentId, updates);
+  },
+
+  async reviewPlacementStatus(params: {
+    tenantId: string;
+    studentId: string;
+    actorUserId: string;
+    actorRole: string;
+    isPlaced: boolean;
+    placedCompany?: string | null;
+    placedRole?: string | null;
+    placedPackageLpa?: number | null;
+    sourceDriveId?: string | null;
+    reason: string;
+  }) {
+    const updatedPlacementStatus = await StudentRepository.reviewPlacementStatus(params);
+    await AuditLogService.log({
+      tenantId: params.tenantId,
+      actorUserId: params.actorUserId,
+      actorRole: params.actorRole,
+      eventType: "student_placement_status_reviewed",
+      metadata: {
+        studentId: params.studentId,
+        isPlaced: params.isPlaced,
+        placedCompany: params.placedCompany ?? null,
+        placedRole: params.placedRole ?? null,
+        sourceDriveId: params.sourceDriveId ?? null,
+        reason: params.reason,
+      },
+    });
+
+    return {
+      placementStatus: updatedPlacementStatus,
+      updatedStudent: await this.getStudentByIdForTpo(params.tenantId, params.studentId),
+    };
   },
 
   parseCsvPreview(csv: string) {

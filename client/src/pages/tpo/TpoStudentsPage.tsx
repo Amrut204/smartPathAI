@@ -8,8 +8,8 @@ type PageMode = "all" | "ops";
 type SavedViewId = "all" | "ready_but_inactive" | "eligible_but_not_applied" | "missing_resume" | "uncertified" | "incomplete_profile" | "needs_mock_push" | "academically_blocked";
 type SortBy = "cgpa" | "created_at" | "readiness_score" | "profile_completeness" | "risk_score" | "upcoming_drive_impact" | "activity";
 
-const ADVANCED_FILTER_KEYS = ["prn", "attendanceMin", "attendanceMax", "totalHistoricalBacklogsMin", "totalHistoricalBacklogsMax", "profileCompletenessMin", "profileCompletenessMax", "missingResume", "waitingOnStudent", "canAccessResources", "canAccessMockTests", "targetRole", "preferredLocation", "willingToRelocate", "readinessMin", "readinessMax", "eligibleForUpcomingDrive", "isCertified", "hasResume", "isActive7d", "appliedRecently", "needsIntervention"] as const;
-const FILTER_KEYS = ["q", "mode", "view", "batch", "branch", "prn", "cgpaMin", "cgpaMax", "readinessMin", "readinessMax", "attendanceMin", "attendanceMax", "backlogsMin", "backlogsMax", "totalHistoricalBacklogsMin", "totalHistoricalBacklogsMax", "profileCompletenessMin", "profileCompletenessMax", "missingResume", "waitingOnStudent", "canAccessResources", "canAccessMockTests", "targetRole", "preferredLocation", "willingToRelocate", "eligibleForUpcomingDrive", "isCertified", "hasResume", "isActive7d", "appliedRecently", "needsIntervention", "sortBy", "sortDir"] as const;
+const ADVANCED_FILTER_KEYS = ["prn", "attendanceMin", "attendanceMax", "totalHistoricalBacklogsMin", "totalHistoricalBacklogsMax", "profileCompletenessMin", "profileCompletenessMax", "missingResume", "waitingOnStudent", "canAccessResources", "canAccessMockTests", "targetRole", "preferredLocation", "willingToRelocate", "readinessMin", "readinessMax", "eligibleForUpcomingDrive", "isCertified", "hasResume", "isPlaced", "isActive7d", "appliedRecently", "needsIntervention"] as const;
+const FILTER_KEYS = ["q", "mode", "view", "batch", "branch", "prn", "cgpaMin", "cgpaMax", "readinessMin", "readinessMax", "attendanceMin", "attendanceMax", "backlogsMin", "backlogsMax", "totalHistoricalBacklogsMin", "totalHistoricalBacklogsMax", "profileCompletenessMin", "profileCompletenessMax", "missingResume", "waitingOnStudent", "canAccessResources", "canAccessMockTests", "targetRole", "preferredLocation", "willingToRelocate", "eligibleForUpcomingDrive", "isCertified", "hasResume", "isPlaced", "isActive7d", "appliedRecently", "needsIntervention", "sortBy", "sortDir"] as const;
 const SAVED_VIEW_PARAM_KEYS = ["view", "eligibleForUpcomingDrive", "isCertified", "hasResume", "isActive7d", "appliedRecently", "needsIntervention", "profileCompletenessMin", "profileCompletenessMax", "sortBy", "sortDir"] as const;
 const SAVED_VIEWS: Array<{ id: SavedViewId; label: string; description: string }> = [
   { id: "ready_but_inactive", label: "Ready but inactive", description: "Profile-ready students who need a push now." },
@@ -85,8 +85,8 @@ function applySavedViewPreset(next: URLSearchParams, viewId: SavedViewId) {
 }
 
 function matchesSavedView(student: TpoStudentRow, viewId: SavedViewId) {
-  if (viewId === "ready_but_inactive") return student.hasResumeReady && student.isProfileCertified && student.profileCompletenessPct >= 100 && !student.isActive7d;
-  if (viewId === "eligible_but_not_applied") return student.eligibleUpcomingDriveCount > 0 && !student.appliedRecently;
+  if (viewId === "ready_but_inactive") return !student.placementStatus.isPlaced && student.hasResumeReady && student.isProfileCertified && student.profileCompletenessPct >= 100 && !student.isActive7d;
+  if (viewId === "eligible_but_not_applied") return !student.placementStatus.isPlaced && student.eligibleUpcomingDriveCount > 0 && !student.appliedRecently;
   if (viewId === "missing_resume") return !student.hasResumeReady;
   if (viewId === "uncertified") return !student.isProfileCertified;
   if (viewId === "incomplete_profile") return student.profileCompletenessPct < 100;
@@ -97,6 +97,9 @@ function matchesSavedView(student: TpoStudentRow, viewId: SavedViewId) {
 
 function statusBadges(student: TpoStudentRow) {
   const badges: Array<{ label: string; variant: "default" | "success" | "warning" | "danger" }> = [];
+  if (student.placementStatus.isPlaced) {
+    badges.push({ label: `Placed${student.placementStatus.placedCompany ? ` - ${student.placementStatus.placedCompany}` : ""}`, variant: "success" });
+  }
   badges.push({ label: student.hasResumeReady ? "Resume ready" : "Resume missing", variant: student.hasResumeReady ? "success" : "warning" });
   badges.push({ label: student.isProfileCertified ? "Certified" : "Uncertified", variant: student.isProfileCertified ? "success" : "warning" });
   badges.push({ label: student.isActive7d ? "Active in 7d" : "Inactive in 7d", variant: student.isActive7d ? "success" : "danger" });
@@ -183,6 +186,7 @@ export default function TpoStudentsPage() {
     eligibleForUpcomingDrive: getBooleanParam(searchParams, "eligibleForUpcomingDrive"),
     isCertified: getBooleanParam(searchParams, "isCertified"),
     hasResume: getBooleanParam(searchParams, "hasResume"),
+    isPlaced: getBooleanParam(searchParams, "isPlaced"),
     isActive7d: getBooleanParam(searchParams, "isActive7d"),
     appliedRecently: getBooleanParam(searchParams, "appliedRecently"),
     needsIntervention: getBooleanParam(searchParams, "needsIntervention"),
@@ -241,6 +245,7 @@ export default function TpoStudentsPage() {
     if (query.profileCompletenessMin !== undefined) chips.push({ key: "profileCompletenessMin", label: `Profile >= ${query.profileCompletenessMin}%` });
     if (query.profileCompletenessMax !== undefined) chips.push({ key: "profileCompletenessMax", label: `Profile <= ${query.profileCompletenessMax}%` });
     if (query.hasResume !== undefined) chips.push({ key: "hasResume", label: query.hasResume ? "Resume ready" : "Resume missing" });
+    if (query.isPlaced !== undefined) chips.push({ key: "isPlaced", label: query.isPlaced ? "Placed" : "Unplaced" });
     if (query.isCertified !== undefined) chips.push({ key: "isCertified", label: query.isCertified ? "Certified" : "Uncertified" });
     if (query.isActive7d !== undefined) chips.push({ key: "isActive7d", label: query.isActive7d ? "Active in 7d" : "Inactive in 7d" });
     if (query.eligibleForUpcomingDrive !== undefined) chips.push({ key: "eligibleForUpcomingDrive", label: query.eligibleForUpcomingDrive ? "Eligible upcoming drive" : "No eligible upcoming drive" });
@@ -278,7 +283,7 @@ export default function TpoStudentsPage() {
 
   const onExportSelected = () => {
     if (selectedStudents.length === 0) return;
-    downloadCsv("tpo-selected-students.csv", [["Name", "Email", "PRN", "Roll Number", "Branch", "Batch", "Readiness", "Profile %", "Resume", "Certified", "Active 7d", "Eligible Upcoming", "Blocked Upcoming", "Primary Blocker", "Intervention"], ...selectedStudents.map((student) => [student.fullName, student.email, student.prn, student.rollNumber, student.branch, student.batch, String(student.readinessScore), String(student.profileCompletenessPct), student.hasResumeReady ? "Yes" : "No", student.isProfileCertified ? "Yes" : "No", student.isActive7d ? "Yes" : "No", String(student.eligibleUpcomingDriveCount), String(student.blockedUpcomingDriveCount), student.primaryBlocker ?? "", student.interventionLabel])]);
+    downloadCsv("tpo-selected-students.csv", [["Name", "Email", "PRN", "Roll Number", "Branch", "Batch", "Placed", "Placed Company", "Readiness", "Profile %", "Resume", "Certified", "Active 7d", "Eligible Upcoming", "Blocked Upcoming", "Primary Blocker", "Intervention"], ...selectedStudents.map((student) => [student.fullName, student.email, student.prn, student.rollNumber, student.branch, student.batch, student.placementStatus.isPlaced ? "Yes" : "No", student.placementStatus.placedCompany ?? "", String(student.readinessScore), String(student.profileCompletenessPct), student.hasResumeReady ? "Yes" : "No", student.isProfileCertified ? "Yes" : "No", student.isActive7d ? "Yes" : "No", String(student.eligibleUpcomingDriveCount), String(student.blockedUpcomingDriveCount), student.primaryBlocker ?? "", student.interventionLabel])]);
   };
 
   const quickMetrics = useMemo(() => ({
@@ -416,6 +421,14 @@ export default function TpoStudentsPage() {
             <label>
               Readiness Max
               <Input type="number" min="0" max="100" value={getStringParam(searchParams, "readinessMax")} onChange={(event) => updateParams({ readinessMax: event.target.value || null })} />
+            </label>
+            <label>
+              Placement
+              <Select value={getStringParam(searchParams, "isPlaced")} onChange={(event) => updateParams({ isPlaced: event.target.value || null })}>
+                <option value="">Any</option>
+                <option value="true">Placed</option>
+                <option value="false">Unplaced</option>
+              </Select>
             </label>
             <label>
               Target Role

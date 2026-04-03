@@ -39,6 +39,7 @@ export type AuditEventType =
   | "drive_exported"
   | "drive_result_email_resent"
   | "student_profile_unlock_reviewed"
+  | "student_placement_status_reviewed"
   | "communication_sent"
   | "announcement_published"
   | "admin_singleton_cleanup"
@@ -56,7 +57,8 @@ export type AuditEventType =
   | "admin_ops_resource_created"
   | "admin_ops_resource_updated"
   | "admin_ops_integrations_updated"
-  | "admin_ops_email_settings_updated";
+  | "admin_ops_email_settings_updated"
+  | "admin_ops_placement_policy_updated";
 
 export const AuditLogService = {
   async log(params: {

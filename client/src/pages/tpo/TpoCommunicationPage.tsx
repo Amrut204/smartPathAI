@@ -15,7 +15,7 @@ import {
   useCommunicationTemplates,
 } from "../../hooks/use-communication";
 import { useDrives } from "../../hooks/use-drives";
-import { updateTenantEmailSettings, useTenantSettings } from "../../hooks/use-tenant";
+import { updateTenantEmailSettings, updateTenantPlacementPolicy, useTenantSettings } from "../../hooks/use-tenant";
 
 type CommunicationMode = "email" | "announcements";
 type MessagePreset = "drive-announcement" | "eligible-reminder" | "profile-completion" | "mock-test" | "custom";
@@ -138,6 +138,7 @@ export default function TpoCommunicationPage() {
   const [maxRecipients, setMaxRecipients] = useState("200");
   const [eligibleOnly, setEligibleOnly] = useState(true);
   const [showSenderSettings, setShowSenderSettings] = useState(false);
+  const [showPlacementSettings, setShowPlacementSettings] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [previewBusy, setPreviewBusy] = useState(false);
@@ -147,6 +148,7 @@ export default function TpoCommunicationPage() {
   const [senderFromName, setSenderFromName] = useState(tenant?.config?.emailSettings?.fromName ?? "");
   const [senderFromEmail, setSenderFromEmail] = useState(tenant?.config?.emailSettings?.fromEmail ?? "");
   const [senderReplyToEmail, setSenderReplyToEmail] = useState(tenant?.config?.emailSettings?.replyToEmail ?? "");
+  const [excludePlacedStudentsByDefault, setExcludePlacedStudentsByDefault] = useState(tenant?.config?.placementPolicy?.excludePlacedStudentsByDefault === true);
   const [announcementTitle, setAnnouncementTitle] = useState("");
   const [announcementMessage, setAnnouncementMessage] = useState("");
   const [announcementPriority, setAnnouncementPriority] = useState<AnnouncementPriority>("important");
@@ -173,6 +175,10 @@ export default function TpoCommunicationPage() {
     setSenderFromEmail((current) => current || tenant.config.emailSettings?.fromEmail || "");
     setSenderReplyToEmail((current) => current || tenant.config.emailSettings?.replyToEmail || "");
   }, [tenant]);
+
+  useEffect(() => {
+    setExcludePlacedStudentsByDefault(tenant?.config?.placementPolicy?.excludePlacedStudentsByDefault === true);
+  }, [tenant?.config?.placementPolicy?.excludePlacedStudentsByDefault]);
 
   useEffect(() => {
     setTemplateId("");
@@ -351,6 +357,20 @@ export default function TpoCommunicationPage() {
     }
   };
 
+  const onSavePlacementPolicy = async () => {
+    setSenderBusy(true);
+    setStatus(null);
+    try {
+      await updateTenantPlacementPolicy({ excludePlacedStudentsByDefault });
+      setStatus("Placement policy saved.");
+      setShowPlacementSettings(false);
+    } catch (policyError) {
+      setStatus(policyError instanceof Error ? policyError.message : "Unable to save placement policy");
+    } finally {
+      setSenderBusy(false);
+    }
+  };
+
   return (
     <section className="tpo-communication-shell">
       <header className="tpo-communication-header">
@@ -358,9 +378,14 @@ export default function TpoCommunicationPage() {
           <h1>Communication</h1>
         </div>
         {mode === "email" ? (
-          <Button variant="ghost" onClick={() => setShowSenderSettings((current) => !current)}>
-            {showSenderSettings ? "Hide sender" : "Sender"}
-          </Button>
+          <div className="hero-actions">
+            <Button variant="ghost" onClick={() => setShowPlacementSettings((current) => !current)}>
+              {showPlacementSettings ? "Hide placement policy" : "Placement policy"}
+            </Button>
+            <Button variant="ghost" onClick={() => setShowSenderSettings((current) => !current)}>
+              {showSenderSettings ? "Hide sender" : "Sender"}
+            </Button>
+          </div>
         ) : null}
       </header>
 
@@ -386,6 +411,31 @@ export default function TpoCommunicationPage() {
           </div>
           <div className="hero-actions">
             <Button variant="secondary" disabled={senderBusy} onClick={onSaveSenderSettings}>
+              {senderBusy ? "Saving..." : "Save"}
+            </Button>
+          </div>
+        </section>
+      ) : null}
+
+      {mode === "email" && showPlacementSettings ? (
+        <section className="tpo-communication-panel">
+          <div className="form-grid tpo-communication-form">
+            <label>
+              Placed student participation
+              <Select
+                value={excludePlacedStudentsByDefault ? "blocked" : "allowed"}
+                onChange={(event) => setExcludePlacedStudentsByDefault(event.target.value === "blocked")}
+              >
+                <option value="allowed">Allow placed students unless a drive blocks them</option>
+                <option value="blocked">Block placed students by default</option>
+              </Select>
+            </label>
+          </div>
+          <p className="muted-text">
+            This is the tenant-wide default used by drive eligibility. Individual drives can still explicitly exclude already placed students.
+          </p>
+          <div className="hero-actions">
+            <Button variant="secondary" disabled={senderBusy} onClick={onSavePlacementPolicy}>
               {senderBusy ? "Saving..." : "Save"}
             </Button>
           </div>

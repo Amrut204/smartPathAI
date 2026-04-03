@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useMemo, useState, type MouseEvent } from "react";
 
 import { PilotFeedbackStrip } from "../../components/composites/PilotFeedbackStrip";
-import { Badge, Button, Card, Select, Spinner } from "../../components/ui";
+import { Badge, Button, Card, Select } from "../../components/ui";
 import { isClientFeatureEnabled } from "../../config/features";
 import { useStudentDashboard } from "../../hooks/use-student-dashboard";
 import {
@@ -12,6 +12,36 @@ import {
   useMockTestCompanyOptions,
   useMockTestTopicOptions,
 } from "../../hooks/use-mock-tests";
+
+function MockTestCardSkeleton() {
+  return (
+    <Card className="mock-discovery-card motion-skeleton-card" aria-hidden="true">
+      <div className="mock-discovery-head">
+        <div style={{ display: "grid", gap: 10, width: "100%" }}>
+          <div className="motion-skeleton-line is-title" />
+          <div className="motion-skeleton-line is-body-short" />
+        </div>
+        <div style={{ display: "grid", gap: 8, justifyItems: "end" }}>
+          <div className="motion-skeleton-chip" />
+          <div className="motion-skeleton-chip" />
+        </div>
+      </div>
+      <div className="mock-discovery-stats">
+        <div>
+          <span>Duration</span>
+          <div className="motion-skeleton-line is-stat" />
+        </div>
+        <div>
+          <span>Attempts</span>
+          <div className="motion-skeleton-line is-stat" />
+        </div>
+      </div>
+      <div className="mock-discovery-footer">
+        <div className="motion-skeleton-line is-body-short" />
+      </div>
+    </Card>
+  );
+}
 
 function difficultyTone(difficulty: string) {
   const value = difficulty.toLowerCase();
@@ -307,7 +337,22 @@ export default function MockTestsPage() {
         </section>
       ) : null}
 
-      {isLoadingInitial ? <div className="student-workspace-panel app-state-card"><Spinner /><p className="muted-text">Loading tests...</p></div> : null}
+      {isLoadingInitial ? (
+        <section className="mock-section">
+          <div className="mock-section-header">
+            <div>
+              <p className="resources-section-eyebrow">Loading</p>
+              <h2>Preparing your mock library</h2>
+              <p>We are loading the guided test catalog and the broader practice library.</p>
+            </div>
+          </div>
+          <div className="mock-discovery-grid">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <MockTestCardSkeleton key={`mock-skeleton-${index}`} />
+            ))}
+          </div>
+        </section>
+      ) : null}
       {error ? <div className="student-workspace-panel app-state-card app-state-card-error"><h2>Unable to load tests</h2></div> : null}
 
       {showExpandedMockCatalog && !isLoadingInitial && !error && curatedCatalog?.preDriveBundle ? (

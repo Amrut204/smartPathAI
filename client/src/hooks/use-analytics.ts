@@ -142,6 +142,7 @@ export function useTpoControlCenter() {
   return useSWR<{
     summary: {
       totalStudents: number;
+      totalDrives: number;
       activeStudents7d: number;
       avgReadiness: number;
       upcomingDrives: number;
@@ -150,6 +151,7 @@ export function useTpoControlCenter() {
       resourceOpens7d: number;
       studentsUsingResources7d: number;
       avgResourceReadingMinutes7d: number;
+      outreachStartedCount: number;
     };
     trends: {
       readinessTrend: Array<{ date: string; avgScore: number }>;

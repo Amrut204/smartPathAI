@@ -23,6 +23,7 @@ import {
   adminRetryJob,
   adminSaveEmailSettings,
   adminSaveIntegrations,
+  adminSavePlacementPolicy,
   adminUpdateMockTest,
   adminUpdateMockTestQuestions,
   adminUpdateResource,
@@ -34,6 +35,7 @@ import {
   useAdminJobs,
   useAdminMockTestQuestions,
   useAdminMockTests,
+  useAdminPlacementPolicy,
   useAdminResources,
   useAdminStudents,
   useAdminTenants,
@@ -183,6 +185,7 @@ export default function AdminHubPage() {
   const jobs = useAdminJobs(activeTab === "jobs" ? selectedTenantId : null);
   const integrations = useAdminIntegrations(activeTab === "settings" ? selectedTenantId : null);
   const emailSettings = useAdminEmailSettings(activeTab === "settings" ? selectedTenantId : null);
+  const placementPolicy = useAdminPlacementPolicy(activeTab === "settings" ? selectedTenantId : null);
 
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -210,6 +213,7 @@ export default function AdminHubPage() {
     notes: "",
   });
   const [emailForm, setEmailForm] = useState({ fromName: "", fromEmail: "", replyToEmail: "" });
+  const [placementPolicyForm, setPlacementPolicyForm] = useState({ excludePlacedStudentsByDefault: false });
   const [collegeForm, setCollegeForm] = useState({
     collegeName: "",
     tpoFullName: "",
@@ -273,6 +277,13 @@ export default function AdminHubPage() {
       replyToEmail: emailSettings.data.replyToEmail ?? "",
     });
   }, [emailSettings.data]);
+
+  useEffect(() => {
+    if (!placementPolicy.data) return;
+    setPlacementPolicyForm({
+      excludePlacedStudentsByDefault: placementPolicy.data.excludePlacedStudentsByDefault,
+    });
+  }, [placementPolicy.data]);
 
   useEffect(() => {
     if (!selectedTenantId || !selectedTestId || !tests.data) return;
@@ -973,6 +984,37 @@ export default function AdminHubPage() {
               await adminSaveEmailSettings({ tenantId, fromName: emailForm.fromName || null, fromEmail: emailForm.fromEmail || null, replyToEmail: emailForm.replyToEmail || null });
               setMessage(`Email settings saved for ${selectedTenantName}.`, "success");
             })} disabled={busyAction === "email-settings"}>Save Email Settings</Button></div>
+          </section>
+
+          <section className="admin-ops-section">
+            <h2>Placement Policy</h2>
+            <div className="form-grid">
+              <label>
+                <span className="muted-text">Placed student participation</span>
+                <Select
+                  value={placementPolicyForm.excludePlacedStudentsByDefault ? "blocked" : "allowed"}
+                  onChange={(event) => setPlacementPolicyForm({
+                    excludePlacedStudentsByDefault: event.target.value === "blocked",
+                  })}
+                >
+                  <option value="allowed">Allow placed students unless a drive blocks them</option>
+                  <option value="blocked">Block placed students by default</option>
+                </Select>
+              </label>
+              <div style={{ gridColumn: "1 / -1" }}>
+                <p className="muted-text">
+                  This is the tenant-wide default. Individual drives can still explicitly exclude already placed students when required.
+                </p>
+              </div>
+            </div>
+            <div className="hero-actions"><Button onClick={() => runAction("placement-policy", async () => {
+              const tenantId = requireTenant();
+              await adminSavePlacementPolicy({
+                tenantId,
+                excludePlacedStudentsByDefault: placementPolicyForm.excludePlacedStudentsByDefault,
+              });
+              setMessage(`Placement policy saved for ${selectedTenantName}.`, "success");
+            })} disabled={busyAction === "placement-policy"}>Save Placement Policy</Button></div>
           </section>
 
           <section className="admin-ops-section">

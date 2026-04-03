@@ -16,7 +16,7 @@ import {
   useTopicSearch,
 } from "../../hooks/use-resources";
 import { useStudentDashboard } from "../../hooks/use-student-dashboard";
-import { Button, Card, Input, Skeleton } from "../../components/ui";
+import { Button, Card, Input } from "../../components/ui";
 import { finishPerfMark, startPerfMark } from "../../utils/perf";
 
 const RESOURCE_FILTERS: Array<{ id: ResourceListFilter; label: string }> = [
@@ -130,16 +130,20 @@ function ResourceCard({ resource, emphasizeReasons = false }: { resource: Resour
 
 function ResourceCardSkeleton() {
   return (
-    <Card className="resource-visual-card">
+    <Card className="resource-visual-card motion-skeleton-card" aria-hidden="true">
       <div className="resource-card-media resource-card-media-fallback">
-        <Skeleton size="md" />
+        <div className="motion-skeleton-media" />
       </div>
       <div className="resource-card-body">
         <div style={{ display: "grid", gap: 10 }}>
-          <Skeleton size="md" />
-          <Skeleton size="sm" />
-          <Skeleton size="sm" />
-          <Skeleton size="md" />
+          <div className="motion-skeleton-line is-title" />
+          <div className="motion-skeleton-line is-body" />
+          <div className="motion-skeleton-line is-body-short" />
+          <div style={{ display: "flex", gap: 8 }}>
+            <div className="motion-skeleton-chip" />
+            <div className="motion-skeleton-chip" />
+          </div>
+          <div className="motion-skeleton-line is-stat" />
         </div>
       </div>
     </Card>

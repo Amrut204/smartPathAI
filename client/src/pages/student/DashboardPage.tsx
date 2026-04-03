@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 
 import { Badge, Button, Modal, Skeleton, Tabs } from "../../components/ui";
 import { isClientFeatureEnabled } from "../../config/features";
@@ -88,6 +88,7 @@ export default function DashboardPage() {
   const [announcementBusy, setAnnouncementBusy] = useState<string | null>(null);
   const [expandedAnnouncementId, setExpandedAnnouncementId] = useState<string | null>(null);
   const [orientationDismissed, setOrientationDismissed] = useState(false);
+  const [animateMetricCards, setAnimateMetricCards] = useState(false);
 
   useEffect(() => {
     startPerfMark("student-dashboard:usable");
@@ -99,6 +100,12 @@ export default function DashboardPage() {
       finishPerfMark("student-dashboard:usable");
     }
   }, [data]);
+
+  useEffect(() => {
+    if (!isLoading && data && !animateMetricCards) {
+      setAnimateMetricCards(true);
+    }
+  }, [animateMetricCards, data, isLoading]);
 
   const stableStudentId = profileData?.seededProfile.collegeEmail || data?.studentName || "student";
   const studentStorageKey = `pilot-orientation-dismissed:${stableStudentId}`;
@@ -258,6 +265,13 @@ export default function DashboardPage() {
     };
   })();
   const nextAction = sharedNextActions[0] ?? fallbackNextAction;
+  const dashboardMetricItems = [
+    { label: "CGPA", value: cgpa.toFixed(2) },
+    { label: "Profile", value: `${profileCompletenessPct}%` },
+    ...(showAdvancedMetrics ? [{ label: "Study 7d", value: `${studyHours7d.toFixed(1)}h` }] : []),
+    { label: "Mocks 7d", value: String(mockTestsTaken7d) },
+    { label: "Eligible Drives", value: String(eligibleUpcomingDrives) },
+  ];
 
   return (
     <section className="student-workspace-shell">
@@ -353,11 +367,16 @@ export default function DashboardPage() {
         </div>
 
         <div className="student-workspace-metrics student-dashboard-snapshot-stats">
-          <div><span>CGPA</span><strong>{cgpa.toFixed(2)}</strong></div>
-          <div><span>Profile</span><strong>{profileCompletenessPct}%</strong></div>
-          {showAdvancedMetrics ? <div><span>Study 7d</span><strong>{studyHours7d.toFixed(1)}h</strong></div> : null}
-          <div><span>Mocks 7d</span><strong>{mockTestsTaken7d}</strong></div>
-          <div><span>Eligible Drives</span><strong>{eligibleUpcomingDrives}</strong></div>
+          {dashboardMetricItems.map((item, index) => (
+            <div
+              key={item.label}
+              className={animateMetricCards ? "motion-stagger-enter" : undefined}
+              style={animateMetricCards ? ({ "--motion-delay": `${Math.min(index, 3) * 60}ms` } as CSSProperties) : undefined}
+            >
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+            </div>
+          ))}
         </div>
       </section>
 

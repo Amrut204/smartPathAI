@@ -34,6 +34,7 @@ import {
   adminUpdateMockTestSchema,
   adminUpdateResourceSchema,
   adminUpdateTenantEmailSettingsSchema,
+  adminUpdateTenantPlacementPolicySchema,
   adminUpdateTpoSchema,
   adminUploadResourceFieldsSchema,
   adminUpsertMockQuestionsSchema,
@@ -612,6 +613,30 @@ router.put(
       fromName: data.fromName,
       fromEmail: data.fromEmail,
       replyToEmail: data.replyToEmail,
+    });
+    res.json(successResponse(data));
+  }),
+);
+
+router.get(
+  "/placement-policy",
+  asyncHandler(async (req, res) => {
+    const query = adminTenantQuerySchema.parse(req.query);
+    const data = await AdminOpsService.getTenantPlacementPolicy(query.tenantId);
+    res.json(successResponse(data));
+  }),
+);
+
+router.put(
+  "/placement-policy",
+  asyncHandler(async (req, res) => {
+    const body = adminUpdateTenantPlacementPolicySchema.parse(req.body);
+    const data = await AdminOpsService.saveTenantPlacementPolicy({
+      tenantId: body.tenantId,
+      excludePlacedStudentsByDefault: body.excludePlacedStudentsByDefault,
+    });
+    await logAdminAudit(req, body.tenantId, "admin_ops_placement_policy_updated", {
+      excludePlacedStudentsByDefault: data.excludePlacedStudentsByDefault,
     });
     res.json(successResponse(data));
   }),

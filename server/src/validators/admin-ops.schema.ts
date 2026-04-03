@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { createMockTestSchema, publishMockTestSchema, upsertMockQuestionsSchema } from "./mock-test.schema.js";
 import { csvUploadConfirmSchema, csvUploadPreviewSchema } from "./student.schema.js";
-import { updateTenantEmailSettingsSchema } from "./tenant.schema.js";
+import { updateTenantEmailSettingsSchema, updateTenantPlacementPolicySchema } from "./tenant.schema.js";
 
 const optionalQueryBooleanSchema = z.preprocess((value) => {
   if (value === undefined || value === null || value === "") return undefined;
@@ -201,5 +201,9 @@ export const adminRetryJobSchema = z.object({
 });
 
 export const adminUpdateTenantEmailSettingsSchema = updateTenantEmailSettingsSchema.extend({
+  tenantId: z.string().trim().min(1).max(120),
+});
+
+export const adminUpdateTenantPlacementPolicySchema = updateTenantPlacementPolicySchema.extend({
   tenantId: z.string().trim().min(1).max(120),
 });
