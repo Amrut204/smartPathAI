@@ -3,11 +3,20 @@ import { Link } from "react-router-dom";
 import { useSWRConfig } from "swr";
 
 import { Badge, Button, Modal, Tabs } from "../../components/ui";
-import { usePilotStudentDrives } from "../../hooks/use-pilot-dashboard";
+import { usePilotStudentDrives, type PilotStudentDrive } from "../../hooks/use-pilot-dashboard";
 import { withdrawFromDrive } from "../../hooks/use-drives";
+import { useOnlineStatus } from "../../hooks/use-online-status";
 import { withCsrfHeader } from "../../utils/csrf";
 
 type DriveView = "eligible" | "all" | "attention";
+type DriveContinuityState = {
+  kind: "applied" | "withdrawn";
+  driveId: string;
+  company: string;
+  role: string | null;
+  prepBundle: PilotStudentDrive["prepBundle"];
+};
+type DrivePrepBundle = NonNullable<PilotStudentDrive["prepBundle"]>;
 
 const driveTabs: Array<{ id: DriveView; label: string }> = [
   { id: "eligible", label: "Eligible" },
@@ -18,11 +27,13 @@ const driveTabs: Array<{ id: DriveView; label: string }> = [
 export default function DrivesPage() {
   const { data, error, isLoading } = usePilotStudentDrives();
   const { mutate } = useSWRConfig();
+  const isOnline = useOnlineStatus();
   const [activeView, setActiveView] = useState<DriveView>("eligible");
   const [busyDriveId, setBusyDriveId] = useState<string | null>(null);
   const [withdrawingDriveId, setWithdrawingDriveId] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const [statusTone, setStatusTone] = useState<"success" | "error">("success");
+  const [continuityState, setContinuityState] = useState<DriveContinuityState | null>(null);
   const [previewDriveId, setPreviewDriveId] = useState<string | null>(null);
   const [previewStatus, setPreviewStatus] = useState<string | null>(null);
   const [preview, setPreview] = useState<null | {
@@ -94,8 +105,13 @@ export default function DrivesPage() {
   };
 
   const openPreview = async (driveId: string) => {
+    if (!isOnline) {
+      showStatus("You are offline. Reconnect before opening the application preview.", "error");
+      return;
+    }
     setBusyDriveId(driveId);
     showStatus("", "success");
+    setContinuityState(null);
     setPreviewStatus(null);
     try {
       const response = await fetch(`/api/v1/students/me/drives/${driveId}/declaration-preview`, {
@@ -112,7 +128,14 @@ export default function DrivesPage() {
       setPreview(payload.data);
       setPreviewDriveId(driveId);
     } catch (e) {
-      showStatus(e instanceof Error ? e.message : "Unable to load drive declaration", "error");
+      showStatus(
+        !isOnline
+          ? "Connection lost while loading the application preview. Reconnect and try again."
+          : e instanceof Error
+            ? e.message
+            : "Unable to load drive declaration",
+        "error",
+      );
     } finally {
       setBusyDriveId(null);
     }
@@ -120,9 +143,15 @@ export default function DrivesPage() {
 
   const applyToDrive = async () => {
     if (!previewDriveId) return;
+    if (!isOnline) {
+      setPreviewStatus("You are offline. Reconnect before applying. Your current drive details are still here.");
+      showStatus("You are offline. Reconnect before applying to this drive.", "error");
+      return;
+    }
     setBusyDriveId(previewDriveId);
     setPreviewStatus(null);
     try {
+      const driveContext = data.find((drive) => drive.id === previewDriveId) ?? null;
       const response = await fetch(`/api/v1/students/me/drives/${previewDriveId}/apply`, {
         method: "POST",
         credentials: "include",
@@ -134,6 +163,13 @@ export default function DrivesPage() {
         throw new Error(payload.error?.message ?? "Unable to apply");
       }
       showStatus(`Applied to ${preview?.company ?? "the drive"}.`);
+      setContinuityState({
+        kind: "applied",
+        driveId: previewDriveId,
+        company: preview?.company ?? driveContext?.company ?? "the drive",
+        role: driveContext?.role ?? null,
+        prepBundle: driveContext?.prepBundle ?? null,
+      });
       setPreview(null);
       setPreviewDriveId(null);
       setPreviewStatus(null);
@@ -141,7 +177,11 @@ export default function DrivesPage() {
       await mutate("/api/v1/students/me/pilot-dashboard");
       await mutate("/api/v1/students/me");
     } catch (e) {
-      const message = e instanceof Error ? e.message : "Unable to apply";
+      const message = !isOnline
+        ? "Connection lost while applying. Reconnect and try again. No application was submitted yet."
+        : e instanceof Error
+          ? e.message
+          : "Unable to apply";
       setPreviewStatus(message);
       showStatus(message, "error");
     } finally {
@@ -150,15 +190,34 @@ export default function DrivesPage() {
   };
 
   const onWithdraw = async (driveId: string, company: string) => {
+    if (!isOnline) {
+      showStatus("You are offline. Reconnect before withdrawing from this drive.", "error");
+      return;
+    }
     setWithdrawingDriveId(driveId);
     showStatus("", "success");
     try {
+      const driveContext = data.find((drive) => drive.id === driveId) ?? null;
       await withdrawFromDrive(driveId);
       showStatus(`Withdrawn from ${company}. You can reapply until registration closes if you remain eligible.`);
+      setContinuityState({
+        kind: "withdrawn",
+        driveId,
+        company,
+        role: driveContext?.role ?? null,
+        prepBundle: driveContext?.prepBundle ?? null,
+      });
       await mutate("/api/v1/students/me/drives");
       await mutate("/api/v1/students/me/pilot-dashboard");
     } catch (e) {
-      showStatus(e instanceof Error ? e.message : "Unable to withdraw from drive", "error");
+      showStatus(
+        !isOnline
+          ? "Connection lost while withdrawing. Reconnect and try again."
+          : e instanceof Error
+            ? e.message
+            : "Unable to withdraw from drive",
+        "error",
+      );
     } finally {
       setWithdrawingDriveId(null);
     }
@@ -173,7 +232,72 @@ export default function DrivesPage() {
         </div>
       </header>
 
+      {!isOnline ? (
+        <div className="student-profile-inline-alert is-warning">
+          <strong>You are offline.</strong>
+          <span>Drive applications and withdrawals need a live connection. Reconnect and then continue from this page.</span>
+        </div>
+      ) : null}
+
       {status ? <p className={statusTone === "success" ? "success-text" : "error-text"}>{status}</p> : null}
+
+      {continuityState ? (
+        <section className="student-continuity-banner">
+          <div className="student-continuity-copy">
+            <span className="resources-kicker">
+              {continuityState.kind === "applied" ? "Application submitted" : "Application withdrawn"}
+            </span>
+            <h2>
+              {continuityState.kind === "applied"
+                ? `Keep preparing for ${continuityState.company}${continuityState.role ? ` - ${continuityState.role}` : ""}.`
+                : `You stepped back from ${continuityState.company}${continuityState.role ? ` - ${continuityState.role}` : ""}.`}
+            </h2>
+            <p>
+              {continuityState.kind === "applied"
+                ? "Your application is in. The fastest way to use that momentum is to keep practicing the company pattern and revision material tied to this drive."
+                : "You can still stay sharp while you decide whether to reapply. Use the linked prep bundle to keep your readiness moving."}
+            </p>
+          </div>
+          {continuityState.prepBundle ? (
+            <div className="student-continuity-grid">
+                    <div>
+                      <span>Mock tests</span>
+                      {continuityState.prepBundle.mockTests.length > 0 ? (
+                          <ul className="student-continuity-list">
+                    {continuityState.prepBundle.mockTests.slice(0, 2).map((test: DrivePrepBundle["mockTests"][number]) => (
+                      <li key={`${continuityState.driveId}_${test.id}`}>
+                        <Link to={`/mock-tests/${test.id}`}>{test.title}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="muted-text">No mock bundle yet.</p>
+                )}
+              </div>
+                    <div>
+                      <span>Resources</span>
+                      {continuityState.prepBundle.resources.length > 0 ? (
+                          <ul className="student-continuity-list">
+                    {continuityState.prepBundle.resources.slice(0, 2).map((resource: DrivePrepBundle["resources"][number]) => (
+                      <li key={`${continuityState.driveId}_${resource.id}`}>
+                        <Link to={`/resources/view/${encodeURIComponent(resource.id)}`}>{resource.title}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="muted-text">No resource bundle yet.</p>
+                )}
+              </div>
+            </div>
+          ) : null}
+          <div className="hero-actions">
+            <Link to="/dashboard" className="ui-button secondary">Open dashboard</Link>
+            <Link to="/mock-tests" className="ui-button">
+              {continuityState.kind === "applied" ? "Continue prep" : "Open mock tests"}
+            </Link>
+          </div>
+        </section>
+      ) : null}
 
       <div className="student-workspace-switcher">
         <Tabs tabs={driveTabs} activeId={activeView} onChange={(id) => setActiveView(id as DriveView)} />

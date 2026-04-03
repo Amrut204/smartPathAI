@@ -1,8 +1,8 @@
 import { Link, useParams } from "react-router-dom";
 import { useMemo, useState } from "react";
 
-import { Badge, Button, Input, Select, Table } from "../../components/ui";
-import { computeDriveEligibility, updateDrive, useDriveById, type DriveSummary } from "../../hooks/use-drives";
+import { Badge, Button, ConfirmActionModal, Input, Select, Table } from "../../components/ui";
+import { computeDriveEligibility, updateDrive, useDriveAudit, useDriveById, type DriveSummary } from "../../hooks/use-drives";
 
 const lifecycleOptions: Array<{ value: DriveSummary["status"]; label: string }> = [
   { value: "draft", label: "Draft" },
@@ -22,6 +22,7 @@ const sections = [
   { id: "status", label: "Status" },
   { id: "snapshots", label: "Snapshot History" },
   { id: "students", label: "Students" },
+  { id: "audit", label: "Audit" },
 ] as const;
 
 type SectionId = (typeof sections)[number]["id"];
@@ -32,13 +33,37 @@ function formatDate(value: string | null | undefined) {
   return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
 }
 
+function formatEventLabel(value: string) {
+  return value
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function renderAuditSummary(metadata: Record<string, unknown>) {
+  const parts = [
+    typeof metadata.exportType === "string" ? `Export: ${metadata.exportType}` : null,
+    typeof metadata.filename === "string" ? `File: ${metadata.filename}` : null,
+    typeof metadata.recipientCount === "number" ? `Recipients: ${metadata.recipientCount}` : null,
+    typeof metadata.driveId === "string" ? `Drive: ${metadata.driveId}` : null,
+  ].filter(Boolean);
+
+  return parts.length > 0 ? parts.join(" | ") : "No additional metadata captured.";
+}
+
 export default function TpoDriveDetailPage() {
   const { driveId } = useParams();
   const { data, isLoading, error, mutate } = useDriveById(driveId ?? null);
+  const { data: auditEntries } = useDriveAudit(driveId ?? null, 12);
   const [activeSection, setActiveSection] = useState<SectionId>("overview");
   const [busy, setBusy] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [statusTone, setStatusTone] = useState<"success" | "error">("success");
+  const [pendingExport, setPendingExport] = useState<null | {
+    title: string;
+    href: string;
+    message: string;
+  }>(null);
   const [metadata, setMetadata] = useState({
     sectorOrIndustry: "",
     ctcMinLpa: "",
@@ -149,6 +174,13 @@ export default function TpoDriveDetailPage() {
     }
   };
 
+  const confirmExport = () => {
+    if (!pendingExport) return;
+    window.location.assign(pendingExport.href);
+    showMessage(`${pendingExport.title} started for ${data.company}.`);
+    setPendingExport(null);
+  };
+
   return (
     <section className="workspace-shell tpo-drive-detail-page">
       <header className="workspace-header">
@@ -186,17 +218,43 @@ export default function TpoDriveDetailPage() {
         <Button disabled={busy} onClick={onComputeEligibility}>
           {busy ? "Computing..." : "Compute Eligibility"}
         </Button>
-        <a href={`/api/v1/drives/${data.id}/export?format=csv`}>
-          <Button variant="secondary" disabled={!data.eligibility?.latestVersion}>
-            Export Eligible CSV
-          </Button>
-        </a>
-        <a href={`/api/v1/drives/${data.id}/export?format=pdf`}>
-          <Button variant="secondary">Download Summary PDF</Button>
-        </a>
-        <a href={`/api/v1/drives/${data.id}/export/resumes`}>
-          <Button variant="secondary">Export Resumes</Button>
-        </a>
+        <Button
+          variant="secondary"
+          disabled={!data.eligibility?.latestVersion}
+          onClick={() =>
+            setPendingExport({
+              title: "Eligible CSV export",
+              href: `/api/v1/drives/${data.id}/export?format=csv`,
+              message: `This will export the latest eligible-student list for ${data.company}.`,
+            })
+          }
+        >
+          Export Eligible CSV
+        </Button>
+        <Button
+          variant="secondary"
+          onClick={() =>
+            setPendingExport({
+              title: "Drive summary PDF",
+              href: `/api/v1/drives/${data.id}/export?format=pdf`,
+              message: `This will generate the current drive summary PDF for ${data.company}.`,
+            })
+          }
+        >
+          Download Summary PDF
+        </Button>
+        <Button
+          variant="secondary"
+          onClick={() =>
+            setPendingExport({
+              title: "Resume export",
+              href: `/api/v1/drives/${data.id}/export/resumes`,
+              message: `This will download the current resume bundle for applicants in ${data.company}.`,
+            })
+          }
+        >
+          Export Resumes
+        </Button>
         <Link to={`/tpo/drives/${data.id}/results`}>
           <Button variant="secondary">Manage Results</Button>
         </Link>
@@ -477,6 +535,51 @@ export default function TpoDriveDetailPage() {
           </div>
         </div>
       ) : null}
+
+      {activeSection === "audit" ? (
+        <div className="workspace-panel">
+          <div className="workspace-panel-header">
+            <div>
+              <h2>Audit Trail</h2>
+              <p className="muted-text">Trace eligibility, exports, releases, and other sensitive drive actions in one place.</p>
+            </div>
+          </div>
+          <div className="tpo-action-list">
+            {(auditEntries ?? []).length === 0 ? (
+              <p className="muted-text">No audit events are available for this drive yet.</p>
+            ) : (
+              auditEntries!.map((entry) => (
+                <div key={entry.id} className="tpo-action-row">
+                  <div>
+                    <div className="tpo-action-row-head">
+                      <strong>{formatEventLabel(entry.eventType)}</strong>
+                      <span className="muted-text">{formatDate(entry.createdAt)}</span>
+                    </div>
+                    <p className="muted-text">
+                      Actor: {entry.actorRole ?? "unknown"}
+                      {entry.path ? ` | ${entry.path}` : ""}
+                    </p>
+                    <p className="muted-text">{renderAuditSummary(entry.metadata)}</p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      ) : null}
+
+      <ConfirmActionModal
+        open={Boolean(pendingExport)}
+        onClose={() => setPendingExport(null)}
+        onConfirm={confirmExport}
+        title={pendingExport?.title ?? "Confirm export"}
+        message={pendingExport?.message ?? "Confirm this export action."}
+        confirmLabel="Start export"
+        details={[
+          `Drive: ${data.company}${data.role ? ` - ${data.role}` : ""}`,
+          `Eligible count: ${data.eligibleCount}`,
+        ]}
+      />
     </section>
   );
 }

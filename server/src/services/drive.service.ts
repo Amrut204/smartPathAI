@@ -11,6 +11,9 @@ import { AppError } from "../middleware/error-handler.js";
 import { StudentActivityService } from "./student-activity.service.js";
 import { AuditLogService } from "./audit-log.service.js";
 import { CommunicationService } from "./communication.service.js";
+import { getMongoDb } from "../utils/mongodb.js";
+import { buildStudentDeclarationStatus } from "../utils/student-declaration.js";
+import { normalizeStudentProfileData } from "../utils/student-profile.js";
 
 const VALID_TRANSITIONS: Record<DriveLifecycle, DriveLifecycle[]> = {
   draft: ["published", "cancelled"],
@@ -55,6 +58,180 @@ const VALID_OUTCOME_TRANSITIONS: Record<DriveOutcome, DriveOutcome[]> = {
 
 function formatDriveName(drive: { company: string; role: string | null }) {
   return `${drive.company}${drive.role ? ` - ${drive.role}` : ""}`;
+}
+
+function daysUntilDrive(dateIso: string): number | null {
+  if (!dateIso) return null;
+  const target = new Date(dateIso);
+  if (Number.isNaN(target.getTime())) return null;
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  target.setHours(0, 0, 0, 0);
+  return Math.round((target.getTime() - now.getTime()) / 86_400_000);
+}
+
+async function loadEligibleStudentNotificationState(tenantId: string, studentIds: string[]) {
+  const ids = [...new Set(studentIds.map(String).filter(Boolean))];
+  if (ids.length === 0) {
+    return new Map<string, { hasResume: boolean; isCertified: boolean }>();
+  }
+
+  const db = await getMongoDb();
+  const students = await db.collection("students").find(
+    { tenant_id: tenantId, id: { $in: ids } },
+    { projection: { _id: 0, id: 1, roll_number: 1, profile_data: 1 } },
+  ).toArray();
+
+  return new Map(
+    students.map((student) => {
+      const normalizedProfile = normalizeStudentProfileData(student.profile_data);
+      const declarationStatus = buildStudentDeclarationStatus({
+        student: student as Record<string, unknown>,
+        user: { full_name: "", email: "" },
+      });
+      return [
+        String(student.id),
+        {
+          hasResume: Boolean(normalizedProfile.resumeDriveWebLink || normalizedProfile.resumeUrl),
+          isCertified: declarationStatus.profileCertification.isCertified,
+        },
+      ] as const;
+    }),
+  );
+}
+
+async function publishDriveStudentAnnouncements(params: {
+  tenantId: string;
+  senderId: string;
+  driveId: string;
+  company: string;
+  role: string | null;
+  driveDate: string;
+  eligibleStudents: Array<{ id: string }>;
+  previousResults: ResultNotificationRow[];
+}) {
+  const driveName = formatDriveName({ company: params.company, role: params.role });
+  const daysRemaining = daysUntilDrive(params.driveDate);
+  const previousEligibleIds = new Set(
+    params.previousResults
+      .filter((row) => row.status === "eligible" || row.applicationState === "applied")
+      .map((row) => row.id),
+  );
+  const appliedStudentIds = new Set(
+    params.previousResults
+      .filter((row) => row.applicationState === "applied")
+      .map((row) => row.id),
+  );
+  const stateMap = await loadEligibleStudentNotificationState(
+    params.tenantId,
+    params.eligibleStudents.map((student) => student.id),
+  );
+
+  const newlyEligibleReadyIds: string[] = [];
+  const newlyEligibleResumeBlockedIds: string[] = [];
+  const newlyEligibleCertificationBlockedIds: string[] = [];
+  const newlyEligibleFullyBlockedIds: string[] = [];
+  const deadlineReadyIds: string[] = [];
+  const deadlineBlockedIds: string[] = [];
+
+  for (const student of params.eligibleStudents) {
+    const state = stateMap.get(student.id) ?? { hasResume: false, isCertified: false };
+    const wasEligibleBefore = previousEligibleIds.has(student.id);
+    const canApplyNow = state.hasResume && state.isCertified;
+    const isApplied = appliedStudentIds.has(student.id);
+
+    if (!wasEligibleBefore) {
+      if (canApplyNow) newlyEligibleReadyIds.push(student.id);
+      else if (!state.hasResume && !state.isCertified) newlyEligibleFullyBlockedIds.push(student.id);
+      else if (!state.hasResume) newlyEligibleResumeBlockedIds.push(student.id);
+      else newlyEligibleCertificationBlockedIds.push(student.id);
+    }
+
+    if (daysRemaining !== null && daysRemaining <= 3 && !isApplied) {
+      if (canApplyNow) deadlineReadyIds.push(student.id);
+      else deadlineBlockedIds.push(student.id);
+    }
+  }
+
+  if (newlyEligibleReadyIds.length > 0) {
+    await CommunicationService.publishSystemAnnouncementToStudents({
+      tenantId: params.tenantId,
+      senderId: params.senderId,
+      studentIds: newlyEligibleReadyIds,
+      systemKey: `drive-eligible-ready:${params.driveId}`,
+      title: `You are eligible for ${driveName}`,
+      message: `You now match the current criteria for ${driveName}. Open Drives and apply while registration is still open.`,
+      priority: "important",
+      relatedDriveId: params.driveId,
+    });
+  }
+
+  if (newlyEligibleResumeBlockedIds.length > 0) {
+    await CommunicationService.publishSystemAnnouncementToStudents({
+      tenantId: params.tenantId,
+      senderId: params.senderId,
+      studentIds: newlyEligibleResumeBlockedIds,
+      systemKey: `drive-eligible-resume-blocked:${params.driveId}`,
+      title: `Upload your resume for ${driveName}`,
+      message: `You match the criteria for ${driveName}, but you still need to upload your resume before you can apply.`,
+      priority: "important",
+      relatedDriveId: params.driveId,
+    });
+  }
+
+  if (newlyEligibleCertificationBlockedIds.length > 0) {
+    await CommunicationService.publishSystemAnnouncementToStudents({
+      tenantId: params.tenantId,
+      senderId: params.senderId,
+      studentIds: newlyEligibleCertificationBlockedIds,
+      systemKey: `drive-eligible-certification-blocked:${params.driveId}`,
+      title: `Certify your profile for ${driveName}`,
+      message: `You match the criteria for ${driveName}, but you still need to certify your profile before you can apply.`,
+      priority: "important",
+      relatedDriveId: params.driveId,
+    });
+  }
+
+  if (newlyEligibleFullyBlockedIds.length > 0) {
+    await CommunicationService.publishSystemAnnouncementToStudents({
+      tenantId: params.tenantId,
+      senderId: params.senderId,
+      studentIds: newlyEligibleFullyBlockedIds,
+      systemKey: `drive-eligible-fully-blocked:${params.driveId}`,
+      title: `Complete your profile steps for ${driveName}`,
+      message: `You match the criteria for ${driveName}, but you still need both a certified profile and an uploaded resume before you can apply.`,
+      priority: "important",
+      relatedDriveId: params.driveId,
+    });
+  }
+
+  if (deadlineReadyIds.length > 0) {
+    await CommunicationService.publishSystemAnnouncementToStudents({
+      tenantId: params.tenantId,
+      senderId: params.senderId,
+      studentIds: deadlineReadyIds,
+      systemKey: `drive-deadline-ready:${params.driveId}`,
+      title: `Deadline approaching for ${driveName}`,
+      message: `This drive closes soon${daysRemaining === null ? "." : ` in ${daysRemaining} day(s).`} Your profile is ready, so apply now if you want this opportunity.`,
+      priority: "urgent",
+      relatedDriveId: params.driveId,
+      showPopup: true,
+    });
+  }
+
+  if (deadlineBlockedIds.length > 0) {
+    await CommunicationService.publishSystemAnnouncementToStudents({
+      tenantId: params.tenantId,
+      senderId: params.senderId,
+      studentIds: deadlineBlockedIds,
+      systemKey: `drive-deadline-blocked:${params.driveId}`,
+      title: `Deadline approaching: action needed for ${driveName}`,
+      message: `This drive closes soon${daysRemaining === null ? "." : ` in ${daysRemaining} day(s).`} Complete the missing resume or certification step now if you want to apply.`,
+      priority: "urgent",
+      relatedDriveId: params.driveId,
+      showPopup: true,
+    });
+  }
 }
 
 function pickReleaseRows(
@@ -332,6 +509,16 @@ export const DriveService = {
     }
 
     await StudentActivityService.logEvents(events);
+    await publishDriveStudentAnnouncements({
+      tenantId,
+      senderId: computedBy,
+      driveId,
+      company: String(drive.company ?? ""),
+      role: drive.role ? String(drive.role) : null,
+      driveDate: String(drive.driveDate ?? ""),
+      eligibleStudents: result.students,
+      previousResults,
+    });
 
     return {
       ...result,
@@ -340,6 +527,7 @@ export const DriveService = {
   },
 
   async listDriveResults(tenantId: string, driveId: string) {
+    await DriveRepository.getDriveById(tenantId, driveId);
     return DriveRepository.listDriveResults(tenantId, driveId);
   },
 
@@ -690,6 +878,17 @@ export const DriveService = {
         rejectedCount: rejectedRows.length,
         communicationIds: communications.map((item) => item.communicationId),
       },
+    });
+
+    await CommunicationService.publishSystemAnnouncementToStudents({
+      tenantId: input.tenantId,
+      senderId: input.actorUserId,
+      studentIds: targetRows.map((row) => row.id),
+      systemKey: `drive-results-published:${input.driveId}:${input.audience}`,
+      title: `Results published for ${driveName}`,
+      message: `Your placement office has published the latest result update for ${driveName}. Open Drives to review your outcome and the next steps.`,
+      priority: "important",
+      relatedDriveId: input.driveId,
     });
 
     return {

@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { mutate } from "swr";
 import { Link } from "react-router-dom";
 
-import { Badge, Button, Card, Skeleton, Table } from "../../components/ui";
+import { Badge, Button, Card, ConfirmActionModal, Skeleton, Table } from "../../components/ui";
 import { useTpoControlCenter } from "../../hooks/use-analytics";
 import { computeDriveEligibility } from "../../hooks/use-drives";
 import { approveSupportRequest, denySupportRequest, resolveStudentSupportRequest } from "../../hooks/use-support";
 import { reviewStudentUnlockRequest } from "../../hooks/use-tpo-students";
+import { tpoWhatsNewEntries } from "../../config/tpo-whats-new";
 
 function formatDate(value: string | null | undefined) {
   if (!value) return "Not scheduled";
@@ -68,6 +70,17 @@ function TpoDashboardSkeleton() {
 
 export default function TpoDashboardPage() {
   const { data, isLoading, error } = useTpoControlCenter();
+  const [pendingExport, setPendingExport] = useState<null | {
+    title: string;
+    href: string;
+    details: string[];
+  }>(null);
+
+  const confirmExport = () => {
+    if (!pendingExport) return;
+    window.location.assign(pendingExport.href);
+    setPendingExport(null);
+  };
 
   if (isLoading) return <TpoDashboardSkeleton />;
   if (error || !data) return <Card>Unable to load the TPO operations dashboard.</Card>;
@@ -136,6 +149,9 @@ export default function TpoDashboardPage() {
             <Link to="/tpo/reports">
               <Button variant="secondary">Open Reports</Button>
             </Link>
+            <Link to="/tpo/whats-new">
+              <Button variant="secondary">What&apos;s New</Button>
+            </Link>
           </div>
         </div>
         <div className="tpo-ops-signal-strip">
@@ -185,6 +201,37 @@ export default function TpoDashboardPage() {
             <span>Eligible For Upcoming</span>
             <strong>{data.readinessFunnel.eligibleForUpcomingDrives}</strong>
           </div>
+        </div>
+      </Card>
+
+      <Card className="tpo-list-card">
+        <div className="workspace-panel-header">
+          <div>
+            <p className="workspace-eyebrow">Next Best Actions</p>
+            <h2>What to do next</h2>
+          </div>
+          <p className="muted-text">One action model for queues, drive risk, and student follow-up so the dashboard stays coherent.</p>
+        </div>
+        <div className="tpo-action-list">
+          {data.nextBestActions.length === 0 ? (
+            <p className="muted-text">No urgent actions are waiting right now.</p>
+          ) : (
+            data.nextBestActions.slice(0, 5).map((action) => (
+              <div key={action.id} className="tpo-action-row">
+                <div>
+                  <div className="tpo-action-row-head">
+                    <strong>{action.title}</strong>
+                    <Badge variant={badgeVariantFromPriority(action.priority)}>{action.urgency.replace("_", " ")}</Badge>
+                  </div>
+                  <p className="muted-text">{action.explanation}</p>
+                  <p className="muted-text">Workflow: {action.affectedWorkflow}</p>
+                </div>
+                <Link to={action.targetPath}>
+                  <Button variant="secondary">{action.ctaLabel}</Button>
+                </Link>
+              </div>
+            ))
+          )}
         </div>
       </Card>
 
@@ -302,12 +349,36 @@ export default function TpoDashboardPage() {
                   >
                     Compute Eligibility
                   </Button>
-                  <a href={`/api/v1/drives/${drive.driveId}/export?format=csv`}>
-                    <Button variant="secondary">Export Eligible CSV</Button>
-                  </a>
-                  <a href={`/api/v1/drives/${drive.driveId}/export/resumes`}>
-                    <Button variant="secondary">Export Resumes</Button>
-                  </a>
+                  <Button
+                    variant="secondary"
+                    onClick={() =>
+                      setPendingExport({
+                        title: "Export eligible CSV",
+                        href: `/api/v1/drives/${drive.driveId}/export?format=csv`,
+                        details: [
+                          `Drive: ${drive.company}${drive.role ? ` - ${drive.role}` : ""}`,
+                          `Eligible students: ${drive.eligibleStudents}`,
+                        ],
+                      })
+                    }
+                  >
+                    Export Eligible CSV
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={() =>
+                      setPendingExport({
+                        title: "Export resumes",
+                        href: `/api/v1/drives/${drive.driveId}/export/resumes`,
+                        details: [
+                          `Drive: ${drive.company}${drive.role ? ` - ${drive.role}` : ""}`,
+                          `Applied students: ${drive.appliedCount}`,
+                        ],
+                      })
+                    }
+                  >
+                    Export Resumes
+                  </Button>
                   <Link to={`/tpo/drives/${drive.driveId}/results`}>
                     <Button variant="secondary">Manage Results</Button>
                   </Link>
@@ -322,6 +393,31 @@ export default function TpoDashboardPage() {
       </Card>
 
       <div className="tpo-ops-grid">
+        <Card className="tpo-list-card">
+          <div className="workspace-panel-header">
+            <div>
+              <p className="workspace-eyebrow">What&apos;s New</p>
+              <h2>Recent product changes visible to TPOs</h2>
+            </div>
+            <Link to="/tpo/whats-new">
+              <Button variant="secondary">Open changelog</Button>
+            </Link>
+          </div>
+          <div className="tpo-action-list">
+            {tpoWhatsNewEntries.slice(0, 3).map((entry) => (
+              <div key={entry.id} className="tpo-action-row">
+                <div>
+                  <strong>{entry.title}</strong>
+                  <p className="muted-text">
+                    {new Date(entry.date).toLocaleDateString()} · {entry.workflow}
+                  </p>
+                  <p className="muted-text">{entry.summary}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+
         <Card className="tpo-list-card">
           <div className="workspace-panel-header">
             <div>
@@ -613,6 +709,16 @@ export default function TpoDashboardPage() {
           </div>
         </Card>
       </div>
+
+      <ConfirmActionModal
+        open={Boolean(pendingExport)}
+        onClose={() => setPendingExport(null)}
+        onConfirm={confirmExport}
+        title={pendingExport?.title ?? "Confirm export"}
+        message="This export will start immediately for the currently selected drive."
+        confirmLabel="Start export"
+        details={pendingExport?.details}
+      />
     </section>
   );
 }

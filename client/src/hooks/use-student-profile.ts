@@ -187,6 +187,32 @@ export interface StudentProfile {
     message: string;
     action: string;
   };
+  activeBlockers: Array<{
+    code: string;
+    label: string;
+    count: number;
+    explanation: string;
+    targetPath: string;
+    ctaLabel: string;
+  }>;
+  nextBestActions: Array<{
+    id: string;
+    type:
+      | "complete_profile"
+      | "certify_profile"
+      | "upload_resume"
+      | "resume_pending_test"
+      | "prepare_drive"
+      | "continue_resource"
+      | "take_mock"
+      | "browse_resources";
+    title: string;
+    explanation: string;
+    targetPath: string;
+    ctaLabel: string;
+    priority: number;
+    meta?: Record<string, string | number | boolean | null>;
+  }>;
   liveEligibility: {
     totalUpcomingDrives: number;
     criteriaEligibleDrives: number;

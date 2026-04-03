@@ -3,6 +3,7 @@ import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 
 import { Button, Card, Spinner } from "../../components/ui";
 import { saveMockTestProgress, startMockTest, submitMockTest } from "../../hooks/use-mock-tests";
+import { useOnlineStatus } from "../../hooks/use-online-status";
 import { useMockTestStore } from "../../stores/mock-test-store";
 
 function generateIdempotencyKey(): string {
@@ -23,6 +24,7 @@ export default function MockTestAttemptPage() {
 
   const resolvedTestId = testId ?? "";
   const requestedAttemptId = searchParams.get("attemptId");
+  const isOnline = useOnlineStatus();
 
   const {
     attemptId,
@@ -47,8 +49,10 @@ export default function MockTestAttemptPage() {
   const [bootstrapping, setBootstrapping] = useState(true);
   const [integrityNotice, setIntegrityNotice] = useState<string | null>(null);
   const [restoreNotice, setRestoreNotice] = useState<string | null>(null);
+  const [connectivityNotice, setConnectivityNotice] = useState<string | null>(null);
   const timeoutSubmitOnceRef = useRef(false);
   const progressSaveTimerRef = useRef<number | null>(null);
+  const wasOfflineRef = useRef(false);
   const integrityRef = useRef({
     copyEvents: 0,
     pasteEvents: 0,
@@ -76,6 +80,20 @@ export default function MockTestAttemptPage() {
     };
     setIntegrityNotice(null);
   }, [attemptId, startedAt, durationSec]);
+
+  useEffect(() => {
+    if (!isOnline) {
+      wasOfflineRef.current = true;
+      setConnectivityNotice("Connection lost. Your answers stay on this device and will sync again when the network returns.");
+      return;
+    }
+
+    if (wasOfflineRef.current) {
+      setRestoreNotice("Connection restored. Your saved answers are syncing again.");
+      setConnectivityNotice(null);
+      wasOfflineRef.current = false;
+    }
+  }, [isOnline]);
 
   useEffect(() => {
     if (bootstrapping || status !== "in_progress") {
@@ -170,9 +188,19 @@ export default function MockTestAttemptPage() {
       void saveMockTestProgress(attemptId, {
         answers: Object.fromEntries(Object.entries(answers).map(([key, value]) => [String(key), value])),
         currentQuestion,
-      }).catch(() => {
-        // keep the local session copy even if the draft-save request fails
-      });
+      })
+        .then(() => {
+          if (isOnline) {
+            setConnectivityNotice(null);
+          }
+        })
+        .catch(() => {
+          setConnectivityNotice(
+            isOnline
+              ? "We could not sync progress just now. Your answers are still kept locally and we will retry on the next change."
+              : "Connection lost. Your answers stay on this device and will sync again when the network returns.",
+          );
+        });
     }, 500);
 
     return () => {
@@ -181,7 +209,7 @@ export default function MockTestAttemptPage() {
         progressSaveTimerRef.current = null;
       }
     };
-  }, [answers, attemptId, bootstrapping, currentQuestion, status]);
+  }, [answers, attemptId, bootstrapping, currentQuestion, isOnline, status]);
 
   useEffect(() => {
     if (bootstrapping || status !== "submitted" || !attemptId || !resolvedTestId) {
@@ -238,11 +266,15 @@ export default function MockTestAttemptPage() {
       markSubmitted();
       navigate(`/mock-tests/${resolvedTestId}/results?attemptId=${attemptId}`, { replace: true });
     } catch (error) {
-      setSubmitError(error instanceof Error ? error.message : "Unable to submit test");
+      if (!isOnline) {
+        setSubmitError("You are offline. Reconnect and submit again. Your answers are still saved.");
+      } else {
+        setSubmitError(error instanceof Error ? error.message : "Unable to submit test");
+      }
     } finally {
       setSubmitting(false);
     }
-  }, [attemptId, markSubmitted, preparedAnswers, navigate, resolvedTestId]);
+  }, [attemptId, isOnline, markSubmitted, navigate, preparedAnswers, resolvedTestId]);
 
   useEffect(() => {
     if (
@@ -302,7 +334,9 @@ export default function MockTestAttemptPage() {
         <p className="mock-attempt-timer">
           Time remaining: <span>{formatDuration(timeRemaining)}</span>
         </p>
+        {!isOnline ? <p className="student-network-banner is-warning">Connection lost. The timer keeps running, but your current answers remain saved on this device.</p> : null}
         {restoreNotice ? <p className="success-text">{restoreNotice}</p> : null}
+        {connectivityNotice ? <p className="muted-text">{connectivityNotice}</p> : null}
         <p>{question.text}</p>
         <div className="mock-attempt-options">
           {question.options.map((option, index) => (

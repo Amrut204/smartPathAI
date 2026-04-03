@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { Button, Input, Select } from "../../components/ui";
 import { updateDriveResults } from "../../hooks/use-drives";
-import { reviewStudentUnlockRequest, useTpoStudentById } from "../../hooks/use-tpo-students";
+import { reviewStudentUnlockRequest, useTpoStudentAudit, useTpoStudentById } from "../../hooks/use-tpo-students";
 
 const sections = [
   { id: "overview", label: "Overview" },
@@ -11,6 +11,7 @@ const sections = [
   { id: "offers", label: "Offers" },
   { id: "declarations", label: "Declarations & Gaps" },
   { id: "activity", label: "Activity" },
+  { id: "audit", label: "Audit" },
 ] as const;
 
 type SectionId = (typeof sections)[number]["id"];
@@ -30,9 +31,29 @@ function renderList(items: string[]) {
   );
 }
 
+function formatEventLabel(value: string) {
+  return value
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function renderAuditSummary(metadata: Record<string, unknown>) {
+  const parts = [
+    typeof metadata.decision === "string" ? `Decision: ${metadata.decision}` : null,
+    typeof metadata.requestId === "string" ? `Request: ${metadata.requestId}` : null,
+    typeof metadata.driveId === "string" ? `Drive: ${metadata.driveId}` : null,
+    typeof metadata.exportType === "string" ? `Export: ${metadata.exportType}` : null,
+    typeof metadata.recipientCount === "number" ? `Recipients: ${metadata.recipientCount}` : null,
+  ].filter(Boolean);
+
+  return parts.length > 0 ? parts.join(" | ") : "No additional metadata captured.";
+}
+
 export default function TpoStudentDetailPage() {
   const { studentId } = useParams();
   const { data, error, isLoading, mutate } = useTpoStudentById(studentId ?? null);
+  const { data: auditEntries } = useTpoStudentAudit(studentId ?? null, 12);
   const [activeSection, setActiveSection] = useState<SectionId>("overview");
   const [selectedDriveId, setSelectedDriveId] = useState("");
   const [proofStatus, setProofStatus] = useState<string | null>(null);
@@ -423,6 +444,38 @@ export default function TpoStudentDetailPage() {
                   </tbody>
                 </table>
               </div>
+            )}
+          </div>
+        </div>
+      ) : null}
+
+      {activeSection === "audit" ? (
+        <div className="workspace-panel">
+          <div className="workspace-panel-header">
+            <div>
+              <h2>Audit Trail</h2>
+              <p className="muted-text">Review who changed student-related state, when it happened, and which workflow was affected.</p>
+            </div>
+          </div>
+          <div className="tpo-action-list">
+            {(auditEntries ?? []).length === 0 ? (
+              <p className="muted-text">No audit events are available for this student yet.</p>
+            ) : (
+              auditEntries!.map((entry) => (
+                <div key={entry.id} className="tpo-action-row">
+                  <div>
+                    <div className="tpo-action-row-head">
+                      <strong>{formatEventLabel(entry.eventType)}</strong>
+                      <span className="muted-text">{formatDateTime(entry.createdAt)}</span>
+                    </div>
+                    <p className="muted-text">
+                      Actor: {entry.actorRole ?? "unknown"}
+                      {entry.path ? ` | ${entry.path}` : ""}
+                    </p>
+                    <p className="muted-text">{renderAuditSummary(entry.metadata)}</p>
+                  </div>
+                </div>
+              ))
             )}
           </div>
         </div>

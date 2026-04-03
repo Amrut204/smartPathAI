@@ -489,6 +489,25 @@ router.get(
   }),
 );
 
+router.get(
+  "/:studentId/audit",
+  authorizeRole("tpo", "admin"),
+  asyncHandler(async (req, res) => {
+    const detail = await StudentService.getStudentByIdForTpo(
+      req.auth!.tenantId,
+      req.params.studentId as string,
+    );
+    const limit = clampListLimit(req.query.limit, { defaultLimit: 20, maxLimit: 50 });
+    const data = await AuditLogService.list({
+      tenantId: req.auth!.tenantId,
+      studentId: String(req.params.studentId),
+      studentUserId: detail.userId,
+      limit,
+    });
+    res.json(successResponse(data));
+  }),
+);
+
 router.patch(
   "/:studentId",
   authorizeRole("tpo", "admin"),

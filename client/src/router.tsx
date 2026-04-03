@@ -40,6 +40,7 @@ const TpoNeedsMockPushPage = lazy(() => import("./pages/tpo/TpoNeedsMockPushPage
 const TpoReportsPage = lazy(() => import("./pages/tpo/TpoReportsPage"));
 const TpoCommunicationPage = lazy(() => import("./pages/tpo/TpoCommunicationPage"));
 const TpoCommunicationComposePage = lazy(() => import("./pages/tpo/TpoCommunicationComposePage"));
+const TpoWhatsNewPage = lazy(() => import("./pages/tpo/TpoWhatsNewPage"));
 
 function renderRoute(node: ReactNode) {
   return (
@@ -339,6 +340,7 @@ const router = createBrowserRouter([
           { path: "/tpo/drives/:driveId/results", element: renderRoute(<TpoDriveResultsPage />) },
           { path: "/tpo/analytics", element: <Navigate to="/tpo/reports" replace /> },
           { path: "/tpo/reports", element: renderRoute(<TpoReportsPage />) },
+          { path: "/tpo/whats-new", element: renderRoute(<TpoWhatsNewPage />) },
           { path: "/tpo/analytics/readiness", element: <Navigate to="/tpo/reports" replace /> },
           { path: "/tpo/analytics/topics", element: <Navigate to="/tpo/reports" replace /> },
           { path: "/tpo/analytics/tests", element: <Navigate to="/tpo/reports" replace /> },

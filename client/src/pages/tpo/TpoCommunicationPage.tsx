@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { Badge, Button, Input, Select, Table, Tabs } from "../../components/ui";
+import { Badge, Button, ConfirmActionModal, Input, Select, Table, Tabs } from "../../components/ui";
 import {
   type AnnouncementPriority,
   previewAnnouncement,
@@ -152,6 +152,7 @@ export default function TpoCommunicationPage() {
   const [announcementPriority, setAnnouncementPriority] = useState<AnnouncementPriority>("important");
   const [announcementExpiresAt, setAnnouncementExpiresAt] = useState("");
   const [selectedStudentIds, setSelectedStudentIds] = useState<string[]>([]);
+  const [confirmAction, setConfirmAction] = useState<null | "send-email" | "publish-announcement">(null);
 
   const selectedTemplate = useMemo(
     () => (templates ?? []).find((template) => template.id === templateId) ?? null,
@@ -270,7 +271,7 @@ export default function TpoCommunicationPage() {
     }
   };
 
-  const onSendEmail = async () => {
+  const performSendEmail = async () => {
     if (!emailPreview) {
       setStatus("Preview the message before sending.");
       return;
@@ -282,6 +283,7 @@ export default function TpoCommunicationPage() {
     try {
       const result = await sendCommunication(buildEmailPayload());
       setStatus(`Queued communication ${result.communicationId} for ${result.recipientCount} recipients.`);
+      setConfirmAction(null);
     } catch (sendError) {
       setStatus(sendError instanceof Error ? sendError.message : "Unable to send communication");
     } finally {
@@ -309,7 +311,7 @@ export default function TpoCommunicationPage() {
     }
   };
 
-  const onPublishAnnouncement = async () => {
+  const performPublishAnnouncement = async () => {
     if (!announcementPreviewData) {
       setStatus("Preview the announcement before publishing.");
       return;
@@ -322,6 +324,7 @@ export default function TpoCommunicationPage() {
       const result = await publishAnnouncement(buildAnnouncementPayload());
       setStatus(`Published announcement ${result.announcementId} for ${result.recipientCount} students.`);
       setAnnouncementPreviewData(null);
+      setConfirmAction(null);
     } catch (publishError) {
       setStatus(publishError instanceof Error ? publishError.message : "Unable to publish announcement");
     } finally {
@@ -620,7 +623,7 @@ export default function TpoCommunicationPage() {
                 <Button disabled={previewBusy} onClick={onPreviewEmail}>
                   {previewBusy ? "Previewing..." : "Preview"}
                 </Button>
-                <Button variant="secondary" disabled={busy || !emailPreview} onClick={onSendEmail}>
+                <Button variant="secondary" disabled={busy || !emailPreview} onClick={() => setConfirmAction("send-email")}>
                   {busy ? "Sending..." : "Send"}
                 </Button>
               </div>
@@ -682,7 +685,7 @@ export default function TpoCommunicationPage() {
                 <Button disabled={previewBusy} onClick={onPreviewAnnouncement}>
                   {previewBusy ? "Previewing..." : "Preview"}
                 </Button>
-                <Button variant="secondary" disabled={busy || !announcementPreviewData} onClick={onPublishAnnouncement}>
+                <Button variant="secondary" disabled={busy || !announcementPreviewData} onClick={() => setConfirmAction("publish-announcement")}>
                   {busy ? "Publishing..." : "Publish"}
                 </Button>
               </div>
@@ -760,6 +763,36 @@ export default function TpoCommunicationPage() {
           </div>
         )}
       </section>
+
+      <ConfirmActionModal
+        open={confirmAction === "send-email"}
+        onClose={() => setConfirmAction(null)}
+        onConfirm={() => void performSendEmail()}
+        busy={busy}
+        title="Send communication"
+        message={`You are about to queue this email for ${emailPreview?.recipientCount ?? 0} student${emailPreview?.recipientCount === 1 ? "" : "s"}.`}
+        confirmLabel="Queue email"
+        details={[
+          emailPreview ? `Recipients: ${emailPreview.recipientCount}` : "Preview the message first.",
+          effectiveSubject ? `Subject: ${effectiveSubject}` : "Subject is missing.",
+          selectedStudentIds.length > 0 ? `Direct audience selection: ${selectedStudentIds.length} student(s)` : "Audience comes from the current filters.",
+        ]}
+      />
+
+      <ConfirmActionModal
+        open={confirmAction === "publish-announcement"}
+        onClose={() => setConfirmAction(null)}
+        onConfirm={() => void performPublishAnnouncement()}
+        busy={busy}
+        title="Publish announcement"
+        message={`You are about to publish this announcement to ${announcementPreviewData?.recipientCount ?? 0} student${announcementPreviewData?.recipientCount === 1 ? "" : "s"}.`}
+        confirmLabel="Publish announcement"
+        details={[
+          announcementPreviewData ? `Audience summary: ${announcementPreviewData.audienceSummary}` : "Preview the audience first.",
+          announcementTitle ? `Title: ${announcementTitle}` : "Title is missing.",
+          announcementPriority === "urgent" ? "This will show as an urgent student-facing notice." : `Priority: ${announcementPriority}`,
+        ]}
+      />
     </section>
   );
 }

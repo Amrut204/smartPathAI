@@ -36,7 +36,11 @@ export type AuditEventType =
   | "drive_results_updated"
   | "drive_application_withdrawn"
   | "drive_results_released"
+  | "drive_exported"
   | "drive_result_email_resent"
+  | "student_profile_unlock_reviewed"
+  | "communication_sent"
+  | "announcement_published"
   | "admin_singleton_cleanup"
   | "admin_ops_student_created"
   | "admin_ops_student_updated"
@@ -87,5 +91,72 @@ export const AuditLogService = {
       metadata: params.metadata ?? null,
       created_at: now,
     });
+  },
+
+  async list(params: {
+    tenantId: string;
+    limit?: number;
+    driveId?: string;
+    studentId?: string;
+    studentUserId?: string;
+  }) {
+    await ensureAuditIndexes();
+    const db = await getMongoDb();
+    const filter: Record<string, unknown> = { tenant_id: params.tenantId };
+    const clauses: Array<Record<string, unknown>> = [];
+
+    if (params.driveId) {
+      clauses.push({ "metadata.driveId": params.driveId });
+    }
+
+    if (params.studentId) {
+      clauses.push({ "metadata.studentId": params.studentId });
+    }
+
+    if (params.studentUserId) {
+      clauses.push({ actor_user_id: params.studentUserId, actor_role: "student" });
+    }
+
+    if (clauses.length === 1) {
+      Object.assign(filter, clauses[0]);
+    } else if (clauses.length > 1) {
+      filter.$or = clauses;
+    }
+
+    const rows = await db.collection(AUDIT_COLLECTION)
+      .find(filter)
+      .sort({ created_at: -1 })
+      .limit(Math.max(1, Math.min(100, params.limit ?? 20)))
+      .project({
+        _id: 0,
+        id: 1,
+        created_at: 1,
+        event_type: 1,
+        support_session_id: 1,
+        actor_user_id: 1,
+        actor_role: 1,
+        actor_tenant_id: 1,
+        method: 1,
+        path: 1,
+        ip: 1,
+        user_agent: 1,
+        metadata: 1,
+      })
+      .toArray();
+
+    return rows.map((row) => ({
+      id: String(row.id ?? ""),
+      createdAt: String(row.created_at ?? ""),
+      eventType: String(row.event_type ?? ""),
+      supportSessionId: row.support_session_id ? String(row.support_session_id) : null,
+      actorUserId: row.actor_user_id ? String(row.actor_user_id) : null,
+      actorRole: row.actor_role ? String(row.actor_role) : null,
+      actorTenantId: row.actor_tenant_id ? String(row.actor_tenant_id) : null,
+      method: row.method ? String(row.method) : null,
+      path: row.path ? String(row.path) : null,
+      ip: row.ip ? String(row.ip) : null,
+      userAgent: row.user_agent ? String(row.user_agent) : null,
+      metadata: (row.metadata ?? {}) as Record<string, unknown>,
+    }));
   },
 };

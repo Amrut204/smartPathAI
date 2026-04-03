@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import { Badge, Button, Card, Input, Select, Table } from "../../components/ui";
+import { Badge, Button, Card, ConfirmActionModal, Input, Select, Table } from "../../components/ui";
 import {
   previewDriveResultRelease,
   releaseDriveResults,
@@ -47,6 +47,7 @@ export default function TpoDriveResultsPage() {
   const [releasePreview, setReleasePreview] = useState<Awaited<ReturnType<typeof previewDriveResultRelease>> | null>(null);
   const [releaseBusy, setReleaseBusy] = useState(false);
   const [resendBusyId, setResendBusyId] = useState<string | null>(null);
+  const [confirmReleaseOpen, setConfirmReleaseOpen] = useState(false);
   const [resultIntake, setResultIntake] = useState({
     source: "manual_update" as "employer_email" | "employer_portal" | "manual_update",
     receivedAt: "",
@@ -162,6 +163,7 @@ export default function TpoDriveResultsPage() {
       await Promise.all([mutate(), mutateReleaseStatus()]);
       setStatus(`Queued ${released.selectedCount + released.rejectedCount} result email(s) for ${releaseAudience} release.`);
       setReleasePreview(null);
+      setConfirmReleaseOpen(false);
     } catch (releaseError) {
       setStatus(releaseError instanceof Error ? releaseError.message : "Unable to release results");
     } finally {
@@ -297,7 +299,7 @@ export default function TpoDriveResultsPage() {
             <Button variant="secondary" disabled={releaseBusy} onClick={() => void onPreviewRelease()}>
               {releaseBusy ? "Loading..." : "Preview Release"}
             </Button>
-            <Button disabled={releaseBusy} onClick={() => void onRelease()}>
+            <Button disabled={releaseBusy || !releasePreview} onClick={() => setConfirmReleaseOpen(true)}>
               {releaseBusy ? "Releasing..." : "Release Results"}
             </Button>
           </div>
@@ -651,6 +653,21 @@ export default function TpoDriveResultsPage() {
           </Table>
         </div>
       </Card>
+
+      <ConfirmActionModal
+        open={confirmReleaseOpen}
+        onClose={() => setConfirmReleaseOpen(false)}
+        onConfirm={() => void onRelease()}
+        busy={releaseBusy}
+        title="Release drive results"
+        message={`You are about to release ${releaseAudience.replace(/_/g, " ")} results for ${releasePreview?.recipientCount ?? 0} student${releasePreview?.recipientCount === 1 ? "" : "s"}.`}
+        confirmLabel="Release results"
+        details={[
+          releasePreview ? `Sender: ${releasePreview.sender.displayFrom}` : "Preview the release first.",
+          releasePreview ? `Selected: ${releasePreview.selectedCount} · Rejected: ${releasePreview.rejectedCount}` : "No release preview loaded yet.",
+          ...(releasePreview?.warnings ?? []),
+        ]}
+      />
     </section>
   );
 }

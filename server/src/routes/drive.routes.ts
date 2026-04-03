@@ -81,6 +81,17 @@ router.get(
       req.auth!.tenantId,
       req.params.driveId as string,
     );
+    await AuditLogService.log({
+      tenantId: req.auth!.tenantId,
+      actorUserId: req.auth!.userId,
+      actorRole: req.auth!.role,
+      eventType: "drive_exported",
+      metadata: {
+        driveId: req.params.driveId as string,
+        exportType: "resume_csv",
+        filename,
+      },
+    });
     res.setHeader("Content-Type", "text/csv; charset=utf-8");
     res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
     res.send(csv);
@@ -98,6 +109,17 @@ router.get(
         req.auth!.tenantId,
         req.params.driveId as string,
       );
+      await AuditLogService.log({
+        tenantId: req.auth!.tenantId,
+        actorUserId: req.auth!.userId,
+        actorRole: req.auth!.role,
+        eventType: "drive_exported",
+        metadata: {
+          driveId: req.params.driveId as string,
+          exportType: "eligible_csv",
+          filename,
+        },
+      });
       res.setHeader("Content-Type", "text/csv; charset=utf-8");
       res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
       res.send(csv);
@@ -109,6 +131,17 @@ router.get(
         req.auth!.tenantId,
         req.params.driveId as string,
       );
+      await AuditLogService.log({
+        tenantId: req.auth!.tenantId,
+        actorUserId: req.auth!.userId,
+        actorRole: req.auth!.role,
+        eventType: "drive_exported",
+        metadata: {
+          driveId: req.params.driveId as string,
+          exportType: "summary_pdf",
+          filename,
+        },
+      });
       res.setHeader("Content-Type", "application/pdf");
       res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
       res.send(Buffer.from(bytes));
@@ -138,6 +171,18 @@ router.patch(
       actorRole: req.auth!.role,
       eventType: body.status && previous.status !== data.status ? "drive_status_changed" : "drive_updated",
       metadata: { driveId: data.id, previousStatus: previous.status, status: data.status, criteriaChanged: body.criteria !== undefined },
+    });
+    res.json(successResponse(data));
+  }),
+);
+
+router.get(
+  "/:driveId/audit",
+  asyncHandler(async (req, res) => {
+    const data = await AuditLogService.list({
+      tenantId: req.auth!.tenantId,
+      driveId: req.params.driveId as string,
+      limit: Number(req.query.limit ?? 20),
     });
     res.json(successResponse(data));
   }),

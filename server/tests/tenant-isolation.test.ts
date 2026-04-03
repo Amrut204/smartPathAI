@@ -8,6 +8,8 @@ import { hash } from "bcryptjs";
 import app from "../src/app.js";
 import { getMongoDb, closeMongoConnection } from "../src/utils/mongodb.js";
 
+jest.setTimeout(120000);
+
 function nowIso() {
   return new Date().toISOString();
 }
@@ -29,8 +31,13 @@ describe("Tenant isolation", () => {
 
   const driveA = { id: crypto.randomUUID(), company: "Alpha Corp", role: "Analyst", drive_date: "2026-04-01" };
   const driveB = { id: crypto.randomUUID(), company: "Beta Corp", role: "Engineer", drive_date: "2026-04-02" };
+  const resourceA = { id: crypto.randomUUID(), title: "Tenant A Notes" };
+  const resourceB = { id: crypto.randomUUID(), title: "Tenant B Notes" };
+  const announcementA = { id: crypto.randomUUID(), title: "Tenant A Update" };
+  const announcementB = { id: crypto.randomUUID(), title: "Tenant B Update" };
 
   let agentA: ReturnType<typeof request.agent>;
+  let studentAgentA: ReturnType<typeof request.agent>;
 
   beforeAll(async () => {
     const db = await getMongoDb();
@@ -100,13 +107,26 @@ describe("Tenant isolation", () => {
         batch: studentA.batch,
         cgpa: 7.5,
         backlogs: 0,
+        backlogs_total: 0,
         attendance_pct: 85,
         skills: [],
         points: 0,
         streak_current: 0,
         streak_longest: 0,
         readiness_score: 55,
-        profile_data: {},
+        profile_data: {
+          prn: "P-A-001",
+          phone: "9999999991",
+          personalEmail: "student-a.personal@test.local",
+          resumeUrl: "https://example.com/student-a-resume.pdf",
+          targetRoles: ["Analyst"],
+          preferredLocations: ["Pune"],
+          willingToRelocate: true,
+          dataConsentAccepted: true,
+          accuracyDeclarationAccepted: true,
+          degree: "B.E.",
+          currentSemester: "8",
+        },
         created_at: ts,
         updated_at: ts,
       },
@@ -119,13 +139,26 @@ describe("Tenant isolation", () => {
         batch: studentB.batch,
         cgpa: 8.2,
         backlogs: 0,
+        backlogs_total: 0,
         attendance_pct: 90,
         skills: [],
         points: 0,
         streak_current: 0,
         streak_longest: 0,
         readiness_score: 70,
-        profile_data: {},
+        profile_data: {
+          prn: "P-B-001",
+          phone: "9999999992",
+          personalEmail: "student-b.personal@test.local",
+          resumeUrl: "https://example.com/student-b-resume.pdf",
+          targetRoles: ["Engineer"],
+          preferredLocations: ["Bengaluru"],
+          willingToRelocate: true,
+          dataConsentAccepted: true,
+          accuracyDeclarationAccepted: true,
+          degree: "B.Tech",
+          currentSemester: "8",
+        },
         created_at: ts,
         updated_at: ts,
       },
@@ -166,14 +199,76 @@ describe("Tenant isolation", () => {
       },
     ]);
 
+    await db.collection("resources").insertMany([
+      {
+        id: resourceA.id,
+        tenant_id: tenantA.id,
+        title: resourceA.title,
+        description: "Tenant A private resource",
+        url: "https://example.com/tenant-a-resource.pdf",
+        resource_type: "pdf",
+        is_active: true,
+        created_at: ts,
+        updated_at: ts,
+      },
+      {
+        id: resourceB.id,
+        tenant_id: tenantB.id,
+        title: resourceB.title,
+        description: "Tenant B private resource",
+        url: "https://example.com/tenant-b-resource.pdf",
+        resource_type: "pdf",
+        is_active: true,
+        created_at: ts,
+        updated_at: ts,
+      },
+    ]);
+
+    await db.collection("announcements").insertMany([
+      {
+        id: announcementA.id,
+        tenant_id: tenantA.id,
+        title: announcementA.title,
+        message: "Tenant A only announcement",
+        priority: "normal",
+        status: "published",
+        show_popup: false,
+        recipient_student_ids: [studentA.id],
+        created_at: ts,
+        published_at: ts,
+        expires_at: null,
+      },
+      {
+        id: announcementB.id,
+        tenant_id: tenantB.id,
+        title: announcementB.title,
+        message: "Tenant B only announcement",
+        priority: "normal",
+        status: "published",
+        show_popup: false,
+        recipient_student_ids: [studentB.id],
+        created_at: ts,
+        published_at: ts,
+        expires_at: null,
+      },
+    ]);
+
     agentA = request.agent(app);
     const loginResponse = await agentA.post("/api/v1/auth/login").send({ email: tpoA.email, password });
     expect(loginResponse.status).toBe(200);
     expect(loginResponse.body?.success).toBe(true);
+
+    studentAgentA = request.agent(app);
+    const studentLoginResponse = await studentAgentA.post("/api/v1/auth/login").send({ email: studentUserA.email, password });
+    expect(studentLoginResponse.status).toBe(200);
+    expect(studentLoginResponse.body?.success).toBe(true);
   });
 
   afterAll(async () => {
     const db = await getMongoDb();
+    await db.collection("announcement_reads").deleteMany({ tenant_id: { $in: [tenantA.id, tenantB.id] } });
+    await db.collection("announcements").deleteMany({ tenant_id: { $in: [tenantA.id, tenantB.id] } });
+    await db.collection("resources").deleteMany({ tenant_id: { $in: [tenantA.id, tenantB.id] } });
     await db.collection("drive_results").deleteMany({ tenant_id: { $in: [tenantA.id, tenantB.id] } });
     await db.collection("drives").deleteMany({ tenant_id: { $in: [tenantA.id, tenantB.id] } });
     await db.collection("students").deleteMany({ tenant_id: { $in: [tenantA.id, tenantB.id] } });
@@ -210,6 +305,29 @@ describe("Tenant isolation", () => {
   it("does not allow reading another tenant's student record by id", async () => {
     const cross = await agentA.get(`/api/v1/students/${studentB.id}`);
     expect(cross.status === 404 || cross.status === 403).toBe(true);
+  });
+
+  it("does not allow reading another tenant's drive results", async () => {
+    const cross = await agentA.get(`/api/v1/drives/${driveB.id}/results`);
+    expect(cross.status === 404 || cross.status === 403).toBe(true);
+  });
+
+  it("does not allow students to read another tenant's private resource by id", async () => {
+    const own = await studentAgentA.get(`/api/v1/resources/${resourceA.id}`);
+    expect(own.status).toBe(200);
+    expect(own.body?.success).toBe(true);
+
+    const cross = await studentAgentA.get(`/api/v1/resources/${resourceB.id}`);
+    expect(cross.status === 404 || cross.status === 403).toBe(true);
+  });
+
+  it("does not leak another tenant's announcements to students", async () => {
+    const own = await studentAgentA.get("/api/v1/students/me/announcements");
+    expect(own.status).toBe(200);
+    expect(own.body?.success).toBe(true);
+    const announcementIds = (own.body?.data ?? []).map((item: { id?: unknown }) => String(item.id ?? ""));
+    expect(announcementIds).toContain(announcementA.id);
+    expect(announcementIds).not.toContain(announcementB.id);
   });
 });
 

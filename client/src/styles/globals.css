@@ -9126,6 +9126,68 @@ textarea::placeholder {
   border-color: rgba(22, 163, 74, 0.2);
 }
 
+.student-continuity-banner {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(31, 79, 120, 0.14);
+  background: linear-gradient(135deg, rgba(31, 79, 120, 0.08), rgba(74, 163, 161, 0.12));
+}
+
+.student-continuity-copy {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.student-continuity-copy h2,
+.student-continuity-copy h3 {
+  margin: 0;
+}
+
+.student-continuity-copy p {
+  margin: 0;
+}
+
+.student-continuity-metrics,
+.student-continuity-grid {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.student-continuity-metrics > div,
+.student-continuity-grid > div {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(20, 34, 53, 0.08);
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.student-continuity-metrics span,
+.student-continuity-grid span {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.student-continuity-list {
+  margin: 0.25rem 0 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.student-continuity-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
 .student-profile-metrics-grid {
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 }
@@ -9238,4 +9300,43 @@ textarea::placeholder {
   .student-profile-action-bar {
     grid-template-columns: 1fr;
   }
+}
+
+.student-network-banner {
+  margin: 0.75rem 0;
+  padding: 0.85rem 1rem;
+  border-radius: 16px;
+  border: 1px solid #e5c26f;
+  background: #fff8e7;
+  color: #7b5610;
+}
+
+.confirm-action-modal {
+  display: grid;
+  gap: 1rem;
+}
+
+.confirm-action-details {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.45rem;
+  color: var(--color-text-secondary);
+}
+
+.tpo-whats-new-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.tpo-whats-new-card {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.tpo-whats-new-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
 }

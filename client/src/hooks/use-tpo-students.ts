@@ -161,6 +161,21 @@ export interface TpoStudentDetail {
   }>;
 }
 
+export interface TpoAuditEntry {
+  id: string;
+  createdAt: string;
+  eventType: string;
+  supportSessionId: string | null;
+  actorUserId: string | null;
+  actorRole: string | null;
+  actorTenantId: string | null;
+  method: string | null;
+  path: string | null;
+  ip: string | null;
+  userAgent: string | null;
+  metadata: Record<string, unknown>;
+}
+
 export function useTpoStudents(query?: {
   q?: string;
   batch?: string;
@@ -240,6 +255,14 @@ export function useTpoStudentById(studentId: string | null) {
   return useSWR<TpoStudentDetail>(studentId ? `/api/v1/students/${studentId}` : null, fetcher, {
     revalidateOnFocus: false,
   });
+}
+
+export function useTpoStudentAudit(studentId: string | null, limit = 20) {
+  return useSWR<TpoAuditEntry[]>(
+    studentId ? `/api/v1/students/${studentId}/audit?limit=${limit}` : null,
+    fetcher,
+    { revalidateOnFocus: false },
+  );
 }
 
 export async function updateTpoStudent(studentId: string, updates: Record<string, unknown>) {

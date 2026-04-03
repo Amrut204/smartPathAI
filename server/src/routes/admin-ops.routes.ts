@@ -4,6 +4,7 @@ import multer from "multer";
 import * as XLSX from "xlsx";
 
 import { asyncHandler } from "../middleware/error-handler.js";
+import { adminBulkActionRateLimiter, adminImportRateLimiter, uploadRateLimiter } from "../middleware/rate-limit.middleware.js";
 import { successResponse } from "../utils/response-envelope.js";
 import { AdminOpsService } from "../services/admin-ops.service.js";
 import { AuditLogService, type AuditEventType } from "../services/audit-log.service.js";
@@ -168,6 +169,7 @@ router.post(
 
 router.post(
   "/students/import/preview",
+  adminImportRateLimiter,
   asyncHandler(async (req, res) => {
     const body = adminCsvUploadPreviewSchema.parse(req.body);
     const data = await AdminOpsService.previewStudentCsv(body.csv);
@@ -177,6 +179,7 @@ router.post(
 
 router.post(
   "/students/import/file-preview",
+  uploadRateLimiter,
   upload.single("file"),
   asyncHandler(async (req, res) => {
     const body = adminTenantQuerySchema.parse(req.body);
@@ -221,6 +224,7 @@ router.post(
 
 router.post(
   "/students/import/jobs",
+  adminImportRateLimiter,
   asyncHandler(async (req, res) => {
     const body = adminCsvUploadConfirmSchema.parse(req.body);
     const data = await AdminOpsService.createStudentImportJob({
@@ -260,6 +264,7 @@ router.get(
 
 router.post(
   "/students/import/jobs/:jobId/credentials",
+  adminBulkActionRateLimiter,
   asyncHandler(async (req, res) => {
     const body = adminQueueImportCredentialsSchema.parse({
       ...req.body,
@@ -623,6 +628,7 @@ router.get(
 
 router.post(
   "/jobs/:jobId/retry",
+  adminBulkActionRateLimiter,
   asyncHandler(async (req, res) => {
     const query = adminRetryJobSchema.parse(req.body);
     await AdminOpsService.getTenantWorkspace(query.tenantId);
@@ -633,6 +639,7 @@ router.post(
 
 router.post(
   "/jobs/:jobId/release",
+  adminBulkActionRateLimiter,
   asyncHandler(async (req, res) => {
     const query = adminRetryJobSchema.parse(req.body);
     await AdminOpsService.getTenantWorkspace(query.tenantId);

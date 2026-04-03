@@ -63,6 +63,10 @@ function riskLevel(score: number): RiskLevel {
   return "Low";
 }
 
+function pluralize(count: number, singular: string, plural = `${singular}s`) {
+  return `${count} ${count === 1 ? singular : plural}`;
+}
+
 function maxIsoDate(values: Array<string | null | undefined>): string | null {
   const filtered = values.filter((value): value is string => Boolean(value));
   if (filtered.length === 0) return null;
@@ -1144,6 +1148,90 @@ async function computeControlCenter(tenantId: string) {
     },
   };
 
+  const lowApplyDrive = drivePreparednessItems.find((drive) => drive.lowApplyRisk) ?? null;
+  const resumeFollowThroughDrive = drivePreparednessItems.find((drive) => drive.appliedCount > 0 && !drive.resumeExportReady) ?? null;
+
+  const nextBestActions = [
+    unlockQueueItems.length > 0
+      ? {
+          id: "review-profile-unlocks",
+          type: "review_profile_unlocks",
+          title: `Review ${pluralize(unlockQueueItems.length, "unlock request")}`,
+          explanation: "Students are blocked on profile corrections until these requests are reviewed.",
+          affectedWorkflow: "Profile governance",
+          targetPath: "/tpo/students",
+          ctaLabel: "Review unlocks",
+          priority: "high" as const,
+          urgency: "today" as const,
+        }
+      : null,
+    studentSupportQueueItems.length > 0
+      ? {
+          id: "resolve-student-support",
+          type: "resolve_student_support",
+          title: `Resolve ${pluralize(studentSupportQueueItems.length, "student support request")}`,
+          explanation: "Open student help requests are waiting for TPO follow-up.",
+          affectedWorkflow: "Student support",
+          targetPath: "/tpo/dashboard",
+          ctaLabel: "Open queue",
+          priority: "medium" as const,
+          urgency: "today" as const,
+        }
+      : null,
+    lowApplyDrive
+      ? {
+          id: "nudge-low-apply-drive",
+          type: "low_apply_drive_followup",
+          title: `Intervene on ${lowApplyDrive.company}`,
+          explanation: `${lowApplyDrive.eligibleButNotAppliedCount} eligible students still have not applied and the deadline is getting close.`,
+          affectedWorkflow: "Drive applications",
+          targetPath: `/tpo/drives/${lowApplyDrive.driveId}`,
+          ctaLabel: "Open drive",
+          priority: "high" as const,
+          urgency: "today" as const,
+        }
+      : null,
+    resumeFollowThroughDrive
+      ? {
+          id: "resume-export-followthrough",
+          type: "resume_export_followthrough",
+          title: `Finish resume export prep for ${resumeFollowThroughDrive.company}`,
+          explanation: `Only ${resumeFollowThroughDrive.exportReadyApplicants} of ${resumeFollowThroughDrive.appliedCount} applicants have export-ready resume snapshots.`,
+          affectedWorkflow: "Resume export",
+          targetPath: `/tpo/drives/${resumeFollowThroughDrive.driveId}`,
+          ctaLabel: "Review applicants",
+          priority: "medium" as const,
+          urgency: "this_week" as const,
+        }
+      : null,
+    readyButInactive.length > 0
+      ? {
+          id: "reactivate-ready-students",
+          type: "reactivate_ready_students",
+          title: `Follow up with ${pluralize(readyButInactive.length, "ready but inactive student")}`,
+          explanation: "These students are ready for drives but have gone quiet in the last 7 days.",
+          affectedWorkflow: "Student outreach",
+          targetPath: "/tpo/students?mode=ops&view=ready_but_inactive",
+          ctaLabel: "Open queue",
+          priority: "medium" as const,
+          urgency: "this_week" as const,
+        }
+      : null,
+    lowReadinessNearDriveImpact.length > 0
+      ? {
+          id: "push-mock-practice",
+          type: "push_mock_practice",
+          title: `Push mock prep for ${pluralize(lowReadinessNearDriveImpact.length, "student")}`,
+          explanation: "These students are near upcoming drives but still show low readiness or no recent mock activity.",
+          affectedWorkflow: "Preparation follow-up",
+          targetPath: "/tpo/interventions/needs-mock-push",
+          ctaLabel: "Open queue",
+          priority: "medium" as const,
+          urgency: "this_week" as const,
+        }
+      : null,
+  ].filter(Boolean);
+
   const profileItems = operationsRows.map((row) => ({
     studentId: row.studentId,
     fullName: row.fullName,
@@ -1276,6 +1364,7 @@ async function computeControlCenter(tenantId: string) {
     readinessFunnel,
     blockerSegments,
     dashboardQueues,
+    nextBestActions,
     riskSummary: {
       totalAtRisk: riskStudents.length,
       highRisk: riskStudents.filter((item) => item.severity === "High" || item.severity === "Critical").length,

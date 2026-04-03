@@ -4,6 +4,7 @@ import { asyncHandler } from "../middleware/error-handler.js";
 import { requireAuth } from "../middleware/auth.middleware.js";
 import { authorizeRole } from "../middleware/rbac.middleware.js";
 import { communicationSendRateLimiter } from "../middleware/rate-limit.middleware.js";
+import { AuditLogService } from "../services/audit-log.service.js";
 import { CommunicationService } from "../services/communication.service.js";
 import {
   announcementHistoryQuerySchema,
@@ -93,6 +94,18 @@ router.post(
       req.auth!.userId,
       body,
     );
+    await AuditLogService.log({
+      tenantId: req.auth!.tenantId,
+      actorUserId: req.auth!.userId,
+      actorRole: req.auth!.role,
+      eventType: "announcement_published",
+      metadata: {
+        announcementId: data.announcementId,
+        recipientCount: data.recipientCount,
+        relatedDriveId: body.relatedDriveId ?? null,
+        priority: body.priority,
+      },
+    });
     res.status(201).json(successResponse(data));
   }),
 );
@@ -128,6 +141,19 @@ router.post(
       req.auth!.userId,
       body,
     );
+    await AuditLogService.log({
+      tenantId: req.auth!.tenantId,
+      actorUserId: req.auth!.userId,
+      actorRole: req.auth!.role,
+      eventType: "communication_sent",
+      metadata: {
+        communicationId: data.communicationId,
+        recipientCount: data.recipientCount,
+        driveId: body.filters?.driveId ?? null,
+        templateId: body.templateId ?? null,
+        studentIds: body.filters?.studentIds ?? null,
+      },
+    });
     res.json(successResponse(data));
   }),
 );

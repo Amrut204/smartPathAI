@@ -38,6 +38,7 @@ import { CommunicationService } from "./services/communication.service.js";
 import { initializeCommunicationQueue } from "./services/communication.queue.js";
 import { shutdownCommunicationQueue } from "./services/communication.queue.js";
 import { scheduleDailyRiskCheck } from "./jobs/daily-risk-check.job.js";
+import { scheduleCriticalStudentReminders } from "./jobs/critical-student-reminders.job.js";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
@@ -124,6 +125,7 @@ export async function initializeRuntime(): Promise<void> {
         CommunicationService.dispatchQueuedCommunication({ tenantId, communicationId }),
     });
     scheduleDailyRiskCheck();
+    scheduleCriticalStudentReminders();
   } catch (error) {
     logger.error("Failed to initialize communication infrastructure", {
       context: {

@@ -292,6 +292,17 @@ export function useTpoControlCenter() {
         }>;
       };
     };
+    nextBestActions: Array<{
+      id: string;
+      type: string;
+      title: string;
+      explanation: string;
+      affectedWorkflow: string;
+      targetPath: string;
+      ctaLabel: string;
+      priority: "high" | "medium" | "low";
+      urgency: "today" | "this_week";
+    }>;
     riskSummary: {
       totalAtRisk: number;
       highRisk: number;

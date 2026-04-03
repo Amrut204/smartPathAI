@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { Button, Input, Select, Table } from "../../components/ui";
+import { Button, ConfirmActionModal, Input, Select, Table } from "../../components/ui";
 import {
   adminCreateExternalResource,
   adminCreateCollege,
@@ -217,6 +217,12 @@ export default function AdminHubPage() {
     tpoPassword: "",
     branchesText: "",
   });
+  const [confirmAction, setConfirmAction] = useState<null | {
+    title: string;
+    message: string;
+    confirmLabel: string;
+    onConfirm: () => Promise<void>;
+  }>(null);
 
   useEffect(() => {
     const stored = window.localStorage.getItem("admin:selectedTenantId");
@@ -323,6 +329,17 @@ export default function AdminHubPage() {
     setSearchParams(next, { replace: true });
   };
 
+  const openConfirmAction = (config: NonNullable<typeof confirmAction>) => {
+    setConfirmAction(config);
+  };
+
+  const runConfirmedAction = async () => {
+    if (!confirmAction) return;
+    const nextAction = confirmAction.onConfirm;
+    setConfirmAction(null);
+    await nextAction();
+  };
+
   return (
     <section className="admin-ops-shell">
       <header className="admin-ops-header">
@@ -411,12 +428,17 @@ export default function AdminHubPage() {
                   ))}
                 </div>
                 <div className="hero-actions" style={{ marginTop: 16 }}>
-                  <Button onClick={() => runAction("import-job", async () => {
-                    const tenantId = requireTenant();
-                    for (const field of importFields.filter((item) => item.required)) if (!importMapping[field.key]) throw new Error(`Map the ${field.label} column before starting the import.`);
-                    const job = await adminCreateStudentImportJob({ tenantId, mapping: importMapping, rows: importPreview.rows });
-                    setMessage(`Import job ${job.id} queued. Track it in Jobs.`, "success");
-                    setTab("jobs");
+                  <Button onClick={() => openConfirmAction({
+                    title: "Start student import job",
+                    message: `You are about to queue ${importPreview.rows.length} student row(s) for import into ${selectedTenantName}.`,
+                    confirmLabel: "Start import",
+                    onConfirm: async () => runAction("import-job", async () => {
+                      const tenantId = requireTenant();
+                      for (const field of importFields.filter((item) => item.required)) if (!importMapping[field.key]) throw new Error(`Map the ${field.label} column before starting the import.`);
+                      const job = await adminCreateStudentImportJob({ tenantId, mapping: importMapping, rows: importPreview.rows });
+                      setMessage(`Import job ${job.id} queued. Track it in Jobs.`, "success");
+                      setTab("jobs");
+                    }),
                   })} disabled={busyAction === "import-job"}>Start Import Job</Button>
                 </div>
               </div>
@@ -868,10 +890,15 @@ export default function AdminHubPage() {
                         <td>{progressLabel}</td>
                         <td>
                           <div className="hero-actions">
-                            {isImportJob(job) && job.status === "completed" && (job.createdStudentIds?.length ?? 0) > 0 ? <Button variant="secondary" onClick={() => runAction(`credentials-${job.id}`, async () => {
-                              const tenantId = requireTenant();
-                              const queued = await adminQueueImportCredentials({ tenantId, importJobId: job.id });
-                              setMessage(`Credential batch ${queued.id} queued for import ${job.id}.`, "success");
+                            {isImportJob(job) && job.status === "completed" && (job.createdStudentIds?.length ?? 0) > 0 ? <Button variant="secondary" onClick={() => openConfirmAction({
+                              title: "Send imported student credentials",
+                              message: `You are about to queue credential emails for ${(job.createdStudentIds?.length ?? 0)} imported student(s).`,
+                              confirmLabel: "Queue credentials",
+                              onConfirm: async () => runAction(`credentials-${job.id}`, async () => {
+                                const tenantId = requireTenant();
+                                const queued = await adminQueueImportCredentials({ tenantId, importJobId: job.id });
+                                setMessage(`Credential batch ${queued.id} queued for import ${job.id}.`, "success");
+                              }),
                             })}>Send Credentials</Button> : null}
                             {isImportJob(job) && job.errorCsvAvailable ? <Button variant="ghost" onClick={() => runAction(`download-${job.id}`, async () => {
                               const tenantId = requireTenant();
@@ -879,10 +906,15 @@ export default function AdminHubPage() {
                               downloadText(`student-import-${job.id}-errors.csv`, csv);
                               setMessage("Import error report downloaded.", "success");
                             })}>Errors CSV</Button> : null}
-                            {!isImportJob(job) && job.status === "ready" ? <Button variant="secondary" onClick={() => runAction(`release-${job.id}`, async () => {
-                              const tenantId = requireTenant();
-                              const released = await adminReleaseJob({ tenantId, jobId: job.id });
-                              setMessage(`Credential job ${released.id} queued for sending.`, "success");
+                            {!isImportJob(job) && job.status === "ready" ? <Button variant="secondary" onClick={() => openConfirmAction({
+                              title: "Release credential batch",
+                              message: "You are about to release this credential job for delivery.",
+                              confirmLabel: "Release batch",
+                              onConfirm: async () => runAction(`release-${job.id}`, async () => {
+                                const tenantId = requireTenant();
+                                const released = await adminReleaseJob({ tenantId, jobId: job.id });
+                                setMessage(`Credential job ${released.id} queued for sending.`, "success");
+                              }),
                             })}>Send Credentials</Button> : null}
                             {!isImportJob(job) && (job.status === "failed" || job.status === "partial") ? <Button variant="ghost" onClick={() => runAction(`retry-${job.id}`, async () => {
                               const tenantId = requireTenant();
@@ -972,6 +1004,16 @@ export default function AdminHubPage() {
         </>
       ) : null}
       </div>
+
+      <ConfirmActionModal
+        open={Boolean(confirmAction)}
+        onClose={() => setConfirmAction(null)}
+        onConfirm={() => void runConfirmedAction()}
+        busy={Boolean(confirmAction && busyAction)}
+        title={confirmAction?.title ?? "Confirm admin action"}
+        message={confirmAction?.message ?? "Confirm this admin action."}
+        confirmLabel={confirmAction?.confirmLabel ?? "Confirm"}
+      />
     </section>
   );
 }

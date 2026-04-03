@@ -148,6 +148,15 @@ async function ensureAnnouncementIndexes(db: Awaited<ReturnType<typeof getMongoD
   await db.collection(ANNOUNCEMENTS_COLLECTION).createIndex({ tenant_id: 1, status: 1, published_at: -1 });
   await db.collection(ANNOUNCEMENTS_COLLECTION).createIndex({ tenant_id: 1, expires_at: 1, status: 1 });
   await db.collection(ANNOUNCEMENTS_COLLECTION).createIndex({ tenant_id: 1, recipient_student_ids: 1 });
+  await db.collection(ANNOUNCEMENTS_COLLECTION).createIndex(
+    { tenant_id: 1, system_key: 1 },
+    {
+      unique: true,
+      partialFilterExpression: {
+        system_key: { $exists: true, $type: "string" },
+      },
+    },
+  );
   await db.collection(ANNOUNCEMENT_READS_COLLECTION).createIndex(
     { tenant_id: 1, announcement_id: 1, student_id: 1 },
     { unique: true },
@@ -1186,6 +1195,74 @@ export const CommunicationService = {
     return {
       announcementId: id,
       recipientCount: recipients.length,
+      status: "published" as AnnouncementStatus,
+    };
+  },
+
+  async publishSystemAnnouncementToStudents(params: {
+    tenantId: string;
+    senderId: string;
+    title: string;
+    message: string;
+    priority: AnnouncementPriority;
+    studentIds: string[];
+    relatedDriveId?: string;
+    expiresAt?: string;
+    systemKey: string;
+    showPopup?: boolean;
+  }) {
+    const db = await getMongoDb();
+    await ensureAnnouncementIndexes(db);
+
+    if (params.expiresAt && Number.isNaN(Date.parse(params.expiresAt))) {
+      throw new AppError("ANNOUNCEMENT_EXPIRES_AT_INVALID", "Expiry must be a valid date/time", 400);
+    }
+
+    const recipientStudentIds = [...new Set(params.studentIds.map((value) => String(value).trim()).filter(Boolean))];
+    if (recipientStudentIds.length === 0) {
+      return null;
+    }
+
+    const relatedDriveName = await resolveDriveLabel(params.tenantId, params.relatedDriveId);
+    const now = new Date().toISOString();
+    const existing = await db.collection(ANNOUNCEMENTS_COLLECTION).findOne(
+      { tenant_id: params.tenantId, system_key: params.systemKey },
+      { projection: { _id: 0, id: 1, created_at: 1 } },
+    );
+    const announcementId = existing?.id ? String(existing.id) : randomUUID();
+
+    await db.collection(ANNOUNCEMENTS_COLLECTION).updateOne(
+      { tenant_id: params.tenantId, system_key: params.systemKey },
+      {
+        $set: {
+          created_by: params.senderId,
+          title: params.title,
+          message: params.message,
+          priority: params.priority,
+          audience_filters: { studentIds: recipientStudentIds },
+          audience_summary: `System notification for ${recipientStudentIds.length} student${recipientStudentIds.length === 1 ? "" : "s"}`,
+          related_drive_id: params.relatedDriveId ?? null,
+          related_drive_name: relatedDriveName,
+          published_at: now,
+          expires_at: params.expiresAt ?? null,
+          status: "published",
+          show_popup: params.showPopup ?? params.priority === "urgent",
+          recipient_count_snapshot: recipientStudentIds.length,
+          recipient_student_ids: recipientStudentIds,
+          system_key: params.systemKey,
+          updated_at: now,
+        },
+        $setOnInsert: {
+          id: announcementId,
+          created_at: existing?.created_at ? String(existing.created_at) : now,
+        },
+      },
+      { upsert: true },
+    );
+
+    return {
+      announcementId,
+      recipientCount: recipientStudentIds.length,
       status: "published" as AnnouncementStatus,
     };
   },

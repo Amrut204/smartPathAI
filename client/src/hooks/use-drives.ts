@@ -227,6 +227,21 @@ export interface DriveReleaseStatus {
   }>;
 }
 
+export interface DriveAuditEntry {
+  id: string;
+  createdAt: string;
+  eventType: string;
+  supportSessionId: string | null;
+  actorUserId: string | null;
+  actorRole: string | null;
+  actorTenantId: string | null;
+  method: string | null;
+  path: string | null;
+  ip: string | null;
+  userAgent: string | null;
+  metadata: Record<string, unknown>;
+}
+
 export function useDrives(params?: { status?: DriveSummary["status"] }) {
   const query = new URLSearchParams();
   query.set("limit", "50");
@@ -255,6 +270,14 @@ export function useDriveReleaseStatus(driveId: string | null) {
   return useSWR<DriveReleaseStatus>(driveId ? `/api/v1/drives/${driveId}/results/release-status` : null, fetcher, {
     revalidateOnFocus: false,
   });
+}
+
+export function useDriveAudit(driveId: string | null, limit = 20) {
+  return useSWR<DriveAuditEntry[]>(
+    driveId ? `/api/v1/drives/${driveId}/audit?limit=${limit}` : null,
+    fetcher,
+    { revalidateOnFocus: false },
+  );
 }
 
 export async function createDrive(input: {

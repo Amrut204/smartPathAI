@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { Button, Card, Modal, Skeleton, Tabs } from "../../components/ui";
+import { useOnlineStatus } from "../../hooks/use-online-status";
 import {
   certifyStudentProfile,
   getProfileCertificationPreview,
   requestProfileUnlock,
+  type StudentProfile,
   uploadStudentResume,
   updateStudentProfile,
   useStudentProfile,
@@ -43,6 +45,7 @@ type ProfileFormState = {
 
 type ProfileSection = "overview" | "verified" | "details" | "recommended";
 type UnlockReasonCategory = "academic_record" | "resume_update" | "certification_correction" | "contact_update" | "other";
+type ProfileSuccessAction = "save_profile" | "certify_profile" | "upload_resume" | "request_unlock" | null;
 
 const baseProfileSectionTabs: Array<{ id: ProfileSection; label: string }> = [
   { id: "overview", label: "Overview" },
@@ -95,10 +98,94 @@ function toggleSelection(current: string[], value: string) {
     : [...current, value];
 }
 
+function buildProfileContinuityState(params: {
+  lastSuccessAction: ProfileSuccessAction;
+  data: StudentProfile;
+}) {
+  if (!params.lastSuccessAction) return null;
+
+  const primaryAction = params.data.nextBestActions[0] ?? null;
+  const readyDrives = params.data.liveEligibility.readyForApplicationDrives;
+  const eligibleDrives = params.data.liveEligibility.criteriaEligibleDrives;
+  const blockers = params.data.activeBlockers.slice(0, 2);
+
+  if (params.lastSuccessAction === "request_unlock") {
+    return {
+      eyebrow: "Request submitted",
+      title: "Your placement office now has the correction request.",
+      message:
+        "While that request is under review, you can keep momentum going on preparation so you do not lose time.",
+      metrics: [
+        { label: "Upcoming drives", value: String(params.data.liveEligibility.totalUpcomingDrives) },
+        { label: "Action-ready drives", value: String(readyDrives) },
+      ],
+      actions: params.data.nextBestActions
+        .filter((action) => action.targetPath !== "/profile")
+        .slice(0, 2)
+        .map((action) => ({
+          label: action.ctaLabel,
+          targetPath: action.targetPath,
+          description: action.title,
+        })),
+    };
+  }
+
+  const title =
+    params.lastSuccessAction === "certify_profile"
+      ? readyDrives > 0
+        ? `Your profile is now application-ready for ${readyDrives} drive${readyDrives === 1 ? "" : "s"}.`
+        : "Certification is done. One more profile step may still be blocking applications."
+      : params.lastSuccessAction === "upload_resume"
+        ? readyDrives > 0
+          ? `Your resume is now helping unlock ${readyDrives} drive${readyDrives === 1 ? "" : "s"}.`
+          : "Your resume is in place. Certification or academic criteria may still be the blocker."
+        : readyDrives > 0
+          ? `Your latest changes now leave you ready for ${readyDrives} drive${readyDrives === 1 ? "" : "s"}.`
+          : "Your profile is updated. The next step is to convert that into drive readiness.";
+
+  const message =
+    readyDrives > 0
+      ? `You currently match the full application requirements for ${readyDrives} upcoming drive${readyDrives === 1 ? "" : "s"} and the platform has already refreshed your recommendations.`
+      : params.data.liveEligibility.nextAction
+        ? `${params.data.liveEligibility.nextAction.label} would unlock ${params.data.liveEligibility.nextAction.unlockCount} more drive${params.data.liveEligibility.nextAction.unlockCount === 1 ? "" : "s"}.`
+        : eligibleDrives > 0
+          ? `You already meet the core criteria for ${eligibleDrives} drive${eligibleDrives === 1 ? "" : "s"}, but one or more readiness steps still need attention.`
+          : "You are closer, but the current published drives still need more profile or academic alignment.";
+
+  return {
+    eyebrow: "Readiness update",
+    title,
+    message,
+    metrics: [
+      { label: "Action-ready drives", value: String(readyDrives) },
+      { label: "Criteria matched", value: String(eligibleDrives) },
+      { label: "Open blockers", value: String(params.data.activeBlockers.length) },
+    ],
+    actions: [
+      primaryAction
+        ? {
+            label: primaryAction.ctaLabel,
+            targetPath: primaryAction.targetPath,
+            description: primaryAction.title,
+          }
+        : null,
+      {
+        label: "Open drives",
+        targetPath: "/drives",
+        description: "Check what changed in your drive readiness now.",
+      },
+    ].filter(Boolean) as Array<{ label: string; targetPath: string; description: string }>,
+    blockers,
+  };
+}
+
 export default function ProfilePage() {
   const { data, error, isLoading, mutate } = useStudentProfile();
+  const isOnline = useOnlineStatus();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState<string | null>(null);
+  const [lastSuccessAction, setLastSuccessAction] = useState<ProfileSuccessAction>(null);
   const [saving, setSaving] = useState(false);
   const [activeSection, setActiveSection] = useState<ProfileSection>("overview");
   const [isCertificationOpen, setIsCertificationOpen] = useState(false);
@@ -229,6 +316,7 @@ export default function ProfilePage() {
   const currentSemesterNumber = Number(data?.studentEditableProfile.currentSemester || 0);
   const activeUnlockRequest = data?.unlockRequest ?? null;
   const canReviewAndCertify = Boolean(data?.profileCompleteness.isComplete) && !isLocked;
+  const continuityState = data ? buildProfileContinuityState({ lastSuccessAction, data }) : null;
 
   if (isLoading) {
     return (
@@ -271,6 +359,7 @@ export default function ProfilePage() {
 
     setSaving(true);
     setStatus(null);
+    setLastSuccessAction(null);
 
     try {
       await updateStudentProfile({
@@ -302,8 +391,10 @@ export default function ProfilePage() {
       });
       await mutate();
       setStatus("Profile updated successfully.");
+      setLastSuccessAction("save_profile");
     } catch (updateError) {
       setStatus(updateError instanceof Error ? updateError.message : "Update failed");
+      setLastSuccessAction(null);
     } finally {
       setSaving(false);
     }
@@ -327,14 +418,17 @@ export default function ProfilePage() {
   const submitCertification = async () => {
     setCertificationBusy(true);
     setCertificationStatus(null);
+    setLastSuccessAction(null);
     try {
       await certifyStudentProfile({ typedValue: certificationTypedValue });
       await mutate();
       setIsCertificationOpen(false);
       setCertificationTypedValue("");
       setStatus("Profile certified successfully.");
+      setLastSuccessAction("certify_profile");
     } catch (certificationError) {
       setCertificationStatus(certificationError instanceof Error ? certificationError.message : "Unable to certify profile");
+      setLastSuccessAction(null);
     } finally {
       setCertificationBusy(false);
     }
@@ -345,16 +439,29 @@ export default function ProfilePage() {
       setStatus("Choose a PDF resume before uploading.");
       return;
     }
+    if (!isOnline) {
+      setStatus("You are offline. Reconnect before uploading or replacing your resume.");
+      return;
+    }
 
     setResumeBusy(true);
     setStatus(null);
+    setLastSuccessAction(null);
     try {
       await uploadStudentResume(resumeFile);
       await mutate();
       setResumeFile(null);
       setStatus("Resume uploaded successfully.");
+      setLastSuccessAction("upload_resume");
     } catch (resumeError) {
-      setStatus(resumeError instanceof Error ? resumeError.message : "Unable to upload resume");
+      setStatus(
+        !isOnline
+          ? "Connection lost while uploading. Reconnect and retry the resume upload."
+          : resumeError instanceof Error
+            ? resumeError.message
+            : "Unable to upload resume",
+      );
+      setLastSuccessAction(null);
     } finally {
       setResumeBusy(false);
     }
@@ -363,6 +470,7 @@ export default function ProfilePage() {
   const handleUnlockRequest = async () => {
     setUnlockBusy(true);
     setStatus(null);
+    setLastSuccessAction(null);
     try {
       await requestProfileUnlock({
         reasonCategory: unlockCategory,
@@ -374,8 +482,10 @@ export default function ProfilePage() {
       setUnlockExplanation("");
       setUnlockFields([]);
       setStatus("Unlock request submitted successfully.");
+      setLastSuccessAction("request_unlock");
     } catch (unlockError) {
       setStatus(unlockError instanceof Error ? unlockError.message : "Unable to submit unlock request");
+      setLastSuccessAction(null);
     } finally {
       setUnlockBusy(false);
     }
@@ -394,6 +504,13 @@ export default function ProfilePage() {
       </header>
 
       <section className="student-workspace-panel student-profile-readiness-shell">
+        {!isOnline ? (
+          <div className="student-profile-inline-alert is-warning">
+            <strong>You are offline.</strong>
+            <span>Profile edits stay on the page, but saving changes and resume uploads need a live connection.</span>
+          </div>
+        ) : null}
+
         <div className={`student-profile-readiness is-${data.readinessBanner.tone}`}>
           <div>
             <span className="resources-kicker">Placement readiness</span>
@@ -428,6 +545,52 @@ export default function ProfilePage() {
           </div>
         ) : null}
 
+        {continuityState ? (
+          <div className="student-continuity-banner">
+            <div className="student-continuity-copy">
+              <span className="resources-kicker">{continuityState.eyebrow}</span>
+              <h3>{continuityState.title}</h3>
+              <p>{continuityState.message}</p>
+            </div>
+            <div className="student-continuity-metrics">
+              {continuityState.metrics.map((metric) => (
+                <div key={metric.label}>
+                  <span>{metric.label}</span>
+                  <strong>{metric.value}</strong>
+                </div>
+              ))}
+            </div>
+            {continuityState.blockers && continuityState.blockers.length > 0 ? (
+              <div className="student-continuity-tags">
+                {continuityState.blockers.map((blocker) => (
+                  <span key={blocker.code} className="resource-topic-chip resource-topic-chip-reason">
+                    {blocker.label} Â· {blocker.count}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+            <div className="hero-actions">
+              {continuityState.actions.map((action) => (
+                <Button
+                  key={`${action.targetPath}_${action.label}`}
+                  type="button"
+                  variant={action.targetPath === "/drives" ? "secondary" : "primary"}
+                  onClick={() => {
+                    if (action.targetPath === "/profile") {
+                      setActiveSection("overview");
+                      return;
+                    }
+                    navigate(action.targetPath);
+                  }}
+                  title={action.description}
+                >
+                  {action.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
         <div className="student-profile-action-bar">
           <Button
             type="submit"
@@ -450,6 +613,31 @@ export default function ProfilePage() {
             {data.resumeInsights.hasManagedResume ? "Replace resume" : "Upload resume"}
           </Button>
         </div>
+
+        {data.nextBestActions.length > 0 ? (
+          <div className="student-profile-next-actions">
+            {data.nextBestActions.slice(0, 3).map((action) => (
+              <div key={action.id} className="student-profile-next-action-card">
+                <span className="resources-kicker">What to do next</span>
+                <strong>{action.title}</strong>
+                <p>{action.explanation}</p>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => {
+                    if (action.targetPath === "/profile") {
+                      setActiveSection("overview");
+                      return;
+                    }
+                    navigate(action.targetPath);
+                  }}
+                >
+                  {action.ctaLabel}
+                </Button>
+              </div>
+            ))}
+          </div>
+        ) : null}
 
         <div className="student-profile-section-state-grid">
           {data.sectionStates.map((section) => {
@@ -796,7 +984,7 @@ export default function ProfilePage() {
               ) : (
                 <p className="success-text">
                   Certified on {formatDateTime(data.declarationStatus.profileCertification.acceptedAt)}
-                  {data.declarationStatus.profileCertification.isLocked ? " • Locked for edits" : ""}
+                  {data.declarationStatus.profileCertification.isLocked ? " ï¿½ Locked for edits" : ""}
                 </p>
               )}
             </div>

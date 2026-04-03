@@ -40,6 +40,7 @@ import { GoogleDriveResumeService } from "./google-drive-resume.service.js";
 import { getBranchPrepTrack, getCanonicalBranchCode, matchesBranchPrepTrackTag } from "../config/branch-prep.config.js";
 import { AuditLogService } from "./audit-log.service.js";
 import { MockTestService } from "./mock-test.service.js";
+import { CommunicationService } from "./communication.service.js";
 
 interface LogStudyHoursInput {
   tenantId: string;
@@ -1318,13 +1319,36 @@ async function buildProfileExperience(profile: Awaited<ReturnType<typeof Student
 }
 
 async function buildMyProfileResponseWithVisibility(profile: Awaited<ReturnType<typeof StudentRepository.getStudentProfile>>) {
-  const [base, tpoVisibilitySummary] = await Promise.all([
+  const studentId = String(profile.id);
+  const [base, tpoVisibilitySummary, dashboard, pendingAttempt] = await Promise.all([
     buildProfileExperience(profile),
     buildTpoVisibilitySummary(profile),
+    StudentRepository.getDashboardData(String(profile.tenant_id), studentId),
+    getPendingAttemptSummary(String(profile.tenant_id), studentId),
   ]);
+  const nearestDrive = dashboard.upcomingDrives[0] ?? null;
+  const featuredDrivePrep = nearestDrive
+    ? {
+        driveId: nearestDrive.id,
+        company: nearestDrive.company,
+        role: nearestDrive.role,
+        driveDate: nearestDrive.driveDate,
+        daysRemaining: Math.max(
+          0,
+          Math.ceil((new Date(nearestDrive.driveDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)),
+        ),
+      }
+    : null;
   return {
     ...base,
     tpoVisibilitySummary,
+    activeBlockers: mapProfileBlockers(base.liveEligibility.blockers),
+    nextBestActions: buildStudentActionFeed({
+      profileExperience: base,
+      dashboard,
+      pendingAttempt,
+      featuredDrivePrep,
+    }),
   };
 }
 
@@ -1578,6 +1602,182 @@ function buildStudentActionFeed(params: {
   }
 
   return actions.sort((left, right) => left.priority - right.priority);
+}
+
+type StudentDriveReadinessNotificationContext = {
+  readyToApply: Array<{ driveId: string; company: string; role: string | null; driveDate: string; daysRemaining: number | null }>;
+  blockedByResume: Array<{ driveId: string; company: string; role: string | null; driveDate: string; daysRemaining: number | null }>;
+  blockedByCertification: Array<{ driveId: string; company: string; role: string | null; driveDate: string; daysRemaining: number | null }>;
+  blockedByResumeAndCertification: Array<{ driveId: string; company: string; role: string | null; driveDate: string; daysRemaining: number | null }>;
+};
+
+function daysUntilDrive(dateIso: string): number | null {
+  if (!dateIso) return null;
+  const target = new Date(dateIso);
+  if (Number.isNaN(target.getTime())) return null;
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  target.setHours(0, 0, 0, 0);
+  return Math.round((target.getTime() - now.getTime()) / 86_400_000);
+}
+
+async function collectStudentDriveReadinessNotificationContext(params: {
+  tenantId: string;
+  userId: string;
+  profileResponse: ReturnType<typeof buildMyProfileResponse>;
+}) {
+  const db = await getMongoDb();
+  const student = await StudentRepository.getStudentByUserId(params.tenantId, params.userId);
+  const drives = await db.collection("drives").find(
+    {
+      tenant_id: params.tenantId,
+      deleted_at: null,
+      status: "published",
+      drive_date: { $gte: new Date().toISOString().slice(0, 10) },
+    },
+    { projection: { _id: 0, id: 1, company: 1, role: 1, drive_date: 1, criteria: 1, status: 1 } },
+  ).sort({ drive_date: 1 }).limit(10).toArray();
+
+  const profileCertified = params.profileResponse.declarationStatus.profileCertification.isCertified;
+  const hasResume =
+    Boolean(params.profileResponse.studentEditableProfile.resumeDriveWebLink)
+    || Boolean(params.profileResponse.studentEditableProfile.resumeUrl);
+
+  const context: StudentDriveReadinessNotificationContext = {
+    readyToApply: [],
+    blockedByResume: [],
+    blockedByCertification: [],
+    blockedByResumeAndCertification: [],
+  };
+
+  for (const drive of drives) {
+    const evaluation = evaluateStudentEligibility(
+      {
+        cgpa: Number(student.cgpa ?? 0),
+        activeBacklogs: Number(student.backlogs ?? 0),
+        totalBacklogs: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
+        branch: String(student.branch ?? ""),
+        attendancePct: Number(student.attendance_pct ?? 0),
+      },
+      (drive.criteria ?? {}) as {
+        minCgpa?: number;
+        maxBacklogs?: number;
+        maxActiveBacklogs?: number;
+        maxTotalBacklogs?: number;
+        branches?: string[];
+        minAttendance?: number;
+        excludePlacedStudents?: boolean;
+      },
+    );
+
+    if (!evaluation.eligible) continue;
+
+    const summary = {
+      driveId: String(drive.id ?? ""),
+      company: String(drive.company ?? ""),
+      role: drive.role ? String(drive.role) : null,
+      driveDate: String(drive.drive_date ?? ""),
+      daysRemaining: daysUntilDrive(String(drive.drive_date ?? "")),
+    };
+
+    if (profileCertified && hasResume) {
+      context.readyToApply.push(summary);
+      continue;
+    }
+
+    if (!profileCertified && !hasResume) {
+      context.blockedByResumeAndCertification.push(summary);
+      continue;
+    }
+
+    if (!profileCertified) {
+      context.blockedByCertification.push(summary);
+      continue;
+    }
+
+    context.blockedByResume.push(summary);
+  }
+
+  return {
+    studentId: String(student.id),
+    ...context,
+  };
+}
+
+async function publishStudentDriveReadinessNotifications(params: {
+  tenantId: string;
+  userId: string;
+  senderId: string;
+  beforeProfile: ReturnType<typeof buildMyProfileResponse>;
+  afterProfile: ReturnType<typeof buildMyProfileResponse>;
+}) {
+  const [beforeContext, afterContext] = await Promise.all([
+    collectStudentDriveReadinessNotificationContext({
+      tenantId: params.tenantId,
+      userId: params.userId,
+      profileResponse: params.beforeProfile,
+    }),
+    collectStudentDriveReadinessNotificationContext({
+      tenantId: params.tenantId,
+      userId: params.userId,
+      profileResponse: params.afterProfile,
+    }),
+  ]);
+
+  const beforeReady = new Set(beforeContext.readyToApply.map((item) => item.driveId));
+  const newlyReady = afterContext.readyToApply.filter((item) => !beforeReady.has(item.driveId)).slice(0, 3);
+
+  for (const drive of newlyReady) {
+    await CommunicationService.publishSystemAnnouncementToStudents({
+      tenantId: params.tenantId,
+      senderId: params.senderId,
+      studentIds: [afterContext.studentId],
+      systemKey: `student-ready-drive:${afterContext.studentId}:${drive.driveId}`,
+      title: `You can now apply for ${drive.company}${drive.role ? ` - ${drive.role}` : ""}`,
+      message: `Your profile, certification, and resume now line up for this drive${drive.daysRemaining === null ? "." : ` with ${drive.daysRemaining} day(s) left.`} Open Drives and submit the application while it is still open.`,
+      priority: drive.daysRemaining !== null && drive.daysRemaining <= 3 ? "urgent" : "important",
+      relatedDriveId: drive.driveId,
+    });
+  }
+
+  const reminderGroups = [
+    {
+      items: afterContext.blockedByResume.slice(0, 2),
+      prefix: "resume",
+      title: "Upload your resume to unlock applications",
+      message: (drive: { company: string; role: string | null; daysRemaining: number | null }) =>
+        `You already match ${drive.company}${drive.role ? ` - ${drive.role}` : ""}, but you still need to upload your resume before you can apply${drive.daysRemaining === null ? "." : ` with ${drive.daysRemaining} day(s) left.`}`,
+    },
+    {
+      items: afterContext.blockedByCertification.slice(0, 2),
+      prefix: "certification",
+      title: "Certify your profile to unlock applications",
+      message: (drive: { company: string; role: string | null; daysRemaining: number | null }) =>
+        `You already match ${drive.company}${drive.role ? ` - ${drive.role}` : ""}, but you still need to certify your profile before you can apply${drive.daysRemaining === null ? "." : ` with ${drive.daysRemaining} day(s) left.`}`,
+    },
+    {
+      items: afterContext.blockedByResumeAndCertification.slice(0, 2),
+      prefix: "resume-and-certification",
+      title: "Complete your profile steps to apply",
+      message: (drive: { company: string; role: string | null; daysRemaining: number | null }) =>
+        `You already match ${drive.company}${drive.role ? ` - ${drive.role}` : ""}, but you still need both a certified profile and an uploaded resume before you can apply${drive.daysRemaining === null ? "." : ` with ${drive.daysRemaining} day(s) left.`}`,
+    },
+  ];
+
+  for (const group of reminderGroups) {
+    for (const drive of group.items) {
+      await CommunicationService.publishSystemAnnouncementToStudents({
+        tenantId: params.tenantId,
+        senderId: params.senderId,
+        studentIds: [afterContext.studentId],
+        systemKey: `student-${group.prefix}-blocker:${afterContext.studentId}:${drive.driveId}`,
+        title: group.title,
+        message: group.message(drive),
+        priority: drive.daysRemaining !== null && drive.daysRemaining <= 3 ? "urgent" : "important",
+        relatedDriveId: drive.driveId,
+      });
+    }
+  }
 }
 
 function buildGenericPrepBundle(params: {
@@ -2598,7 +2798,16 @@ export const StudentService = {
       note: "Student recertified the profile after the unlock approval.",
     });
 
-    return buildMyProfileResponseWithVisibility(updated);
+    const finalProfile = await StudentRepository.getStudentProfile(params.tenantId, params.userId);
+    await publishStudentDriveReadinessNotifications({
+      tenantId: params.tenantId,
+      userId: params.userId,
+      senderId: params.userId,
+      beforeProfile: response,
+      afterProfile: buildMyProfileResponse(finalProfile),
+    });
+
+    return buildMyProfileResponseWithVisibility(finalProfile);
   },
 
   async getMyProfileUnlockRequest(tenantId: string, userId: string) {
@@ -2735,12 +2944,26 @@ export const StudentService = {
       tenantId: params.tenantId,
       actorUserId: params.actorUserId,
       actorRole: params.actorRole,
-      eventType: "admin_ops_student_updated",
+      eventType: "student_profile_unlock_reviewed",
       metadata: {
         studentId: params.studentId,
         requestId: params.requestId,
         decision: params.decision,
+        responseNote: params.responseNote?.trim() || null,
       },
+    });
+
+    await CommunicationService.publishSystemAnnouncementToStudents({
+      tenantId: params.tenantId,
+      senderId: params.actorUserId,
+      studentIds: [params.studentId],
+      systemKey: `profile-unlock-review:${params.requestId}`,
+      title: params.decision === "approved" ? "Your profile unlock request was approved" : "Your profile unlock request was denied",
+      message:
+        params.decision === "approved"
+          ? `Your placement office approved your unlock request. You can now update the requested profile fields${params.responseNote?.trim() ? `.\n\nNote: ${params.responseNote.trim()}` : "."}`
+          : `Your placement office reviewed the unlock request and did not approve it${params.responseNote?.trim() ? `.\n\nNote: ${params.responseNote.trim()}` : "."}`,
+      priority: "important",
     });
 
     return {
@@ -2943,7 +3166,16 @@ export const StudentService = {
       note: "Student updated the profile after the unlock approval.",
     });
 
-    return this.getMyProfile(params.tenantId, params.userId);
+    const finalProfile = await StudentRepository.getStudentProfile(params.tenantId, params.userId);
+    await publishStudentDriveReadinessNotifications({
+      tenantId: params.tenantId,
+      userId: params.userId,
+      senderId: params.userId,
+      beforeProfile: currentProfileResponse,
+      afterProfile: buildMyProfileResponse(finalProfile),
+    });
+
+    return buildMyProfileResponseWithVisibility(finalProfile);
   },
 
   async uploadMyResume(params: {
@@ -3028,7 +3260,16 @@ export const StudentService = {
       note: "Student uploaded a new resume after the unlock approval.",
     });
 
-    return this.getMyProfile(params.tenantId, params.userId);
+    const finalProfile = await StudentRepository.getStudentProfile(params.tenantId, params.userId);
+    await publishStudentDriveReadinessNotifications({
+      tenantId: params.tenantId,
+      userId: params.userId,
+      senderId: params.userId,
+      beforeProfile: currentProfileResponse,
+      afterProfile: buildMyProfileResponse(finalProfile),
+    });
+
+    return buildMyProfileResponseWithVisibility(finalProfile);
   },
 
   async getMastery(tenantId: string, userId: string) {

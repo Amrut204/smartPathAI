@@ -2,6 +2,7 @@ import { Link, useSearchParams } from "react-router-dom";
 
 import { Badge, Button, Card, Table } from "../../components/ui";
 import { useMockTestResult } from "../../hooks/use-mock-tests";
+import { useStudentProfile } from "../../hooks/use-student-profile";
 
 function scoreTone(score: number) {
   if (score >= 70) return "success";
@@ -14,6 +15,7 @@ export default function MockTestResultsPage() {
   const attemptId = searchParams.get("attemptId");
 
   const { data, error, isLoading } = useMockTestResult(attemptId);
+  const { data: profile } = useStudentProfile();
 
   if (isLoading) {
     return <Card>Loading result...</Card>;
@@ -32,6 +34,48 @@ export default function MockTestResultsPage() {
           <p>Your score is ready. The page below focuses on what to do next, not just what happened.</p>
         </div>
       </section>
+
+      {profile ? (
+        <section className="student-continuity-banner">
+          <div className="student-continuity-copy">
+            <span className="resources-kicker">Readiness impact</span>
+            <h2>
+              {profile.liveEligibility.readyForApplicationDrives > 0
+                ? `You are currently ready for ${profile.liveEligibility.readyForApplicationDrives} upcoming drive${profile.liveEligibility.readyForApplicationDrives === 1 ? "" : "s"}.`
+                : "This result has already fed back into your preparation flow."}
+            </h2>
+            <p>
+              {profile.nextBestActions[0]
+                ? `${profile.nextBestActions[0].title}: ${profile.nextBestActions[0].explanation}`
+                : "Use the next recommended test below, then check your dashboard to see how your current readiness is shaping up."}
+            </p>
+          </div>
+          <div className="student-continuity-metrics">
+            <div>
+              <span>Action-ready drives</span>
+              <strong>{profile.liveEligibility.readyForApplicationDrives}</strong>
+            </div>
+            <div>
+              <span>Criteria matched</span>
+              <strong>{profile.liveEligibility.criteriaEligibleDrives}</strong>
+            </div>
+            <div>
+              <span>Open blockers</span>
+              <strong>{profile.activeBlockers.length}</strong>
+            </div>
+          </div>
+          <div className="hero-actions">
+            <Link to="/dashboard" className="ui-button secondary">Open dashboard</Link>
+            {profile.nextBestActions[0] ? (
+              <Link to={profile.nextBestActions[0].targetPath} className="ui-button">
+                {profile.nextBestActions[0].ctaLabel}
+              </Link>
+            ) : (
+              <Link to="/mock-tests" className="ui-button">Open mock tests</Link>
+            )}
+          </div>
+        </section>
+      ) : null}
 
       <section className="student-workspace-panel">
         <div className="workspace-metrics-grid">

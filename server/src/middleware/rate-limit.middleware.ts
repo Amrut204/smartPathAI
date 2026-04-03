@@ -116,6 +116,20 @@ export const resultReleaseRateLimiter = buildTenantUserRateLimiter({
   message: "Too many result release attempts recently. Please wait a few minutes and try again.",
 });
 
+export const adminImportRateLimiter = buildTenantUserRateLimiter({
+  windowMs: 10 * 60 * 1000,
+  limit: 12,
+  code: "ADMIN_IMPORT_RATE_LIMITED",
+  message: "Too many import actions recently. Please wait a few minutes and try again.",
+});
+
+export const adminBulkActionRateLimiter = buildTenantUserRateLimiter({
+  windowMs: 10 * 60 * 1000,
+  limit: 20,
+  code: "ADMIN_BULK_ACTION_RATE_LIMITED",
+  message: "Too many bulk actions recently. Please wait a few minutes and try again.",
+});
+
 export const mockTestStartRateLimiter = buildTenantUserRateLimiter({
   windowMs: 10 * 60 * 1000,
   limit: 30,
