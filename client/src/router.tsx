@@ -34,6 +34,13 @@ const TpoDriveResultsPage = lazy(() => import("./pages/tpo/TpoDriveResultsPage")
 const TpoReportsPage = lazy(() => import("./pages/tpo/TpoReportsPage"));
 const TpoCommunicationPage = lazy(() => import("./pages/tpo/TpoCommunicationPage"));
 const TpoCommunicationComposePage = lazy(() => import("./pages/tpo/TpoCommunicationComposePage"));
+const AdminHubPage = lazy(() => import("./pages/admin/AdminHubPage"));
+
+function getDefaultRouteForRole(role: "student" | "tpo" | "admin") {
+  if (role === "student") return "/dashboard";
+  if (role === "admin") return "/admin/hub";
+  return "/tpo/dashboard";
+}
 
 function renderRoute(node: ReactNode) {
   return (
@@ -66,7 +73,7 @@ function AuthGuard({ allowedRoles }: { allowedRoles?: string[] }) {
   }
 
   if (allowedRoles && !allowedRoles.includes(profile.role)) {
-    return <Navigate to={profile.role === "student" ? "/dashboard" : "/tpo/dashboard"} replace />;
+    return <Navigate to={getDefaultRouteForRole(profile.role)} replace />;
   }
 
   if (profile.must_change_password && location.pathname !== "/password/setup") {
@@ -74,7 +81,7 @@ function AuthGuard({ allowedRoles }: { allowedRoles?: string[] }) {
   }
 
   if (!profile.must_change_password && location.pathname === "/password/setup") {
-    return <Navigate to={profile.role === "student" ? "/dashboard" : "/tpo/dashboard"} replace />;
+    return <Navigate to={getDefaultRouteForRole(profile.role)} replace />;
   }
 
   return <Outlet />;
@@ -89,7 +96,7 @@ function PublicGuard() {
     if (profile.must_change_password) {
       return <Navigate to="/password/setup" replace />;
     }
-    return <Navigate to={profile.role === "student" ? "/dashboard" : "/tpo/dashboard"} replace />;
+    return <Navigate to={getDefaultRouteForRole(profile.role)} replace />;
   }
 
   return <Outlet />;
@@ -325,6 +332,7 @@ const router = createBrowserRouter([
       {
         element: <TpoLayout />,
         children: [
+          { path: "/admin/hub", element: renderRoute(<AdminHubPage />) },
           { path: "/tpo/internal/demo-feedback", element: <Navigate to="/tpo/dashboard" replace /> },
           { path: "/tpo/internal/demo-analytics", element: <Navigate to="/tpo/dashboard" replace /> },
           { path: "/tpo/sales/pipeline", element: <Navigate to="/tpo/dashboard" replace /> },
