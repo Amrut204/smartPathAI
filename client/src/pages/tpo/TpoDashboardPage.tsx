@@ -272,10 +272,9 @@ export default function TpoDashboardPage() {
         <div className="tpo-ops-hero">
           <div className="tpo-ops-hero-copy">
             <p className="workspace-eyebrow">TPO Operations Console</p>
-            <h1>Run placement operations from one dashboard.</h1>
+            <h1>See what needs action first.</h1>
             <p className="muted-text">
-              We are surfacing the queues, drive risk, and student readiness states that need intervention today so you can act without
-              hopping across half the product first.
+              Start with the queues, drive movement, and follow-up items that need intervention today. Secondary analytics stay lower on the page.
             </p>
           </div>
           <div className="hero-actions">
@@ -379,36 +378,6 @@ export default function TpoDashboardPage() {
       <Card className="tpo-list-card">
         <div className="workspace-panel-header">
           <div>
-            <p className="workspace-eyebrow">Adoption Snapshot</p>
-            <h2>Metrics you can show in a placement review</h2>
-          </div>
-          <p className="muted-text">
-            These numbers turn product usage into an adoption story: activation, readiness coverage, application follow-through, and communication reach.
-          </p>
-        </div>
-        <div className="tpo-queue-summary-grid">
-          {pilotProofItems.map((item) => (
-            <div key={item.label} className="tpo-queue-summary-card">
-              <span>{item.label}</span>
-              <strong>{item.value}</strong>
-              <p className="muted-text">{item.countLabel}</p>
-              <p className="muted-text">{item.helper}</p>
-            </div>
-          ))}
-        </div>
-        <div className="student-workspace-inline-note">
-          {milestoneChecklist.map((item) => (
-            <span key={item.label}>{item.complete ? "Done" : "Pending"}: {item.label}</span>
-          ))}
-        </div>
-        <p className="muted-text">
-          Readiness is calculated from stronger placement evidence. Smart Path activity helps with engagement and intervention follow-up, but low platform usage alone does not mean a student is incapable.
-        </p>
-      </Card>
-
-      <Card className="tpo-list-card">
-        <div className="workspace-panel-header">
-          <div>
             <p className="workspace-eyebrow">Needs Attention Today</p>
             <h2>Top queues and follow-up items</h2>
           </div>
@@ -456,6 +425,36 @@ export default function TpoDashboardPage() {
             ))
           )}
         </div>
+      </Card>
+
+      <Card className="tpo-list-card">
+        <div className="workspace-panel-header">
+          <div>
+            <p className="workspace-eyebrow">Adoption Snapshot</p>
+            <h2>Proof and follow-through, kept below operations</h2>
+          </div>
+          <p className="muted-text">
+            These metrics help with placement reviews and leadership updates after the action queues and live drive health are handled.
+          </p>
+        </div>
+        <div className="tpo-queue-summary-grid">
+          {pilotProofItems.map((item) => (
+            <div key={item.label} className="tpo-queue-summary-card">
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+              <p className="muted-text">{item.countLabel}</p>
+              <p className="muted-text">{item.helper}</p>
+            </div>
+          ))}
+        </div>
+        <div className="student-workspace-inline-note">
+          {milestoneChecklist.map((item) => (
+            <span key={item.label}>{item.complete ? "Done" : "Pending"}: {item.label}</span>
+          ))}
+        </div>
+        <p className="muted-text">
+          Readiness is based on stronger placement evidence. Platform activity remains useful for engagement and follow-up, but low Smart Path usage alone does not mean a student is incapable.
+        </p>
       </Card>
 
       <Card className="tpo-list-card">

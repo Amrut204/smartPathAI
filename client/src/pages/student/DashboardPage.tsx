@@ -344,20 +344,18 @@ export default function DashboardPage() {
         ) : null}
       </Modal>
 
-      <header className="student-workspace-header">
+      <header className="student-workspace-header student-home-header-v2">
         <div>
           <p className="resources-kicker">{branch} - Batch {batch}</p>
-          <h1>Keep your placement profile current and act on official updates.</h1>
-          <p>Finish required details, track college announcements, and apply only to the drives you actually qualify for. You can prepare from any trusted source while using Smart Path as your official placement workflow and readiness guide.</p>
+          <h1>{`Hi ${data.studentName || "there"}, focus on the next placement move.`}</h1>
+          <p>
+            Smart Path is your official college workflow for readiness, drives, and announcements. You can still prepare from GFG,
+            PrepInsta, YouTube, or any trusted source that works for you.
+          </p>
         </div>
         <div className="hero-actions">
-          <Link to="/drives" className="ui-button primary">Check Drives</Link>
-          <Link to={canAccessMockTests ? "/mock-tests" : "/profile?blocked=mock-tests"} className="ui-button secondary">
-            {canAccessMockTests ? "Take Mock Test" : "Complete Profile"}
-          </Link>
-          <Link to={canAccessResources ? "/resources" : "/profile?blocked=resources"} className="ui-button secondary">
-            {canAccessResources ? "Browse Resources" : "Unlock Resources"}
-          </Link>
+          <Link to="/drives" className="ui-button primary">View eligible drives</Link>
+          <Link to="/profile" className="ui-button secondary">Review profile</Link>
         </div>
       </header>
 
@@ -375,118 +373,96 @@ export default function DashboardPage() {
         </section>
       ) : null}
 
+      <section className="student-home-v2-grid">
+        <section className="student-workspace-panel student-home-primary-card">
+          <div className="student-home-score-row">
+            <div>
+              <span className="student-workspace-eyebrow">Readiness</span>
+              <h2>{readinessScore.toFixed(0)}%</h2>
+              <p className="muted-text">
+                {profileCompletenessPct}% profile complete • {eligibleUpcomingDrives} eligible drive{eligibleUpcomingDrives === 1 ? "" : "s"}
+              </p>
+            </div>
+            <div className="student-home-score-metrics">
+              {dashboardMetricItems.slice(0, 4).map((item, index) => (
+                <div
+                  key={item.label}
+                  className={animateMetricCards ? "motion-stagger-enter" : undefined}
+                  style={animateMetricCards ? ({ "--motion-delay": `${Math.min(index, 3) * 60}ms` } as CSSProperties) : undefined}
+                >
+                  <span>{item.label}</span>
+                  <strong>{item.value}</strong>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="student-home-hero-copy">
+            <span className="student-workspace-eyebrow">Next Best Action</span>
+            <strong>{nextAction.title}</strong>
+            <p>{nextAction.explanation}</p>
+          </div>
+          <div className="hero-actions">
+            <Link to={nextAction.targetPath} className="ui-button primary">{nextAction.ctaLabel}</Link>
+            <Link to="/drives" className="ui-button ghost">Open drives</Link>
+          </div>
+        </section>
+
+        <section className="student-workspace-panel student-home-support-card">
+          <div className="student-workspace-panel-head">
+            <div>
+              <h2>{firstRunContextCard.title}</h2>
+              <p>{firstRunContextCard.explanation}</p>
+            </div>
+          </div>
+          <div className="student-home-context-meta">
+            <span>{nearestUpcomingDrive ? `${nearestUpcomingDrive.company}${nearestUpcomingDrive.role ? ` • ${nearestUpcomingDrive.role}` : ""}` : "No nearest drive yet"}</span>
+            <span>{daysUntilNearestDrive === null ? "No countdown yet" : `${daysUntilNearestDrive} day(s) left`}</span>
+          </div>
+          <Link to={firstRunContextCard.targetPath} className="ui-button secondary">{firstRunContextCard.ctaLabel}</Link>
+        </section>
+
+        <section className="student-workspace-panel student-home-support-card">
+          <div className="student-workspace-panel-head">
+            <div>
+              <h2>{firstRunPracticeCard.title}</h2>
+              <p>{firstRunPracticeCard.explanation}</p>
+            </div>
+          </div>
+          <div className="student-home-context-meta">
+            <span>{canAccessMockTests ? `${mockTestsTaken7d} mock${mockTestsTaken7d === 1 ? "" : "s"} in 7d` : "Mocks unlock after profile completion"}</span>
+            <span>{canAccessResources ? "Curated resources available" : "Resources currently locked"}</span>
+          </div>
+          <Link to={firstRunPracticeCard.targetPath} className="ui-button ghost">{firstRunPracticeCard.ctaLabel}</Link>
+        </section>
+      </section>
+
       {shouldShowOrientation ? (
         <section className="student-workspace-panel student-dashboard-guided-start">
           <div className="student-workspace-panel-head">
             <div>
-              <h2>Start here</h2>
+              <h2>Start here first</h2>
               <p>
-                This first view stays intentionally narrow. Finish the next step, look at the nearest blocker or drive, and complete one practice action.
-                The wider dashboard is still here once you want the full picture.
+                Keep this first view narrow: finish the next action, check the closest blocker or drive, then complete one practice step.
               </p>
             </div>
-            <Button variant="ghost" onClick={dismissOrientationBanner}>Show full dashboard</Button>
-          </div>
-          <div className="student-dashboard-action-feed">
-            <div className="student-dashboard-action-card">
-              <div>
-                <strong>{nextAction.title}</strong>
-                <p>{nextAction.explanation}</p>
-              </div>
-              <Link to={nextAction.targetPath} className="ui-button secondary">{nextAction.ctaLabel}</Link>
-            </div>
-            <div className="student-dashboard-action-card">
-              <div>
-                <strong>{firstRunContextCard.title}</strong>
-                <p>{firstRunContextCard.explanation}</p>
-              </div>
-              <Link to={firstRunContextCard.targetPath} className="ui-button ghost">{firstRunContextCard.ctaLabel}</Link>
-            </div>
-            <div className="student-dashboard-action-card">
-              <div>
-                <strong>{firstRunPracticeCard.title}</strong>
-                <p>{firstRunPracticeCard.explanation}</p>
-              </div>
-              <Link to={firstRunPracticeCard.targetPath} className="ui-button ghost">{firstRunPracticeCard.ctaLabel}</Link>
-            </div>
+            <Button variant="ghost" onClick={dismissOrientationBanner}>Show more detail</Button>
           </div>
           <div className="student-workspace-inline-note">
-            <span>1. Complete all required profile fields</span>
-            <span>2. Check the nearest drive or blocker</span>
-            <span>3. Finish one practice action</span>
+            <span>1. Finish the current profile or drive blocker</span>
+            <span>2. Check the nearest live opportunity</span>
+            <span>3. Complete one mock or resource step</span>
           </div>
         </section>
       ) : null}
 
-      {!shouldShowOrientation ? (
-      <>
-      <section className="student-workspace-hero student-dashboard-snapshot-grid">
-        <div className="student-workspace-hero-main student-dashboard-snapshot-main">
-          <span className="student-workspace-eyebrow">Placement snapshot</span>
-          <div className="student-dashboard-snapshot-value">
-            <strong>{showAdvancedMetrics ? `${readinessScore.toFixed(1)}%` : eligibleUpcomingDrives}</strong>
-            <span>
-              {showAdvancedMetrics
-                ? `${eligibleUpcomingDrives} eligible drive${eligibleUpcomingDrives === 1 ? "" : "s"}`
-                : "eligible now"}
-            </span>
-          </div>
-          <p className="muted-text">
-            {showAdvancedMetrics
-              ? `${eligibleUpcomingDrives} upcoming drive(s) currently match your profile.`
-              : "Upcoming drive(s) currently match your profile."}
-          </p>
-        </div>
-
-        <div className="student-workspace-metrics student-dashboard-snapshot-stats">
-          {dashboardMetricItems.map((item, index) => (
-            <div
-              key={item.label}
-              className={animateMetricCards ? "motion-stagger-enter" : undefined}
-              style={animateMetricCards ? ({ "--motion-delay": `${Math.min(index, 3) * 60}ms` } as CSSProperties) : undefined}
-            >
-              <span>{item.label}</span>
-              <strong>{item.value}</strong>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="student-workspace-panel student-dashboard-next-panel">
-        <div className="student-workspace-panel-head">
-          <div>
-            <h2>Next action</h2>
-            <p>Focus on the strongest next step instead of spreading effort across too many tasks.</p>
-          </div>
-        </div>
-        <div className="student-dashboard-next-layout">
-          <div className="student-dashboard-next-primary">
-            <div className="student-dashboard-next-primary-head">
-              <div>
-                <span>Recommended move</span>
-                <strong>{nextAction.title}</strong>
-              </div>
-              <Link to={nextAction.targetPath} className="ui-button secondary">{nextAction.ctaLabel}</Link>
-            </div>
-            <p>{nextAction.explanation}</p>
-          </div>
-
-          <div className="student-dashboard-next-meta">
+      {sharedNextActions.length > 1 ? (
+        <section className="student-workspace-panel">
+          <div className="student-workspace-panel-head">
             <div>
-              <span>Nearest drive</span>
-              <strong>{nearestUpcomingDrive ? nearestUpcomingDrive.company : "No drive yet"}</strong>
-            </div>
-            <div>
-              <span>Countdown</span>
-              <strong>{daysUntilNearestDrive === null ? "-" : `${daysUntilNearestDrive} day(s)`}</strong>
-            </div>
-            <div>
-              <span>Context</span>
-              <strong>{nearestUpcomingDrive?.role || recommendedMockTest?.title || "Keep momentum"}</strong>
+              <h2>More actions you can take next</h2>
+              <p>Only the highest-value follow-through items stay visible here.</p>
             </div>
           </div>
-        </div>
-        {sharedNextActions.length > 1 ? (
           <div className="student-dashboard-action-feed">
             {sharedNextActions.slice(1, 4).map((action) => (
               <div key={action.id} className="student-dashboard-action-card">
@@ -498,123 +474,6 @@ export default function DashboardPage() {
               </div>
             ))}
           </div>
-        ) : null}
-        {nearestUpcomingDrive ? (
-          <p className="student-dashboard-next-footnote muted-text">
-            {nearestUpcomingDrive.company}
-            {nearestUpcomingDrive.role ? ` - ${nearestUpcomingDrive.role}` : ""}
-            {" on "}
-            {new Date(nearestUpcomingDrive.driveDate).toLocaleDateString()}
-          </p>
-        ) : null}
-      </section>
-
-      {activeBlockers.length > 0 ? (
-        <section className="student-workspace-panel">
-          <div className="student-workspace-panel-head">
-            <div>
-              <h2>What is blocking you right now</h2>
-              <p>These blockers come from your current profile and the published drives at your college.</p>
-            </div>
-          </div>
-          <div className="student-dashboard-action-feed">
-            {activeBlockers.slice(0, 4).map((blocker) => (
-              <div key={blocker.code} className="student-dashboard-action-card">
-                <div>
-                  <strong>{blocker.label}</strong>
-                  <p>{blocker.explanation}</p>
-                  <span className="muted-text">{blocker.count} drive(s) currently affected</span>
-                </div>
-                <Link to={blocker.targetPath} className="ui-button ghost">{blocker.ctaLabel}</Link>
-              </div>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
-      {featuredDrivePrep ? (
-        <section className="student-workspace-panel">
-          <div className="student-workspace-panel-head">
-            <div>
-              <h2>Prepare for your next drive</h2>
-              <p>{featuredDrivePrep.summary}</p>
-            </div>
-            <Link to="/drives" className="ui-button ghost">Open drives</Link>
-          </div>
-          <div className="student-dashboard-prep-grid">
-            <div className="student-dashboard-prep-card">
-              <span>Nearest drive</span>
-              <strong>{featuredDrivePrep.company}{featuredDrivePrep.role ? ` - ${featuredDrivePrep.role}` : ""}</strong>
-              <p>{new Date(featuredDrivePrep.driveDate).toLocaleDateString()} {featuredDrivePrep.daysRemaining === null ? "" : `- ${featuredDrivePrep.daysRemaining} day(s) left`}</p>
-            </div>
-            <div className="student-dashboard-prep-card">
-              <span>Recommended mocks</span>
-              {featuredDrivePrep.mockTests.length > 0 ? (
-                <ul>
-                  {featuredDrivePrep.mockTests.map((test) => (
-                    <li key={test.id}>
-                      <Link to={`/mock-tests/${test.id}`}>{test.title}</Link>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No mock bundle yet. Keep your common prep active.</p>
-              )}
-            </div>
-            <div className="student-dashboard-prep-card">
-              <span>Recommended resources</span>
-              {featuredDrivePrep.resources.length > 0 ? (
-                <ul>
-                  {featuredDrivePrep.resources.map((resource) => (
-                    <li key={resource.id}>
-                      <Link to={`/resources/view/${encodeURIComponent(resource.id)}`}>{resource.title}</Link>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No resource bundle yet. Start with placement essentials.</p>
-              )}
-            </div>
-          </div>
-        </section>
-      ) : null}
-
-      {pendingAttempt ? (
-        <section className="student-workspace-panel">
-          <div className="student-workspace-panel-head">
-            <div>
-              <h2>Resume pending mock test</h2>
-              <p>{pendingAttempt.title} still has saved answers and can be resumed from where you left it.</p>
-            </div>
-            <Link to={`/mock-tests/${pendingAttempt.testId}`} className="ui-button ghost">Resume test</Link>
-          </div>
-          <div className="student-workspace-inline-note">
-            <span>Answered {pendingAttempt.answeredCount}/{pendingAttempt.totalQuestions || "?"}</span>
-            <span>Difficulty: {pendingAttempt.difficulty}</span>
-            <span>Current question: {pendingAttempt.currentQuestion + 1}</span>
-          </div>
-        </section>
-      ) : null}
-
-      {showAdvancedMetrics && riskScore ? (
-        <section className="student-workspace-panel">
-          <div className="student-workspace-panel-head">
-            <div>
-              <h2>Your placement risk check</h2>
-              <p>{riskScore.message}</p>
-            </div>
-            <div className="risk-student-meta">
-              <Badge variant={riskScore.category === "HIGH_RISK" ? "danger" : riskScore.category === "MEDIUM_RISK" ? "warning" : "success"}>
-                {riskScore.category.replace("_", " ")}
-              </Badge>
-              <strong>Score {riskScore.score}</strong>
-            </div>
-          </div>
-          <ul className="risk-student-actions">
-            {riskRecommendations.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
         </section>
       ) : null}
 
@@ -622,8 +481,8 @@ export default function DashboardPage() {
         <section className="student-workspace-panel">
           <div className="student-workspace-panel-head">
             <div>
-              <h2>Complete your profile to unlock practice</h2>
-              <p>Resources and mock tests stay locked until all required student details are filled.</p>
+              <h2>Unlock the rest of your workspace</h2>
+              <p>Resources and mock tests stay behind your required profile steps so drive workflows stay trustworthy.</p>
             </div>
             <Link to="/profile" className="ui-button ghost">Open profile</Link>
           </div>
@@ -643,8 +502,8 @@ export default function DashboardPage() {
         <section className="student-workspace-panel">
           <div className="student-workspace-panel-head">
             <div>
-              <h2>Overview</h2>
-              <p>See the factual placement metrics that matter right now.</p>
+              <h2>Readiness and progress</h2>
+              <p>This section keeps the broader context below the action cards instead of crowding the top of the screen.</p>
             </div>
           </div>
 
@@ -652,8 +511,46 @@ export default function DashboardPage() {
             <div><span>CGPA</span><strong>{cgpa.toFixed(2)}</strong></div>
             <div><span>Upcoming eligible drives</span><strong>{eligibleUpcomingDrives}</strong></div>
             <div><span>Profile completion</span><strong>{profileCompletenessPct}%</strong></div>
-            <div><span>{showAdvancedMetrics ? "Recent study focus" : "Mock tests taken"}</span><strong>{showAdvancedMetrics ? `${studyHours7d.toFixed(1)} hrs` : mockTestsTaken7d}</strong></div>
+            <div><span>{showAdvancedMetrics ? "Platform engagement" : "Mock tests taken"}</span><strong>{showAdvancedMetrics ? `${studyHours7d.toFixed(1)} hrs` : mockTestsTaken7d}</strong></div>
           </div>
+
+          {featuredDrivePrep ? (
+            <div className="student-dashboard-prep-grid">
+              <div className="student-dashboard-prep-card">
+                <span>Nearest drive</span>
+                <strong>{featuredDrivePrep.company}{featuredDrivePrep.role ? ` - ${featuredDrivePrep.role}` : ""}</strong>
+                <p>{new Date(featuredDrivePrep.driveDate).toLocaleDateString()} {featuredDrivePrep.daysRemaining === null ? "" : `- ${featuredDrivePrep.daysRemaining} day(s) left`}</p>
+              </div>
+              <div className="student-dashboard-prep-card">
+                <span>Recommended mocks</span>
+                {featuredDrivePrep.mockTests.length > 0 ? (
+                  <ul>
+                    {featuredDrivePrep.mockTests.slice(0, 2).map((test) => (
+                      <li key={test.id}>
+                        <Link to={`/mock-tests/${test.id}`}>{test.title}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No mock bundle yet. Keep your common prep active.</p>
+                )}
+              </div>
+              <div className="student-dashboard-prep-card">
+                <span>Recommended resources</span>
+                {featuredDrivePrep.resources.length > 0 ? (
+                  <ul>
+                    {featuredDrivePrep.resources.slice(0, 2).map((resource) => (
+                      <li key={resource.id}>
+                        <Link to={`/resources/view/${encodeURIComponent(resource.id)}`}>{resource.title}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No resource bundle yet. Start with placement essentials.</p>
+                )}
+              </div>
+            </div>
+          ) : null}
 
           {safeAnnouncements.length > 0 ? (
             <div className="student-workspace-inline-note">
@@ -669,6 +566,43 @@ export default function DashboardPage() {
               <span>Your score: {peerComparison.yourScore}</span>
               <span>Branch avg score: {peerComparison.avgScoreInYourBranch}</span>
             </div>
+          ) : null}
+
+          {activeBlockers.length > 0 ? (
+            <div className="student-dashboard-action-feed">
+              {activeBlockers.slice(0, 3).map((blocker) => (
+                <div key={blocker.code} className="student-dashboard-action-card">
+                  <div>
+                    <strong>{blocker.label}</strong>
+                    <p>{blocker.explanation}</p>
+                    <span className="muted-text">{blocker.count} drive(s) affected</span>
+                  </div>
+                  <Link to={blocker.targetPath} className="ui-button ghost">{blocker.ctaLabel}</Link>
+                </div>
+              ))}
+            </div>
+          ) : null}
+
+          {showAdvancedMetrics && riskScore ? (
+            <section className="student-dashboard-risk-inline">
+              <div className="student-workspace-panel-head">
+                <div>
+                  <h3>Your placement risk check</h3>
+                  <p>{riskScore.message}</p>
+                </div>
+                <div className="risk-student-meta">
+                  <Badge variant={riskScore.category === "HIGH_RISK" ? "danger" : riskScore.category === "MEDIUM_RISK" ? "warning" : "success"}>
+                    {riskScore.category.replace("_", " ")}
+                  </Badge>
+                  <strong>Score {riskScore.score}</strong>
+                </div>
+              </div>
+              <ul className="risk-student-actions">
+                {riskRecommendations.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </section>
           ) : null}
         </section>
       ) : null}
@@ -803,9 +737,6 @@ export default function DashboardPage() {
           )}
         </section>
       ) : null}
-      </>
-      ) : null}
-
     </section>
   );
 }

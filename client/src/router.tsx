@@ -2,10 +2,9 @@ import { Suspense, lazy, useEffect, useState, type FormEvent, type ReactNode } f
 import { createBrowserRouter, Navigate, Outlet, RouterProvider, useLocation, useNavigate } from "react-router-dom";
 
 import { ErrorBoundary } from "./components/ErrorBoundary";
-import { Navbar } from "./components/composites/Navbar";
-import { AnimatedPage } from "./components/motion/AnimatedPage";
-import { StudentFooter } from "./components/composites/StudentFooter";
+import { WorkspaceNavbar } from "./components/composites/WorkspaceNavbar";
 import { useAuth } from "./components/providers/AuthProvider";
+import { useStudentAnnouncements } from "./hooks/use-announcements";
 import { useStudentProfile } from "./hooks/use-student-profile";
 import { Button, Input, Spinner } from "./components/ui";
 
@@ -14,7 +13,6 @@ const LoginPage = lazy(() => import("./pages/public/LoginPage"));
 const InitialPasswordResetPage = lazy(() => import("./pages/public/InitialPasswordResetPage"));
 const SignupPage = lazy(() => import("./pages/public/SignupPage"));
 const UnsubscribePage = lazy(() => import("./pages/public/UnsubscribePage"));
-const ResourceUsagePolicyPage = lazy(() => import("./pages/public/ResourceUsagePolicyPage"));
 const DashboardPage = lazy(() => import("./pages/student/DashboardPage"));
 const StudentOnboardingDeclarationPage = lazy(() => import("./pages/student/StudentOnboardingDeclarationPage"));
 const AnnouncementsPage = lazy(() => import("./pages/student/AnnouncementsPage"));
@@ -26,22 +24,16 @@ const MockTestResultsPage = lazy(() => import("./pages/student/MockTestResultsPa
 const ResourcesPage = lazy(() => import("./pages/student/ResourcesPage"));
 const ResourceViewerPage = lazy(() => import("./pages/student/ResourceViewerPage"));
 const ProfilePage = lazy(() => import("./pages/student/ProfilePage"));
-const SupportPage = lazy(() => import("./pages/student/SupportPage"));
-const AdminHubPage = lazy(() => import("./pages/admin/AdminHubPage"));
 const TpoDashboardPage = lazy(() => import("./pages/tpo/TpoDashboardPage"));
 const TpoStudentsPage = lazy(() => import("./pages/tpo/TpoStudentsPage"));
-const TpoStudentUploadPage = lazy(() => import("./pages/tpo/TpoStudentUploadPage"));
 const TpoStudentDetailPage = lazy(() => import("./pages/tpo/TpoStudentDetailPage"));
 const TpoDrivesPage = lazy(() => import("./pages/tpo/TpoDrivesPage"));
 const TpoDriveCreatePage = lazy(() => import("./pages/tpo/TpoDriveCreatePage"));
 const TpoDriveDetailPage = lazy(() => import("./pages/tpo/TpoDriveDetailPage"));
 const TpoDriveResultsPage = lazy(() => import("./pages/tpo/TpoDriveResultsPage"));
-const TpoEligibleNotAppliedPage = lazy(() => import("./pages/tpo/TpoEligibleNotAppliedPage"));
-const TpoNeedsMockPushPage = lazy(() => import("./pages/tpo/TpoNeedsMockPushPage"));
 const TpoReportsPage = lazy(() => import("./pages/tpo/TpoReportsPage"));
 const TpoCommunicationPage = lazy(() => import("./pages/tpo/TpoCommunicationPage"));
 const TpoCommunicationComposePage = lazy(() => import("./pages/tpo/TpoCommunicationComposePage"));
-const TpoWhatsNewPage = lazy(() => import("./pages/tpo/TpoWhatsNewPage"));
 
 function renderRoute(node: ReactNode) {
   return (
@@ -52,15 +44,9 @@ function renderRoute(node: ReactNode) {
         </div>
       }
     >
-      <AnimatedPage>{node}</AnimatedPage>
+      {node}
     </Suspense>
   );
-}
-
-function resolveHomePath(role: string) {
-  if (role === "admin") return "/admin/hub";
-  if (role === "tpo") return "/tpo/dashboard";
-  return "/dashboard";
 }
 
 function AuthGuard({ allowedRoles }: { allowedRoles?: string[] }) {
@@ -80,7 +66,7 @@ function AuthGuard({ allowedRoles }: { allowedRoles?: string[] }) {
   }
 
   if (allowedRoles && !allowedRoles.includes(profile.role)) {
-    return <Navigate to={resolveHomePath(profile.role)} replace />;
+    return <Navigate to={profile.role === "student" ? "/dashboard" : "/tpo/dashboard"} replace />;
   }
 
   if (profile.must_change_password && location.pathname !== "/password/setup") {
@@ -88,7 +74,7 @@ function AuthGuard({ allowedRoles }: { allowedRoles?: string[] }) {
   }
 
   if (!profile.must_change_password && location.pathname === "/password/setup") {
-    return <Navigate to={resolveHomePath(profile.role)} replace />;
+    return <Navigate to={profile.role === "student" ? "/dashboard" : "/tpo/dashboard"} replace />;
   }
 
   return <Outlet />;
@@ -103,7 +89,7 @@ function PublicGuard() {
     if (profile.must_change_password) {
       return <Navigate to="/password/setup" replace />;
     }
-    return <Navigate to={resolveHomePath(profile.role)} replace />;
+    return <Navigate to={profile.role === "student" ? "/dashboard" : "/tpo/dashboard"} replace />;
   }
 
   return <Outlet />;
@@ -113,6 +99,7 @@ function StudentTopicSearchStrip() {
   const navigate = useNavigate();
   const location = useLocation();
   const [query, setQuery] = useState("");
+  const shouldRender = location.pathname === "/resources";
 
   useEffect(() => {
     if (location.pathname !== "/resources") {
@@ -132,6 +119,10 @@ function StudentTopicSearchStrip() {
     navigate(`/resources?topic=${encodeURIComponent(value)}`);
   };
 
+  if (!shouldRender) {
+    return null;
+  }
+
   return (
     <div className="student-topic-search">
       <form className="student-topic-search-form" onSubmit={onSubmit}>
@@ -149,14 +140,16 @@ function StudentTopicSearchStrip() {
 function StudentLayout() {
   const { profile, logout } = useAuth();
   const { data: studentProfile } = useStudentProfile();
+  const { data: announcements } = useStudentAnnouncements();
 
   return (
-    <div className="app-shell app-shell-with-strip">
-      <Navbar
+    <div className="app-shell app-shell-with-strip app-shell-with-mobile-nav app-shell-student">
+      <WorkspaceNavbar
         role="student"
+        title="PlacementIQ"
         userName={profile?.full_name ?? "Student"}
         studentProfileCompletionPct={studentProfile?.profileCompleteness.pct ?? null}
-        studentHasAnnouncementDot={false}
+        studentHasAnnouncementDot={(announcements ?? []).some((item) => item.hasNavIndicator)}
         onLogout={logout}
       />
       <StudentTopicSearchStrip />
@@ -165,7 +158,6 @@ function StudentLayout() {
           <Outlet />
         </ErrorBoundary>
       </main>
-      <StudentFooter />
     </div>
   );
 }
@@ -231,11 +223,11 @@ function TpoLayout() {
   const { profile, logout } = useAuth();
 
   return (
-    <div className="app-shell">
-      <Navbar
+    <div className="app-shell app-shell-with-mobile-nav app-shell-tpo">
+      <WorkspaceNavbar
         role="tpo"
+        title="PlacementIQ"
         userName={profile?.full_name ?? "Admin"}
-        showAdminLinks={false}
         onLogout={logout}
       />
       <main className="content-main">
@@ -243,27 +235,6 @@ function TpoLayout() {
           <Outlet />
         </ErrorBoundary>
       </main>
-    </div>
-  );
-}
-
-function AdminLayout() {
-  const { profile, logout } = useAuth();
-
-  return (
-    <div className="app-shell">
-      <Navbar
-        role="tpo"
-        userName={profile?.full_name ?? "Admin"}
-        showAdminLinks
-        onLogout={logout}
-      />
-      <main className="content-main">
-        <ErrorBoundary fallbackTitle="This page encountered an error">
-          <Outlet />
-        </ErrorBoundary>
-      </main>
-      <StudentFooter showPolicy={false} />
     </div>
   );
 }
@@ -318,30 +289,26 @@ const router = createBrowserRouter([
           { path: "/study-guides", element: <Navigate to="/resources" replace /> },
           { path: "/study-guides/:slug", element: <Navigate to="/resources" replace /> },
           { path: "/profile", element: renderRoute(<StudentDeclarationGuard><ProfilePage /></StudentDeclarationGuard>) },
-          { path: "/support", element: renderRoute(<StudentDeclarationGuard><SupportPage /></StudentDeclarationGuard>) },
         ],
       },
     ],
   },
   {
-    element: <AuthGuard allowedRoles={["tpo"]} />,
+    element: <AuthGuard allowedRoles={["tpo", "admin"]} />,
     children: [
       {
         element: <TpoLayout />,
         children: [
           { path: "/tpo/dashboard", element: renderRoute(<TpoDashboardPage />) },
           { path: "/tpo/students", element: renderRoute(<TpoStudentsPage />) },
-          { path: "/tpo/students/upload", element: renderRoute(<TpoStudentUploadPage />) },
+          { path: "/tpo/students/upload", element: <Navigate to="/tpo/students" replace /> },
           { path: "/tpo/students/:studentId", element: renderRoute(<TpoStudentDetailPage />) },
           { path: "/tpo/drives", element: renderRoute(<TpoDrivesPage />) },
-          { path: "/tpo/interventions/eligible-not-applied", element: renderRoute(<TpoEligibleNotAppliedPage />) },
-          { path: "/tpo/interventions/needs-mock-push", element: renderRoute(<TpoNeedsMockPushPage />) },
           { path: "/tpo/drives/create", element: renderRoute(<TpoDriveCreatePage />) },
           { path: "/tpo/drives/:driveId", element: renderRoute(<TpoDriveDetailPage />) },
           { path: "/tpo/drives/:driveId/results", element: renderRoute(<TpoDriveResultsPage />) },
           { path: "/tpo/analytics", element: <Navigate to="/tpo/reports" replace /> },
           { path: "/tpo/reports", element: renderRoute(<TpoReportsPage />) },
-          { path: "/tpo/whats-new", element: renderRoute(<TpoWhatsNewPage />) },
           { path: "/tpo/analytics/readiness", element: <Navigate to="/tpo/reports" replace /> },
           { path: "/tpo/analytics/topics", element: <Navigate to="/tpo/reports" replace /> },
           { path: "/tpo/analytics/tests", element: <Navigate to="/tpo/reports" replace /> },
@@ -356,13 +323,7 @@ const router = createBrowserRouter([
     element: <AuthGuard allowedRoles={["admin"]} />,
     children: [
       {
-        element: <AdminLayout />,
-        children: [
-          { path: "/admin/hub", element: renderRoute(<AdminHubPage />) },
-        ],
-      },
-      {
-        element: <AdminLayout />,
+        element: <TpoLayout />,
         children: [
           { path: "/tpo/internal/demo-feedback", element: <Navigate to="/tpo/dashboard" replace /> },
           { path: "/tpo/internal/demo-analytics", element: <Navigate to="/tpo/dashboard" replace /> },
@@ -373,10 +334,10 @@ const router = createBrowserRouter([
       },
     ],
   },
-  { path: "/resource-usage-policy", element: renderRoute(<ResourceUsagePolicyPage />) },
   { path: "*", element: <Navigate to="/" replace /> },
 ]);
 
 export function AppRouter() {
   return <RouterProvider router={router} />;
 }
+

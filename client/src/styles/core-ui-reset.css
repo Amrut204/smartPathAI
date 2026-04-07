@@ -1,0 +1,319 @@
+.navbar-brand-wrap {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.navbar-workspace-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.navbar-bottom-nav {
+  display: none;
+}
+
+.navbar-bottom-link {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.1rem;
+  min-width: 0;
+  padding: 0.55rem 0.35rem 0.6rem;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.navbar-bottom-link:hover {
+  text-decoration: none;
+  color: var(--color-primary);
+}
+
+.navbar-bottom-link.active {
+  color: var(--color-primary);
+}
+
+.navbar-bottom-link small {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: inherit;
+}
+
+.navbar-bottom-dot {
+  position: absolute;
+  top: 0.55rem;
+  right: calc(50% - 1.15rem);
+}
+
+.student-home-header-v2 h1 {
+  max-width: 16ch;
+}
+
+.student-home-v2-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1.2fr) repeat(2, minmax(260px, 1fr));
+}
+
+.student-home-primary-card,
+.student-home-support-card,
+.student-drive-card-v2,
+.tpo-student-mobile-card {
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  background: linear-gradient(180deg, #ffffff, #fbfcff);
+}
+
+.student-home-score-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.95fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.student-home-score-row h2 {
+  margin: 0.2rem 0 0;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+}
+
+.student-home-score-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.student-home-score-metrics > div,
+.student-drive-card-summary-item,
+.tpo-student-mobile-metrics > div {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  background: #f8faff;
+  border: 1px solid rgba(99, 102, 241, 0.08);
+}
+
+.student-home-score-metrics span,
+.student-drive-card-summary-item span,
+.student-home-context-meta span,
+.tpo-filter-group > span,
+.tpo-student-mobile-sections span,
+.tpo-student-mobile-metrics span {
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.student-home-score-metrics strong,
+.student-drive-card-summary-item strong,
+.tpo-student-mobile-metrics strong {
+  font-size: 1.05rem;
+}
+
+.student-home-hero-copy {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: var(--space-3);
+}
+
+.student-home-hero-copy strong {
+  font-size: 1.45rem;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.student-home-context-meta,
+.tpo-student-mobile-sections {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.student-home-context-meta {
+  margin-bottom: var(--space-3);
+}
+
+.student-drives-panel-v2 .student-workspace-panel-head p {
+  max-width: 58ch;
+}
+
+.student-drive-card-list-v2 {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.student-drive-card-v2 {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.student-drive-card-summary {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.student-drive-primary-actions {
+  flex-wrap: wrap;
+}
+
+.student-drive-expanded-panel {
+  display: grid;
+  gap: var(--space-3);
+  padding-top: 0.25rem;
+  border-top: 1px solid rgba(20, 34, 53, 0.08);
+}
+
+.student-dashboard-risk-inline {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(20, 34, 53, 0.08);
+}
+
+.tpo-students-filter-groups {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.tpo-filter-group {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.tpo-filter-group .resources-filter-row {
+  gap: 0.55rem;
+}
+
+.tpo-student-mobile-list {
+  display: none;
+}
+
+.tpo-student-mobile-card {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.tpo-student-mobile-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+}
+
+.tpo-student-mobile-card-head p,
+.tpo-student-mobile-sections p {
+  margin: 0.25rem 0 0;
+  color: var(--color-text-muted);
+}
+
+.tpo-student-mobile-metrics {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tpo-student-mobile-sections > div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.tpo-student-desktop-table {
+  display: block;
+}
+
+@media (max-width: 960px) {
+  .student-home-v2-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .student-home-score-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .app-shell-with-mobile-nav .content-main {
+    padding-bottom: 6.5rem;
+  }
+
+  .navbar {
+    align-items: center;
+    min-height: 64px;
+    padding-bottom: 0.65rem;
+  }
+
+  .navbar-brand-wrap {
+    max-width: calc(100% - 56px);
+  }
+
+  .navbar-workspace-label {
+    display: none;
+  }
+
+  .navbar-bottom-nav {
+    position: fixed;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    z-index: 40;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.25rem;
+    padding: 0.35rem;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(99, 102, 241, 0.1);
+    box-shadow: 0 18px 44px rgba(15, 23, 42, 0.12);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .navbar-bottom-link.active {
+    background: rgba(99, 102, 241, 0.09);
+    border-radius: 16px;
+  }
+
+  .student-home-score-metrics,
+  .student-drive-card-summary,
+  .tpo-student-mobile-metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tpo-student-mobile-list {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .tpo-student-desktop-table {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .student-home-score-metrics,
+  .student-drive-card-summary,
+  .tpo-student-mobile-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .student-home-primary-card,
+  .student-home-support-card,
+  .student-drive-card-v2,
+  .tpo-student-mobile-card {
+    padding: 1rem;
+  }
+
+  .navbar-bottom-link {
+    font-size: 0.74rem;
+  }
+
+  .navbar-bottom-link small {
+    display: none;
+  }
+}

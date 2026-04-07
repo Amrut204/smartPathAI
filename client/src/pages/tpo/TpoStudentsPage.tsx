@@ -120,6 +120,13 @@ function buildBulkReminderPreset(viewId: SavedViewId) {
   return "profile-completion";
 }
 
+function toggleBooleanFilter(
+  current: boolean | undefined,
+  desired: boolean,
+): boolean | null {
+  return current === desired ? null : desired;
+}
+
 function downloadCsv(filename: string, rows: string[][]) {
   const escapeValue = (value: string) => {
     const normalized = String(value ?? "");
@@ -334,6 +341,40 @@ export default function TpoStudentsPage() {
           ))}
         </div>
 
+        <div className="tpo-students-filter-groups">
+          <div className="tpo-filter-group">
+            <span>Readiness</span>
+            <div className="resources-filter-row">
+              <button type="button" className={`resources-filter-chip ${query.readinessMin === 70 ? "active" : ""}`} onClick={() => updateParams({ readinessMin: query.readinessMin === 70 ? null : 70, mode: "ops" })}>70%+ readiness</button>
+              <button type="button" className={`resources-filter-chip ${query.profileCompletenessMin === 100 ? "active" : ""}`} onClick={() => updateParams({ profileCompletenessMin: query.profileCompletenessMin === 100 ? null : 100 })}>Profile complete</button>
+              <button type="button" className={`resources-filter-chip ${query.isCertified === true ? "active" : ""}`} onClick={() => updateParams({ isCertified: toggleBooleanFilter(query.isCertified, true) })}>Certified</button>
+            </div>
+          </div>
+          <div className="tpo-filter-group">
+            <span>Engagement</span>
+            <div className="resources-filter-row">
+              <button type="button" className={`resources-filter-chip ${query.isActive7d === false ? "active" : ""}`} onClick={() => updateParams({ isActive7d: toggleBooleanFilter(query.isActive7d, false) })}>Inactive 7d</button>
+              <button type="button" className={`resources-filter-chip ${query.needsIntervention === true ? "active" : ""}`} onClick={() => updateParams({ needsIntervention: toggleBooleanFilter(query.needsIntervention, true) })}>Needs intervention</button>
+              <button type="button" className={`resources-filter-chip ${query.appliedRecently === false ? "active" : ""}`} onClick={() => updateParams({ appliedRecently: toggleBooleanFilter(query.appliedRecently, false) })}>No recent apply</button>
+            </div>
+          </div>
+          <div className="tpo-filter-group">
+            <span>Eligibility</span>
+            <div className="resources-filter-row">
+              <button type="button" className={`resources-filter-chip ${query.eligibleForUpcomingDrive === true ? "active" : ""}`} onClick={() => updateParams({ eligibleForUpcomingDrive: toggleBooleanFilter(query.eligibleForUpcomingDrive, true) })}>Eligible upcoming</button>
+              <button type="button" className={`resources-filter-chip ${query.hasResume === false ? "active" : ""}`} onClick={() => updateParams({ hasResume: toggleBooleanFilter(query.hasResume, false) })}>Resume missing</button>
+              <button type="button" className={`resources-filter-chip ${currentView === "eligible_but_not_applied" ? "active" : ""}`} onClick={() => setSavedView("eligible_but_not_applied")}>Eligible not applied</button>
+            </div>
+          </div>
+          <div className="tpo-filter-group">
+            <span>Placement</span>
+            <div className="resources-filter-row">
+              <button type="button" className={`resources-filter-chip ${query.isPlaced === false ? "active" : ""}`} onClick={() => updateParams({ isPlaced: toggleBooleanFilter(query.isPlaced, false) })}>Unplaced</button>
+              <button type="button" className={`resources-filter-chip ${query.isPlaced === true ? "active" : ""}`} onClick={() => updateParams({ isPlaced: toggleBooleanFilter(query.isPlaced, true) })}>Placed</button>
+            </div>
+          </div>
+        </div>
+
         <div className="form-grid">
           <label>
             Search
@@ -503,7 +544,50 @@ export default function TpoStudentsPage() {
               <p className="muted-text">{hasFilters ? "Try removing a few filters or reset the view to widen the search." : "Upload or seed student records to start using the TPO student workspace."}</p>
             </div>
           ) : (
-            <div className="tpo-ranking-table-wrap">
+            <>
+              <div className="tpo-student-mobile-list">
+                {items.map((student) => {
+                  const expanded = expandedStudentId === student.id;
+                  return (
+                    <article key={student.id} className="tpo-student-mobile-card">
+                      <div className="tpo-student-mobile-card-head">
+                        <div>
+                          <strong>{student.fullName}</strong>
+                          <p>{student.branch} • {student.batch}</p>
+                        </div>
+                        <input type="checkbox" checked={selectedIds.includes(student.id)} onChange={() => toggleSelect(student.id)} />
+                      </div>
+                      <div className="tpo-student-mobile-metrics">
+                        <div><span>Readiness</span><strong>{student.readinessScore.toFixed(1)}%</strong></div>
+                        <div><span>Engagement</span><strong>{student.isActive7d ? "Active" : "Inactive"}</strong></div>
+                        <div><span>Placement</span><strong>{student.placementStatus.isPlaced ? "Placed" : "Unplaced"}</strong></div>
+                        <div><span>Upcoming</span><strong>{student.eligibleUpcomingDriveCount} eligible</strong></div>
+                      </div>
+                      <div className="tpo-student-status-list">
+                        <Badge variant={student.needsIntervention ? "warning" : "success"}>{student.interventionLabel}</Badge>
+                        {statusBadges(student).slice(0, 4).map((badge) => (
+                          <Badge key={`${student.id}-${badge.label}`} variant={badge.variant}>{badge.label}</Badge>
+                        ))}
+                      </div>
+                      <div className="tpo-student-mobile-sections">
+                        <div>
+                          <span>Profile gaps</span>
+                          <p>{student.primaryBlocker ?? "No major blocker detected"}</p>
+                        </div>
+                        <div>
+                          <span>Intent</span>
+                          <p>{student.targetRoles[0] ?? "No target role"} • {student.preferredLocations[0] ?? "No preferred location"}</p>
+                        </div>
+                      </div>
+                      <div className="hero-actions">
+                        <button type="button" className="link-button" onClick={() => setExpandedStudentId(expanded ? null : student.id)}>{expanded ? "Close quick view" : "Quick view"}</button>
+                        <Link to={`/tpo/students/${student.id}`}>Open student</Link>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+              <div className="tpo-ranking-table-wrap tpo-student-desktop-table">
               <Table>
                 <thead>
                   <tr>
@@ -571,7 +655,8 @@ export default function TpoStudentsPage() {
                   })}
                 </tbody>
               </Table>
-            </div>
+              </div>
+            </>
           )}
         </Card>
       ) : null}

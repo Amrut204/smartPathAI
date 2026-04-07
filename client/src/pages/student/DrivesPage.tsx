@@ -8,7 +8,7 @@ import { withdrawFromDrive } from "../../hooks/use-drives";
 import { useOnlineStatus } from "../../hooks/use-online-status";
 import { withCsrfHeader } from "../../utils/csrf";
 
-type DriveView = "eligible" | "all" | "attention";
+type DriveView = "eligible" | "all" | "deadline";
 type DriveContinuityState = {
   kind: "applied" | "withdrawn";
   driveId: string;
@@ -20,8 +20,8 @@ type DrivePrepBundle = NonNullable<PilotStudentDrive["prepBundle"]>;
 
 const driveTabs: Array<{ id: DriveView; label: string }> = [
   { id: "eligible", label: "Eligible" },
-  { id: "all", label: "All Drives" },
-  { id: "attention", label: "Needs Attention" },
+  { id: "all", label: "All" },
+  { id: "deadline", label: "Deadline Soon" },
 ];
 
 export default function DrivesPage() {
@@ -37,6 +37,7 @@ export default function DrivesPage() {
   const [previewDriveId, setPreviewDriveId] = useState<string | null>(null);
   const [previewStatus, setPreviewStatus] = useState<string | null>(null);
   const [animateDriveCards, setAnimateDriveCards] = useState(false);
+  const [expandedDriveId, setExpandedDriveId] = useState<string | null>(null);
   const [preview, setPreview] = useState<null | {
     driveId: string;
     company: string;
@@ -69,7 +70,15 @@ export default function DrivesPage() {
   const filteredDrives = useMemo(() => {
     const items = data ?? [];
     if (activeView === "eligible") return items.filter((drive) => drive.isEligible);
-    if (activeView === "attention") return items.filter((drive) => !drive.isEligible || drive.reasons.length > 0);
+    if (activeView === "deadline") {
+      const now = Date.now();
+      return items.filter((drive) => {
+        const driveTime = new Date(drive.driveDate).getTime();
+        if (Number.isNaN(driveTime)) return false;
+        const daysLeft = Math.ceil((driveTime - now) / (1000 * 60 * 60 * 24));
+        return daysLeft >= 0 && daysLeft <= 7;
+      });
+    }
     return items;
   }, [activeView, data]);
 
@@ -236,10 +245,14 @@ export default function DrivesPage() {
 
   return (
     <section className="student-workspace-shell">
-      <header className="student-workspace-header">
+      <header className="student-workspace-header student-drives-header-v2">
         <div>
           <h1>Placement drives</h1>
-          <p>Check the drives you already qualify for, and then fix what is blocking the others.</p>
+          <p>Start with the drives you can act on now. If a drive is blocked, we show the reason and the shortest fix path.</p>
+        </div>
+        <div className="hero-actions">
+          <Link to="/dashboard" className="ui-button ghost">Back to home</Link>
+          <Link to="/profile" className="ui-button secondary">Review profile</Link>
         </div>
       </header>
 
@@ -314,32 +327,34 @@ export default function DrivesPage() {
         <Tabs tabs={driveTabs} activeId={activeView} onChange={(id) => setActiveView(id as DriveView)} />
       </div>
 
-      <section className="student-workspace-panel">
+      <section className="student-workspace-panel student-drives-panel-v2">
         <div className="student-workspace-panel-head">
           <div>
-            <h2>{activeView === "eligible" ? "Eligible drives" : activeView === "attention" ? "Drives that need fixes" : "All drives"}</h2>
-            <p>{filteredDrives.length} drive(s) in this view.</p>
+            <h2>{activeView === "eligible" ? "Eligible drives" : activeView === "deadline" ? "Closing soon" : "All drives"}</h2>
+            <p>
+              {filteredDrives.length} drive(s) in this view. Keep the top of this list for action, and open details only when you need the full criteria.
+            </p>
           </div>
         </div>
 
         {filteredDrives.length === 0 ? (
           <p className="muted-text">No drives in this view right now.</p>
         ) : (
-          <div className="student-workspace-list">
+          <div className="student-drive-card-list-v2">
             {filteredDrives.map((drive, index) => (
               <article
                 key={drive.id}
-                className={`student-workspace-drive${animateDriveCards ? " motion-stagger-enter" : ""}`.trim()}
+                className={`student-workspace-drive student-drive-card-v2${animateDriveCards ? " motion-stagger-enter" : ""}`.trim()}
                 style={animateDriveCards ? ({ "--motion-delay": `${Math.min(300, Math.round(index * driveStaggerStep))}ms` } as CSSProperties) : undefined}
               >
                 <div className="student-workspace-row student-workspace-drive-head">
                   <div>
-                    <strong>{drive.company}{drive.role ? ` - ${drive.role}` : ""}</strong>
-                    <p>{new Date(drive.driveDate).toLocaleDateString()} - {drive.lifecycle ?? drive.status}</p>
+                    <strong>{drive.company}</strong>
+                    <p>{drive.role ? `${drive.role} • ` : ""}{new Date(drive.driveDate).toLocaleDateString()}</p>
                   </div>
                   <div className="student-workspace-drive-badges">
                     <Badge variant={drive.isEligible ? "success" : "warning"}>
-                      {drive.isEligible ? "Eligible" : "Not eligible"}
+                      {drive.isEligible ? "Eligible" : "Blocked"}
                     </Badge>
                     <Badge variant={getApplicationBadge(drive.applicationState).variant}>
                       {getApplicationBadge(drive.applicationState).label}
@@ -347,44 +362,24 @@ export default function DrivesPage() {
                   </div>
                 </div>
 
-                <div className="student-workspace-drive-details">
-                  <p className="student-workspace-meta">
-                    Criteria: CGPA {drive.criteria.minCgpa || 0}+ - Active backlogs up to {(drive.criteria.maxActiveBacklogs ?? drive.criteria.maxBacklogs) || 0} - Attendance {drive.criteria.minAttendance || 0}%+
-                  </p>
-                  <p className="student-workspace-meta">
-                    Allowed branches: {drive.criteria.branches.length > 0 ? drive.criteria.branches.join(", ") : "All branches"} - Your result: {humanizeOutcome(drive.myOutcome)}
-                  </p>
+                <div className="student-drive-card-summary">
+                  <div className="student-drive-card-summary-item">
+                    <span>Deadline</span>
+                    <strong>{new Date(drive.driveDate).toLocaleDateString()}</strong>
+                  </div>
+                  <div className="student-drive-card-summary-item">
+                    <span>Profile status</span>
+                    <strong>{drive.readinessSupport?.profileCertified ? "Certified" : "Needs certification"}</strong>
+                  </div>
+                  <div className="student-drive-card-summary-item">
+                    <span>Resume</span>
+                    <strong>{drive.readinessSupport?.hasResume ? "Ready" : "Missing"}</strong>
+                  </div>
+                  <div className="student-drive-card-summary-item">
+                    <span>Result</span>
+                    <strong>{humanizeOutcome(drive.myOutcome)}</strong>
+                  </div>
                 </div>
-
-                {drive.reasons.length > 0 ? (
-                  <ul className="student-workspace-reason-list">
-                    {drive.reasons.map((reason) => (
-                      <li key={`${drive.id}-${reason.code}`}>{reason.label}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="muted-text">You meet the current criteria.</p>
-                )}
-
-                {drive.eligibility?.advisoryNotes && drive.eligibility.advisoryNotes.length > 0 ? (
-                  <p className="muted-text">{drive.eligibility.advisoryNotes.join(" ")}</p>
-                ) : null}
-
-                {drive.timeline ? (
-                  <p className="student-workspace-meta">
-                    Registration: {drive.timeline.registrationStatus} - Application: {humanizeApplicationState(drive.timeline.applicationState)} - Profile certified: {drive.timeline.profileCertified ? "Yes" : "No"}
-                  </p>
-                ) : null}
-
-                {drive.readinessSupport ? (
-                  <p className="student-workspace-meta">
-                    Resume attached: {drive.readinessSupport.hasResume ? "Yes" : "No"} - Profile certified: {drive.readinessSupport.profileCertified ? "Yes" : "No"}
-                  </p>
-                ) : null}
-
-                {drive.applicationState === "applied" ? (
-                  <p className="success-text">Application submitted. Your resume snapshot is attached to this drive.</p>
-                ) : null}
 
                 {!drive.canApplyNow && drive.actionHint ? (
                   <div className="student-drive-guidance-card">
@@ -398,65 +393,100 @@ export default function DrivesPage() {
                   </div>
                 ) : null}
 
-                {drive.prepBundle ? (
-                  <div className="student-drive-prep-panel">
-                    <div className="student-drive-prep-head">
-                      <strong>What to do next for this drive</strong>
-                      <p>{drive.prepBundle.summary}</p>
-                    </div>
-                    <div className="student-drive-prep-grid">
-                      <div>
-                        <span>Mock tests</span>
-                        {drive.prepBundle.mockTests.length > 0 ? (
-                          <ul>
-                            {drive.prepBundle.mockTests.map((test) => (
-                              <li key={`${drive.id}-mock-${test.id}`}>
-                                <Link to={`/mock-tests/${test.id}`}>{test.title}</Link>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p className="muted-text">No mock bundle yet.</p>
-                        )}
-                      </div>
-                      <div>
-                        <span>Resources</span>
-                        {drive.prepBundle.resources.length > 0 ? (
-                          <ul>
-                            {drive.prepBundle.resources.map((resource) => (
-                              <li key={`${drive.id}-resource-${resource.id}`}>
-                                <Link to={`/resources/view/${encodeURIComponent(resource.id)}`}>{resource.title}</Link>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p className="muted-text">No resource bundle yet.</p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                {drive.applicationState === "applied" ? (
+                  <p className="success-text">Application submitted. Your current resume snapshot is already attached to this drive.</p>
                 ) : null}
 
-                {drive.canApplyNow && drive.applicationState !== "applied" ? (
-                  <div className="hero-actions student-workspace-drive-actions">
+                <div className="hero-actions student-workspace-drive-actions student-drive-primary-actions">
+                  {drive.canApplyNow && drive.applicationState !== "applied" ? (
                     <Button
                       disabled={busyDriveId === drive.id}
                       onClick={() => void openPreview(drive.id)}
                     >
-                      {busyDriveId === drive.id ? "Loading..." : "Apply to drive"}
+                      {busyDriveId === drive.id ? "Loading..." : "Apply now"}
                     </Button>
-                  </div>
-                ) : null}
-
-                {drive.canWithdraw ? (
-                  <div className="hero-actions student-workspace-drive-actions">
+                  ) : null}
+                  {drive.canWithdraw ? (
                     <Button
                       variant="secondary"
                       disabled={withdrawingDriveId === drive.id}
                       onClick={() => void onWithdraw(drive.id, drive.company)}
                     >
-                      {withdrawingDriveId === drive.id ? "Withdrawing..." : "Withdraw application"}
+                      {withdrawingDriveId === drive.id ? "Withdrawing..." : "Withdraw"}
                     </Button>
+                  ) : null}
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={() => setExpandedDriveId((current) => current === drive.id ? null : drive.id)}
+                  >
+                    {expandedDriveId === drive.id ? "Hide details" : drive.isEligible ? "View details" : "Why blocked?"}
+                  </Button>
+                </div>
+
+                {expandedDriveId === drive.id ? (
+                  <div className="student-drive-expanded-panel">
+                    <div className="student-workspace-drive-details">
+                      <p className="student-workspace-meta">
+                        Criteria: CGPA {drive.criteria.minCgpa || 0}+ • Active backlogs up to {(drive.criteria.maxActiveBacklogs ?? drive.criteria.maxBacklogs) || 0} • Attendance {drive.criteria.minAttendance || 0}%+
+                      </p>
+                      <p className="student-workspace-meta">
+                        Allowed branches: {drive.criteria.branches.length > 0 ? drive.criteria.branches.join(", ") : "All branches"} • Application state: {humanizeApplicationState(drive.timeline?.applicationState ?? drive.applicationState)}
+                      </p>
+                    </div>
+
+                    {drive.reasons.length > 0 ? (
+                      <ul className="student-workspace-reason-list">
+                        {drive.reasons.map((reason) => (
+                          <li key={`${drive.id}-${reason.code}`}>{reason.label}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="muted-text">You meet the current criteria for this drive.</p>
+                    )}
+
+                    {drive.eligibility?.advisoryNotes && drive.eligibility.advisoryNotes.length > 0 ? (
+                      <p className="muted-text">{drive.eligibility.advisoryNotes.join(" ")}</p>
+                    ) : null}
+
+                    {drive.prepBundle ? (
+                      <div className="student-drive-prep-panel">
+                        <div className="student-drive-prep-head">
+                          <strong>Prepare for this drive</strong>
+                          <p>{drive.prepBundle.summary}</p>
+                        </div>
+                        <div className="student-drive-prep-grid">
+                          <div>
+                            <span>Mock tests</span>
+                            {drive.prepBundle.mockTests.length > 0 ? (
+                              <ul>
+                                {drive.prepBundle.mockTests.slice(0, 2).map((test) => (
+                                  <li key={`${drive.id}-mock-${test.id}`}>
+                                    <Link to={`/mock-tests/${test.id}`}>{test.title}</Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <p className="muted-text">No mock bundle yet.</p>
+                            )}
+                          </div>
+                          <div>
+                            <span>Resources</span>
+                            {drive.prepBundle.resources.length > 0 ? (
+                              <ul>
+                                {drive.prepBundle.resources.slice(0, 2).map((resource) => (
+                                  <li key={`${drive.id}-resource-${resource.id}`}>
+                                    <Link to={`/resources/view/${encodeURIComponent(resource.id)}`}>{resource.title}</Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <p className="muted-text">No resource bundle yet.</p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                 ) : null}
               </article>
