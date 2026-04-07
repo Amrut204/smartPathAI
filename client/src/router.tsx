@@ -246,6 +246,26 @@ function TpoLayout() {
   );
 }
 
+function AdminLayout() {
+  const { profile, logout } = useAuth();
+
+  return (
+    <div className="app-shell app-shell-with-mobile-nav app-shell-admin">
+      <WorkspaceNavbar
+        role="admin"
+        title="PlacementIQ"
+        userName={profile?.full_name ?? "Admin"}
+        onLogout={logout}
+      />
+      <main className="content-main">
+        <ErrorBoundary fallbackTitle="This page encountered an error">
+          <Outlet />
+        </ErrorBoundary>
+      </main>
+    </div>
+  );
+}
+
 function PasswordResetLayout() {
   return (
     <main className="content-main">
@@ -301,7 +321,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    element: <AuthGuard allowedRoles={["tpo", "admin"]} />,
+    element: <AuthGuard allowedRoles={["tpo"]} />,
     children: [
       {
         element: <TpoLayout />,
@@ -330,7 +350,7 @@ const router = createBrowserRouter([
     element: <AuthGuard allowedRoles={["admin"]} />,
     children: [
       {
-        element: <TpoLayout />,
+        element: <AdminLayout />,
         children: [
           { path: "/admin/hub", element: renderRoute(<AdminHubPage />) },
           { path: "/tpo/internal/demo-feedback", element: <Navigate to="/tpo/dashboard" replace /> },

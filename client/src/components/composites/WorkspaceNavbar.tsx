@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { Button } from "../ui";
 
-type NavbarRole = "student" | "tpo";
+type NavbarRole = "student" | "tpo" | "admin";
 
 interface NavLink {
   href: string;
@@ -43,6 +43,14 @@ const tpoMobileLinks: NavLink[] = [
   { href: "/tpo/communication", label: "Comms" },
 ];
 
+const adminDesktopLinks: NavLink[] = [
+  { href: "/admin/hub", label: "Admin Hub" },
+];
+
+const adminMobileLinks: NavLink[] = [
+  { href: "/admin/hub", label: "Admin" },
+];
+
 interface WorkspaceNavbarProps {
   role: NavbarRole;
   title: string;
@@ -64,10 +72,16 @@ export function WorkspaceNavbar({
   const [menuOpen, setMenuOpen] = useState(false);
 
   const desktopLinks = useMemo(() => {
-    return role === "student" ? studentDesktopLinks : tpoDesktopLinks;
+    if (role === "student") return studentDesktopLinks;
+    if (role === "admin") return adminDesktopLinks;
+    return tpoDesktopLinks;
   }, [role]);
 
-  const mobileLinks = role === "student" ? studentMobileLinks : tpoMobileLinks;
+  const mobileLinks = role === "student"
+    ? studentMobileLinks
+    : role === "admin"
+      ? adminMobileLinks
+      : tpoMobileLinks;
 
   useEffect(() => {
     setMenuOpen(false);
@@ -81,7 +95,7 @@ export function WorkspaceNavbar({
       <div className="navbar-brand-wrap">
         <div className="navbar-brand">{title}</div>
         <span className="navbar-workspace-label">
-          {role === "student" ? "Student workspace" : "TPO workspace"}
+          {role === "student" ? "Student workspace" : role === "admin" ? "Admin workspace" : "TPO workspace"}
         </span>
       </div>
 
@@ -120,7 +134,7 @@ export function WorkspaceNavbar({
             <span className="ui-avatar">{userName.charAt(0).toUpperCase()}</span>
             <div>
               <strong>{userName}</strong>
-              <p>{role === "student" ? "Student workspace" : "TPO workspace"}</p>
+              <p>{role === "student" ? "Student workspace" : role === "admin" ? "Admin workspace" : "TPO workspace"}</p>
             </div>
           </div>
           <Button variant="ghost" onClick={onLogout}>
