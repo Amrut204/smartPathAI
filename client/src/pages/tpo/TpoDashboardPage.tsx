@@ -148,55 +148,109 @@ export default function TpoDashboardPage() {
   ]
     .filter((student, index, list) => list.findIndex((candidate) => candidate.studentId === student.studentId) === index)
     .slice(0, 12);
+  const pilotProof = data.pilotProof ?? {
+    activationWindowDays: 7,
+    metrics: {
+      activatedStudents7d: {
+        count: data.summary.activeStudents7d,
+        pct: data.summary.totalStudents > 0 ? Math.round((data.summary.activeStudents7d / data.summary.totalStudents) * 100) : 0,
+        helper: "Students active in the last 7 days.",
+      },
+      profileComplete: {
+        count: Math.round((data.summary.profileCompletePct / 100) * data.summary.totalStudents),
+        pct: data.summary.profileCompletePct,
+        helper: "Students with complete profiles.",
+      },
+      certifiedProfiles: {
+        count: data.readinessFunnel.certifiedProfiles,
+        pct: data.summary.totalStudents > 0 ? Math.round((data.readinessFunnel.certifiedProfiles / data.summary.totalStudents) * 100) : 0,
+        helper: "Students with certified profiles.",
+      },
+      resumeReady: {
+        count: data.readinessFunnel.resumeReadyProfiles,
+        pct: data.summary.totalStudents > 0 ? Math.round((data.readinessFunnel.resumeReadyProfiles / data.summary.totalStudents) * 100) : 0,
+        helper: "Students with a resume ready for drive workflows.",
+      },
+      eligibleForUpcoming: {
+        count: data.readinessFunnel.eligibleForUpcomingDrives,
+        pct: data.summary.totalStudents > 0 ? Math.round((data.readinessFunnel.eligibleForUpcomingDrives / data.summary.totalStudents) * 100) : 0,
+        helper: "Students currently eligible for at least one upcoming drive.",
+      },
+      eligibleButNotApplied: {
+        count: data.actionCenter.eligibleButNotApplied.reduce((total, item) => total + item.eligibleButNotAppliedCount, 0),
+        pct: 0,
+        helper: "Students eligible for a drive but still not applied.",
+      },
+      mockAdoption: {
+        count: data.mockInsights.summary.totalAttempts > 0 ? data.mockInsights.students.filter((item) => item.attempts > 0).length : 0,
+        pct: data.summary.totalStudents > 0 && data.mockInsights.summary.totalAttempts > 0
+          ? Math.round((data.mockInsights.students.filter((item) => item.attempts > 0).length / data.summary.totalStudents) * 100)
+          : 0,
+        helper: "Students who attempted at least one mock test.",
+      },
+      announcementReadRate: {
+        readCount: 0,
+        recipientCount: 0,
+        pct: 0,
+        helper: "Announcement read tracking is not available in this environment yet.",
+      },
+    },
+    milestoneChecklist: {
+      importedStudents: data.summary.totalStudents > 0,
+      createdFirstDrive: data.summary.totalDrives > 0,
+      sentFirstAnnouncement: data.summary.outreachStartedCount > 0,
+      releasedFirstResult: false,
+    },
+  };
   const pilotProofItems = [
     {
       label: "Activated in 7d",
-      value: `${data.pilotProof.metrics.activatedStudents7d.pct}%`,
-      countLabel: `${data.pilotProof.metrics.activatedStudents7d.count} students`,
-      helper: data.pilotProof.metrics.activatedStudents7d.helper,
+      value: `${pilotProof.metrics.activatedStudents7d.pct}%`,
+      countLabel: `${pilotProof.metrics.activatedStudents7d.count} students`,
+      helper: pilotProof.metrics.activatedStudents7d.helper,
     },
     {
       label: "Profiles complete",
-      value: `${data.pilotProof.metrics.profileComplete.pct}%`,
-      countLabel: `${data.pilotProof.metrics.profileComplete.count} students`,
-      helper: data.pilotProof.metrics.profileComplete.helper,
+      value: `${pilotProof.metrics.profileComplete.pct}%`,
+      countLabel: `${pilotProof.metrics.profileComplete.count} students`,
+      helper: pilotProof.metrics.profileComplete.helper,
     },
     {
       label: "Resume ready",
-      value: `${data.pilotProof.metrics.resumeReady.pct}%`,
-      countLabel: `${data.pilotProof.metrics.resumeReady.count} students`,
-      helper: data.pilotProof.metrics.resumeReady.helper,
+      value: `${pilotProof.metrics.resumeReady.pct}%`,
+      countLabel: `${pilotProof.metrics.resumeReady.count} students`,
+      helper: pilotProof.metrics.resumeReady.helper,
     },
     {
       label: "Eligible for drives",
-      value: `${data.pilotProof.metrics.eligibleForUpcoming.pct}%`,
-      countLabel: `${data.pilotProof.metrics.eligibleForUpcoming.count} students`,
-      helper: data.pilotProof.metrics.eligibleForUpcoming.helper,
+      value: `${pilotProof.metrics.eligibleForUpcoming.pct}%`,
+      countLabel: `${pilotProof.metrics.eligibleForUpcoming.count} students`,
+      helper: pilotProof.metrics.eligibleForUpcoming.helper,
     },
     {
       label: "Eligible not applied",
-      value: `${data.pilotProof.metrics.eligibleButNotApplied.pct}%`,
-      countLabel: `${data.pilotProof.metrics.eligibleButNotApplied.count} students`,
-      helper: data.pilotProof.metrics.eligibleButNotApplied.helper,
+      value: `${pilotProof.metrics.eligibleButNotApplied.pct}%`,
+      countLabel: `${pilotProof.metrics.eligibleButNotApplied.count} students`,
+      helper: pilotProof.metrics.eligibleButNotApplied.helper,
     },
     {
       label: "Mock adoption",
-      value: `${data.pilotProof.metrics.mockAdoption.pct}%`,
-      countLabel: `${data.pilotProof.metrics.mockAdoption.count} students`,
-      helper: data.pilotProof.metrics.mockAdoption.helper,
+      value: `${pilotProof.metrics.mockAdoption.pct}%`,
+      countLabel: `${pilotProof.metrics.mockAdoption.count} students`,
+      helper: pilotProof.metrics.mockAdoption.helper,
     },
     {
       label: "Announcement read rate",
-      value: `${data.pilotProof.metrics.announcementReadRate.pct}%`,
-      countLabel: `${data.pilotProof.metrics.announcementReadRate.readCount}/${data.pilotProof.metrics.announcementReadRate.recipientCount || 0} reads`,
-      helper: data.pilotProof.metrics.announcementReadRate.helper,
+      value: `${pilotProof.metrics.announcementReadRate.pct}%`,
+      countLabel: `${pilotProof.metrics.announcementReadRate.readCount}/${pilotProof.metrics.announcementReadRate.recipientCount || 0} reads`,
+      helper: pilotProof.metrics.announcementReadRate.helper,
     },
   ];
   const milestoneChecklist = [
-    { label: "Imported students", complete: data.pilotProof.milestoneChecklist.importedStudents },
-    { label: "Created first drive", complete: data.pilotProof.milestoneChecklist.createdFirstDrive },
-    { label: "Sent first announcement", complete: data.pilotProof.milestoneChecklist.sentFirstAnnouncement },
-    { label: "Released first result", complete: data.pilotProof.milestoneChecklist.releasedFirstResult },
+    { label: "Imported students", complete: pilotProof.milestoneChecklist.importedStudents },
+    { label: "Created first drive", complete: pilotProof.milestoneChecklist.createdFirstDrive },
+    { label: "Sent first announcement", complete: pilotProof.milestoneChecklist.sentFirstAnnouncement },
+    { label: "Released first result", complete: pilotProof.milestoneChecklist.releasedFirstResult },
   ];
 
   if (isFullyEmptyTenant && !onboardingDismissed) {

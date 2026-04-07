@@ -224,7 +224,7 @@ export function useTpoControlCenter() {
       academicallyBlocked: number;
       lowEngagement: number;
     };
-    pilotProof: {
+    pilotProof?: {
       activationWindowDays: number;
       metrics: {
         activatedStudents7d: { count: number; pct: number; helper: string };

@@ -101,31 +101,32 @@ export default function TpoReportsPage() {
   const previewData = preview.data;
   const previewError = preview.error instanceof Error ? preview.error.message : null;
   const isPreviewPending = !previewData && !previewError;
-  const pilotProofStrip = controlCenter ? [
+  const pilotProof = controlCenter?.pilotProof;
+  const pilotProofStrip = controlCenter && pilotProof ? [
     {
       label: "Activation 7d",
-      value: `${controlCenter.pilotProof.metrics.activatedStudents7d.pct}%`,
-      note: `${controlCenter.pilotProof.metrics.activatedStudents7d.count} students active`,
+      value: `${pilotProof.metrics.activatedStudents7d.pct}%`,
+      note: `${pilotProof.metrics.activatedStudents7d.count} students active`,
     },
     {
       label: "Profiles complete",
-      value: `${controlCenter.pilotProof.metrics.profileComplete.pct}%`,
-      note: `${controlCenter.pilotProof.metrics.profileComplete.count} students complete`,
+      value: `${pilotProof.metrics.profileComplete.pct}%`,
+      note: `${pilotProof.metrics.profileComplete.count} students complete`,
     },
     {
       label: "Resume ready",
-      value: `${controlCenter.pilotProof.metrics.resumeReady.pct}%`,
-      note: `${controlCenter.pilotProof.metrics.resumeReady.count} students ready`,
+      value: `${pilotProof.metrics.resumeReady.pct}%`,
+      note: `${pilotProof.metrics.resumeReady.count} students ready`,
     },
     {
       label: "Drive eligible",
-      value: `${controlCenter.pilotProof.metrics.eligibleForUpcoming.pct}%`,
-      note: `${controlCenter.pilotProof.metrics.eligibleForUpcoming.count} students eligible`,
+      value: `${pilotProof.metrics.eligibleForUpcoming.pct}%`,
+      note: `${pilotProof.metrics.eligibleForUpcoming.count} students eligible`,
     },
     {
       label: "Announcement read rate",
-      value: `${controlCenter.pilotProof.metrics.announcementReadRate.pct}%`,
-      note: `${controlCenter.pilotProof.metrics.announcementReadRate.readCount}/${controlCenter.pilotProof.metrics.announcementReadRate.recipientCount || 0} reads`,
+      value: `${pilotProof.metrics.announcementReadRate.pct}%`,
+      note: `${pilotProof.metrics.announcementReadRate.readCount}/${pilotProof.metrics.announcementReadRate.recipientCount || 0} reads`,
     },
   ] : [];
 
