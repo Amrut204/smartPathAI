@@ -317,3 +317,104 @@
     display: none;
   }
 }
+
+.student-workspace-shell,
+.student-workspace-header,
+.student-workspace-panel,
+.student-home-primary-card,
+.student-home-support-card,
+.student-drive-card-v2,
+.tpo-form-card,
+.tpo-table-card,
+.tpo-list-card,
+.tpo-student-mobile-card,
+.tpo-ops-hero-copy,
+.tpo-students-hero-summary,
+.workspace-panel-header > div,
+.student-workspace-panel-head > div,
+.student-workspace-row > div,
+.student-workspace-drive-head > div,
+.tpo-students-header > div,
+.tpo-students-table-head > div,
+.tpo-students-advanced-head > div,
+.tpo-action-row > div {
+  min-width: 0;
+}
+
+.student-home-header-v2 h1,
+.student-home-hero-copy strong,
+.student-workspace-panel-head h2,
+.tpo-ops-hero-copy h1,
+.tpo-students-header h1,
+.workspace-panel-header h2,
+.student-workspace-meta,
+.student-workspace-inline-note,
+.tpo-ops-signal span,
+.tpo-queue-summary-card span,
+.tpo-student-mobile-card p {
+  overflow-wrap: anywhere;
+}
+
+.hero-actions,
+.student-workspace-switcher,
+.student-workspace-switcher .ui-tabs {
+  max-width: 100%;
+}
+
+.hero-actions > *,
+.student-workspace-switcher .ui-tab,
+.resources-filter-chip,
+.ui-button {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.student-workspace-switcher .ui-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.student-workspace-switcher .ui-tab,
+.resources-filter-chip,
+.ui-button {
+  white-space: normal;
+  text-align: center;
+}
+
+@media (max-width: 960px) {
+  .tpo-drive-health-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .tpo-ops-signal-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tpo-drive-health-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .student-workspace-switcher .ui-tab {
+    flex: 1 1 auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-actions {
+    gap: 0.5rem;
+  }
+
+  .ui-button,
+  .resources-filter-chip {
+    padding-inline: 0.8rem;
+    font-size: 0.84rem;
+  }
+
+  .tpo-ops-signal-strip,
+  .tpo-drive-health-metrics,
+  .tpo-drive-health-meta {
+    grid-template-columns: 1fr;
+  }
+}
