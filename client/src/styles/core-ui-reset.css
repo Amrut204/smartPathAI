@@ -52,36 +52,6 @@
   max-width: 16ch;
 }
 
-.student-workspace-shell,
-.student-workspace-panel,
-.student-workspace-row > div,
-.student-workspace-drive-head > div,
-.student-home-primary-card,
-.student-home-support-card,
-.student-drive-card-v2,
-.tpo-form-card,
-.tpo-table-card,
-.tpo-list-card,
-.tpo-student-mobile-card,
-.tpo-action-row > div,
-.tpo-students-header > div,
-.tpo-students-table-head > div,
-.tpo-students-advanced-head > div,
-.workspace-panel-header > div,
-.tpo-ops-hero-copy,
-.tpo-students-hero-summary {
-  min-width: 0;
-}
-
-.student-home-header-v2 h1,
-.student-home-hero-copy strong,
-.tpo-ops-hero-copy h1,
-.tpo-students-header h1,
-.student-workspace-panel-head h2,
-.workspace-panel-header h2 {
-  overflow-wrap: anywhere;
-}
-
 .student-home-v2-grid {
   display: grid;
   gap: var(--space-4);
@@ -186,141 +156,6 @@
   display: grid;
   gap: 0.75rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.student-dashboard-action-feed,
-.student-continuity-grid,
-.tpo-ops-signal-strip,
-.tpo-queue-summary-grid,
-.tpo-drive-health-grid,
-.tpo-students-kpi-strip,
-.tpo-students-saved-views,
-.tpo-action-list {
-  display: grid;
-  gap: var(--space-3);
-}
-
-.student-dashboard-action-feed,
-.student-continuity-grid,
-.tpo-drive-health-grid {
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-.tpo-ops-signal-strip {
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-}
-
-.tpo-queue-summary-grid,
-.tpo-students-kpi-strip {
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-}
-
-.tpo-students-saved-views {
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-.tpo-ops-hero,
-.tpo-students-mode-strip {
-  display: grid;
-  gap: var(--space-3);
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.9fr);
-  align-items: start;
-}
-
-.tpo-mode-toggle-group {
-  display: grid;
-  gap: 0.75rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.student-dashboard-action-card,
-.student-drive-guidance-card,
-.tpo-saved-view-pill,
-.tpo-students-kpi-pill,
-.tpo-ops-signal,
-.tpo-queue-summary-card,
-.tpo-drive-health-card {
-  display: grid;
-  gap: 0.45rem;
-  min-width: 0;
-  padding: 1rem;
-  border-radius: 18px;
-  border: 1px solid rgba(99, 102, 241, 0.1);
-  background: linear-gradient(180deg, #ffffff, #fbfcff);
-}
-
-.student-drive-guidance-card,
-.tpo-action-row,
-.tpo-students-bulk-bar,
-.tpo-students-mode-strip {
-  border: 1px solid rgba(20, 34, 53, 0.08);
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.74);
-}
-
-.tpo-saved-view-pill {
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-}
-
-.tpo-saved-view-pill.active {
-  border-color: rgba(99, 102, 241, 0.22);
-  background: linear-gradient(180deg, #eef2ff, #ffffff);
-}
-
-.tpo-ops-signal {
-  color: inherit;
-}
-
-.tpo-ops-signal:hover {
-  text-decoration: none;
-}
-
-.tpo-students-kpi-pill strong,
-.tpo-ops-signal strong,
-.tpo-queue-summary-card strong,
-.tpo-drive-health-card strong {
-  font-size: 1.2rem;
-  line-height: 1.1;
-}
-
-.tpo-students-kpi-pill span,
-.tpo-ops-signal span,
-.tpo-queue-summary-card span,
-.tpo-drive-health-card span,
-.tpo-saved-view-pill span {
-  color: var(--color-text-muted);
-}
-
-.tpo-action-row {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-3);
-  align-items: start;
-  padding: 1rem;
-}
-
-.tpo-action-row-head,
-.student-workspace-drive-badges,
-.tpo-student-status-list {
-  display: flex;
-  gap: 0.55rem;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.tpo-drive-health-metrics,
-.tpo-drive-health-meta {
-  display: grid;
-  gap: 0.75rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.tpo-drive-health-metrics > div,
-.tpo-drive-health-meta > div {
-  display: grid;
-  gap: 0.2rem;
 }
 
 .student-drive-primary-actions {
@@ -450,93 +285,6 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  .student-workspace-shell,
-  .student-workspace-header,
-  .student-workspace-panel,
-  .student-workspace-row,
-  .student-workspace-drive,
-  .student-workspace-panel-head,
-  .student-drive-guidance-card,
-  .student-dashboard-action-card,
-  .student-continuity-grid > div,
-  .tpo-ops-hero,
-  .tpo-students-mode-strip,
-  .tpo-action-row,
-  .tpo-students-bulk-bar,
-  .tpo-students-header,
-  .tpo-students-table-head,
-  .tpo-students-advanced-head,
-  .workspace-panel-header,
-  .tpo-student-mobile-card-head {
-    min-width: 0;
-  }
-
-  .student-workspace-header,
-  .student-workspace-panel-head,
-  .student-workspace-row,
-  .student-workspace-drive-head,
-  .tpo-students-header,
-  .tpo-students-table-head,
-  .tpo-students-advanced-head,
-  .workspace-panel-header,
-  .tpo-action-row,
-  .tpo-students-bulk-bar,
-  .tpo-student-mobile-card-head {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .hero-actions {
-    width: 100%;
-  }
-
-  .hero-actions > * {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .hero-actions .ui-button {
-    width: 100%;
-  }
-
-  .tpo-ops-hero,
-  .tpo-students-mode-strip,
-  .tpo-mode-toggle-group {
-    grid-template-columns: 1fr;
-  }
-
-  .tpo-students-kpi-strip,
-  .tpo-students-saved-views,
-  .tpo-ops-signal-strip,
-  .tpo-queue-summary-grid,
-  .tpo-drive-health-grid,
-  .student-dashboard-action-feed,
-  .student-continuity-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .tpo-drive-health-metrics,
-  .tpo-drive-health-meta {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .student-workspace-switcher,
-  .student-workspace-switcher .ui-tabs {
-    width: 100%;
-  }
-
-  .student-workspace-switcher .ui-tabs {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .student-workspace-switcher .ui-tab {
-    flex: 1 1 calc(50% - 0.3rem);
-    min-width: 0;
-    white-space: normal;
-    text-align: center;
-  }
-
   .tpo-student-mobile-list {
     display: grid;
     gap: var(--space-3);
@@ -550,9 +298,7 @@
 @media (max-width: 640px) {
   .student-home-score-metrics,
   .student-drive-card-summary,
-  .tpo-student-mobile-metrics,
-  .tpo-drive-health-metrics,
-  .tpo-drive-health-meta {
+  .tpo-student-mobile-metrics {
     grid-template-columns: 1fr;
   }
 
@@ -569,22 +315,5 @@
 
   .navbar-bottom-link small {
     display: none;
-  }
-
-  .student-workspace-panel,
-  .tpo-form-card,
-  .tpo-table-card,
-  .tpo-list-card {
-    padding: 1rem;
-  }
-
-  .student-home-header-v2 h1,
-  .tpo-ops-hero-copy h1,
-  .tpo-students-header h1 {
-    font-size: clamp(1.65rem, 8vw, 2.2rem);
-  }
-
-  .student-workspace-switcher .ui-tab {
-    flex-basis: 100%;
   }
 }
