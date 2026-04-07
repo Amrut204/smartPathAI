@@ -224,6 +224,25 @@ export function useTpoControlCenter() {
       academicallyBlocked: number;
       lowEngagement: number;
     };
+    pilotProof: {
+      activationWindowDays: number;
+      metrics: {
+        activatedStudents7d: { count: number; pct: number; helper: string };
+        profileComplete: { count: number; pct: number; helper: string };
+        certifiedProfiles: { count: number; pct: number; helper: string };
+        resumeReady: { count: number; pct: number; helper: string };
+        eligibleForUpcoming: { count: number; pct: number; helper: string };
+        eligibleButNotApplied: { count: number; pct: number; helper: string };
+        mockAdoption: { count: number; pct: number; helper: string };
+        announcementReadRate: { readCount: number; recipientCount: number; pct: number; helper: string };
+      };
+      milestoneChecklist: {
+        importedStudents: boolean;
+        createdFirstDrive: boolean;
+        sentFirstAnnouncement: boolean;
+        releasedFirstResult: boolean;
+      };
+    };
     dashboardQueues: {
       profileUnlockRequests: {
         count: number;
