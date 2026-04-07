@@ -103,6 +103,7 @@ export default function TpoStudentDetailPage() {
   const selectedDrive = data.driveParticipation.find((entry) => entry.driveId === selectedDriveId) ?? null;
   const unlockRequest = data.unlockRequest;
   const placementStatus = data.placementStatus;
+  const engagementSummary = data.engagementSummary;
 
   const onSaveProof = async () => {
     if (!selectedDrive) {
@@ -195,6 +196,7 @@ export default function TpoStudentDetailPage() {
   const overviewMetrics = [
     { label: "Profile completeness", value: `${Number(data.profileCompletenessPct ?? 0).toFixed(0)}%` },
     { label: "Readiness", value: `${Number(data.readinessScore ?? 0).toFixed(1)}%` },
+    { label: "Engagement", value: `${Number(engagementSummary.resourceActiveDays7d ?? 0)} active day(s)` },
     { label: "Resources access", value: data.missingStudentFields.length === 0 ? "Open" : "Blocked until complete" },
     { label: "Mock tests access", value: data.missingStudentFields.length === 0 ? "Open" : "Blocked until complete" },
   ];
@@ -253,6 +255,19 @@ export default function TpoStudentDetailPage() {
           </div>
 
           <div className="workspace-split-grid">
+            <div className="workspace-block">
+              <h2>Engagement Snapshot</h2>
+              <p className="muted-text">Use this to judge follow-through inside Smart Path. It supports intervention decisions and does not replace readiness or student capability.</p>
+              <dl className="workspace-definition-grid">
+                <div><dt>Mock attempts (30d)</dt><dd>{Number(engagementSummary.mockAttempts30d ?? 0)}</dd></div>
+                <div><dt>Resource opens (30d)</dt><dd>{Number(engagementSummary.resourceOpens30d ?? 0)}</dd></div>
+                <div><dt>Active prep days (7d)</dt><dd>{Number(engagementSummary.resourceActiveDays7d ?? 0)}</dd></div>
+                <div><dt>Last mock activity</dt><dd>{formatDateTime(engagementSummary.lastMockSubmittedAt)}</dd></div>
+                <div><dt>Last resource activity</dt><dd>{formatDateTime(engagementSummary.lastResourceViewedAt)}</dd></div>
+                <div><dt>Last platform activity</dt><dd>{formatDateTime(engagementSummary.lastPlatformActivityAt)}</dd></div>
+              </dl>
+            </div>
+
             <div className="workspace-block">
               <h2>Profile details still pending</h2>
               <p className="muted-text">These are the fields the student still needs to complete in their own profile.</p>

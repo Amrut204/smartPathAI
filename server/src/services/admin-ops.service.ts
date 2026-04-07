@@ -11,6 +11,7 @@ import { StudentRepository } from "../repositories/student.repository.js";
 import { StudentImportJobService } from "./student-import-job.service.js";
 import { AdminOpsJobService } from "./admin-ops-job.service.js";
 import { CommunicationService } from "./communication.service.js";
+import { ReadinessService } from "./readiness.service.js";
 import { getMongoDb } from "../utils/mongodb.js";
 import { resolveManagedCloudBaseUrl } from "../utils/storage.js";
 import { buildDeclarationProfileDataPatch, buildStudentDeclarationStatus } from "../utils/student-declaration.js";
@@ -472,6 +473,7 @@ export const AdminOpsService = {
       { returnDocument: "after", projection: { _id: 0, id: 1, user_id: 1, profile_data: 1 } },
     );
 
+    await ReadinessService.calculate(tenantId, input.studentId);
     this.clearTenantWorkspaceCache(tenantId);
 
     return {
@@ -600,6 +602,8 @@ export const AdminOpsService = {
       created_at: timestamp,
       updated_at: timestamp,
     });
+
+    await ReadinessService.calculate(tenantId, studentId);
 
     const credentialJob = await AdminOpsJobService.createStudentCredentialBatchJob({
       tenantId,

@@ -35,25 +35,25 @@ export default function LoginPage() {
         <aside className="public-auth-aside">
           <Brand href="/" variant="full" descriptor="Placement readiness platform" className="public-auth-brand" />
 
-          <Badge>College readiness workflow</Badge>
-          <h1>Placement support, preparation, and college operations in one workspace.</h1>
+          <Badge>Readiness and intervention workspace</Badge>
+          <h1>See readiness, blockers, and next actions in one college placement workspace.</h1>
           <p className="public-auth-lead">
-            Built for students, TPOs, and admins who need one reliable platform for readiness, resources,
-            communication, and placement support.
+            Smart Path is designed for placement offices that need clearer operational visibility and students who need
+            a guided next step for placements. Students can still prepare from GFG, PrepInsta, YouTube, or any trusted source while using Smart Path for official college workflow and readiness guidance.
           </p>
 
           <div className="public-auth-highlights">
             <div>
               <strong>For TPOs</strong>
-              <span>Manage students, drives, readiness, and communication from one dashboard.</span>
+              <span>Find blocked students, nudge ready-but-inactive students, and run drives from one operations console.</span>
             </div>
             <div>
               <strong>For students</strong>
-              <span>Track preparation, eligibility, resources, and mock-test progress with clarity.</span>
+              <span>Know what to do next for placements with clearer readiness, drive, resource, and mock guidance.</span>
             </div>
             <div>
               <strong>For rollout</strong>
-              <span>Start with pilot usage, then expand to full placement-cell adoption.</span>
+              <span>Start with activation, readiness, and intervention workflows before expanding the wider platform footprint.</span>
             </div>
           </div>
 
@@ -67,7 +67,7 @@ export default function LoginPage() {
           <header className="public-auth-header">
             <p className="public-auth-kicker">Sign in</p>
             <h2>Welcome back</h2>
-            <p>Use your college email and password to enter your student, TPO, or admin workspace.</p>
+            <p>Use your college credentials to open the student, TPO, or admin workspace connected to your placement process.</p>
           </header>
 
           <form onSubmit={onSubmit} className="form-grid public-auth-form">

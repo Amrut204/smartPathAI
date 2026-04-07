@@ -109,6 +109,14 @@ export interface TpoStudentDetail {
     createdAt: string;
     createdBy: string | null;
   }>;
+  engagementSummary: {
+    mockAttempts30d: number;
+    resourceOpens30d: number;
+    resourceActiveDays7d: number;
+    lastMockSubmittedAt: string | null;
+    lastResourceViewedAt: string | null;
+    lastPlatformActivityAt: string | null;
+  };
   profileCompletenessPct: number;
   declarationStatus: {
     policyVersion: string;

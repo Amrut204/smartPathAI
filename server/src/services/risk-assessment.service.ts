@@ -147,7 +147,7 @@ function computeActivityPoints(params: {
 
   if (params.resourcesViewed === 0) {
     points += 10;
-    reasons.push("No resources viewed recently");
+    reasons.push("No recent prep activity inside Smart Path");
   } else if (params.resourcesViewed <= 3) {
     points += 5;
   }
@@ -275,7 +275,7 @@ function getRecommendedActions(input: {
   if (input.avgMockScore > 0 && input.avgMockScore < 50) actions.add("Review mock test failures together");
   if (input.eligibleDrives > 0 && input.appliedDrives === 0) actions.add("Push drive applications today");
   if (input.profileCompletenessPct < 80) actions.add("Complete student profile details");
-  if (input.resourcesViewed === 0) actions.add("Share 2 prep resources");
+  if (input.resourcesViewed === 0) actions.add("Share 2 curated prep resources");
   if (input.deadlineSoon) actions.add("Send urgent deadline reminder");
   if (input.belowPeerAverage) actions.add("Assign peer mentor");
 

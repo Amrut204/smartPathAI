@@ -224,7 +224,7 @@ export default function DashboardPage() {
         title: "Take your next mock test",
         explanation: recommendedMockTest
           ? `${recommendedMockTest.title} is a strong next step based on your current progress.`
-          : "Start one mock test this week to keep your readiness signal fresh.",
+          : "Start one mock test this week to add stronger practice evidence for upcoming drives.",
         ctaLabel: recommendedMockTest ? "Open suggested mock" : "Browse mock tests",
         targetPath: recommendedMockTest ? `/mock-tests/${encodeURIComponent(recommendedMockTest.id)}` : "/mock-tests",
       };
@@ -233,7 +233,7 @@ export default function DashboardPage() {
     if (richerRecentResources.length === 0 && canAccessResources) {
       return {
         title: "Open a recommended resource",
-        explanation: "Start one focused study resource so the app can guide you from real activity instead of profile data only.",
+        explanation: "Use one curated resource if you want a focused starting point. You can still prepare from any trusted source and use Smart Path for official placement workflows.",
         ctaLabel: "Browse resources",
         targetPath: "/resources",
       };
@@ -265,6 +265,53 @@ export default function DashboardPage() {
     };
   })();
   const nextAction = sharedNextActions[0] ?? fallbackNextAction;
+  const firstRunContextCard = activeBlockers[0]
+    ? {
+        title: activeBlockers[0].label,
+        explanation: activeBlockers[0].explanation,
+        ctaLabel: activeBlockers[0].ctaLabel,
+        targetPath: activeBlockers[0].targetPath,
+      }
+    : nearestUpcomingDrive
+      ? {
+          title: `Nearest drive: ${nearestUpcomingDrive.company}`,
+          explanation: `${nearestUpcomingDrive.role ? `${nearestUpcomingDrive.role} | ` : ""}${daysUntilNearestDrive === null ? "Check the drive date and prepare early." : `${daysUntilNearestDrive} day(s) left to prepare.`}`,
+          ctaLabel: "Open drives",
+          targetPath: "/drives",
+        }
+      : {
+          title: "No blocker is stopping you right now",
+          explanation: "That means your best move is to keep your practice active and stay ready for the next drive announcement.",
+          ctaLabel: "Check drives",
+          targetPath: "/drives",
+        };
+  const firstRunPracticeCard = pendingAttempt
+    ? {
+        title: "Resume your pending mock test",
+        explanation: `${pendingAttempt.title} still has saved answers waiting for you.`,
+        ctaLabel: "Resume test",
+        targetPath: `/mock-tests/${pendingAttempt.testId}`,
+      }
+    : recommendedMockTest && canAccessMockTests
+      ? {
+          title: `Recommended practice: ${recommendedMockTest.title}`,
+          explanation: "One focused mock gives you stronger placement evidence than browsing the full catalog right now.",
+          ctaLabel: "Open mock",
+          targetPath: `/mock-tests/${encodeURIComponent(recommendedMockTest.id)}`,
+        }
+      : canAccessResources
+        ? {
+            title: "Open one focused resource",
+            explanation: "Start with one curated resource if it helps. You can keep learning from GFG, PrepInsta, YouTube, or any source that works for you.",
+            ctaLabel: "Browse resources",
+            targetPath: "/resources",
+          }
+        : {
+            title: "Unlock practice modules",
+            explanation: "Complete the required profile fields first. Resources and mock tests unlock after that.",
+            ctaLabel: "Open profile",
+            targetPath: "/profile",
+          };
   const dashboardMetricItems = [
     { label: "CGPA", value: cgpa.toFixed(2) },
     { label: "Profile", value: `${profileCompletenessPct}%` },
@@ -301,7 +348,7 @@ export default function DashboardPage() {
         <div>
           <p className="resources-kicker">{branch} - Batch {batch}</p>
           <h1>Keep your placement profile current and act on official updates.</h1>
-          <p>Finish required details, track college announcements, and apply only to the drives you actually qualify for.</p>
+          <p>Finish required details, track college announcements, and apply only to the drives you actually qualify for. You can prepare from any trusted source while using Smart Path as your official placement workflow and readiness guide.</p>
         </div>
         <div className="hero-actions">
           <Link to="/drives" className="ui-button primary">Check Drives</Link>
@@ -329,25 +376,50 @@ export default function DashboardPage() {
       ) : null}
 
       {shouldShowOrientation ? (
-        <section className="student-workspace-panel">
+        <section className="student-workspace-panel student-dashboard-guided-start">
           <div className="student-workspace-panel-head">
             <div>
               <h2>Start here</h2>
               <p>
-                Complete your profile, open resources, and take your first mock test so Smart Path can start guiding you with real preparation signals.
-                Profile completion unlocks the full practice experience.
+                This first view stays intentionally narrow. Finish the next step, look at the nearest blocker or drive, and complete one practice action.
+                The wider dashboard is still here once you want the full picture.
               </p>
             </div>
-            <Button variant="ghost" onClick={dismissOrientationBanner}>Dismiss</Button>
+            <Button variant="ghost" onClick={dismissOrientationBanner}>Show full dashboard</Button>
+          </div>
+          <div className="student-dashboard-action-feed">
+            <div className="student-dashboard-action-card">
+              <div>
+                <strong>{nextAction.title}</strong>
+                <p>{nextAction.explanation}</p>
+              </div>
+              <Link to={nextAction.targetPath} className="ui-button secondary">{nextAction.ctaLabel}</Link>
+            </div>
+            <div className="student-dashboard-action-card">
+              <div>
+                <strong>{firstRunContextCard.title}</strong>
+                <p>{firstRunContextCard.explanation}</p>
+              </div>
+              <Link to={firstRunContextCard.targetPath} className="ui-button ghost">{firstRunContextCard.ctaLabel}</Link>
+            </div>
+            <div className="student-dashboard-action-card">
+              <div>
+                <strong>{firstRunPracticeCard.title}</strong>
+                <p>{firstRunPracticeCard.explanation}</p>
+              </div>
+              <Link to={firstRunPracticeCard.targetPath} className="ui-button ghost">{firstRunPracticeCard.ctaLabel}</Link>
+            </div>
           </div>
           <div className="student-workspace-inline-note">
             <span>1. Complete all required profile fields</span>
-            <span>2. Open at least one resource</span>
-            <span>3. Attempt your first mock test</span>
+            <span>2. Check the nearest drive or blocker</span>
+            <span>3. Finish one practice action</span>
           </div>
         </section>
       ) : null}
 
+      {!shouldShowOrientation ? (
+      <>
       <section className="student-workspace-hero student-dashboard-snapshot-grid">
         <div className="student-workspace-hero-main student-dashboard-snapshot-main">
           <span className="student-workspace-eyebrow">Placement snapshot</span>
@@ -730,6 +802,8 @@ export default function DashboardPage() {
             </div>
           )}
         </section>
+      ) : null}
+      </>
       ) : null}
 
     </section>

@@ -3000,7 +3000,10 @@ export const StudentRepository = {
       throw new AppError("STUDENT_NOT_FOUND", "Student not found", 404);
     }
 
-    const [user, attempts, mastery, driveResults, placementHistory] = await Promise.all([
+    const resourceWindow30d = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const resourceWindow7d = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+    const [user, attempts, mastery, driveResults, placementHistory, resourceEvents30d] = await Promise.all([
       db.collection("users").findOne(
         { tenant_id: tenantId, id: String(student.user_id) },
         { projection: { full_name: 1, email: 1 } },
@@ -3049,6 +3052,15 @@ export const StudentRepository = {
         { tenant_id: tenantId, student_id: studentId },
         { projection: { _id: 0 } },
       ).sort({ created_at: -1 }).limit(20).toArray(),
+      db.collection("resource_view_events").find(
+        {
+          tenant_id: tenantId,
+          student_id: studentId,
+          event_type: { $in: ["open", "external_redirect"] },
+          created_at: { $gte: resourceWindow30d },
+        },
+        { projection: { _id: 0, created_at: 1, event_type: 1 } },
+      ).sort({ created_at: -1 }).limit(120).toArray(),
     ]);
 
     const testIds = [...new Set(attempts.map((attempt) => String(attempt.test_id)))];
@@ -3080,6 +3092,18 @@ export const StudentRepository = {
     const testMap = new Map(testsMeta.map((test) => [String(test.id), test]));
     const topicMap = new Map(topicsMeta.map((topic) => [String(topic.id), topic]));
 
+    const resourceActiveDays7d = new Set(
+      resourceEvents30d
+        .map((event) => String(event.created_at ?? ""))
+        .filter((createdAt) => createdAt >= resourceWindow7d)
+        .map((createdAt) => createdAt.slice(0, 10)),
+    ).size;
+    const lastMockSubmittedAt = attempts[0]?.submitted_at ? String(attempts[0].submitted_at) : null;
+    const lastResourceViewedAt = resourceEvents30d[0]?.created_at ? String(resourceEvents30d[0].created_at) : null;
+    const lastPlatformActivityAt = [lastMockSubmittedAt, lastResourceViewedAt]
+      .filter((value): value is string => Boolean(value))
+      .sort((left, right) => right.localeCompare(left))[0] ?? null;
+
     return {
       id: String(student.id),
       userId: String(student.user_id),
@@ -3108,6 +3132,14 @@ export const StudentRepository = {
         createdAt: String(entry.created_at ?? ""),
         createdBy: entry.created_by ? String(entry.created_by) : null,
       })),
+      engagementSummary: {
+        mockAttempts30d: attempts.length,
+        resourceOpens30d: resourceEvents30d.filter((event) => String(event.event_type ?? "") === "open").length,
+        resourceActiveDays7d,
+        lastMockSubmittedAt,
+        lastResourceViewedAt,
+        lastPlatformActivityAt,
+      },
       attempts: attempts.map((attempt) => ({
         id: String(attempt.id),
         testId: String(attempt.test_id),

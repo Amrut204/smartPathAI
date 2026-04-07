@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { Badge, Button, Input, Select, Table, Tabs } from "../../components/ui";
+import { useTpoControlCenter } from "../../hooks/use-analytics";
 import { downloadReport, type ReportFilters, type ReportType, useReportPreview, useReportTemplates } from "../../hooks/use-reports";
 
 type ReportGroup = "Must-have Reports" | "Compliance / Evidence" | "Operational Tracking" | "Exports";
@@ -87,6 +88,7 @@ export default function TpoReportsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [showMoreFilters, setShowMoreFilters] = useState(false);
   const templates = useReportTemplates();
+  const { data: controlCenter } = useTpoControlCenter();
   const rawReportType = searchParams.get("reportType");
   const rawGroup = searchParams.get("group");
   const requestedReport: ReportType | null = isValidReportType(rawReportType) ? rawReportType : null;
@@ -99,6 +101,33 @@ export default function TpoReportsPage() {
   const previewData = preview.data;
   const previewError = preview.error instanceof Error ? preview.error.message : null;
   const isPreviewPending = !previewData && !previewError;
+  const pilotProofStrip = controlCenter ? [
+    {
+      label: "Activation 7d",
+      value: `${controlCenter.pilotProof.metrics.activatedStudents7d.pct}%`,
+      note: `${controlCenter.pilotProof.metrics.activatedStudents7d.count} students active`,
+    },
+    {
+      label: "Profiles complete",
+      value: `${controlCenter.pilotProof.metrics.profileComplete.pct}%`,
+      note: `${controlCenter.pilotProof.metrics.profileComplete.count} students complete`,
+    },
+    {
+      label: "Resume ready",
+      value: `${controlCenter.pilotProof.metrics.resumeReady.pct}%`,
+      note: `${controlCenter.pilotProof.metrics.resumeReady.count} students ready`,
+    },
+    {
+      label: "Drive eligible",
+      value: `${controlCenter.pilotProof.metrics.eligibleForUpcoming.pct}%`,
+      note: `${controlCenter.pilotProof.metrics.eligibleForUpcoming.count} students eligible`,
+    },
+    {
+      label: "Announcement read rate",
+      value: `${controlCenter.pilotProof.metrics.announcementReadRate.pct}%`,
+      note: `${controlCenter.pilotProof.metrics.announcementReadRate.readCount}/${controlCenter.pilotProof.metrics.announcementReadRate.recipientCount || 0} reads`,
+    },
+  ] : [];
 
   const groupedTemplates = useMemo(
     () => (templates.data ?? []).filter((template) => template.group === group),
@@ -126,7 +155,10 @@ export default function TpoReportsPage() {
       <header className="tpo-reports-header">
         <div>
           <h1>Reports</h1>
-          <p>Choose one report, adjust the time period if needed, then export it. Use the evidence pack when you need a clean compliance-ready proof bundle for NAAC or placement review.</p>
+          <p>
+            Use reports to prove readiness, intervention progress, and placement operations to principals, review committees, and the placement team.
+            Choose one report, adjust the period, then export a clean review-ready version.
+          </p>
         </div>
         <div className="hero-actions">
           <Button variant="secondary" onClick={openEvidencePack}>Open NAAC Evidence Pack</Button>
@@ -138,6 +170,27 @@ export default function TpoReportsPage() {
           ) : null}
         </div>
       </header>
+
+      {pilotProofStrip.length > 0 ? (
+        <section className="tpo-reports-block">
+          <div className="workspace-panel-header">
+            <div>
+              <p className="workspace-eyebrow">Adoption Snapshot</p>
+              <h2>Metrics worth carrying into leadership reviews</h2>
+            </div>
+            <p className="muted-text">These adoption signals explain whether students are activating, becoming ready, and acting on drives. Treat Smart Path activity as engagement evidence, not as a complete measure of capability.</p>
+          </div>
+          <div className="tpo-reports-metric-strip">
+            {pilotProofStrip.map((metric) => (
+              <div key={metric.label}>
+                <span>{metric.label}</span>
+                <strong>{metric.value}</strong>
+                <p className="muted-text">{metric.note}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="tpo-reports-flow">
         <div className="tpo-reports-block">

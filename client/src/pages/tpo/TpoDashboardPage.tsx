@@ -148,6 +148,56 @@ export default function TpoDashboardPage() {
   ]
     .filter((student, index, list) => list.findIndex((candidate) => candidate.studentId === student.studentId) === index)
     .slice(0, 12);
+  const pilotProofItems = [
+    {
+      label: "Activated in 7d",
+      value: `${data.pilotProof.metrics.activatedStudents7d.pct}%`,
+      countLabel: `${data.pilotProof.metrics.activatedStudents7d.count} students`,
+      helper: data.pilotProof.metrics.activatedStudents7d.helper,
+    },
+    {
+      label: "Profiles complete",
+      value: `${data.pilotProof.metrics.profileComplete.pct}%`,
+      countLabel: `${data.pilotProof.metrics.profileComplete.count} students`,
+      helper: data.pilotProof.metrics.profileComplete.helper,
+    },
+    {
+      label: "Resume ready",
+      value: `${data.pilotProof.metrics.resumeReady.pct}%`,
+      countLabel: `${data.pilotProof.metrics.resumeReady.count} students`,
+      helper: data.pilotProof.metrics.resumeReady.helper,
+    },
+    {
+      label: "Eligible for drives",
+      value: `${data.pilotProof.metrics.eligibleForUpcoming.pct}%`,
+      countLabel: `${data.pilotProof.metrics.eligibleForUpcoming.count} students`,
+      helper: data.pilotProof.metrics.eligibleForUpcoming.helper,
+    },
+    {
+      label: "Eligible not applied",
+      value: `${data.pilotProof.metrics.eligibleButNotApplied.pct}%`,
+      countLabel: `${data.pilotProof.metrics.eligibleButNotApplied.count} students`,
+      helper: data.pilotProof.metrics.eligibleButNotApplied.helper,
+    },
+    {
+      label: "Mock adoption",
+      value: `${data.pilotProof.metrics.mockAdoption.pct}%`,
+      countLabel: `${data.pilotProof.metrics.mockAdoption.count} students`,
+      helper: data.pilotProof.metrics.mockAdoption.helper,
+    },
+    {
+      label: "Announcement read rate",
+      value: `${data.pilotProof.metrics.announcementReadRate.pct}%`,
+      countLabel: `${data.pilotProof.metrics.announcementReadRate.readCount}/${data.pilotProof.metrics.announcementReadRate.recipientCount || 0} reads`,
+      helper: data.pilotProof.metrics.announcementReadRate.helper,
+    },
+  ];
+  const milestoneChecklist = [
+    { label: "Imported students", complete: data.pilotProof.milestoneChecklist.importedStudents },
+    { label: "Created first drive", complete: data.pilotProof.milestoneChecklist.createdFirstDrive },
+    { label: "Sent first announcement", complete: data.pilotProof.milestoneChecklist.sentFirstAnnouncement },
+    { label: "Released first result", complete: data.pilotProof.milestoneChecklist.releasedFirstResult },
+  ];
 
   if (isFullyEmptyTenant && !onboardingDismissed) {
     return (
@@ -324,6 +374,36 @@ export default function TpoDashboardPage() {
             ))
           )}
         </div>
+      </Card>
+
+      <Card className="tpo-list-card">
+        <div className="workspace-panel-header">
+          <div>
+            <p className="workspace-eyebrow">Adoption Snapshot</p>
+            <h2>Metrics you can show in a placement review</h2>
+          </div>
+          <p className="muted-text">
+            These numbers turn product usage into an adoption story: activation, readiness coverage, application follow-through, and communication reach.
+          </p>
+        </div>
+        <div className="tpo-queue-summary-grid">
+          {pilotProofItems.map((item) => (
+            <div key={item.label} className="tpo-queue-summary-card">
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+              <p className="muted-text">{item.countLabel}</p>
+              <p className="muted-text">{item.helper}</p>
+            </div>
+          ))}
+        </div>
+        <div className="student-workspace-inline-note">
+          {milestoneChecklist.map((item) => (
+            <span key={item.label}>{item.complete ? "Done" : "Pending"}: {item.label}</span>
+          ))}
+        </div>
+        <p className="muted-text">
+          Readiness is calculated from stronger placement evidence. Smart Path activity helps with engagement and intervention follow-up, but low platform usage alone does not mean a student is incapable.
+        </p>
       </Card>
 
       <Card className="tpo-list-card">

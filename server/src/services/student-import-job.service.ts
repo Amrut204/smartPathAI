@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 
 import { AppError } from "../middleware/error-handler.js";
 import { StudentRepository } from "../repositories/student.repository.js";
+import { ReadinessService } from "./readiness.service.js";
 import { logger } from "../utils/logger.js";
 import { getMongoDb } from "../utils/mongodb.js";
 
@@ -234,6 +235,9 @@ export const StudentImportJobService = {
           },
         },
       );
+
+      const studentIds = [...new Set([...(report.createdStudentIds ?? []), ...(report.updatedStudentIds ?? [])])];
+      await Promise.all(studentIds.map((studentId) => ReadinessService.calculate(params.tenantId, studentId)));
 
       const finishedAt = new Date().toISOString();
       await db.collection("student_import_jobs").updateOne(

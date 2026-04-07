@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { Brand } from "../../components/composites/Brand";
 import { Badge } from "../../components/ui";
 
-const PAGE_TITLE = "Smart Path | Placement Readiness For Students, TPOs, And Colleges";
-const PAGE_DESCRIPTION = "Smart Path helps colleges run placement readiness, resources, mock tests, and student support from one clean platform.";
+const PAGE_TITLE = "Smart Path | Placement Readiness And Intervention For TPOs";
+const PAGE_DESCRIPTION = "Smart Path helps placement offices see readiness, blockers, and interventions in one place so students know what to do next.";
 const OG_IMAGE = "/smart-path-og.svg";
 
 function upsertMeta(selector: string, attributes: Record<string, string>) {
@@ -22,31 +22,31 @@ function upsertMeta(selector: string, attributes: Record<string, string>) {
 
 const capabilityBlocks = [
   {
-    title: "Student readiness",
-    body: "Mock tests, study resources, profile completion, and clear next steps stay in one place so students know what to work on next.",
+    title: "Know who is ready",
+    body: "See profile readiness, resume status, drive eligibility, and student momentum without stitching together spreadsheets and chat updates.",
   },
   {
-    title: "College operations",
-    body: "TPO teams can manage drives, monitor readiness, and support students from one operational workspace instead of scattered sheets and chats.",
+    title: "Fix what is blocking students",
+    body: "Surface missing resumes, uncertified profiles, weak readiness, and inactive-but-eligible students as action queues instead of hidden problems.",
   },
   {
-    title: "Ongoing administration",
-    body: "Admins can manage the college workspace, seed data, issue credentials, and update resources without redeploying the app.",
+    title: "Act before drive deadlines",
+    body: "Run drive workflows, reminders, result releases, and preparation follow-through from one operational workspace before deadlines slip.",
   },
 ];
 
 const audienceBlocks = [
   {
     title: "Students",
-    body: "Understand what to prepare, access resources, and stay aligned with the placement process.",
+    body: "See the next best step for placements while continuing to learn from any trusted source that works for you.",
   },
   {
     title: "TPOs",
-    body: "Coordinate student readiness, communication, and placement workflows with less manual follow-up.",
+    body: "See readiness, blockers, and interventions in one place so follow-up becomes operational instead of reactive.",
   },
   {
     title: "Colleges",
-    body: "Keep a cleaner placement support system with one platform for preparation, operations, and visibility.",
+    body: "Run a cleaner placement cell with fewer spreadsheets, fewer missed follow-ups, and clearer proof of readiness.",
   },
 ];
 
@@ -70,9 +70,9 @@ export default function HomePage() {
         <Brand href="/" variant="full" descriptor="Placement readiness platform" className="marketing-brand" />
 
         <nav className="marketing-nav" aria-label="Primary">
-          <a href="#about">About</a>
+          <a href="#about">Why it works</a>
           <a href="#who-its-for">Who it&apos;s for</a>
-          <a href="#capabilities">Capabilities</a>
+          <a href="#capabilities">What you can do</a>
         </nav>
 
         <div className="marketing-topbar-actions">
@@ -87,11 +87,11 @@ export default function HomePage() {
 
       <section className="marketing-hero marketing-hero-simple" id="about">
         <div className="marketing-hero-copy">
-          <Badge>For placement cells and college operations</Badge>
-          <h1>Smart Path gives colleges one clean place to guide placement preparation.</h1>
+          <Badge>For placement cells that need operational clarity</Badge>
+          <h1>Help the placement office know who is ready, who is blocked, and what to do next.</h1>
           <p className="marketing-lead">
-            Smart Path brings together student readiness, mock tests, resources, communication, and admin operations
-            so colleges can support placement preparation without relying on scattered tools.
+            Smart Path is built for tier-2 and tier-3 college placement teams that still chase readiness through sheets,
+            WhatsApp, and manual follow-up. Students get a guided next step. TPOs get one intervention workspace. Smart Path does not replace every prep source students already trust. It connects that preparation back to official college workflows, readiness, and follow-up.
           </p>
           <div className="hero-actions marketing-hero-actions">
             <Link to="/login" className="ui-button primary">
@@ -104,11 +104,11 @@ export default function HomePage() {
         </div>
 
         <div className="marketing-hero-simple-panel">
-          <p className="marketing-kicker">What Smart Path does</p>
+          <p className="marketing-kicker">What changes in practice</p>
           <ul className="marketing-list">
-            <li>Helps students prepare with resources, mock tests, and profile tracking</li>
-            <li>Supports TPO teams with communication and day-to-day placement workflows</li>
-            <li>Keeps admin operations manageable from one shared platform</li>
+            <li>TPOs can see blockers, ready-but-inactive students, and drive risk in one place</li>
+            <li>Students can see what to do next for placements instead of getting lost in feature clutter</li>
+            <li>Drive operations, reminders, and readiness proof stay inside one operational flow</li>
           </ul>
         </div>
       </section>
@@ -116,7 +116,7 @@ export default function HomePage() {
       <section className="marketing-section" id="who-its-for">
         <div className="marketing-section-heading">
           <p className="marketing-kicker">Who it&apos;s for</p>
-          <h2>A focused placement support platform for the people using it every day.</h2>
+          <h2>A focused readiness and intervention system for the people running placements every day.</h2>
         </div>
 
         <div className="marketing-platform-grid">
@@ -132,8 +132,8 @@ export default function HomePage() {
 
       <section className="marketing-section" id="capabilities">
         <div className="marketing-section-heading">
-          <p className="marketing-kicker">Core capabilities</p>
-          <h2>Built to explain the product clearly, not to simulate fake live activity.</h2>
+          <p className="marketing-kicker">What the product is optimized for</p>
+          <h2>Built around operational placement workflows, not generic AI claims.</h2>
         </div>
 
         <div className="marketing-columns marketing-columns-three">
@@ -146,10 +146,36 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="marketing-section">
+        <div className="marketing-section-heading">
+          <p className="marketing-kicker">How teams use it</p>
+          <h2>Four workflows matter more than feature count.</h2>
+        </div>
+
+        <div className="marketing-workflow">
+          <article>
+            <h2>1. Find blocked students</h2>
+            <p>Resume gaps, uncertified profiles, weak readiness, and incomplete records surface as queues instead of hidden exceptions.</p>
+          </article>
+          <article>
+            <h2>2. Nudge ready but inactive students</h2>
+            <p>See who qualifies for drives but is not acting, then follow up before the deadline becomes the problem.</p>
+          </article>
+          <article>
+            <h2>3. Run drives cleanly</h2>
+            <p>Create drives, compute eligibility, release results, export resumes, and keep announcements connected to action.</p>
+          </article>
+          <article>
+            <h2>4. Prove readiness to leadership</h2>
+            <p>Use reports and dashboard views to show profile completion, eligibility coverage, intervention queues, and progress over time.</p>
+          </article>
+        </div>
+      </section>
+
       <footer className="marketing-footer">
         <div>
           <Brand href="/" variant="compact" className="marketing-footer-brand" />
-          <p>Placement readiness and operations support for students, TPOs, and colleges.</p>
+          <p>Placement readiness and intervention support for students, TPOs, and colleges.</p>
         </div>
         <div className="marketing-footer-links">
           <Link to="/login">Login</Link>

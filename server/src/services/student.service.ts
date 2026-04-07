@@ -41,6 +41,7 @@ import { getBranchPrepTrack, getCanonicalBranchCode, matchesBranchPrepTrackTag }
 import { AuditLogService } from "./audit-log.service.js";
 import { MockTestService } from "./mock-test.service.js";
 import { CommunicationService } from "./communication.service.js";
+import { ReadinessService } from "./readiness.service.js";
 
 interface LogStudyHoursInput {
   tenantId: string;
@@ -1174,7 +1175,7 @@ async function buildTpoVisibilitySummary(profile: Awaited<ReturnType<typeof Stud
   const studyHours7d = Number(dashboard.studyHoursWeek ?? 0);
   const studyActivity: TpoVisibilityRow = {
     key: "studyHours7d",
-    label: "Study activity this week",
+    label: "Preparation engagement this week",
     value: `${studyHours7d.toFixed(1)} hour${studyHours7d === 1 ? "" : "s"}`,
     status: studyHours7d >= 3 ? "good" : studyHours7d > 0 ? "attention" : "concern",
   };
@@ -1189,7 +1190,7 @@ async function buildTpoVisibilitySummary(profile: Awaited<ReturnType<typeof Stud
   const activeDays7d = Number(dashboard.resourceUsage?.activeDays7d ?? 0);
   const resourceEngagement: TpoVisibilityRow = {
     key: "resourceEngagement",
-    label: "Resource engagement",
+    label: "Platform prep activity",
     value: activeDays7d > 0
       ? `Active this week (${formatCountLabel(activeDays7d, "day")})`
       : "No recent activity",
@@ -1198,7 +1199,7 @@ async function buildTpoVisibilitySummary(profile: Awaited<ReturnType<typeof Stud
 
   return {
     title: "Shared with your TPO",
-    description: "This summary shows the placement-readiness signals your placement office can review in Smart Path.",
+    description: "This summary separates placement readiness from Smart Path engagement signals that help your placement office decide when to follow up.",
     rows: [
       profileStatus,
       profileCertified,
@@ -1220,7 +1221,7 @@ async function buildTpoVisibilitySummary(profile: Awaited<ReturnType<typeof Stud
       resourceEngagement7d: activeDays7d,
       resourceEngagementLabel: resourceEngagement.value,
       tpoVisibilityNote:
-        "Your TPO sees summary progress signals in Smart Path. Individual mock answers and detailed page-by-page browsing are not visible to your TPO.",
+        "Your TPO sees readiness, application, and high-level Smart Path engagement summaries. Individual mock answers and detailed page-by-page browsing are not visible to your TPO.",
     },
     note:
       "Your TPO sees summary progress signals in Smart Path. Individual mock answers and detailed page-by-page browsing are not visible to your TPO.",
@@ -1654,7 +1655,7 @@ function buildStudentActionFeed(params: {
       id: "browse-resources",
       type: "browse_resources",
       title: "Open a recommended resource",
-      explanation: "Start one focused resource so Smart Path can guide you from real study activity, not profile data alone.",
+      explanation: "Use one curated resource if you want a focused starting point. You can still prepare from any source and use Smart Path for official placement workflows.",
       targetPath: "/resources",
       ctaLabel: "Browse resources",
       priority: 70,
@@ -1666,7 +1667,7 @@ function buildStudentActionFeed(params: {
       id: `take-mock-${dashboard.recommendedTest.id}`,
       type: "take_mock",
       title: "Take your next mock test",
-      explanation: `${dashboard.recommendedTest.title} matches your current preparation pattern and helps keep your readiness signal fresh.`,
+      explanation: `${dashboard.recommendedTest.title} matches your current preparation pattern and gives you stronger placement evidence before upcoming drives.`,
       targetPath: `/mock-tests/${encodeURIComponent(dashboard.recommendedTest.id)}`,
       ctaLabel: "Open mock test",
       priority: 80,
@@ -2545,6 +2546,7 @@ export const StudentService = {
       module: "Drives",
     });
 
+    await ReadinessService.calculate(params.tenantId, String(student.id));
     return { driveId: params.driveId, status: "applied" as const, applicationState: "applied" as const };
   },
 
@@ -2587,6 +2589,7 @@ export const StudentService = {
       module: "Drives",
     });
 
+    await ReadinessService.calculate(params.tenantId, String(student.id));
     return { driveId: params.driveId, applicationState: "withdrawn" as const };
   },
 
@@ -2891,6 +2894,7 @@ export const StudentService = {
       note: "Student recertified the profile after the unlock approval.",
     });
 
+    await ReadinessService.calculate(params.tenantId, String(updated.id));
     const finalProfile = await StudentRepository.getStudentProfile(params.tenantId, params.userId);
     await publishStudentDriveReadinessNotifications({
       tenantId: params.tenantId,
@@ -2959,6 +2963,25 @@ export const StudentService = {
         requestedFields: params.requestedFields ?? [],
         supportType: "profile_unlock_request",
       },
+    });
+
+    await StudentActivityService.logEvent({
+      id: `profile-unlock-request:${requestId}`,
+      tenantId: params.tenantId,
+      studentId: String(profile.id),
+      eventType: "profile_unlock_requested",
+      eventSource: "student_profile",
+      entityId: requestId,
+      entityType: "profile_unlock_request",
+      title: "Profile unlock requested",
+      description: "Asked the placement office to reopen profile editing for corrections.",
+      metadata: {
+        requestId,
+        reasonCategory: params.reasonCategory,
+        requestedFields: params.requestedFields ?? [],
+      },
+      impactScore: 10,
+      module: "Profile",
     });
 
     return this.getMyProfileUnlockRequest(params.tenantId, params.userId);
@@ -3044,6 +3067,27 @@ export const StudentService = {
         decision: params.decision,
         responseNote: params.responseNote?.trim() || null,
       },
+    });
+
+    await StudentActivityService.logEvent({
+      id: `profile-unlock-reviewed:${params.requestId}`,
+      tenantId: params.tenantId,
+      studentId: params.studentId,
+      eventType: "profile_unlock_resolved",
+      eventSource: "student_profile",
+      entityId: params.requestId,
+      entityType: "profile_unlock_request",
+      title: params.decision === "approved" ? "Profile unlock approved" : "Profile unlock denied",
+      description: params.decision === "approved"
+        ? "The placement office reopened profile editing for corrections."
+        : "The placement office reviewed the profile unlock request and did not approve it.",
+      metadata: {
+        requestId: params.requestId,
+        decision: params.decision,
+        responseNote: params.responseNote?.trim() || null,
+      },
+      impactScore: params.decision === "approved" ? 8 : 4,
+      module: "Profile",
     });
 
     await CommunicationService.publishSystemAnnouncementToStudents({
@@ -3259,13 +3303,36 @@ export const StudentService = {
       note: "Student updated the profile after the unlock approval.",
     });
 
+    await ReadinessService.calculate(params.tenantId, String(updatedProfile.id));
     const finalProfile = await StudentRepository.getStudentProfile(params.tenantId, params.userId);
+    const finalProfileResponse = buildMyProfileResponse(finalProfile);
+    if (
+      currentProfileResponse.profileCompleteness.pct < 100
+      && finalProfileResponse.profileCompleteness.pct >= 100
+    ) {
+      await StudentActivityService.logEvent({
+        id: `profile-complete:${String(updatedProfile.id)}`,
+        tenantId: params.tenantId,
+        studentId: String(updatedProfile.id),
+        eventType: "profile_completed",
+        eventSource: "student_profile",
+        entityId: String(updatedProfile.id),
+        entityType: "student_profile",
+        title: "Profile completed",
+        description: "Completed all required placement profile fields.",
+        metadata: {
+          profileCompletenessPct: finalProfileResponse.profileCompleteness.pct,
+        },
+        impactScore: 36,
+        module: "Profile",
+      });
+    }
     await publishStudentDriveReadinessNotifications({
       tenantId: params.tenantId,
       userId: params.userId,
       senderId: params.userId,
       beforeProfile: currentProfileResponse,
-      afterProfile: buildMyProfileResponse(finalProfile),
+      afterProfile: finalProfileResponse,
     });
 
     return buildMyProfileResponseWithVisibility(finalProfile);
@@ -3346,6 +3413,24 @@ export const StudentService = {
       module: "Profile",
     });
 
+    await StudentActivityService.logEvent({
+      id: `resume-upload:${String(updatedProfile.id)}:${String(uploadedResume.uploadedAt ?? new Date().toISOString())}`,
+      tenantId: params.tenantId,
+      studentId: String(updatedProfile.id),
+      eventType: "resume_uploaded",
+      eventSource: "student_profile",
+      entityId: String(updatedProfile.id),
+      entityType: "student_profile",
+      title: "Resume uploaded",
+      description: "Uploaded a resume that can be used for drive applications.",
+      metadata: {
+        resumeStorageProvider: uploadedResume.provider,
+        resumeFilename: uploadedResume.filename,
+      },
+      impactScore: 24,
+      module: "Profile",
+    });
+
     await resolveApprovedUnlockRequests({
       tenantId: params.tenantId,
       studentId: String(updatedProfile.id),
@@ -3353,13 +3438,36 @@ export const StudentService = {
       note: "Student uploaded a new resume after the unlock approval.",
     });
 
+    await ReadinessService.calculate(params.tenantId, String(updatedProfile.id));
     const finalProfile = await StudentRepository.getStudentProfile(params.tenantId, params.userId);
+    const finalProfileResponse = buildMyProfileResponse(finalProfile);
+    if (
+      currentProfileResponse.profileCompleteness.pct < 100
+      && finalProfileResponse.profileCompleteness.pct >= 100
+    ) {
+      await StudentActivityService.logEvent({
+        id: `profile-complete:${String(updatedProfile.id)}`,
+        tenantId: params.tenantId,
+        studentId: String(updatedProfile.id),
+        eventType: "profile_completed",
+        eventSource: "student_profile",
+        entityId: String(updatedProfile.id),
+        entityType: "student_profile",
+        title: "Profile completed",
+        description: "Completed all required placement profile fields.",
+        metadata: {
+          profileCompletenessPct: finalProfileResponse.profileCompleteness.pct,
+        },
+        impactScore: 36,
+        module: "Profile",
+      });
+    }
     await publishStudentDriveReadinessNotifications({
       tenantId: params.tenantId,
       userId: params.userId,
       senderId: params.userId,
       beforeProfile: currentProfileResponse,
-      afterProfile: buildMyProfileResponse(finalProfile),
+      afterProfile: finalProfileResponse,
     });
 
     return buildMyProfileResponseWithVisibility(finalProfile);
@@ -3921,7 +4029,9 @@ export const StudentService = {
       batch?: string;
     },
   ) {
-    return StudentRepository.updateStudentAcademicForTpo(tenantId, studentId, updates);
+    const detail = await StudentRepository.updateStudentAcademicForTpo(tenantId, studentId, updates);
+    await ReadinessService.calculate(tenantId, studentId);
+    return this.getStudentByIdForTpo(tenantId, studentId);
   },
 
   async reviewPlacementStatus(params: {
@@ -4084,6 +4194,9 @@ export const StudentService = {
       rows: Array<Record<string, string>>;
     },
   ) {
-    return StudentRepository.upsertStudentsFromCsv(tenantId, payload.rows, payload.mapping);
+    const report = await StudentRepository.upsertStudentsFromCsv(tenantId, payload.rows, payload.mapping);
+    const studentIds = [...new Set([...(report.createdStudentIds ?? []), ...(report.updatedStudentIds ?? [])])];
+    await Promise.all(studentIds.map((studentId) => ReadinessService.calculate(tenantId, studentId)));
+    return report;
   },
 };
