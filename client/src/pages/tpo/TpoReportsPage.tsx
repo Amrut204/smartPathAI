@@ -166,6 +166,7 @@ export default function TpoReportsPage() {
           {previewData ? (
             <>
               <Button onClick={() => downloadReport(activeReport, filters, "xlsx")}>Export Excel</Button>
+              <Button variant="secondary" onClick={() => downloadReport(activeReport, filters, "csv")}>Export CSV</Button>
               <Button variant="secondary" onClick={() => downloadReport(activeReport, filters, "pdf")}>Export PDF</Button>
             </>
           ) : null}
