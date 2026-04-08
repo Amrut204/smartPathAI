@@ -2,6 +2,7 @@
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import { Badge, Button, Card, Input, Select, Table, Toggle } from "../../components/ui";
+import { runAutomationNow } from "../../hooks/use-tpo-automation";
 import { useTpoStudents, type TpoStudentRow } from "../../hooks/use-tpo-students";
 
 type PageMode = "all" | "ops";
@@ -312,6 +313,54 @@ export default function TpoStudentsPage() {
             <Link to="/tpo/students/upload"><Button>Bulk Upload Students</Button></Link>
             <Button variant="secondary" onClick={resetFilters}>Reset Filters</Button>
           </div>
+        </div>
+
+        <div className="tpo-active-filters">
+          <button type="button" className="resources-filter-chip" onClick={() => setSavedView("eligible_but_not_applied")}>Eligible, not applied</button>
+          <button
+            type="button"
+            className="resources-filter-chip"
+            onClick={() => {
+              const next = new URLSearchParams(searchParams);
+              next.set("mode", "ops");
+              next.set("view", "all");
+              next.set("hasResume", "false");
+              next.set("isCertified", "false");
+              next.set("sortBy", "profile_completeness");
+              next.set("sortDir", "asc");
+              setSearchParams(next, { replace: true });
+            }}
+          >
+            Blocked profile
+          </button>
+          <button
+            type="button"
+            className="resources-filter-chip"
+            onClick={() => {
+              const next = new URLSearchParams(searchParams);
+              next.set("mode", "ops");
+              next.set("view", "all");
+              next.set("isPlaced", "false");
+              next.set("needsIntervention", "true");
+              next.set("sortBy", "risk_score");
+              next.set("sortDir", "desc");
+              setSearchParams(next, { replace: true });
+            }}
+          >
+            Unplaced intervention
+          </button>
+          <Button
+            variant="ghost"
+            onClick={async () => {
+              try {
+                await runAutomationNow({ automationType: "blocked_profile_followup" });
+              } catch (actionError) {
+                window.alert(actionError instanceof Error ? actionError.message : "Unable to refresh blocked-profile automation.");
+              }
+            }}
+          >
+            Refresh automation
+          </Button>
         </div>
 
         <div className="tpo-students-mode-strip">

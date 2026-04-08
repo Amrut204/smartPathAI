@@ -54,6 +54,9 @@ export function useCommunicationHistory() {
       bounced: number;
       blocked: number;
     };
+    automationRunId?: string | null;
+    automationType?: string | null;
+    triggerSource?: string | null;
   };
 
   return useSWR<

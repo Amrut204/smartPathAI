@@ -12,6 +12,7 @@ import { AppError } from "../middleware/error-handler.js";
 import { StudentActivityService } from "./student-activity.service.js";
 import { AuditLogService } from "./audit-log.service.js";
 import { CommunicationService } from "./communication.service.js";
+import { TpoAutomationService } from "./tpo-automation.service.js";
 import { getMongoDb } from "../utils/mongodb.js";
 import { buildStudentDeclarationStatus } from "../utils/student-declaration.js";
 import { normalizeStudentProfileData } from "../utils/student-profile.js";
@@ -907,6 +908,15 @@ export const DriveService = {
       message: `Your placement office has published the latest result update for ${driveName}. Open Drives to review your outcome and the next steps.`,
       priority: "important",
       relatedDriveId: input.driveId,
+    });
+
+    await TpoAutomationService.recordResultNotificationRun({
+      tenantId: input.tenantId,
+      driveId: input.driveId,
+      selectedCount: selectedRows.length,
+      rejectedCount: rejectedRows.length,
+      communicationIds: communications.map((item) => item.communicationId),
+      audience: input.audience,
     });
 
     return {

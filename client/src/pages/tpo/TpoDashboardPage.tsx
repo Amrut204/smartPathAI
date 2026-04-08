@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Badge, Button, Card, ConfirmActionModal, Skeleton, Table } from "../../components/ui";
 import { AnimatedNumber } from "../../components/motion/AnimatedNumber";
 import { useTpoControlCenter } from "../../hooks/use-analytics";
+import { runAutomationNow, useTpoAutomationSummary } from "../../hooks/use-tpo-automation";
 import { computeDriveEligibility } from "../../hooks/use-drives";
 import { approveSupportRequest, denySupportRequest, resolveStudentSupportRequest } from "../../hooks/use-support";
 import { reviewStudentUnlockRequest } from "../../hooks/use-tpo-students";
@@ -72,6 +73,7 @@ function TpoDashboardSkeleton() {
 
 export default function TpoDashboardPage() {
   const { data, isLoading, error } = useTpoControlCenter();
+  const automationSummary = useTpoAutomationSummary();
   const { profile } = useAuth();
   const [pendingExport, setPendingExport] = useState<null | {
     title: string;
@@ -428,6 +430,58 @@ export default function TpoDashboardPage() {
           )}
         </div>
       </Card>
+
+      {automationSummary.data ? (
+        <Card className="tpo-list-card">
+          <div className="workspace-panel-header">
+            <div>
+              <p className="workspace-eyebrow">Automation Review</p>
+              <h2>Review-first automations waiting on the placement office</h2>
+            </div>
+            <div className="hero-actions">
+              <Link to="/tpo/communication">
+                <Button variant="secondary">Open Drafts</Button>
+              </Link>
+              <Button
+                variant="secondary"
+                onClick={async () => {
+                  try {
+                    await runAutomationNow({ automationType: "blocked_profile_followup" });
+                  } catch (actionError) {
+                    window.alert(actionError instanceof Error ? actionError.message : "Unable to refresh automation drafts right now.");
+                  }
+                }}
+              >
+                Refresh Drafts
+              </Button>
+            </div>
+          </div>
+          <div className="tpo-blocker-grid">
+            <div><span>Pending drafts</span><strong>{automationSummary.data.pendingDrafts}</strong></div>
+            <div><span>Due today</span><strong>{automationSummary.data.dueToday}</strong></div>
+            <div><span>Eligible not applied</span><strong>{automationSummary.data.counts.eligibleNotApplied}</strong></div>
+            <div><span>Blocked profiles</span><strong>{automationSummary.data.counts.blockedProfiles}</strong></div>
+            <div><span>Unplaced intervention</span><strong>{automationSummary.data.counts.unplacedIntervention}</strong></div>
+          </div>
+          <div className="tpo-action-list">
+            {automationSummary.data.items.length === 0 ? (
+              <p className="muted-text">No review-first automation drafts are waiting right now.</p>
+            ) : (
+              automationSummary.data.items.map((item) => (
+                <div key={item.id} className="tpo-action-row">
+                  <div>
+                    <strong>{item.automationType.replace(/_/g, " ")}</strong>
+                    <p className="muted-text">{item.explanation}</p>
+                  </div>
+                  <Link to={item.targetPath}>
+                    <Button variant="secondary">Open</Button>
+                  </Link>
+                </div>
+              ))
+            )}
+          </div>
+        </Card>
+      ) : null}
 
       <Card className="tpo-list-card">
         <div className="workspace-panel-header">

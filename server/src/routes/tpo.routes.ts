@@ -4,8 +4,10 @@ import { requireAuth } from "../middleware/auth.middleware.js";
 import { asyncHandler } from "../middleware/error-handler.js";
 import { requireFeature } from "../middleware/feature-flag.middleware.js";
 import { authorizeRole } from "../middleware/rbac.middleware.js";
+import { TpoAutomationService } from "../services/tpo-automation.service.js";
 import { TpoControlCenterService } from "../services/tpo-control-center.service.js";
 import { successResponse } from "../utils/response-envelope.js";
+import { automationRunListQuerySchema, automationRunNowSchema } from "../validators/tpo-automation.schema.js";
 
 const router = Router();
 
@@ -23,6 +25,89 @@ function readOptionalString(value: unknown) {
 
 router.use(asyncHandler(requireAuth));
 router.use(authorizeRole("tpo", "admin"));
+
+router.get(
+  "/automation/summary",
+  asyncHandler(async (req, res) => {
+    const data = await TpoAutomationService.getSummary(req.auth!.tenantId);
+    res.json(successResponse(data));
+  }),
+);
+
+router.get(
+  "/automation/runs",
+  asyncHandler(async (req, res) => {
+    const query = automationRunListQuerySchema.parse(req.query);
+    const data = await TpoAutomationService.listRuns(req.auth!.tenantId, query);
+    res.json(successResponse(data));
+  }),
+);
+
+router.get(
+  "/automation/runs/:runId",
+  asyncHandler(async (req, res) => {
+    const data = await TpoAutomationService.getRun(req.auth!.tenantId, String(req.params.runId));
+    res.json(successResponse(data));
+  }),
+);
+
+router.post(
+  "/automation/runs/:runId/release",
+  asyncHandler(async (req, res) => {
+    const data = await TpoAutomationService.releaseRun({
+      tenantId: req.auth!.tenantId,
+      runId: String(req.params.runId),
+      actorUserId: req.auth!.userId,
+    });
+    res.json(successResponse(data));
+  }),
+);
+
+router.post(
+  "/automation/runs/:runId/dismiss",
+  asyncHandler(async (req, res) => {
+    const data = await TpoAutomationService.dismissRun({
+      tenantId: req.auth!.tenantId,
+      runId: String(req.params.runId),
+      actorUserId: req.auth!.userId,
+    });
+    res.json(successResponse(data));
+  }),
+);
+
+router.post(
+  "/automation/run-now",
+  asyncHandler(async (req, res) => {
+    const body = automationRunNowSchema.parse(req.body ?? {});
+    const data = await TpoAutomationService.runNow({
+      tenantId: req.auth!.tenantId,
+      actorUserId: req.auth!.userId,
+      automationType: body.automationType,
+      frequency: body.frequency,
+    });
+    res.json(successResponse(data));
+  }),
+);
+
+router.get(
+  "/reports/scheduled",
+  asyncHandler(async (req, res) => {
+    const data = await TpoAutomationService.listScheduledReportRuns(req.auth!.tenantId);
+    res.json(successResponse(data));
+  }),
+);
+
+router.post(
+  "/reports/scheduled/:runId/regenerate",
+  asyncHandler(async (req, res) => {
+    const data = await TpoAutomationService.regenerateScheduledReportRun({
+      tenantId: req.auth!.tenantId,
+      runId: String(req.params.runId),
+      actorUserId: req.auth!.userId,
+    });
+    res.json(successResponse(data));
+  }),
+);
 
 router.get(
   "/dashboard/mvp",

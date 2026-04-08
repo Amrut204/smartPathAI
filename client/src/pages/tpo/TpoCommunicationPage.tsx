@@ -15,6 +15,7 @@ import {
   useCommunicationTemplates,
 } from "../../hooks/use-communication";
 import { useDrives } from "../../hooks/use-drives";
+import { dismissAutomationRun, releaseAutomationRun, useTpoAutomationRuns } from "../../hooks/use-tpo-automation";
 import { updateTenantEmailSettings, updateTenantPlacementPolicy, useTenantSettings } from "../../hooks/use-tenant";
 
 type CommunicationMode = "email" | "announcements";
@@ -124,6 +125,15 @@ export default function TpoCommunicationPage() {
   const { data: history, isLoading: historyLoading } = useCommunicationHistory();
   const { data: announcementHistory, isLoading: announcementHistoryLoading } = useAnnouncementHistory();
   const { data: tenant } = useTenantSettings();
+  const automationRunId = searchParams.get("automationRunId") ?? "";
+  const automationTypeParam = searchParams.get("automationType") ?? undefined;
+  const triggerSourceParam = searchParams.get("triggerSource") ?? undefined;
+  const { data: automationDrafts } = useTpoAutomationRuns({
+    status: "draft",
+    automationType: automationTypeParam as any,
+    triggerSource: triggerSourceParam as any,
+    limit: 12,
+  });
 
   const [mode, setMode] = useState<CommunicationMode>("email");
   const [preset, setPreset] = useState<MessagePreset>("eligible-reminder");
@@ -392,6 +402,76 @@ export default function TpoCommunicationPage() {
       <div className="tpo-communication-switcher">
         <Tabs tabs={modeTabs} activeId={mode} onChange={(id) => setMode(id as CommunicationMode)} />
       </div>
+
+      {automationDrafts && automationDrafts.length > 0 ? (
+        <section className="tpo-communication-panel">
+          <div className="workspace-panel-header">
+            <div>
+              <p className="workspace-eyebrow">Automation Drafts</p>
+              <h2>Review-first reminders and digests</h2>
+              <p className="muted-text">These runs were generated automatically, but they still need explicit TPO review before anything is sent.</p>
+            </div>
+          </div>
+          <div className="tpo-action-list">
+            {automationDrafts.map((run) => {
+              const preview = run.preview as { title?: string; targetPath?: string };
+              const highlighted = automationRunId === run.id;
+              return (
+                <div key={run.id} className="tpo-action-row" style={highlighted ? { border: "1px solid rgba(37, 99, 235, 0.2)", borderRadius: 16, padding: 12 } : undefined}>
+                  <div>
+                    <div className="tpo-action-row-head">
+                      <strong>{preview.title ?? run.automationType.replace(/_/g, " ")}</strong>
+                      <Badge variant={highlighted ? "success" : "warning"}>{run.status}</Badge>
+                    </div>
+                    <p className="muted-text">{run.explanation}</p>
+                    <p className="muted-text">{run.audienceSummary ?? "Pending automation draft"}</p>
+                  </div>
+                  <div className="hero-actions">
+                    {preview.targetPath ? (
+                      <Button
+                        variant="ghost"
+                        onClick={() => {
+                          const next = new URLSearchParams(searchParams);
+                          next.set("automationRunId", run.id);
+                          setSearchParams(next, { replace: true });
+                        }}
+                      >
+                        Focus
+                      </Button>
+                    ) : null}
+                    <Button
+                      variant="secondary"
+                      onClick={async () => {
+                        try {
+                          await releaseAutomationRun(run.id);
+                          setStatus("Automation draft released successfully.");
+                        } catch (actionError) {
+                          setStatus(actionError instanceof Error ? actionError.message : "Unable to release automation draft");
+                        }
+                      }}
+                    >
+                      Release
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      onClick={async () => {
+                        try {
+                          await dismissAutomationRun(run.id);
+                          setStatus("Automation draft dismissed.");
+                        } catch (actionError) {
+                          setStatus(actionError instanceof Error ? actionError.message : "Unable to dismiss automation draft");
+                        }
+                      }}
+                    >
+                      Dismiss
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      ) : null}
 
       {mode === "email" && showSenderSettings ? (
         <section className="tpo-communication-panel">

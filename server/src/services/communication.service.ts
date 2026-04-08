@@ -1330,6 +1330,9 @@ export const CommunicationService = {
           sent: Number(metadata.sent ?? 0),
           failed: Number(metadata.failed ?? 0),
           delivery,
+          automationRunId: metadata.automation_run_id ? String(metadata.automation_run_id) : null,
+          automationType: metadata.automation_type ? String(metadata.automation_type) : null,
+          triggerSource: metadata.trigger_source ? String(metadata.trigger_source) : null,
           metadata: publicMetadata,
         };
       }),
@@ -1642,6 +1645,26 @@ export const CommunicationService = {
       metadata: {
         filters: payload.filters ?? {},
       },
+    });
+  },
+
+  async sendCustomToRecipients(input: {
+    tenantId: string;
+    senderId: string;
+    subject: string;
+    body: string;
+    recipients: Array<Recipient>;
+    metadata?: Record<string, unknown>;
+    allowUnsubscribe?: boolean;
+  }) {
+    return queueEmailBatch({
+      tenantId: input.tenantId,
+      senderId: input.senderId,
+      recipients: input.recipients,
+      subject: input.subject,
+      body: input.body,
+      metadata: input.metadata,
+      allowUnsubscribe: input.allowUnsubscribe,
     });
   },
 

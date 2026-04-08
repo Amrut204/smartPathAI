@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 
 import { Badge, Button, Input, Select, Table, Tabs } from "../../components/ui";
 import { useTpoControlCenter } from "../../hooks/use-analytics";
+import { extractReportPayload, regenerateScheduledReportRun, useScheduledReportPacks } from "../../hooks/use-tpo-automation";
 import { downloadReport, type ReportFilters, type ReportType, useReportPreview, useReportTemplates } from "../../hooks/use-reports";
 
 type ReportGroup = "Must-have Reports" | "Compliance / Evidence" | "Operational Tracking" | "Exports";
@@ -93,6 +94,7 @@ export default function TpoReportsPage() {
   const previewPanelRef = useRef<HTMLDivElement | null>(null);
   const templates = useReportTemplates();
   const { data: controlCenter } = useTpoControlCenter();
+  const scheduledReports = useScheduledReportPacks();
   const rawReportType = searchParams.get("reportType");
   const rawGroup = searchParams.get("group");
   const requestedReport: ReportType | null = isValidReportType(rawReportType) ? rawReportType : null;
@@ -228,6 +230,54 @@ export default function TpoReportsPage() {
       ) : null}
 
       <section className="tpo-reports-flow">
+        {scheduledReports.data && scheduledReports.data.length > 0 ? (
+          <div className="tpo-reports-block">
+            <div className="workspace-panel-header">
+              <div>
+                <p className="workspace-eyebrow">Scheduled Exports</p>
+                <h2>Weekly and monthly report packs</h2>
+              </div>
+              <p className="muted-text">These packs are generated automatically. Downloads still use the live export path, so files stay fresh at download time.</p>
+            </div>
+            <div className="tpo-reports-chooser">
+              {scheduledReports.data.map((run) => (
+                <div key={run.id} className="tpo-report-row">
+                  <div>
+                    <strong>{String((run.preview as { title?: string }).title ?? run.automationType)}</strong>
+                    <span>{run.explanation}</span>
+                  </div>
+                  <div className="hero-actions">
+                    {run.items.map((item) => {
+                      const report = extractReportPayload(item);
+                      return (
+                        <div key={`${run.id}-${item.id}`} className="hero-actions">
+                          <Button variant="ghost" onClick={() => downloadReport(report.reportType, report.filters, "xlsx")}>
+                            {report.title}
+                          </Button>
+                          <Button variant="secondary" onClick={() => downloadReport(report.reportType, report.filters, "csv")}>CSV</Button>
+                          <Button variant="secondary" onClick={() => downloadReport(report.reportType, report.filters, "pdf")}>PDF</Button>
+                        </div>
+                      );
+                    })}
+                    <Button
+                      variant="ghost"
+                      onClick={async () => {
+                        try {
+                          await regenerateScheduledReportRun(run.id);
+                        } catch (actionError) {
+                          window.alert(actionError instanceof Error ? actionError.message : "Unable to regenerate the scheduled report pack.");
+                        }
+                      }}
+                    >
+                      Regenerate now
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
         {showExportLibrary ? (
           <div ref={exportLibraryRef} className="tpo-reports-block">
             <div className="workspace-panel-header">

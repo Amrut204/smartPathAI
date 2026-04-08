@@ -24,21 +24,19 @@ import analyticsRoutes from "./routes/analytics.routes.js";
 import vaultRoutes from "./routes/vault.routes.js";
 import tenantRoutes from "./routes/tenant.routes.js";
 import resourcesRoutes from "./routes/resources.routes.js";
-import supportRoutes from "./routes/support.routes.js";
 import healthRoutes from "./routes/health.routes.js";
-import careerRoutes from "./routes/career.routes.js";
 import tpoRoutes from "./routes/tpo.routes.js";
 import reportRoutes from "./routes/report.routes.js";
-import demoRoutes from "./routes/demo.routes.js";
 import internalRoutes from "./routes/internal.routes.js";
-import salesRoutes from "./routes/sales.routes.js";
 import riskAssessmentRoutes from "./routes/risk-assessment.routes.js";
-import studyGuideRoutes from "./routes/study-guide.routes.js";
 import { CommunicationService } from "./services/communication.service.js";
 import { initializeCommunicationQueue } from "./services/communication.queue.js";
 import { shutdownCommunicationQueue } from "./services/communication.queue.js";
 import { scheduleDailyRiskCheck } from "./jobs/daily-risk-check.job.js";
 import { scheduleCriticalStudentReminders } from "./jobs/critical-student-reminders.job.js";
+import { scheduleWeeklyTpoDigest } from "./jobs/weekly-tpo-digest.job.js";
+import { scheduleScheduledReportPackJob } from "./jobs/scheduled-report-pack.job.js";
+import { scheduleUnplacedInterventionRefresh } from "./jobs/unplaced-intervention-refresh.job.js";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
@@ -88,7 +86,6 @@ app.use(ensureCsrfCookie);
 app.use(requireCsrf);
 
 app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/demo", demoRoutes);
 app.use("/api/v1/students", studentRoutes);
 app.use("/api/students", studentRoutes);
 app.use("/api/v1/mock-tests", mockTestRoutes);
@@ -99,17 +96,12 @@ app.use("/api/v1/analytics", requireFeature("analytics"), analyticsRoutes);
 app.use("/api/v1/vault", requireFeature("vault"), vaultRoutes);
 app.use("/api/v1/tenants", tenantRoutes);
 app.use("/api/v1/resources", resourcesRoutes);
-app.use("/api/v1/support", supportRoutes);
-app.use("/api/v1/study-guides", requireFeature("studyGuides"), studyGuideRoutes);
-app.use("/api/v1/career", requireFeature("careerLab"), careerRoutes);
 app.use("/api/v1/tpo", tpoRoutes);
 app.use("/api/v1/tpo", riskAssessmentRoutes);
 app.use("/api/v1/reports", reportRoutes);
 app.use("/api/tpo", riskAssessmentRoutes);
 app.use("/api/v1/internal", internalRoutes);
 app.use("/api/internal", internalRoutes);
-app.use("/api/v1/sales", salesRoutes);
-app.use("/api/sales", salesRoutes);
 app.use("/api/v1/health", healthRoutes);
 app.use("/api/health", healthRoutes);
 
@@ -126,6 +118,9 @@ export async function initializeRuntime(): Promise<void> {
     });
     scheduleDailyRiskCheck();
     scheduleCriticalStudentReminders();
+    scheduleWeeklyTpoDigest();
+    scheduleScheduledReportPackJob();
+    scheduleUnplacedInterventionRefresh();
   } catch (error) {
     logger.error("Failed to initialize communication infrastructure", {
       context: {
