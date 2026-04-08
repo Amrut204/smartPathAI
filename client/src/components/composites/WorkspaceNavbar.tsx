@@ -19,14 +19,6 @@ const studentDesktopLinks: NavLink[] = [
   { href: "/profile", label: "Profile" },
 ];
 
-const studentMobileLinks: NavLink[] = [
-  { href: "/dashboard", label: "Home" },
-  { href: "/drives", label: "Drives" },
-  { href: "/mock-tests", label: "Tests" },
-  { href: "/resources", label: "Resources" },
-  { href: "/profile", label: "Profile" },
-];
-
 const tpoDesktopLinks: NavLink[] = [
   { href: "/tpo/dashboard", label: "Dashboard" },
   { href: "/tpo/students", label: "Students" },
@@ -35,20 +27,8 @@ const tpoDesktopLinks: NavLink[] = [
   { href: "/tpo/communication", label: "Communication" },
 ];
 
-const tpoMobileLinks: NavLink[] = [
-  { href: "/tpo/dashboard", label: "Dashboard" },
-  { href: "/tpo/students", label: "Students" },
-  { href: "/tpo/drives", label: "Drives" },
-  { href: "/tpo/reports", label: "Reports" },
-  { href: "/tpo/communication", label: "Comms" },
-];
-
 const adminDesktopLinks: NavLink[] = [
   { href: "/admin/hub", label: "Admin Hub" },
-];
-
-const adminMobileLinks: NavLink[] = [
-  { href: "/admin/hub", label: "Admin" },
 ];
 
 interface WorkspaceNavbarProps {
@@ -76,12 +56,6 @@ export function WorkspaceNavbar({
     if (role === "admin") return adminDesktopLinks;
     return tpoDesktopLinks;
   }, [role]);
-
-  const mobileLinks = role === "student"
-    ? studentMobileLinks
-    : role === "admin"
-      ? adminMobileLinks
-      : tpoMobileLinks;
 
   useEffect(() => {
     setMenuOpen(false);
@@ -149,27 +123,6 @@ export function WorkspaceNavbar({
         <Button variant="ghost" onClick={onLogout}>
           Logout
         </Button>
-      </div>
-
-      <div className="navbar-bottom-nav" aria-label={`${role} mobile navigation`}>
-        {mobileLinks.map((link) => {
-          const isActive = isLinkActive(link.href);
-          return (
-            <Link
-              key={link.href}
-              to={link.href}
-              className={`navbar-bottom-link ${isActive ? "active" : ""}`.trim()}
-            >
-              <span>{link.label}</span>
-              {role === "student" && link.href === "/profile" && typeof studentProfileCompletionPct === "number" ? (
-                <small>{studentProfileCompletionPct >= 100 ? "Ready" : `${studentProfileCompletionPct}%`}</small>
-              ) : null}
-              {role === "student" && link.href === "/dashboard" && studentHasAnnouncementDot ? (
-                <span className="navbar-link-dot navbar-bottom-dot" aria-label="New announcements" />
-              ) : null}
-            </Link>
-          );
-        })}
       </div>
     </nav>
   );

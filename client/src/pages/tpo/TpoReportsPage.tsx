@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { Badge, Button, Input, Select, Table, Tabs } from "../../components/ui";
@@ -87,6 +87,10 @@ function getFilters(params: URLSearchParams): ReportFilters {
 export default function TpoReportsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [showMoreFilters, setShowMoreFilters] = useState(false);
+  const [showExportLibrary, setShowExportLibrary] = useState(false);
+  const exportLibraryRef = useRef<HTMLDivElement | null>(null);
+  const filterPanelRef = useRef<HTMLDivElement | null>(null);
+  const previewPanelRef = useRef<HTMLDivElement | null>(null);
   const templates = useReportTemplates();
   const { data: controlCenter } = useTpoControlCenter();
   const rawReportType = searchParams.get("reportType");
@@ -142,6 +146,18 @@ export default function TpoReportsPage() {
     setSearchParams(next);
   };
 
+  const scrollToSection = (target: "exports" | "filters" | "preview") => {
+    const targetRef = target === "exports"
+      ? exportLibraryRef
+      : target === "filters"
+        ? filterPanelRef
+        : previewPanelRef;
+
+    window.setTimeout(() => {
+      targetRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  };
+
   const openEvidencePack = () => {
     setSearchParams(new URLSearchParams({
       group: "Compliance / Evidence",
@@ -149,6 +165,7 @@ export default function TpoReportsPage() {
       preset: "academic_year",
       academicYear: filters.academicYear ?? "2025-2026",
     }));
+    scrollToSection("preview");
   };
 
   return (
@@ -161,14 +178,30 @@ export default function TpoReportsPage() {
             Choose one report, adjust the period, then export a clean review-ready version.
           </p>
         </div>
-        <div className="hero-actions">
-          <Button variant="secondary" onClick={openEvidencePack}>Open NAAC Evidence Pack</Button>
+        <div className="tpo-reports-header-actions">
+          <div className="tpo-reports-header-primary-actions">
+            <Button variant="secondary" onClick={openEvidencePack}>Open NAAC Evidence Pack</Button>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setShowExportLibrary((current) => {
+                  const next = !current;
+                  if (next) {
+                    scrollToSection("exports");
+                  }
+                  return next;
+                });
+              }}
+            >
+              {showExportLibrary ? "Hide All Report Downloads" : "Show All Report Downloads"}
+            </Button>
+          </div>
           {previewData ? (
-            <>
+            <div className="tpo-reports-header-export-actions">
               <Button onClick={() => downloadReport(activeReport, filters, "xlsx")}>Export Excel</Button>
               <Button variant="secondary" onClick={() => downloadReport(activeReport, filters, "csv")}>Export CSV</Button>
               <Button variant="secondary" onClick={() => downloadReport(activeReport, filters, "pdf")}>Export PDF</Button>
-            </>
+            </div>
           ) : null}
         </div>
       </header>
@@ -195,6 +228,47 @@ export default function TpoReportsPage() {
       ) : null}
 
       <section className="tpo-reports-flow">
+        {showExportLibrary ? (
+          <div ref={exportLibraryRef} className="tpo-reports-block">
+            <div className="workspace-panel-header">
+              <div>
+                <p className="workspace-eyebrow">Export Library</p>
+                <h2>Download any report directly</h2>
+              </div>
+              <p className="muted-text">
+                Use this list when you want to jump straight to a specific report. The download buttons use the current filters shown on this page.
+              </p>
+            </div>
+            <div className="tpo-reports-chooser">
+              {(templates.data ?? []).map((template) => (
+                <div key={template.type} className="tpo-report-row">
+                  <div>
+                    <strong>{template.title}</strong>
+                    <span>{template.description}</span>
+                  </div>
+                  <div className="hero-actions">
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        const next = new URLSearchParams(searchParams);
+                        next.set("group", template.group);
+                        next.set("reportType", template.type);
+                        setSearchParams(next);
+                        scrollToSection("preview");
+                      }}
+                    >
+                      View Report
+                    </Button>
+                    <Button variant="secondary" onClick={() => downloadReport(template.type, filters, "xlsx")}>Excel</Button>
+                    <Button variant="secondary" onClick={() => downloadReport(template.type, filters, "csv")}>CSV</Button>
+                    <Button variant="secondary" onClick={() => downloadReport(template.type, filters, "pdf")}>PDF</Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
         <div className="tpo-reports-block">
           <Tabs
             tabs={groupTabs}
@@ -205,6 +279,7 @@ export default function TpoReportsPage() {
               next.set("group", nextGroup);
               next.set("reportType", defaultReportByGroup[nextGroup]);
               setSearchParams(next);
+              scrollToSection("preview");
             }}
           />
         </div>
@@ -218,7 +293,10 @@ export default function TpoReportsPage() {
                   key={template.type}
                   type="button"
                   className={`tpo-report-row ${isActive ? "active" : ""}`.trim()}
-                  onClick={() => updateParam("reportType", template.type)}
+                  onClick={() => {
+                    updateParam("reportType", template.type);
+                    scrollToSection("preview");
+                  }}
                 >
                   <div>
                     <strong>{template.title}</strong>
@@ -247,7 +325,7 @@ export default function TpoReportsPage() {
           </div>
         ) : null}
 
-        <div className="tpo-reports-block">
+        <div ref={filterPanelRef} className="tpo-reports-block">
           <div className="tpo-reports-filter-bar">
             <label>
               Period
@@ -271,12 +349,46 @@ export default function TpoReportsPage() {
               Company
               <Input value={filters.company ?? ""} onChange={(event) => updateParam("company", event.target.value)} placeholder="All" />
             </label>
-            <div className="hero-actions">
-              <Button variant="ghost" onClick={() => setShowMoreFilters((current) => !current)}>
-                {showMoreFilters ? "Less Filters" : "More Filters"}
-              </Button>
-              <Button variant="ghost" onClick={() => setSearchParams(new URLSearchParams({ group, reportType: activeReport, preset: "placement_season", academicYear: "2025-2026" }))}>
-                Reset
+            <div className="tpo-reports-filter-actions">
+              <div className="hero-actions tpo-reports-filter-actions-row">
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    setShowMoreFilters((current) => {
+                      const next = !current;
+                      if (next) {
+                        scrollToSection("filters");
+                      }
+                      return next;
+                    });
+                  }}
+                >
+                  {showMoreFilters ? "Less Filters" : "More Filters"}
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    setSearchParams(new URLSearchParams({ group, reportType: activeReport, preset: "placement_season", academicYear: "2025-2026" }));
+                    scrollToSection("preview");
+                  }}
+                >
+                  Reset
+                </Button>
+              </div>
+              <Button
+                variant="secondary"
+                className="tpo-reports-download-toggle"
+                onClick={() => {
+                  setShowExportLibrary((current) => {
+                    const next = !current;
+                    if (next) {
+                      scrollToSection("exports");
+                    }
+                    return next;
+                  });
+                }}
+              >
+                {showExportLibrary ? "Hide All Report Downloads" : "Show All Report Downloads"}
               </Button>
             </div>
           </div>
@@ -327,7 +439,7 @@ export default function TpoReportsPage() {
           ) : null}
         </div>
 
-        <div className="tpo-reports-block">
+        <div ref={previewPanelRef} className="tpo-reports-block">
           {isPreviewPending ? (
             <p className="muted-text">Loading report preview...</p>
           ) : preview.error || !previewData ? (
