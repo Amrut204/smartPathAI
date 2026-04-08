@@ -1,4 +1,4 @@
-import { PDFDocument, StandardFonts } from "pdf-lib";
+import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import * as XLSX from "xlsx";
 
 import { AppError } from "../middleware/error-handler.js";
@@ -734,18 +734,97 @@ async function buildPdf(report: PreparedReport) {
   const pageHeight = 792;
   const margin = 44;
   const lineHeight = 16;
+  const contentWidth = pageWidth - (margin * 2);
   let page = pdf.addPage([pageWidth, pageHeight]);
   let y = pageHeight - margin;
 
-  const drawLine = (text: string, opts?: { bold?: boolean; size?: number }) => {
-    const usedFont = opts?.bold ? bold : font;
-    const size = opts?.size ?? 11;
-    if (y < margin + lineHeight) {
+  const ensureSpace = (requiredHeight: number) => {
+    if (y < margin + requiredHeight) {
       page = pdf.addPage([pageWidth, pageHeight]);
       y = pageHeight - margin;
     }
-    page.drawText(text, { x: margin, y, size, font: usedFont });
-    y -= lineHeight;
+  };
+
+  const wrapText = (text: string, usedFont: typeof font, size: number, maxWidth: number) => {
+    const normalized = String(text ?? "").replace(/\s+/g, " ").trim();
+    if (!normalized) return [""];
+
+    const words = normalized.split(" ");
+    const lines: string[] = [];
+    let currentLine = "";
+
+    words.forEach((word) => {
+      const candidate = currentLine ? `${currentLine} ${word}` : word;
+      if (usedFont.widthOfTextAtSize(candidate, size) <= maxWidth) {
+        currentLine = candidate;
+        return;
+      }
+
+      if (currentLine) {
+        lines.push(currentLine);
+        currentLine = "";
+      }
+
+      if (usedFont.widthOfTextAtSize(word, size) <= maxWidth) {
+        currentLine = word;
+        return;
+      }
+
+      let segment = "";
+      Array.from(word).forEach((char) => {
+        const segmentCandidate = `${segment}${char}`;
+        if (usedFont.widthOfTextAtSize(segmentCandidate, size) <= maxWidth) {
+          segment = segmentCandidate;
+          return;
+        }
+        if (segment) {
+          lines.push(segment);
+        }
+        segment = char;
+      });
+      currentLine = segment;
+    });
+
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+
+    return lines.length > 0 ? lines : [""];
+  };
+
+  const drawWrappedLine = (
+    text: string,
+    opts?: { bold?: boolean; size?: number; indent?: number; maxWidth?: number; gapAfter?: number },
+  ) => {
+    const usedFont = opts?.bold ? bold : font;
+    const size = opts?.size ?? 11;
+    const indent = opts?.indent ?? 0;
+    const maxWidth = opts?.maxWidth ?? (contentWidth - indent);
+    const lines = wrapText(text, usedFont, size, maxWidth);
+    const effectiveLineHeight = Math.max(lineHeight, size + 4);
+    ensureSpace(lines.length * effectiveLineHeight + (opts?.gapAfter ?? 0));
+    lines.forEach((line) => {
+      page.drawText(line, { x: margin + indent, y, size, font: usedFont });
+      y -= effectiveLineHeight;
+    });
+    if (opts?.gapAfter) {
+      y -= opts.gapAfter;
+    }
+  };
+
+  const drawLine = (text: string, opts?: { bold?: boolean; size?: number }) => {
+    drawWrappedLine(text, opts);
+  };
+
+  const drawDivider = () => {
+    ensureSpace(10);
+    page.drawLine({
+      start: { x: margin, y: y - 2 },
+      end: { x: pageWidth - margin, y: y - 2 },
+      thickness: 0.8,
+      color: rgb(0.84, 0.87, 0.92),
+    });
+    y -= 10;
   };
 
   drawLine(report.title, { bold: true, size: 16 });
@@ -765,7 +844,15 @@ async function buildPdf(report: PreparedReport) {
   drawLine("");
   drawLine("Preview rows", { bold: true, size: 13 });
   report.rows.slice(0, 24).forEach((row, index) => {
-    drawLine(`${index + 1}. ${report.columns.map((column) => `${column}: ${String(row[column] ?? "")}`).join(" | ")}`);
+    const rowEntries = report.columns
+      .map((column) => ({ label: column.replace(/_/g, " "), value: String(row[column] ?? "-").trim() || "-" }))
+      .filter((entry) => entry.value !== "-");
+
+    drawWrappedLine(`${index + 1}. ${rowEntries[0]?.value ?? "Record"}`, { bold: true, size: 12, gapAfter: 2 });
+    rowEntries.forEach((entry) => {
+      drawWrappedLine(`${entry.label}: ${entry.value}`, { indent: 12, maxWidth: contentWidth - 12 });
+    });
+    drawDivider();
   });
 
   return Buffer.from(await pdf.save());
