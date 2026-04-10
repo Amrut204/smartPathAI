@@ -1,7 +1,11 @@
 ﻿import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
+import { TpoActionMenu } from "../../components/composites/TpoActionMenu";
+import { TpoWorkspaceHeader } from "../../components/composites/TpoWorkspaceHeader";
+import { useAuth } from "../../components/providers/AuthProvider";
 import { Badge, Button, Card, Input, Select, Table, Toggle } from "../../components/ui";
+import { getTpoGreeting } from "../../config/tpo-workspace";
 import { runAutomationNow } from "../../hooks/use-tpo-automation";
 import { useTpoStudents, type TpoStudentRow } from "../../hooks/use-tpo-students";
 
@@ -85,6 +89,13 @@ function applySavedViewPreset(next: URLSearchParams, viewId: SavedViewId) {
   }
 }
 
+function buildSavedViewBaseline(viewId: SavedViewId) {
+  const next = new URLSearchParams();
+  next.set("mode", viewId === "all" ? "all" : "ops");
+  applySavedViewPreset(next, viewId);
+  return next;
+}
+
 function matchesSavedView(student: TpoStudentRow, viewId: SavedViewId) {
   if (viewId === "ready_but_inactive") return !student.placementStatus.isPlaced && student.hasResumeReady && student.isProfileCertified && student.profileCompletenessPct >= 100 && !student.isActive7d;
   if (viewId === "eligible_but_not_applied") return !student.placementStatus.isPlaced && student.eligibleUpcomingDriveCount > 0 && !student.appliedRecently;
@@ -121,13 +132,6 @@ function buildBulkReminderPreset(viewId: SavedViewId) {
   return "profile-completion";
 }
 
-function toggleBooleanFilter(
-  current: boolean | undefined,
-  desired: boolean,
-): boolean | null {
-  return current === desired ? null : desired;
-}
-
 function downloadCsv(filename: string, rows: string[][]) {
   const escapeValue = (value: string) => {
     const normalized = String(value ?? "");
@@ -145,8 +149,10 @@ function downloadCsv(filename: string, rows: string[][]) {
   URL.revokeObjectURL(url);
 }
 export default function TpoStudentsPage() {
+  const { profile } = useAuth();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [expandedStudentId, setExpandedStudentId] = useState<string | null>(null);
@@ -160,12 +166,27 @@ export default function TpoStudentsPage() {
     }
   }, [searchParams, setSearchParams]);
 
-  useEffect(() => {
-    if (ADVANCED_FILTER_KEYS.some((key) => searchParams.has(key))) setAdvancedOpen(true);
-  }, [searchParams]);
-
   const mode = (getStringParam(searchParams, "mode") || "ops") as PageMode;
   const currentView = (getStringParam(searchParams, "view") || (mode === "ops" ? "ready_but_inactive" : "all")) as SavedViewId;
+  const baselineParams = useMemo(() => buildSavedViewBaseline(currentView), [currentView]);
+  const hasCustomFilters = useMemo(
+    () => FILTER_KEYS.some((key) => key !== "mode" && key !== "view" && (searchParams.get(key) ?? null) !== (baselineParams.get(key) ?? null)),
+    [baselineParams, searchParams],
+  );
+  const hasCustomAdvancedFilters = useMemo(
+    () => ADVANCED_FILTER_KEYS.some((key) => (searchParams.get(key) ?? null) !== (baselineParams.get(key) ?? null)),
+    [baselineParams, searchParams],
+  );
+
+  useEffect(() => {
+    if (hasCustomFilters) {
+      setFiltersOpen(true);
+    }
+    if (hasCustomAdvancedFilters) {
+      setFiltersOpen(true);
+      setAdvancedOpen(true);
+    }
+  }, [hasCustomAdvancedFilters, hasCustomFilters]);
 
   const query = useMemo(() => ({
     q: getStringParam(searchParams, "q") || undefined,
@@ -234,42 +255,57 @@ export default function TpoStudentsPage() {
     next.set("mode", "ops");
     applySavedViewPreset(next, "ready_but_inactive");
     setSearchParams(next, { replace: true });
+    setFiltersOpen(false);
+    setAdvancedOpen(false);
   };
 
   const activeFilterChips = useMemo(() => {
     const chips: Array<{ key: string; label: string }> = [];
-    if (query.q) chips.push({ key: "q", label: `Search: ${query.q}` });
-    if (query.batch) chips.push({ key: "batch", label: `Batch: ${query.batch}` });
-    if (query.branch) chips.push({ key: "branch", label: `Branch: ${query.branch}` });
-    if (query.prn) chips.push({ key: "prn", label: `PRN: ${query.prn}` });
-    if (query.cgpaMin !== undefined) chips.push({ key: "cgpaMin", label: `CGPA >= ${query.cgpaMin}` });
-    if (query.cgpaMax !== undefined) chips.push({ key: "cgpaMax", label: `CGPA <= ${query.cgpaMax}` });
-    if (query.readinessMin !== undefined) chips.push({ key: "readinessMin", label: `Readiness >= ${query.readinessMin}` });
-    if (query.readinessMax !== undefined) chips.push({ key: "readinessMax", label: `Readiness <= ${query.readinessMax}` });
-    if (query.attendanceMin !== undefined) chips.push({ key: "attendanceMin", label: `Attendance >= ${query.attendanceMin}` });
-    if (query.attendanceMax !== undefined) chips.push({ key: "attendanceMax", label: `Attendance <= ${query.attendanceMax}` });
-    if (query.backlogsMin !== undefined) chips.push({ key: "backlogsMin", label: `Backlogs >= ${query.backlogsMin}` });
-    if (query.backlogsMax !== undefined) chips.push({ key: "backlogsMax", label: `Backlogs <= ${query.backlogsMax}` });
-    if (query.profileCompletenessMin !== undefined) chips.push({ key: "profileCompletenessMin", label: `Profile >= ${query.profileCompletenessMin}%` });
-    if (query.profileCompletenessMax !== undefined) chips.push({ key: "profileCompletenessMax", label: `Profile <= ${query.profileCompletenessMax}%` });
-    if (query.hasResume !== undefined) chips.push({ key: "hasResume", label: query.hasResume ? "Resume ready" : "Resume missing" });
-    if (query.isPlaced !== undefined) chips.push({ key: "isPlaced", label: query.isPlaced ? "Placed" : "Unplaced" });
-    if (query.isCertified !== undefined) chips.push({ key: "isCertified", label: query.isCertified ? "Certified" : "Uncertified" });
-    if (query.isActive7d !== undefined) chips.push({ key: "isActive7d", label: query.isActive7d ? "Active in 7d" : "Inactive in 7d" });
-    if (query.eligibleForUpcomingDrive !== undefined) chips.push({ key: "eligibleForUpcomingDrive", label: query.eligibleForUpcomingDrive ? "Eligible upcoming drive" : "No eligible upcoming drive" });
-    if (query.appliedRecently !== undefined) chips.push({ key: "appliedRecently", label: query.appliedRecently ? "Applied recently" : "Not applied recently" });
-    if (query.needsIntervention !== undefined) chips.push({ key: "needsIntervention", label: query.needsIntervention ? "Needs intervention" : "No intervention" });
-    if (query.targetRole) chips.push({ key: "targetRole", label: `Target role: ${query.targetRole}` });
-    if (query.preferredLocation) chips.push({ key: "preferredLocation", label: `Preferred location: ${query.preferredLocation}` });
-    if (query.willingToRelocate !== undefined) chips.push({ key: "willingToRelocate", label: query.willingToRelocate ? "Willing to relocate" : "Not willing to relocate" });
+    const isCustom = (key: string) => (searchParams.get(key) ?? null) !== (baselineParams.get(key) ?? null);
+    if (query.q && isCustom("q")) chips.push({ key: "q", label: `Search: ${query.q}` });
+    if (query.batch && isCustom("batch")) chips.push({ key: "batch", label: `Batch: ${query.batch}` });
+    if (query.branch && isCustom("branch")) chips.push({ key: "branch", label: `Branch: ${query.branch}` });
+    if (query.prn && isCustom("prn")) chips.push({ key: "prn", label: `PRN: ${query.prn}` });
+    if (query.cgpaMin !== undefined && isCustom("cgpaMin")) chips.push({ key: "cgpaMin", label: `CGPA >= ${query.cgpaMin}` });
+    if (query.cgpaMax !== undefined && isCustom("cgpaMax")) chips.push({ key: "cgpaMax", label: `CGPA <= ${query.cgpaMax}` });
+    if (query.readinessMin !== undefined && isCustom("readinessMin")) chips.push({ key: "readinessMin", label: `Readiness >= ${query.readinessMin}` });
+    if (query.readinessMax !== undefined && isCustom("readinessMax")) chips.push({ key: "readinessMax", label: `Readiness <= ${query.readinessMax}` });
+    if (query.attendanceMin !== undefined && isCustom("attendanceMin")) chips.push({ key: "attendanceMin", label: `Attendance >= ${query.attendanceMin}` });
+    if (query.attendanceMax !== undefined && isCustom("attendanceMax")) chips.push({ key: "attendanceMax", label: `Attendance <= ${query.attendanceMax}` });
+    if (query.backlogsMin !== undefined && isCustom("backlogsMin")) chips.push({ key: "backlogsMin", label: `Backlogs >= ${query.backlogsMin}` });
+    if (query.backlogsMax !== undefined && isCustom("backlogsMax")) chips.push({ key: "backlogsMax", label: `Backlogs <= ${query.backlogsMax}` });
+    if (query.profileCompletenessMin !== undefined && isCustom("profileCompletenessMin")) chips.push({ key: "profileCompletenessMin", label: `Profile >= ${query.profileCompletenessMin}%` });
+    if (query.profileCompletenessMax !== undefined && isCustom("profileCompletenessMax")) chips.push({ key: "profileCompletenessMax", label: `Profile <= ${query.profileCompletenessMax}%` });
+    if (query.hasResume !== undefined && isCustom("hasResume")) chips.push({ key: "hasResume", label: query.hasResume ? "Resume ready" : "Resume missing" });
+    if (query.isPlaced !== undefined && isCustom("isPlaced")) chips.push({ key: "isPlaced", label: query.isPlaced ? "Placed" : "Unplaced" });
+    if (query.isCertified !== undefined && isCustom("isCertified")) chips.push({ key: "isCertified", label: query.isCertified ? "Certified" : "Uncertified" });
+    if (query.isActive7d !== undefined && isCustom("isActive7d")) chips.push({ key: "isActive7d", label: query.isActive7d ? "Active in 7d" : "Inactive in 7d" });
+    if (query.eligibleForUpcomingDrive !== undefined && isCustom("eligibleForUpcomingDrive")) chips.push({ key: "eligibleForUpcomingDrive", label: query.eligibleForUpcomingDrive ? "Eligible upcoming drive" : "No eligible upcoming drive" });
+    if (query.appliedRecently !== undefined && isCustom("appliedRecently")) chips.push({ key: "appliedRecently", label: query.appliedRecently ? "Applied recently" : "Not applied recently" });
+    if (query.needsIntervention !== undefined && isCustom("needsIntervention")) chips.push({ key: "needsIntervention", label: query.needsIntervention ? "Needs intervention" : "No intervention" });
+    if (query.targetRole && isCustom("targetRole")) chips.push({ key: "targetRole", label: `Target role: ${query.targetRole}` });
+    if (query.preferredLocation && isCustom("preferredLocation")) chips.push({ key: "preferredLocation", label: `Preferred location: ${query.preferredLocation}` });
+    if (query.willingToRelocate !== undefined && isCustom("willingToRelocate")) chips.push({ key: "willingToRelocate", label: query.willingToRelocate ? "Willing to relocate" : "Not willing to relocate" });
     return chips;
-  }, [query]);
+  }, [baselineParams, query, searchParams]);
 
   const items = useMemo(() => (data?.items ?? []).filter((student) => matchesSavedView(student, currentView)), [currentView, data?.items]);
   const selectedStudents = useMemo(() => items.filter((student) => selectedIds.includes(student.id)), [items, selectedIds]);
   const selectedCount = selectedStudents.length;
   const currentViewMeta = getSavedViewMeta(currentView);
   const hasFilters = activeFilterChips.length > 0;
+  const automationQueueSummary = useMemo(() => {
+    if (currentView === "eligible_but_not_applied") {
+      return "Showing students who are eligible for a live drive but have not applied yet.";
+    }
+    if (currentView === "missing_resume" || currentView === "uncertified" || currentView === "incomplete_profile") {
+      return "Showing students blocked by missing resume, certification, or profile completion.";
+    }
+    if (query.needsIntervention === true || currentView === "ready_but_inactive" || currentView === "needs_mock_push" || currentView === "academically_blocked") {
+      return "Showing students who need intervention before they are ready to act on placement opportunities.";
+    }
+    return "Use these filtered queues to act on students needing intervention.";
+  }, [currentView, query.needsIntervention]);
   const expandedStudent = useMemo(
     () => items.find((student) => student.id === expandedStudentId) ?? null,
     [expandedStudentId, items],
@@ -301,246 +337,211 @@ export default function TpoStudentsPage() {
     inactive: items.filter((student) => !student.isActive7d).length,
   }), [items]);
   return (
-    <section className="dashboard-grid tpo-students-page tpo-students-ops-shell">
-      <Card className="tpo-form-card tpo-students-ops-hero">
-        <div className="tpo-students-header">
-          <div>
-            <p className="workspace-eyebrow">Student Operations</p>
-            <h1>Student Intervention Workspace</h1>
-            <p className="muted-text">Triage who is ready, who is blocked, and who needs a push right now without opening every profile one by one.</p>
-          </div>
-          <div className="hero-actions">
-            <Link to="/tpo/students/upload"><Button>Bulk Upload Students</Button></Link>
-            <Button variant="secondary" onClick={resetFilters}>Reset Filters</Button>
-          </div>
-        </div>
-
-        <div className="tpo-active-filters">
-          <button type="button" className="resources-filter-chip" onClick={() => setSavedView("eligible_but_not_applied")}>Eligible, not applied</button>
-          <button
-            type="button"
-            className="resources-filter-chip"
-            onClick={() => {
-              const next = new URLSearchParams(searchParams);
-              next.set("mode", "ops");
-              next.set("view", "all");
-              next.set("hasResume", "false");
-              next.set("isCertified", "false");
-              next.set("sortBy", "profile_completeness");
-              next.set("sortDir", "asc");
-              setSearchParams(next, { replace: true });
-            }}
-          >
-            Blocked profile
-          </button>
-          <button
-            type="button"
-            className="resources-filter-chip"
-            onClick={() => {
-              const next = new URLSearchParams(searchParams);
-              next.set("mode", "ops");
-              next.set("view", "all");
-              next.set("isPlaced", "false");
-              next.set("needsIntervention", "true");
-              next.set("sortBy", "risk_score");
-              next.set("sortDir", "desc");
-              setSearchParams(next, { replace: true });
-            }}
-          >
-            Unplaced intervention
-          </button>
+    <section className="tpo-page-shell tpo-students-page tpo-students-ops-shell">
+      <TpoWorkspaceHeader
+        eyebrow="Students"
+        greeting={getTpoGreeting(profile?.full_name ?? "Placement team")}
+        title="Work one student queue at a time."
+        description="Use filtered queues to act on student cohorts. The selected view below should be the only main student workspace on screen."
+        primaryAction={(
+          <Link to="/tpo/students/upload"><Button>Bulk Upload Students</Button></Link>
+        )}
+        secondaryAction={(
           <Button
-            variant="ghost"
-            onClick={async () => {
-              try {
-                await runAutomationNow({ automationType: "blocked_profile_followup" });
-              } catch (actionError) {
-                window.alert(actionError instanceof Error ? actionError.message : "Unable to refresh blocked-profile automation.");
+            variant="secondary"
+            onClick={() => {
+              if (filtersOpen) {
+                setFiltersOpen(false);
+                setAdvancedOpen(false);
+              } else {
+                setFiltersOpen(true);
               }
             }}
           >
-            Refresh automation
+            Filters
           </Button>
-        </div>
+        )}
+        actionMenu={(
+          <TpoActionMenu
+            items={[
+              {
+                label: "Show all students",
+                onSelect: () => {
+                  const next = new URLSearchParams();
+                  next.set("mode", "all");
+                  applySavedViewPreset(next, "all");
+                  setSearchParams(next, { replace: true });
+                  setFiltersOpen(false);
+                  setAdvancedOpen(false);
+                },
+              },
+              {
+                label: "Refresh queue",
+                onSelect: async () => {
+                  try {
+                    await runAutomationNow({ automationType: "unplaced_intervention_refresh" });
+                  } catch (runError) {
+                    window.alert(runError instanceof Error ? runError.message : "Unable to refresh the automation queue.");
+                  }
+                },
+              },
+              { label: "Open upload wizard", href: "/tpo/students/upload" },
+            ]}
+          />
+        )}
+      />
 
-        <div className="tpo-students-mode-strip">
-          <div className="tpo-mode-toggle-group">
-            <Button variant={mode === "ops" ? "primary" : "secondary"} onClick={() => setMode("ops")}>Intervention mode</Button>
-            <Button variant={mode === "all" ? "primary" : "secondary"} onClick={() => setMode("all")}>All students</Button>
-          </div>
+      <Card className="tpo-form-card tpo-students-ops-hero">
+        <div className="tpo-students-control-head">
           <div className="tpo-students-hero-summary">
+            <p className="workspace-eyebrow">Student queue</p>
             <strong>{currentViewMeta.label}</strong>
-            <span>{currentViewMeta.description}</span>
+            <span>{automationQueueSummary}</span>
+          </div>
+          <div className="tpo-students-count-chip">
+            <strong>{items.length}</strong>
+            <span>students in this queue</span>
           </div>
         </div>
 
-        <div className="tpo-students-kpi-strip">
-          <div className="tpo-students-kpi-pill"><strong>{quickMetrics.readyNow}</strong><span>ready now</span></div>
-          <div className="tpo-students-kpi-pill"><strong>{quickMetrics.intervention}</strong><span>need intervention</span></div>
-          <div className="tpo-students-kpi-pill"><strong>{quickMetrics.eligibleUpcoming}</strong><span>eligible upcoming</span></div>
-          <div className="tpo-students-kpi-pill"><strong>{quickMetrics.inactive}</strong><span>inactive 7d</span></div>
+        <div className="tpo-students-stat-line">
+          <span><strong>{quickMetrics.readyNow}</strong> ready now</span>
+          <span><strong>{quickMetrics.intervention}</strong> need intervention</span>
+          <span><strong>{quickMetrics.eligibleUpcoming}</strong> eligible upcoming</span>
+          <span><strong>{quickMetrics.inactive}</strong> inactive in 7d</span>
         </div>
 
-        <div className="tpo-students-saved-views">
-          {SAVED_VIEWS.map((view) => (
-            <button key={view.id} type="button" className={`tpo-saved-view-pill ${currentView === view.id ? "active" : ""}`} onClick={() => setSavedView(view.id)}>
-              <strong>{view.label}</strong>
-              <span>{view.description}</span>
-            </button>
-          ))}
-        </div>
-
-        <div className="tpo-students-filter-groups">
-          <div className="tpo-filter-group">
-            <span>Readiness</span>
-            <div className="resources-filter-row">
-              <button type="button" className={`resources-filter-chip ${query.readinessMin === 70 ? "active" : ""}`} onClick={() => updateParams({ readinessMin: query.readinessMin === 70 ? null : 70, mode: "ops" })}>70%+ readiness</button>
-              <button type="button" className={`resources-filter-chip ${query.profileCompletenessMin === 100 ? "active" : ""}`} onClick={() => updateParams({ profileCompletenessMin: query.profileCompletenessMin === 100 ? null : 100 })}>Profile complete</button>
-              <button type="button" className={`resources-filter-chip ${query.isCertified === true ? "active" : ""}`} onClick={() => updateParams({ isCertified: toggleBooleanFilter(query.isCertified, true) })}>Certified</button>
+        {filtersOpen ? (
+          <>
+            <div className="tpo-students-advanced-head">
+              <div>
+                <h2>Filters</h2>
+                <p className="muted-text">Start with the main queue. Open more filters only when you need tighter targeting.</p>
+              </div>
+              <div className="hero-actions">
+                <Button variant="ghost" onClick={resetFilters}>Reset Filters</Button>
+                <Button variant="ghost" onClick={() => setAdvancedOpen((current) => !current)}>More Filters</Button>
+              </div>
             </div>
-          </div>
-          <div className="tpo-filter-group">
-            <span>Engagement</span>
-            <div className="resources-filter-row">
-              <button type="button" className={`resources-filter-chip ${query.isActive7d === false ? "active" : ""}`} onClick={() => updateParams({ isActive7d: toggleBooleanFilter(query.isActive7d, false) })}>Inactive 7d</button>
-              <button type="button" className={`resources-filter-chip ${query.needsIntervention === true ? "active" : ""}`} onClick={() => updateParams({ needsIntervention: toggleBooleanFilter(query.needsIntervention, true) })}>Needs intervention</button>
-              <button type="button" className={`resources-filter-chip ${query.appliedRecently === false ? "active" : ""}`} onClick={() => updateParams({ appliedRecently: toggleBooleanFilter(query.appliedRecently, false) })}>No recent apply</button>
-            </div>
-          </div>
-          <div className="tpo-filter-group">
-            <span>Eligibility</span>
-            <div className="resources-filter-row">
-              <button type="button" className={`resources-filter-chip ${query.eligibleForUpcomingDrive === true ? "active" : ""}`} onClick={() => updateParams({ eligibleForUpcomingDrive: toggleBooleanFilter(query.eligibleForUpcomingDrive, true) })}>Eligible upcoming</button>
-              <button type="button" className={`resources-filter-chip ${query.hasResume === false ? "active" : ""}`} onClick={() => updateParams({ hasResume: toggleBooleanFilter(query.hasResume, false) })}>Resume missing</button>
-              <button type="button" className={`resources-filter-chip ${currentView === "eligible_but_not_applied" ? "active" : ""}`} onClick={() => setSavedView("eligible_but_not_applied")}>Eligible not applied</button>
-            </div>
-          </div>
-          <div className="tpo-filter-group">
-            <span>Placement</span>
-            <div className="resources-filter-row">
-              <button type="button" className={`resources-filter-chip ${query.isPlaced === false ? "active" : ""}`} onClick={() => updateParams({ isPlaced: toggleBooleanFilter(query.isPlaced, false) })}>Unplaced</button>
-              <button type="button" className={`resources-filter-chip ${query.isPlaced === true ? "active" : ""}`} onClick={() => updateParams({ isPlaced: toggleBooleanFilter(query.isPlaced, true) })}>Placed</button>
-            </div>
-          </div>
-        </div>
 
-        <div className="form-grid">
-          <label>
-            Search
-            <Input value={getStringParam(searchParams, "q")} onChange={(event) => updateParams({ q: event.target.value || null })} placeholder="Name, email, roll number, or PRN" />
-          </label>
-          <label>
-            Batch
-            <Input value={getStringParam(searchParams, "batch")} onChange={(event) => updateParams({ batch: event.target.value || null })} />
-          </label>
-          <label>
-            Branch
-            <Input value={getStringParam(searchParams, "branch")} onChange={(event) => updateParams({ branch: event.target.value || null })} />
-          </label>
-          <label>
-            CGPA Min
-            <Input type="number" min="0" max="10" step="0.1" value={getStringParam(searchParams, "cgpaMin")} onChange={(event) => updateParams({ cgpaMin: event.target.value || null })} />
-          </label>
-          <label>
-            CGPA Max
-            <Input type="number" min="0" max="10" step="0.1" value={getStringParam(searchParams, "cgpaMax")} onChange={(event) => updateParams({ cgpaMax: event.target.value || null })} />
-          </label>
-          <label>
-            Sort By
-            <Select value={query.sortBy} onChange={(event) => updateParams({ sortBy: event.target.value })}>
-              <option value="created_at">Created At</option>
-              <option value="cgpa">CGPA</option>
-              <option value="readiness_score">Readiness</option>
-              <option value="profile_completeness">Profile Completeness</option>
-              <option value="risk_score">Risk score</option>
-              <option value="upcoming_drive_impact">Upcoming drive impact</option>
-              <option value="activity">Activity</option>
-            </Select>
-          </label>
-          <label>
-            Sort Direction
-            <Select value={query.sortDir} onChange={(event) => updateParams({ sortDir: event.target.value })}>
-              <option value="desc">Desc</option>
-              <option value="asc">Asc</option>
-            </Select>
-          </label>
-        </div>
-
-        <div className="tpo-students-advanced-head">
-          <div>
-            <h2>Advanced Filters</h2>
-            <p className="muted-text">Use deeper operational filters when you need certification, activity, or upcoming-drive targeting.</p>
-          </div>
-          <Button variant="ghost" onClick={() => setAdvancedOpen((current) => !current)}>{advancedOpen ? "Hide Advanced" : "Show Advanced"}</Button>
-        </div>
-
-        {advancedOpen ? (
-          <div className="form-grid tpo-advanced-filter-grid">
-            <label>
-              PRN
-              <Input value={getStringParam(searchParams, "prn")} onChange={(event) => updateParams({ prn: event.target.value || null })} />
-            </label>
-            <label>
-              Attendance Min
-              <Input type="number" min="0" max="100" value={getStringParam(searchParams, "attendanceMin")} onChange={(event) => updateParams({ attendanceMin: event.target.value || null })} />
-            </label>
-            <label>
-              Attendance Max
-              <Input type="number" min="0" max="100" value={getStringParam(searchParams, "attendanceMax")} onChange={(event) => updateParams({ attendanceMax: event.target.value || null })} />
-            </label>
-            <label>
-              Total Backlogs Min
-              <Input type="number" min="0" value={getStringParam(searchParams, "totalHistoricalBacklogsMin")} onChange={(event) => updateParams({ totalHistoricalBacklogsMin: event.target.value || null })} />
-            </label>
-            <label>
-              Total Backlogs Max
-              <Input type="number" min="0" value={getStringParam(searchParams, "totalHistoricalBacklogsMax")} onChange={(event) => updateParams({ totalHistoricalBacklogsMax: event.target.value || null })} />
-            </label>
-            <label>
-              Profile % Min
-              <Input type="number" min="0" max="100" value={getStringParam(searchParams, "profileCompletenessMin")} onChange={(event) => updateParams({ profileCompletenessMin: event.target.value || null })} />
-            </label>
-            <label>
-              Profile % Max
-              <Input type="number" min="0" max="100" value={getStringParam(searchParams, "profileCompletenessMax")} onChange={(event) => updateParams({ profileCompletenessMax: event.target.value || null })} />
-            </label>
-            <label>
-              Readiness Min
-              <Input type="number" min="0" max="100" value={getStringParam(searchParams, "readinessMin")} onChange={(event) => updateParams({ readinessMin: event.target.value || null })} />
-            </label>
-            <label>
-              Readiness Max
-              <Input type="number" min="0" max="100" value={getStringParam(searchParams, "readinessMax")} onChange={(event) => updateParams({ readinessMax: event.target.value || null })} />
-            </label>
-            <label>
-              Placement
-              <Select value={getStringParam(searchParams, "isPlaced")} onChange={(event) => updateParams({ isPlaced: event.target.value || null })}>
-                <option value="">Any</option>
-                <option value="true">Placed</option>
-                <option value="false">Unplaced</option>
-              </Select>
-            </label>
-            <label>
-              Target Role
-              <Input value={getStringParam(searchParams, "targetRole")} onChange={(event) => updateParams({ targetRole: event.target.value || null })} placeholder="Analyst, GET, developer" />
-            </label>
-            <label>
-              Preferred Location
-              <Input value={getStringParam(searchParams, "preferredLocation")} onChange={(event) => updateParams({ preferredLocation: event.target.value || null })} placeholder="Pune, Mumbai, Bengaluru" />
-            </label>
-            <div className="tpo-toggle-grid">
-              <div className="tpo-toggle-row"><span>Resume ready</span><Toggle checked={query.hasResume === true} onChange={(checked) => updateParams({ hasResume: checked ? true : null })} /></div>
-              <div className="tpo-toggle-row"><span>Certified</span><Toggle checked={query.isCertified === true} onChange={(checked) => updateParams({ isCertified: checked ? true : null })} /></div>
-              <div className="tpo-toggle-row"><span>Eligible upcoming drive</span><Toggle checked={query.eligibleForUpcomingDrive === true} onChange={(checked) => updateParams({ eligibleForUpcomingDrive: checked ? true : null })} /></div>
-              <div className="tpo-toggle-row"><span>Active in 7d</span><Toggle checked={query.isActive7d === true} onChange={(checked) => updateParams({ isActive7d: checked ? true : null })} /></div>
-              <div className="tpo-toggle-row"><span>Applied recently</span><Toggle checked={query.appliedRecently === true} onChange={(checked) => updateParams({ appliedRecently: checked ? true : null })} /></div>
-              <div className="tpo-toggle-row"><span>Needs intervention</span><Toggle checked={query.needsIntervention === true} onChange={(checked) => updateParams({ needsIntervention: checked ? true : null })} /></div>
-              <div className="tpo-toggle-row"><span>Waiting on student</span><Toggle checked={query.waitingOnStudent === true} onChange={(checked) => updateParams({ waitingOnStudent: checked ? true : null })} /></div>
-              <div className="tpo-toggle-row"><span>Resources unlocked</span><Toggle checked={query.canAccessResources === true} onChange={(checked) => updateParams({ canAccessResources: checked ? true : null })} /></div>
-              <div className="tpo-toggle-row"><span>Mock Tests unlocked</span><Toggle checked={query.canAccessMockTests === true} onChange={(checked) => updateParams({ canAccessMockTests: checked ? true : null })} /></div>
-              <div className="tpo-toggle-row"><span>Willing to relocate</span><Toggle checked={query.willingToRelocate === true} onChange={(checked) => updateParams({ willingToRelocate: checked ? true : null })} /></div>
+            <div className="form-grid tpo-students-primary-grid">
+              <label>
+                Workspace
+                <Select value={mode} onChange={(event) => setMode(event.target.value as PageMode)}>
+                  <option value="ops">Intervention mode</option>
+                  <option value="all">All students</option>
+                </Select>
+              </label>
+              <label>
+                Queue
+                <Select value={currentView} onChange={(event) => setSavedView(event.target.value as SavedViewId)}>
+                  {SAVED_VIEWS.map((view) => (
+                    <option key={view.id} value={view.id}>{view.label}</option>
+                  ))}
+                </Select>
+              </label>
+              <label>
+                Search
+                <Input value={getStringParam(searchParams, "q")} onChange={(event) => updateParams({ q: event.target.value || null })} placeholder="Name, email, roll number, or PRN" />
+              </label>
+              <label>
+                Branch
+                <Input value={getStringParam(searchParams, "branch")} onChange={(event) => updateParams({ branch: event.target.value || null })} />
+              </label>
+              <label>
+                Batch
+                <Input value={getStringParam(searchParams, "batch")} onChange={(event) => updateParams({ batch: event.target.value || null })} />
+              </label>
+              <label>
+                Sort By
+                <Select value={query.sortBy} onChange={(event) => updateParams({ sortBy: event.target.value })}>
+                  <option value="created_at">Created At</option>
+                  <option value="cgpa">CGPA</option>
+                  <option value="readiness_score">Readiness</option>
+                  <option value="profile_completeness">Profile Completeness</option>
+                  <option value="risk_score">Risk score</option>
+                  <option value="upcoming_drive_impact">Upcoming drive impact</option>
+                  <option value="activity">Activity</option>
+                </Select>
+              </label>
+              <label>
+                Sort Direction
+                <Select value={query.sortDir} onChange={(event) => updateParams({ sortDir: event.target.value })}>
+                  <option value="desc">Desc</option>
+                  <option value="asc">Asc</option>
+                </Select>
+              </label>
             </div>
-          </div>
+
+            {advancedOpen ? (
+              <div className="form-grid tpo-advanced-filter-grid">
+                <label>
+                  PRN
+                  <Input value={getStringParam(searchParams, "prn")} onChange={(event) => updateParams({ prn: event.target.value || null })} />
+                </label>
+                <label>
+                  Attendance Min
+                  <Input type="number" min="0" max="100" value={getStringParam(searchParams, "attendanceMin")} onChange={(event) => updateParams({ attendanceMin: event.target.value || null })} />
+                </label>
+                <label>
+                  Attendance Max
+                  <Input type="number" min="0" max="100" value={getStringParam(searchParams, "attendanceMax")} onChange={(event) => updateParams({ attendanceMax: event.target.value || null })} />
+                </label>
+                <label>
+                  Total Backlogs Min
+                  <Input type="number" min="0" value={getStringParam(searchParams, "totalHistoricalBacklogsMin")} onChange={(event) => updateParams({ totalHistoricalBacklogsMin: event.target.value || null })} />
+                </label>
+                <label>
+                  Total Backlogs Max
+                  <Input type="number" min="0" value={getStringParam(searchParams, "totalHistoricalBacklogsMax")} onChange={(event) => updateParams({ totalHistoricalBacklogsMax: event.target.value || null })} />
+                </label>
+                <label>
+                  Profile % Min
+                  <Input type="number" min="0" max="100" value={getStringParam(searchParams, "profileCompletenessMin")} onChange={(event) => updateParams({ profileCompletenessMin: event.target.value || null })} />
+                </label>
+                <label>
+                  Profile % Max
+                  <Input type="number" min="0" max="100" value={getStringParam(searchParams, "profileCompletenessMax")} onChange={(event) => updateParams({ profileCompletenessMax: event.target.value || null })} />
+                </label>
+                <label>
+                  Readiness Min
+                  <Input type="number" min="0" max="100" value={getStringParam(searchParams, "readinessMin")} onChange={(event) => updateParams({ readinessMin: event.target.value || null })} />
+                </label>
+                <label>
+                  Readiness Max
+                  <Input type="number" min="0" max="100" value={getStringParam(searchParams, "readinessMax")} onChange={(event) => updateParams({ readinessMax: event.target.value || null })} />
+                </label>
+                <label>
+                  Placement
+                  <Select value={getStringParam(searchParams, "isPlaced")} onChange={(event) => updateParams({ isPlaced: event.target.value || null })}>
+                    <option value="">Any</option>
+                    <option value="true">Placed</option>
+                    <option value="false">Unplaced</option>
+                  </Select>
+                </label>
+                <label>
+                  Target Role
+                  <Input value={getStringParam(searchParams, "targetRole")} onChange={(event) => updateParams({ targetRole: event.target.value || null })} placeholder="Analyst, GET, developer" />
+                </label>
+                <label>
+                  Preferred Location
+                  <Input value={getStringParam(searchParams, "preferredLocation")} onChange={(event) => updateParams({ preferredLocation: event.target.value || null })} placeholder="Pune, Mumbai, Bengaluru" />
+                </label>
+                <div className="tpo-toggle-grid">
+                  <div className="tpo-toggle-row"><span>Resume ready</span><Toggle checked={query.hasResume === true} onChange={(checked) => updateParams({ hasResume: checked ? true : null })} /></div>
+                  <div className="tpo-toggle-row"><span>Certified</span><Toggle checked={query.isCertified === true} onChange={(checked) => updateParams({ isCertified: checked ? true : null })} /></div>
+                  <div className="tpo-toggle-row"><span>Eligible upcoming drive</span><Toggle checked={query.eligibleForUpcomingDrive === true} onChange={(checked) => updateParams({ eligibleForUpcomingDrive: checked ? true : null })} /></div>
+                  <div className="tpo-toggle-row"><span>Active in 7d</span><Toggle checked={query.isActive7d === true} onChange={(checked) => updateParams({ isActive7d: checked ? true : null })} /></div>
+                  <div className="tpo-toggle-row"><span>Applied recently</span><Toggle checked={query.appliedRecently === true} onChange={(checked) => updateParams({ appliedRecently: checked ? true : null })} /></div>
+                  <div className="tpo-toggle-row"><span>Needs intervention</span><Toggle checked={query.needsIntervention === true} onChange={(checked) => updateParams({ needsIntervention: checked ? true : null })} /></div>
+                  <div className="tpo-toggle-row"><span>Waiting on student</span><Toggle checked={query.waitingOnStudent === true} onChange={(checked) => updateParams({ waitingOnStudent: checked ? true : null })} /></div>
+                  <div className="tpo-toggle-row"><span>Resources unlocked</span><Toggle checked={query.canAccessResources === true} onChange={(checked) => updateParams({ canAccessResources: checked ? true : null })} /></div>
+                  <div className="tpo-toggle-row"><span>Mock Tests unlocked</span><Toggle checked={query.canAccessMockTests === true} onChange={(checked) => updateParams({ canAccessMockTests: checked ? true : null })} /></div>
+                  <div className="tpo-toggle-row"><span>Willing to relocate</span><Toggle checked={query.willingToRelocate === true} onChange={(checked) => updateParams({ willingToRelocate: checked ? true : null })} /></div>
+                </div>
+              </div>
+            ) : null}
+          </>
         ) : null}
 
         {activeFilterChips.length > 0 ? (
@@ -579,7 +580,7 @@ export default function TpoStudentsPage() {
             </div>
             <div className="hero-actions">
               {currentView === "needs_mock_push" ? (
-                <Link to="/tpo/interventions/needs-mock-push">
+                <Link to="/tpo/students?mode=ops&view=needs_mock_push">
                   <Button variant="secondary">Open full queue</Button>
                 </Link>
               ) : null}

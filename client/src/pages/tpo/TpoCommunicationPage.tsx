@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { Badge, Button, ConfirmActionModal, Input, Select, Table, Tabs } from "../../components/ui";
+import { TpoActionMenu } from "../../components/composites/TpoActionMenu";
+import { TpoSubviewSwitcher } from "../../components/composites/TpoSubviewSwitcher";
+import { TpoWorkspaceHeader } from "../../components/composites/TpoWorkspaceHeader";
+import { useAuth } from "../../components/providers/AuthProvider";
+import { Badge, Button, ConfirmActionModal, Input, Select, Table } from "../../components/ui";
+import { getTpoGreeting } from "../../config/tpo-workspace";
 import {
   type AnnouncementPriority,
   previewAnnouncement,
@@ -14,17 +19,20 @@ import {
   useCommunicationHistory,
   useCommunicationTemplates,
 } from "../../hooks/use-communication";
+import {
+  getAutomationDisplayMeta,
+  getAutomationRunCountLabel,
+  getAutomationRunReason,
+  getAutomationRunTargetPath,
+  getAutomationRunTitle,
+} from "../../config/tpo-automation-display";
 import { useDrives } from "../../hooks/use-drives";
 import { dismissAutomationRun, releaseAutomationRun, useTpoAutomationRuns } from "../../hooks/use-tpo-automation";
 import { updateTenantEmailSettings, updateTenantPlacementPolicy, useTenantSettings } from "../../hooks/use-tenant";
 
 type CommunicationMode = "email" | "announcements";
+type CommunicationView = "review" | "compose-email" | "announcements" | "history";
 type MessagePreset = "drive-announcement" | "eligible-reminder" | "profile-completion" | "mock-test" | "custom";
-
-const modeTabs: Array<{ id: CommunicationMode; label: string }> = [
-  { id: "email", label: "Email" },
-  { id: "announcements", label: "Announcements" },
-];
 
 const presetLibrary: Record<MessagePreset, {
   label: string;
@@ -119,7 +127,10 @@ function toIsoDateTime(value: string) {
 }
 
 export default function TpoCommunicationPage() {
+  const navigate = useNavigate();
+  const { profile } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const { data: templates } = useCommunicationTemplates();
   const { data: drives } = useDrives();
   const { data: history, isLoading: historyLoading } = useCommunicationHistory();
@@ -134,6 +145,13 @@ export default function TpoCommunicationPage() {
     triggerSource: triggerSourceParam as any,
     limit: 12,
   });
+  const requestedView = searchParams.get("view");
+  const activeView: CommunicationView = requestedView === "review"
+    || requestedView === "compose-email"
+    || requestedView === "announcements"
+    || requestedView === "history"
+    ? requestedView
+    : (automationDrafts && automationDrafts.length > 0 ? "review" : "compose-email");
 
   const [mode, setMode] = useState<CommunicationMode>("email");
   const [preset, setPreset] = useState<MessagePreset>("eligible-reminder");
@@ -222,6 +240,32 @@ export default function TpoCommunicationPage() {
     }
   }, [searchParams]);
 
+  useEffect(() => {
+    if (activeView === "announcements" && mode !== "announcements") {
+      setMode("announcements");
+      return;
+    }
+    if (activeView !== "announcements" && mode !== "email") {
+      setMode("email");
+    }
+  }, [activeView, mode]);
+
+  useEffect(() => {
+    const hasAudienceFilters = Boolean(
+      selectedStudentIds.length > 0
+      || driveId
+      || branch
+      || batch
+      || minCgpa
+      || maxRecipients !== "200"
+      || eligibleOnly === false,
+    );
+
+    if (hasAudienceFilters) {
+      setFiltersOpen(true);
+    }
+  }, [batch, branch, driveId, eligibleOnly, maxRecipients, minCgpa, selectedStudentIds.length]);
+
   const buildFilters = () => ({
     driveId: driveId || undefined,
     eligibleOnly,
@@ -259,6 +303,22 @@ export default function TpoCommunicationPage() {
     next.delete("studentIds");
     next.delete("preset");
     next.delete("mode");
+    setSearchParams(next, { replace: true });
+  };
+
+  const resetAudienceFilters = () => {
+    setDriveId("");
+    setBranch("");
+    setBatch("");
+    setMinCgpa("");
+    setMaxRecipients("200");
+    setEligibleOnly(mode === "email" ? presetConfig.eligibleOnly : true);
+    setSelectedStudentIds([]);
+    setFiltersOpen(false);
+    invalidatePreviews();
+
+    const next = new URLSearchParams(searchParams);
+    next.delete("studentIds");
     setSearchParams(next, { replace: true });
   };
 
@@ -383,64 +443,115 @@ export default function TpoCommunicationPage() {
 
   return (
     <section className="tpo-communication-shell">
-      <header className="tpo-communication-header">
-        <div>
-          <h1>Communication</h1>
-        </div>
-        {mode === "email" ? (
-          <div className="hero-actions">
-            <Button variant="ghost" onClick={() => setShowPlacementSettings((current) => !current)}>
-              {showPlacementSettings ? "Hide placement policy" : "Placement policy"}
-            </Button>
-            <Button variant="ghost" onClick={() => setShowSenderSettings((current) => !current)}>
-              {showSenderSettings ? "Hide sender" : "Sender"}
-            </Button>
-          </div>
-        ) : null}
-      </header>
+      <TpoWorkspaceHeader
+        eyebrow="Communication"
+        greeting={getTpoGreeting(profile?.full_name ?? "Placement team")}
+        title="Review drafts or send one message at a time."
+        description="Approve automation drafts before they are sent to students or the placement office. When you compose manually, keep the current mode focused on one audience and one message."
+        primaryAction={(
+          <Button
+            onClick={() => {
+              const next = new URLSearchParams(searchParams);
+              next.set("view", "compose-email");
+              setSearchParams(next, { replace: true });
+            }}
+          >
+            Compose Email
+          </Button>
+        )}
+        secondaryAction={activeView === "compose-email" || activeView === "announcements" ? (
+          <Button
+            variant="secondary"
+            onClick={() => setFiltersOpen((current) => !current)}
+          >
+            Filters
+          </Button>
+        ) : activeView !== "review" ? (
+          <Button
+            variant="secondary"
+            onClick={() => {
+              const next = new URLSearchParams(searchParams);
+              next.set("view", "review");
+              setSearchParams(next, { replace: true });
+            }}
+          >
+            Open Review Queue
+          </Button>
+        ) : undefined}
+        actionMenu={(
+          <TpoActionMenu
+            items={[
+              {
+                label: "Open Review Queue",
+                onSelect: () => {
+                  const next = new URLSearchParams(searchParams);
+                  next.set("view", "review");
+                  setSearchParams(next, { replace: true });
+                },
+              },
+              {
+                label: showPlacementSettings ? "Hide placement policy" : "Placement policy",
+                onSelect: () => setShowPlacementSettings((current) => !current),
+              },
+              {
+                label: showSenderSettings ? "Hide sender settings" : "Sender settings",
+                onSelect: () => setShowSenderSettings((current) => !current),
+              },
+              {
+                label: "Open history",
+                onSelect: () => {
+                  const next = new URLSearchParams(searchParams);
+                  next.set("view", "history");
+                  setSearchParams(next, { replace: true });
+                },
+              },
+            ]}
+          />
+        )}
+      />
 
-      <div className="tpo-communication-switcher">
-        <Tabs tabs={modeTabs} activeId={mode} onChange={(id) => setMode(id as CommunicationMode)} />
-      </div>
+      <TpoSubviewSwitcher
+        label="Communication views"
+        items={[
+          { id: "review", label: "Review Queue" },
+          { id: "compose-email", label: "Compose Email" },
+          { id: "announcements", label: "Announcements" },
+          { id: "history", label: "History" },
+        ]}
+        activeId={activeView}
+        onChange={(next) => {
+          const nextParams = new URLSearchParams(searchParams);
+          nextParams.set("view", String(next));
+          setSearchParams(nextParams, { replace: true });
+        }}
+      />
 
-      {automationDrafts && automationDrafts.length > 0 ? (
+      {activeView === "review" && automationDrafts && automationDrafts.length > 0 ? (
         <section className="tpo-communication-panel">
           <div className="workspace-panel-header">
             <div>
-              <p className="workspace-eyebrow">Automation Drafts</p>
-              <h2>Review-first reminders and digests</h2>
-              <p className="muted-text">These runs were generated automatically, but they still need explicit TPO review before anything is sent.</p>
+              <p className="workspace-eyebrow">Review Queue</p>
+              <h2>Approve automation drafts before they are sent</h2>
+              <p className="muted-text">These messages were prepared automatically and still need approval before sending.</p>
             </div>
           </div>
           <div className="tpo-action-list">
             {automationDrafts.map((run) => {
-              const preview = run.preview as { title?: string; targetPath?: string };
               const highlighted = automationRunId === run.id;
+              const meta = getAutomationDisplayMeta(run.automationType);
+              const targetPath = getAutomationRunTargetPath(run);
               return (
                 <div key={run.id} className="tpo-action-row" style={highlighted ? { border: "1px solid rgba(37, 99, 235, 0.2)", borderRadius: 16, padding: 12 } : undefined}>
                   <div>
                     <div className="tpo-action-row-head">
-                      <strong>{preview.title ?? run.automationType.replace(/_/g, " ")}</strong>
-                      <Badge variant={highlighted ? "success" : "warning"}>{run.status}</Badge>
+                      <strong>{getAutomationRunTitle(run)}</strong>
+                      <Badge variant={highlighted ? "success" : "warning"}>{getAutomationRunCountLabel(run)}</Badge>
                     </div>
-                    <p className="muted-text">{run.explanation}</p>
-                    <p className="muted-text">{run.audienceSummary ?? "Pending automation draft"}</p>
+                    <p className="muted-text">{getAutomationRunReason(run)}</p>
+                    <p className="muted-text">{run.audienceSummary ?? meta.helper}</p>
                   </div>
-                  <div className="hero-actions">
-                    {preview.targetPath ? (
-                      <Button
-                        variant="ghost"
-                        onClick={() => {
-                          const next = new URLSearchParams(searchParams);
-                          next.set("automationRunId", run.id);
-                          setSearchParams(next, { replace: true });
-                        }}
-                      >
-                        Focus
-                      </Button>
-                    ) : null}
+                  <div className="tpo-report-row-actions">
                     <Button
-                      variant="secondary"
                       onClick={async () => {
                         try {
                           await releaseAutomationRun(run.id);
@@ -450,25 +561,48 @@ export default function TpoCommunicationPage() {
                         }
                       }}
                     >
-                      Release
+                      Review and Send
                     </Button>
-                    <Button
-                      variant="ghost"
-                      onClick={async () => {
-                        try {
-                          await dismissAutomationRun(run.id);
-                          setStatus("Automation draft dismissed.");
-                        } catch (actionError) {
-                          setStatus(actionError instanceof Error ? actionError.message : "Unable to dismiss automation draft");
-                        }
-                      }}
-                    >
-                      Dismiss
-                    </Button>
+                    <TpoActionMenu
+                      items={[
+                        {
+                          label: meta.linkedViewLabel,
+                          onSelect: () => {
+                            const next = new URLSearchParams(searchParams);
+                            next.set("automationRunId", run.id);
+                            setSearchParams(next, { replace: true });
+                            navigate(targetPath);
+                          },
+                        },
+                        {
+                          label: "Dismiss",
+                          onSelect: async () => {
+                            try {
+                              await dismissAutomationRun(run.id);
+                              setStatus("Automation draft dismissed.");
+                            } catch (actionError) {
+                              setStatus(actionError instanceof Error ? actionError.message : "Unable to dismiss automation draft");
+                            }
+                          },
+                        },
+                      ]}
+                    />
                   </div>
                 </div>
               );
             })}
+          </div>
+        </section>
+      ) : null}
+
+      {activeView === "review" && (!automationDrafts || automationDrafts.length === 0) ? (
+        <section className="tpo-communication-panel">
+          <div className="workspace-panel-header">
+            <div>
+              <p className="workspace-eyebrow">Review Queue</p>
+              <h2>No automation drafts are waiting right now</h2>
+              <p className="muted-text">When reminders, follow-ups, or digest drafts are prepared automatically, they will appear here for approval before anything is sent.</p>
+            </div>
           </div>
         </section>
       ) : null}
@@ -522,6 +656,7 @@ export default function TpoCommunicationPage() {
         </section>
       ) : null}
 
+      {(activeView === "compose-email" || activeView === "announcements") ? (
       <section className="tpo-communication-simple-grid">
         <div className="tpo-communication-main">
           {selectedStudentIds.length > 0 ? (
@@ -538,60 +673,71 @@ export default function TpoCommunicationPage() {
           {mode === "email" ? (
             <>
               <section className="tpo-communication-panel">
-                <div className="tpo-communication-purpose-pills">
-                  {(Object.entries(presetLibrary) as Array<[MessagePreset, typeof presetLibrary[MessagePreset]]>).map(([id, config]) => (
-                    <button
-                      key={id}
-                      type="button"
-                      className={`tpo-communication-pill ${preset === id ? "active" : ""}`}
-                      onClick={() => setPreset(id)}
-                    >
-                      {config.label}
-                    </button>
-                  ))}
-                </div>
-              </section>
-
-              <section className="tpo-communication-panel">
-                <div className="tpo-communication-inline-grid">
-                  {presetConfig.needsDrive ? (
-                    <label>
-                      Drive
-                      <Select value={driveId} onChange={(event) => { setDriveId(event.target.value); invalidatePreviews(); }}>
-                        <option value="">Select</option>
-                        {(drives?.items ?? []).map((drive) => (
-                          <option key={drive.id} value={drive.id}>
-                            {drive.company} {drive.role ? `- ${drive.role}` : ""}
-                          </option>
-                        ))}
-                      </Select>
-                    </label>
-                  ) : null}
+                <div className="tpo-compact-select-grid">
                   <label>
-                    Branch
-                    <Input value={branch} onChange={(event) => { setBranch(event.target.value); invalidatePreviews(); }} placeholder="All" />
-                  </label>
-                  <label>
-                    Batch
-                    <Input value={batch} onChange={(event) => { setBatch(event.target.value); invalidatePreviews(); }} placeholder="All" />
-                  </label>
-                  <label>
-                    CGPA
-                    <Input type="number" min="0" max="10" step="0.1" value={minCgpa} onChange={(event) => { setMinCgpa(event.target.value); invalidatePreviews(); }} placeholder="Optional" />
-                  </label>
-                  <label>
-                    Eligible only
-                    <Select value={eligibleOnly ? "yes" : "no"} onChange={(event) => { setEligibleOnly(event.target.value === "yes"); invalidatePreviews(); }}>
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
+                    Message type
+                    <Select value={preset} onChange={(event) => setPreset(event.target.value as MessagePreset)}>
+                      {(Object.entries(presetLibrary) as Array<[MessagePreset, typeof presetLibrary[MessagePreset]]>).map(([id, config]) => (
+                        <option key={id} value={id}>{config.label}</option>
+                      ))}
                     </Select>
                   </label>
-                  <label>
-                    Max students
-                    <Input type="number" min="1" max="5000" value={maxRecipients} onChange={(event) => { setMaxRecipients(event.target.value); invalidatePreviews(); }} />
-                  </label>
                 </div>
+                <p className="muted-text">Choose one message type first, then adjust audience filters and the message itself below.</p>
               </section>
+
+              {filtersOpen ? (
+                <section className="tpo-communication-panel">
+                  <div className="workspace-panel-header">
+                    <div>
+                      <p className="workspace-eyebrow">Filters</p>
+                      <h2>Choose the audience for this message</h2>
+                      <p className="muted-text">Use these filters only when the message needs a narrower audience.</p>
+                    </div>
+                    <div className="hero-actions">
+                      <Button variant="ghost" onClick={resetAudienceFilters}>Reset Filters</Button>
+                    </div>
+                  </div>
+                  <div className="tpo-communication-inline-grid">
+                    {presetConfig.needsDrive ? (
+                      <label>
+                        Drive
+                        <Select value={driveId} onChange={(event) => { setDriveId(event.target.value); invalidatePreviews(); }}>
+                          <option value="">Select</option>
+                          {(drives?.items ?? []).map((drive) => (
+                            <option key={drive.id} value={drive.id}>
+                              {drive.company} {drive.role ? `- ${drive.role}` : ""}
+                            </option>
+                          ))}
+                        </Select>
+                      </label>
+                    ) : null}
+                    <label>
+                      Branch
+                      <Input value={branch} onChange={(event) => { setBranch(event.target.value); invalidatePreviews(); }} placeholder="All" />
+                    </label>
+                    <label>
+                      Batch
+                      <Input value={batch} onChange={(event) => { setBatch(event.target.value); invalidatePreviews(); }} placeholder="All" />
+                    </label>
+                    <label>
+                      CGPA
+                      <Input type="number" min="0" max="10" step="0.1" value={minCgpa} onChange={(event) => { setMinCgpa(event.target.value); invalidatePreviews(); }} placeholder="Optional" />
+                    </label>
+                    <label>
+                      Eligible only
+                      <Select value={eligibleOnly ? "yes" : "no"} onChange={(event) => { setEligibleOnly(event.target.value === "yes"); invalidatePreviews(); }}>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                      </Select>
+                    </label>
+                    <label>
+                      Max students
+                      <Input type="number" min="1" max="5000" value={maxRecipients} onChange={(event) => { setMaxRecipients(event.target.value); invalidatePreviews(); }} />
+                    </label>
+                  </div>
+                </section>
+              ) : null}
 
               <section className="tpo-communication-panel">
                 <div className="tpo-communication-inline-grid">
@@ -632,6 +778,57 @@ export default function TpoCommunicationPage() {
             </>
           ) : (
             <>
+              {filtersOpen ? (
+                <section className="tpo-communication-panel">
+                  <div className="workspace-panel-header">
+                    <div>
+                      <p className="workspace-eyebrow">Filters</p>
+                      <h2>Choose who should see this announcement</h2>
+                      <p className="muted-text">Use these filters only when the announcement needs a narrower audience.</p>
+                    </div>
+                    <div className="hero-actions">
+                      <Button variant="ghost" onClick={resetAudienceFilters}>Reset Filters</Button>
+                    </div>
+                  </div>
+                  <div className="tpo-communication-inline-grid">
+                    <label>
+                      Related drive
+                      <Select value={driveId} onChange={(event) => { setDriveId(event.target.value); invalidatePreviews(); }}>
+                        <option value="">None</option>
+                        {(drives?.items ?? []).map((drive) => (
+                          <option key={drive.id} value={drive.id}>
+                            {drive.company} {drive.role ? `- ${drive.role}` : ""}
+                          </option>
+                        ))}
+                      </Select>
+                    </label>
+                    <label>
+                      Branch
+                      <Input value={branch} onChange={(event) => { setBranch(event.target.value); invalidatePreviews(); }} placeholder="All" />
+                    </label>
+                    <label>
+                      Batch
+                      <Input value={batch} onChange={(event) => { setBatch(event.target.value); invalidatePreviews(); }} placeholder="All" />
+                    </label>
+                    <label>
+                      CGPA
+                      <Input type="number" min="0" max="10" step="0.1" value={minCgpa} onChange={(event) => { setMinCgpa(event.target.value); invalidatePreviews(); }} placeholder="Optional" />
+                    </label>
+                    <label>
+                      Eligible only
+                      <Select value={eligibleOnly ? "yes" : "no"} onChange={(event) => { setEligibleOnly(event.target.value === "yes"); invalidatePreviews(); }}>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                      </Select>
+                    </label>
+                    <label>
+                      Max students
+                      <Input type="number" min="1" max="5000" value={maxRecipients} onChange={(event) => { setMaxRecipients(event.target.value); invalidatePreviews(); }} />
+                    </label>
+                  </div>
+                </section>
+              ) : null}
+
               <section className="tpo-communication-panel">
                 <div className="tpo-communication-inline-grid">
                   <label className="tpo-communication-full">
@@ -660,17 +857,6 @@ export default function TpoCommunicationPage() {
                     </Select>
                   </label>
                   <label>
-                    Related drive
-                    <Select value={driveId} onChange={(event) => { setDriveId(event.target.value); invalidatePreviews(); }}>
-                      <option value="">None</option>
-                      {(drives?.items ?? []).map((drive) => (
-                        <option key={drive.id} value={drive.id}>
-                          {drive.company} {drive.role ? `- ${drive.role}` : ""}
-                        </option>
-                      ))}
-                    </Select>
-                  </label>
-                  <label>
                     Expires
                     <Input
                       type="datetime-local"
@@ -680,29 +866,6 @@ export default function TpoCommunicationPage() {
                         invalidatePreviews();
                       }}
                     />
-                  </label>
-                  <label>
-                    Branch
-                    <Input value={branch} onChange={(event) => { setBranch(event.target.value); invalidatePreviews(); }} placeholder="All" />
-                  </label>
-                  <label>
-                    Batch
-                    <Input value={batch} onChange={(event) => { setBatch(event.target.value); invalidatePreviews(); }} placeholder="All" />
-                  </label>
-                  <label>
-                    CGPA
-                    <Input type="number" min="0" max="10" step="0.1" value={minCgpa} onChange={(event) => { setMinCgpa(event.target.value); invalidatePreviews(); }} placeholder="Optional" />
-                  </label>
-                  <label>
-                    Eligible only
-                    <Select value={eligibleOnly ? "yes" : "no"} onChange={(event) => { setEligibleOnly(event.target.value === "yes"); invalidatePreviews(); }}>
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                    </Select>
-                  </label>
-                  <label>
-                    Max students
-                    <Input type="number" min="1" max="5000" value={maxRecipients} onChange={(event) => { setMaxRecipients(event.target.value); invalidatePreviews(); }} />
                   </label>
                   <label className="tpo-communication-full">
                     Announcement message
@@ -825,16 +988,91 @@ export default function TpoCommunicationPage() {
           {status ? <p className="tpo-communication-status">{status}</p> : null}
         </aside>
       </section>
+      ) : null}
 
+      {activeView === "history" ? (
       <section className="tpo-communication-panel">
         <div className="tpo-communication-panel-head">
           <div>
-            <h2>{mode === "email" ? "Recent messages" : "Recent announcements"}</h2>
+            <h2>Recent communication</h2>
+            <p className="muted-text">Review the last outgoing messages and announcements without mixing them into the compose workspace.</p>
           </div>
         </div>
 
-        {mode === "email" ? (
-          historyLoading ? (
+        {historyLoading ? (
+          <p className="muted-text">Loading recent messages...</p>
+        ) : (history?.items ?? []).length === 0 ? (
+          <p className="muted-text">No messages yet.</p>
+        ) : (
+          <div className="tpo-ranking-table-wrap tpo-communication-table">
+            <Table>
+              <thead>
+                <tr>
+                  <th>Subject</th>
+                  <th>Status</th>
+                  <th>Recipients</th>
+                  <th>Created</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(history?.items ?? []).slice(0, 8).map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.subject}</td>
+                    <td>{item.status}</td>
+                    <td>{item.recipientCount}</td>
+                    <td>{item.createdAt}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+        )}
+
+        <div style={{ height: 24 }} />
+
+        {announcementHistoryLoading ? (
+          <p className="muted-text">Loading recent announcements...</p>
+        ) : (announcementHistory ?? []).length === 0 ? (
+          <p className="muted-text">No announcements yet.</p>
+        ) : (
+          <div className="tpo-ranking-table-wrap tpo-communication-table">
+            <Table>
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Priority</th>
+                  <th>Recipients</th>
+                  <th>Status</th>
+                  <th>Published</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(announcementHistory ?? []).slice(0, 8).map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.title}</td>
+                    <td>{item.priority}</td>
+                    <td>{item.recipientCount}</td>
+                    <td>{item.status}</td>
+                    <td>{new Date(item.publishedAt).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+        )}
+      </section>
+      ) : null}
+
+      {false ? (
+        <section className="tpo-communication-panel">
+          <div className="tpo-communication-panel-head">
+            <div>
+              <h2>{mode === "email" ? "Recent messages" : "Recent announcements"}</h2>
+            </div>
+          </div>
+
+          {mode === "email" ? (
+            historyLoading ? (
             <p className="muted-text">Loading...</p>
           ) : (history?.items ?? []).length === 0 ? (
             <p className="muted-text">No messages yet.</p>
@@ -893,6 +1131,7 @@ export default function TpoCommunicationPage() {
           </div>
         )}
       </section>
+      ) : null}
 
       <ConfirmActionModal
         open={confirmAction === "send-email"}

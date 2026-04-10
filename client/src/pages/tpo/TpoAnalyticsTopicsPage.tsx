@@ -21,7 +21,7 @@ export default function TpoAnalyticsTopicsPage() {
   }));
 
   return (
-    <section className="dashboard-grid">
+    <section className="tpo-page-shell">
       <Card>
         <h1>Topic Heatmap</h1>
         <p>Mastery distribution by student and topic.</p>

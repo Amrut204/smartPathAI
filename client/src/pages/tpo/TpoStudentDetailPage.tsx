@@ -1,7 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 
+import { TpoActionMenu } from "../../components/composites/TpoActionMenu";
+import { TpoSubviewSwitcher } from "../../components/composites/TpoSubviewSwitcher";
+import { TpoWorkspaceHeader } from "../../components/composites/TpoWorkspaceHeader";
+import { useAuth } from "../../components/providers/AuthProvider";
 import { Button, Input, Select } from "../../components/ui";
+import { getTpoGreeting } from "../../config/tpo-workspace";
 import { updateDriveResults } from "../../hooks/use-drives";
 import { reviewStudentPlacementStatus, reviewStudentUnlockRequest, useTpoStudentAudit, useTpoStudentById } from "../../hooks/use-tpo-students";
 
@@ -51,6 +56,7 @@ function renderAuditSummary(metadata: Record<string, unknown>) {
 }
 
 export default function TpoStudentDetailPage() {
+  const { profile } = useAuth();
   const { studentId } = useParams();
   const { data, error, isLoading, mutate } = useTpoStudentById(studentId ?? null);
   const { data: auditEntries } = useTpoStudentAudit(studentId ?? null, 12);
@@ -203,23 +209,25 @@ export default function TpoStudentDetailPage() {
 
   return (
     <section className="workspace-shell">
-      <header className="workspace-header">
-        <div>
-          <p className="workspace-eyebrow">TPO Student Review</p>
-          <h1>{String(data.fullName)}</h1>
-          <p className="muted-text">
-            Students complete their own academic and placement profiles in Smart Path. Use this page to review completion, monitor readiness, and track outcomes.
-          </p>
-        </div>
-        <div className="hero-actions">
+      <TpoWorkspaceHeader
+        eyebrow="TPO Student Review"
+        greeting={getTpoGreeting(profile?.full_name ?? "Placement team")}
+        title={String(data.fullName)}
+        description="Students complete their own academic and placement profiles in Smart Path. Use this page to review completion, monitor readiness, and track outcomes."
+        primaryAction={(
           <Link to="/tpo/students">
             <Button variant="secondary">Back to Students</Button>
           </Link>
-          <Link to="/tpo/reports">
-            <Button variant="ghost">Open Reports</Button>
-          </Link>
-        </div>
-      </header>
+        )}
+        actionMenu={(
+          <TpoActionMenu
+            items={[
+              { label: "Open reports", href: "/tpo/reports" },
+              { label: "Open communication", href: "/tpo/communication?view=compose-email" },
+            ]}
+          />
+        )}
+      />
 
       <div className="workspace-context-strip">
         <strong>{data.email}</strong>
@@ -230,18 +238,12 @@ export default function TpoStudentDetailPage() {
 
       {proofStatus ? <p className={proofStatus.includes("updated") ? "success-text" : "error-text"}>{proofStatus}</p> : null}
 
-      <nav className="workspace-subnav" aria-label="TPO student sections">
-        {sections.map((section) => (
-          <button
-            key={section.id}
-            type="button"
-            className={section.id === activeSection ? "workspace-subnav-link is-active" : "workspace-subnav-link"}
-            onClick={() => setActiveSection(section.id)}
-          >
-            {section.label}
-          </button>
-        ))}
-      </nav>
+      <TpoSubviewSwitcher
+        label="TPO student sections"
+        items={sections.map((section) => ({ id: section.id, label: section.label }))}
+        activeId={activeSection}
+        onChange={(next) => setActiveSection(next as SectionId)}
+      />
 
       {activeSection === "overview" ? (
         <div className="workspace-panel">

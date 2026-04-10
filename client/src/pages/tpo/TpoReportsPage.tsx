@@ -1,12 +1,18 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
+import { TpoActionMenu } from "../../components/composites/TpoActionMenu";
+import { TpoSubviewSwitcher } from "../../components/composites/TpoSubviewSwitcher";
+import { TpoWorkspaceHeader } from "../../components/composites/TpoWorkspaceHeader";
+import { useAuth } from "../../components/providers/AuthProvider";
 import { Badge, Button, Input, Select, Table, Tabs } from "../../components/ui";
+import { getTpoGreeting } from "../../config/tpo-workspace";
 import { useTpoControlCenter } from "../../hooks/use-analytics";
 import { extractReportPayload, regenerateScheduledReportRun, useScheduledReportPacks } from "../../hooks/use-tpo-automation";
 import { downloadReport, type ReportFilters, type ReportType, useReportPreview, useReportTemplates } from "../../hooks/use-reports";
 
 type ReportGroup = "Must-have Reports" | "Compliance / Evidence" | "Operational Tracking" | "Exports";
+type ReportsView = "report-browser" | "scheduled-pack" | "export-library";
 
 const groupTabs: Array<{ id: ReportGroup; label: string }> = [
   { id: "Must-have Reports", label: "Must-have" },
@@ -86,10 +92,11 @@ function getFilters(params: URLSearchParams): ReportFilters {
 }
 
 export default function TpoReportsPage() {
+  const { profile } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [showMoreFilters, setShowMoreFilters] = useState(false);
-  const [showExportLibrary, setShowExportLibrary] = useState(false);
-  const exportLibraryRef = useRef<HTMLDivElement | null>(null);
+  const scheduledReportsRef = useRef<HTMLDivElement | null>(null);
   const filterPanelRef = useRef<HTMLDivElement | null>(null);
   const previewPanelRef = useRef<HTMLDivElement | null>(null);
   const templates = useReportTemplates();
@@ -99,6 +106,10 @@ export default function TpoReportsPage() {
   const rawGroup = searchParams.get("group");
   const requestedReport: ReportType | null = isValidReportType(rawReportType) ? rawReportType : null;
   const requestedGroup: ReportGroup | null = isValidGroup(rawGroup) ? rawGroup : null;
+  const requestedView = searchParams.get("view");
+  const activeView: ReportsView = requestedView === "scheduled-pack" || requestedView === "export-library" || requestedView === "report-browser"
+    ? requestedView
+    : "report-browser";
   const reportOwnedGroup = requestedReport ? reportGroupByType[requestedReport] : null;
   const group = reportOwnedGroup ?? requestedGroup ?? "Must-have Reports";
   const activeReport = requestedReport || defaultReportByGroup[group];
@@ -141,6 +152,36 @@ export default function TpoReportsPage() {
     [group, templates.data],
   );
 
+  useEffect(() => {
+    if (searchParams.get("focus") !== "scheduled-reports") return;
+    if (!scheduledReports.data || scheduledReports.data.length === 0) return;
+    window.setTimeout(() => {
+      scheduledReportsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 120);
+  }, [scheduledReports.data, searchParams]);
+
+  useEffect(() => {
+    const hasActiveFilters = Boolean(
+      filters.preset !== "placement_season"
+      || filters.academicYear !== "2025-2026"
+      || filters.dateFrom
+      || filters.dateTo
+      || filters.branch
+      || filters.company
+      || filters.sector
+      || filters.driveStatus
+      || filters.placementSource
+      || filters.verificationStatus
+      || filters.campusMode
+      || filters.driveId
+      || filters.includeOffCampus !== undefined,
+    );
+
+    if (hasActiveFilters) {
+      setFiltersOpen(true);
+    }
+  }, [filters]);
+
   const updateParam = (key: string, value?: string | boolean) => {
     const next = new URLSearchParams(searchParams);
     if (value === undefined || value === "") next.delete(key);
@@ -148,11 +189,11 @@ export default function TpoReportsPage() {
     setSearchParams(next);
   };
 
-  const scrollToSection = (target: "exports" | "filters" | "preview") => {
-    const targetRef = target === "exports"
-      ? exportLibraryRef
-      : target === "filters"
-        ? filterPanelRef
+  const scrollToSection = (target: "filters" | "preview" | "scheduled") => {
+    const targetRef = target === "filters"
+      ? filterPanelRef
+      : target === "scheduled"
+        ? scheduledReportsRef
         : previewPanelRef;
 
     window.setTimeout(() => {
@@ -172,43 +213,80 @@ export default function TpoReportsPage() {
 
   return (
     <section className="tpo-reports-shell">
-      <header className="tpo-reports-header">
-        <div>
-          <h1>Reports</h1>
-          <p>
-            Use reports to prove readiness, intervention progress, and placement operations to principals, review committees, and the placement team.
-            Choose one report, adjust the period, then export a clean review-ready version.
-          </p>
-        </div>
-        <div className="tpo-reports-header-actions">
-          <div className="tpo-reports-header-primary-actions">
-            <Button variant="secondary" onClick={openEvidencePack}>Open NAAC Evidence Pack</Button>
-            <Button
-              variant="ghost"
-              onClick={() => {
-                setShowExportLibrary((current) => {
-                  const next = !current;
-                  if (next) {
-                    scrollToSection("exports");
-                  }
-                  return next;
-                });
-              }}
-            >
-              {showExportLibrary ? "Hide All Report Downloads" : "Show All Report Downloads"}
-            </Button>
-          </div>
-          {previewData ? (
-            <div className="tpo-reports-header-export-actions">
-              <Button onClick={() => downloadReport(activeReport, filters, "xlsx")}>Export Excel</Button>
-              <Button variant="secondary" onClick={() => downloadReport(activeReport, filters, "csv")}>Export CSV</Button>
-              <Button variant="secondary" onClick={() => downloadReport(activeReport, filters, "pdf")}>Export PDF</Button>
-            </div>
-          ) : null}
-        </div>
-      </header>
+      <TpoWorkspaceHeader
+        eyebrow="Reports"
+        greeting={getTpoGreeting(profile?.full_name ?? "Placement team")}
+        title="Open one report workspace at a time."
+        description="Use reports to prove readiness, intervention progress, and placement operations to principals, review committees, and the placement team. The selected report or pack should stay central on screen."
+        primaryAction={(
+          <Button variant="secondary" onClick={openEvidencePack}>Open NAAC Evidence Pack</Button>
+        )}
+        secondaryAction={activeView === "report-browser" ? (
+          <Button
+            onClick={() => {
+              if (filtersOpen) {
+                setFiltersOpen(false);
+                setShowMoreFilters(false);
+              } else {
+                setFiltersOpen(true);
+              }
+            }}
+          >
+            Filters
+          </Button>
+        ) : undefined}
+        actionMenu={(
+          <TpoActionMenu
+            items={[
+              {
+                label: "Open report browser",
+                onSelect: () => setSearchParams(new URLSearchParams({ ...Object.fromEntries(searchParams.entries()), view: "report-browser" })),
+              },
+              {
+                label: "Open scheduled pack",
+                onSelect: () => {
+                  const next = new URLSearchParams(searchParams);
+                  next.set("view", "scheduled-pack");
+                  setSearchParams(next, { replace: true });
+                  scrollToSection("scheduled");
+                },
+              },
+              {
+                label: "Open export library",
+                onSelect: () => {
+                  const next = new URLSearchParams(searchParams);
+                  next.set("view", "export-library");
+                  setSearchParams(next, { replace: true });
+                },
+              },
+              ...(previewData
+                ? [
+                    { label: "Export Excel", onSelect: () => downloadReport(activeReport, filters, "xlsx") },
+                    { label: "Export CSV", onSelect: () => downloadReport(activeReport, filters, "csv") },
+                    { label: "Export PDF", onSelect: () => downloadReport(activeReport, filters, "pdf") },
+                  ]
+                : []),
+            ]}
+          />
+        )}
+      />
 
-      {pilotProofStrip.length > 0 ? (
+      <TpoSubviewSwitcher
+        label="Reports workspace views"
+        items={[
+          { id: "report-browser", label: "Report Browser" },
+          { id: "scheduled-pack", label: "Scheduled Report Pack" },
+          { id: "export-library", label: "Export Library" },
+        ]}
+        activeId={activeView}
+        onChange={(next) => {
+          const nextParams = new URLSearchParams(searchParams);
+          nextParams.set("view", String(next));
+          setSearchParams(nextParams, { replace: true });
+        }}
+      />
+
+      {activeView === "report-browser" && pilotProofStrip.length > 0 ? (
         <section className="tpo-reports-block">
           <div className="workspace-panel-header">
             <div>
@@ -230,37 +308,58 @@ export default function TpoReportsPage() {
       ) : null}
 
       <section className="tpo-reports-flow">
-        {scheduledReports.data && scheduledReports.data.length > 0 ? (
-          <div className="tpo-reports-block">
+        {activeView === "scheduled-pack" && scheduledReports.data && scheduledReports.data.length > 0 ? (
+          <div ref={scheduledReportsRef} className="tpo-reports-block">
             <div className="workspace-panel-header">
               <div>
-                <p className="workspace-eyebrow">Scheduled Exports</p>
-                <h2>Weekly and monthly report packs</h2>
+                <p className="workspace-eyebrow">Scheduled Report Pack</p>
+                <h2>Auto-prepared reports for the placement office</h2>
               </div>
-              <p className="muted-text">These packs are generated automatically. Downloads still use the live export path, so files stay fresh at download time.</p>
+              <p className="muted-text">Download the automatically prepared report pack or export individual reports. These reports are prepared automatically so the placement office can export them quickly.</p>
             </div>
             <div className="tpo-reports-chooser">
               {scheduledReports.data.map((run) => (
                 <div key={run.id} className="tpo-report-row">
                   <div>
-                    <strong>{String((run.preview as { title?: string }).title ?? run.automationType)}</strong>
+                    <strong>{String((run.preview as { title?: string }).title ?? "Scheduled Report Pack")}</strong>
                     <span>{run.explanation}</span>
+                    <span className="muted-text">
+                      Generated {new Date(run.createdAt).toLocaleString()} | {run.items.length} included report{run.items.length === 1 ? "" : "s"}
+                    </span>
                   </div>
-                  <div className="hero-actions">
+                  <div className="tpo-report-row-actions">
                     {run.items.map((item) => {
                       const report = extractReportPayload(item);
                       return (
-                        <div key={`${run.id}-${item.id}`} className="hero-actions">
-                          <Button variant="ghost" onClick={() => downloadReport(report.reportType, report.filters, "xlsx")}>
-                            {report.title}
-                          </Button>
-                          <Button variant="secondary" onClick={() => downloadReport(report.reportType, report.filters, "csv")}>CSV</Button>
-                          <Button variant="secondary" onClick={() => downloadReport(report.reportType, report.filters, "pdf")}>PDF</Button>
+                        <div key={`${run.id}-${item.id}`} className="tpo-report-download-item">
+                          <div>
+                            <strong>{report.title}</strong>
+                            <span className="muted-text">Ready in Excel, CSV, or PDF</span>
+                          </div>
+                          <TpoActionMenu
+                            label="Download"
+                            items={[
+                              { label: "Download Excel", onSelect: () => downloadReport(report.reportType, report.filters, "xlsx") },
+                              { label: "Download CSV", onSelect: () => downloadReport(report.reportType, report.filters, "csv") },
+                              { label: "Download PDF", onSelect: () => downloadReport(report.reportType, report.filters, "pdf") },
+                              {
+                                label: "Open in report browser",
+                                onSelect: () => {
+                                  const next = new URLSearchParams(searchParams);
+                                  next.set("view", "report-browser");
+                                  next.set("group", reportGroupByType[report.reportType]);
+                                  next.set("reportType", report.reportType);
+                                  setSearchParams(next, { replace: true });
+                                  scrollToSection("preview");
+                                },
+                              },
+                            ]}
+                          />
                         </div>
                       );
                     })}
                     <Button
-                      variant="ghost"
+                      variant="secondary"
                       onClick={async () => {
                         try {
                           await regenerateScheduledReportRun(run.id);
@@ -269,7 +368,7 @@ export default function TpoReportsPage() {
                         }
                       }}
                     >
-                      Regenerate now
+                      Regenerate pack
                     </Button>
                   </div>
                 </div>
@@ -278,8 +377,8 @@ export default function TpoReportsPage() {
           </div>
         ) : null}
 
-        {showExportLibrary ? (
-          <div ref={exportLibraryRef} className="tpo-reports-block">
+        {activeView === "export-library" ? (
+          <div className="tpo-reports-block">
             <div className="workspace-panel-header">
               <div>
                 <p className="workspace-eyebrow">Export Library</p>
@@ -296,9 +395,8 @@ export default function TpoReportsPage() {
                     <strong>{template.title}</strong>
                     <span>{template.description}</span>
                   </div>
-                  <div className="hero-actions">
+                  <div className="tpo-report-row-actions">
                     <Button
-                      variant="ghost"
                       onClick={() => {
                         const next = new URLSearchParams(searchParams);
                         next.set("group", template.group);
@@ -309,9 +407,14 @@ export default function TpoReportsPage() {
                     >
                       View Report
                     </Button>
-                    <Button variant="secondary" onClick={() => downloadReport(template.type, filters, "xlsx")}>Excel</Button>
-                    <Button variant="secondary" onClick={() => downloadReport(template.type, filters, "csv")}>CSV</Button>
-                    <Button variant="secondary" onClick={() => downloadReport(template.type, filters, "pdf")}>PDF</Button>
+                    <TpoActionMenu
+                      label="Download"
+                      items={[
+                        { label: "Download Excel", onSelect: () => downloadReport(template.type, filters, "xlsx") },
+                        { label: "Download CSV", onSelect: () => downloadReport(template.type, filters, "csv") },
+                        { label: "Download PDF", onSelect: () => downloadReport(template.type, filters, "pdf") },
+                      ]}
+                    />
                   </div>
                 </div>
               ))}
@@ -319,6 +422,7 @@ export default function TpoReportsPage() {
           </div>
         ) : null}
 
+        {activeView === "report-browser" ? (
         <div className="tpo-reports-block">
           <Tabs
             tabs={groupTabs}
@@ -333,7 +437,9 @@ export default function TpoReportsPage() {
             }}
           />
         </div>
+        ) : null}
 
+        {activeView === "report-browser" ? (
         <div className="tpo-reports-block">
           <div className="tpo-reports-chooser">
             {groupedTemplates.map((template) => {
@@ -358,8 +464,9 @@ export default function TpoReportsPage() {
             })}
           </div>
         </div>
+        ) : null}
 
-        {plannedNextByGroup[group].length > 0 ? (
+        {activeView === "report-browser" && plannedNextByGroup[group].length > 0 ? (
           <div className="tpo-reports-block">
             <div className="tpo-reports-chooser">
               {plannedNextByGroup[group].map((item: { title: string; note: string }) => (
@@ -375,7 +482,43 @@ export default function TpoReportsPage() {
           </div>
         ) : null}
 
+        {activeView === "report-browser" && filtersOpen ? (
         <div ref={filterPanelRef} className="tpo-reports-block">
+          <div className="workspace-panel-header">
+            <div>
+              <p className="workspace-eyebrow">Filters</p>
+              <h2>Adjust the current report view</h2>
+              <p className="muted-text">Use the main filters first. Open more filters only when the selected report still needs tighter targeting.</p>
+            </div>
+            <div className="hero-actions tpo-reports-filter-actions-row">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setSearchParams(new URLSearchParams({ group, reportType: activeReport, preset: "placement_season", academicYear: "2025-2026" }));
+                  setFiltersOpen(false);
+                  setShowMoreFilters(false);
+                  scrollToSection("preview");
+                }}
+              >
+                Reset Filters
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setShowMoreFilters((current) => {
+                    const next = !current;
+                    if (next) {
+                      scrollToSection("filters");
+                    }
+                    return next;
+                  });
+                }}
+              >
+                More Filters
+              </Button>
+            </div>
+          </div>
+
           <div className="tpo-reports-filter-bar">
             <label>
               Period
@@ -399,48 +542,6 @@ export default function TpoReportsPage() {
               Company
               <Input value={filters.company ?? ""} onChange={(event) => updateParam("company", event.target.value)} placeholder="All" />
             </label>
-            <div className="tpo-reports-filter-actions">
-              <div className="hero-actions tpo-reports-filter-actions-row">
-                <Button
-                  variant="ghost"
-                  onClick={() => {
-                    setShowMoreFilters((current) => {
-                      const next = !current;
-                      if (next) {
-                        scrollToSection("filters");
-                      }
-                      return next;
-                    });
-                  }}
-                >
-                  {showMoreFilters ? "Less Filters" : "More Filters"}
-                </Button>
-                <Button
-                  variant="ghost"
-                  onClick={() => {
-                    setSearchParams(new URLSearchParams({ group, reportType: activeReport, preset: "placement_season", academicYear: "2025-2026" }));
-                    scrollToSection("preview");
-                  }}
-                >
-                  Reset
-                </Button>
-              </div>
-              <Button
-                variant="secondary"
-                className="tpo-reports-download-toggle"
-                onClick={() => {
-                  setShowExportLibrary((current) => {
-                    const next = !current;
-                    if (next) {
-                      scrollToSection("exports");
-                    }
-                    return next;
-                  });
-                }}
-              >
-                {showExportLibrary ? "Hide All Report Downloads" : "Show All Report Downloads"}
-              </Button>
-            </div>
           </div>
 
           {showMoreFilters ? (
@@ -488,7 +589,9 @@ export default function TpoReportsPage() {
             </div>
           ) : null}
         </div>
+        ) : null}
 
+        {activeView === "report-browser" ? (
         <div ref={previewPanelRef} className="tpo-reports-block">
           {isPreviewPending ? (
             <p className="muted-text">Loading report preview...</p>
@@ -561,7 +664,9 @@ export default function TpoReportsPage() {
             </div>
           )}
         </div>
+        ) : null}
       </section>
     </section>
   );
 }
+

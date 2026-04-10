@@ -1,7 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { useMemo, useState } from "react";
 
+import { TpoActionMenu } from "../../components/composites/TpoActionMenu";
+import { TpoSubviewSwitcher } from "../../components/composites/TpoSubviewSwitcher";
+import { TpoWorkspaceHeader } from "../../components/composites/TpoWorkspaceHeader";
+import { useAuth } from "../../components/providers/AuthProvider";
 import { Button, Card, Input, Select } from "../../components/ui";
+import { getTpoGreeting } from "../../config/tpo-workspace";
 import {
   createDrive,
   previewDriveEligibility,
@@ -9,6 +14,7 @@ import {
 } from "../../hooks/use-drives";
 
 export default function TpoDriveCreatePage() {
+  const { profile } = useAuth();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [busy, setBusy] = useState(false);
@@ -157,11 +163,35 @@ export default function TpoDriveCreatePage() {
   };
 
   return (
-    <section className="dashboard-grid tpo-drive-create-page">
-      <Card className="tpo-form-card tpo-step-card">
-        <h1>Create Drive</h1>
-        <p>Step {step} of 3</p>
-      </Card>
+    <section className="tpo-page-shell tpo-drive-create-page">
+      <TpoWorkspaceHeader
+        eyebrow="Create Drive"
+        greeting={getTpoGreeting(profile?.full_name ?? "Placement team")}
+        title="Set up one drive carefully before publishing it."
+        description="This flow keeps company details, eligibility, and review separate so the page stays calm while you build the drive."
+        primaryAction={(
+          <Button variant="secondary" onClick={() => setStep(1)}>Start from Step 1</Button>
+        )}
+        actionMenu={(
+          <TpoActionMenu
+            items={[
+              { label: "Open drives", href: "/tpo/drives" },
+              { label: "Open reports", href: "/tpo/reports" },
+            ]}
+          />
+        )}
+      />
+
+      <TpoSubviewSwitcher
+        label="Drive creation steps"
+        items={[
+          { id: "1", label: "Company & Date" },
+          { id: "2", label: "Eligibility" },
+          { id: "3", label: "Review & Publish" },
+        ]}
+        activeId={String(step)}
+        onChange={(next) => setStep(Number(next))}
+      />
 
       {step === 1 ? (
         <Card className="tpo-form-card">

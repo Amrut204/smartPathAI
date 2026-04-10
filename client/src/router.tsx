@@ -34,6 +34,8 @@ const TpoDriveResultsPage = lazy(() => import("./pages/tpo/TpoDriveResultsPage")
 const TpoReportsPage = lazy(() => import("./pages/tpo/TpoReportsPage"));
 const TpoCommunicationPage = lazy(() => import("./pages/tpo/TpoCommunicationPage"));
 const TpoCommunicationComposePage = lazy(() => import("./pages/tpo/TpoCommunicationComposePage"));
+const TpoStudentUploadPage = lazy(() => import("./pages/tpo/TpoStudentUploadPage"));
+const TpoWhatsNewPage = lazy(() => import("./pages/tpo/TpoWhatsNewPage"));
 const AdminHubPage = lazy(() => import("./pages/admin/AdminHubPage"));
 
 function getDefaultRouteForRole(role: "student" | "tpo" | "admin") {
@@ -328,7 +330,7 @@ const router = createBrowserRouter([
         children: [
           { path: "/tpo/dashboard", element: renderRoute(<TpoDashboardPage />) },
           { path: "/tpo/students", element: renderRoute(<TpoStudentsPage />) },
-          { path: "/tpo/students/upload", element: <Navigate to="/tpo/students" replace /> },
+          { path: "/tpo/students/upload", element: renderRoute(<TpoStudentUploadPage />) },
           { path: "/tpo/students/:studentId", element: renderRoute(<TpoStudentDetailPage />) },
           { path: "/tpo/drives", element: renderRoute(<TpoDrivesPage />) },
           { path: "/tpo/drives/create", element: renderRoute(<TpoDriveCreatePage />) },
@@ -342,6 +344,7 @@ const router = createBrowserRouter([
           { path: "/tpo/analytics/placement", element: <Navigate to="/tpo/reports" replace /> },
           { path: "/tpo/communication", element: renderRoute(<TpoCommunicationPage />) },
           { path: "/tpo/communication/compose", element: renderRoute(<TpoCommunicationComposePage />) },
+          { path: "/tpo/whats-new", element: renderRoute(<TpoWhatsNewPage />) },
         ],
       },
     ],

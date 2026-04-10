@@ -19,7 +19,7 @@ export default function TpoStoragePage() {
   const { status, config, history } = data;
 
   return (
-    <section className="dashboard-grid">
+    <section className="tpo-page-shell">
       <Card className="career-hero-card control-center-hero-card">
         <h1>Resource Storage Guardrails</h1>
         <p className="muted-text">

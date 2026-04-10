@@ -1,18 +1,20 @@
+import { TpoWorkspaceHeader } from "../../components/composites/TpoWorkspaceHeader";
+import { useAuth } from "../../components/providers/AuthProvider";
 import { Card } from "../../components/ui";
+import { getTpoGreeting } from "../../config/tpo-workspace";
 import { tpoWhatsNewEntries } from "../../config/tpo-whats-new";
 
 export default function TpoWhatsNewPage() {
+  const { profile } = useAuth();
+
   return (
     <section className="tpo-dashboard control-center-page">
-      <Card className="career-hero-card control-center-hero-card">
-        <div className="tpo-ops-hero-copy">
-          <p className="workspace-eyebrow">What&apos;s New</p>
-          <h1>Recent product changes for placement operations.</h1>
-          <p className="muted-text">
-            This is a lightweight changelog for TPOs so new capabilities are visible inside the product instead of depending on manual updates.
-          </p>
-        </div>
-      </Card>
+      <TpoWorkspaceHeader
+        eyebrow="What's New"
+        greeting={getTpoGreeting(profile?.full_name ?? "Placement team")}
+        title="Recent product changes for placement operations."
+        description="This lightweight changelog keeps new capabilities visible inside the product instead of depending on manual updates."
+      />
 
       <div className="tpo-whats-new-grid">
         {tpoWhatsNewEntries.map((entry) => (

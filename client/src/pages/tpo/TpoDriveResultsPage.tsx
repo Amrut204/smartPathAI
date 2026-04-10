@@ -1,7 +1,11 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import { TpoActionMenu } from "../../components/composites/TpoActionMenu";
+import { TpoWorkspaceHeader } from "../../components/composites/TpoWorkspaceHeader";
+import { useAuth } from "../../components/providers/AuthProvider";
 import { Badge, Button, Card, ConfirmActionModal, Input, Select, Table } from "../../components/ui";
+import { getTpoGreeting } from "../../config/tpo-workspace";
 import {
   previewDriveResultRelease,
   releaseDriveResults,
@@ -35,6 +39,7 @@ interface DraftRow {
 }
 
 export default function TpoDriveResultsPage() {
+  const { profile } = useAuth();
   const { driveId } = useParams();
 
   const { data: drive, isLoading: driveLoading } = useDriveById(driveId ?? null);
@@ -218,28 +223,34 @@ export default function TpoDriveResultsPage() {
   };
 
   return (
-    <section className="dashboard-grid tpo-drive-results-page">
-      <Card className="tpo-table-actions-card">
-        <h1>Drive Results: {drive.company}</h1>
-        <p>Save employer outcomes internally, review readiness, then release official result emails to students.</p>
-
-        <div className="hero-actions">
-          <Link to={`/tpo/drives/${drive.id}`}>
-            <Button variant="ghost">Back to Drive</Button>
-          </Link>
-          <Link to={`/tpo/reports?group=Drive+Reports&reportType=drive_completion_summary&driveId=${drive.id}`}>
-            <Button variant="secondary">Generate Drive Summary</Button>
-          </Link>
-          <Button variant="secondary" onClick={onDownloadCsv}>
-            Download CSV
-          </Button>
+    <section className="tpo-page-shell tpo-drive-results-page">
+      <TpoWorkspaceHeader
+        eyebrow="Drive Results"
+        greeting={getTpoGreeting(profile?.full_name ?? "Placement team")}
+        title={`Drive Results: ${drive.company}`}
+        description="Save employer outcomes internally, review readiness, then release official result emails to students."
+        primaryAction={(
           <Button disabled={busy} onClick={() => void onSave(false)}>
             {busy ? "Saving..." : "Save"}
           </Button>
-          <Button disabled={busy} onClick={() => void onSave(true)}>
+        )}
+        secondaryAction={(
+          <Button variant="secondary" disabled={busy} onClick={() => void onSave(true)}>
             {busy ? "Saving..." : "Save + Mark Completed"}
           </Button>
-        </div>
+        )}
+        actionMenu={(
+          <TpoActionMenu
+            items={[
+              { label: "Back to drive", href: `/tpo/drives/${drive.id}` },
+              { label: "Generate drive summary", href: `/tpo/reports?group=Must-have+Reports&reportType=drive_completion_summary&driveId=${drive.id}` },
+              { label: "Download CSV", onSelect: onDownloadCsv },
+            ]}
+          />
+        )}
+      />
+
+      <Card className="tpo-table-actions-card">
 
         <div className="form-grid">
           <label>

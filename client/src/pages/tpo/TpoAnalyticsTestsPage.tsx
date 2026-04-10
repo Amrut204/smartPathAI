@@ -21,7 +21,7 @@ export default function TpoAnalyticsTestsPage() {
   }));
 
   return (
-    <section className="dashboard-grid">
+    <section className="tpo-page-shell">
       <Card>
         <h1>Test Completion Analytics</h1>
         <p>Completion coverage and performance by mock test.</p>

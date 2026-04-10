@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import { useMemo, useState } from "react";
 
-import { Badge, Button } from "../../components/ui";
+import { TpoActionMenu } from "../../components/composites/TpoActionMenu";
+import { TpoWorkspaceHeader } from "../../components/composites/TpoWorkspaceHeader";
+import { useAuth } from "../../components/providers/AuthProvider";
+import { Badge, Button, Select } from "../../components/ui";
+import { getTpoGreeting } from "../../config/tpo-workspace";
 import { deleteDrive, useDrives, type DriveSummary } from "../../hooks/use-drives";
 
 const statusTabs: Array<{ id: DriveSummary["status"]; label: string }> = [
@@ -16,7 +20,9 @@ const statusTabs: Array<{ id: DriveSummary["status"]; label: string }> = [
 ];
 
 export default function TpoDrivesPage() {
+  const { profile } = useAuth();
   const [status, setStatus] = useState<DriveSummary["status"]>("published");
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [busyDriveId, setBusyDriveId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { data, isLoading, mutate } = useDrives({ status });
@@ -41,30 +47,66 @@ export default function TpoDrivesPage() {
 
   return (
     <section className="tpo-drives-shell">
-      <header className="tpo-drives-header">
-        <div>
-          <h1>Drive Management</h1>
-          <p className="muted-text">Switch between drive states from one compact control bar and review the selected list full-width.</p>
-        </div>
-        <Link to="/tpo/drives/create">
-          <Button>Create Drive</Button>
-        </Link>
-      </header>
+      <TpoWorkspaceHeader
+        eyebrow="Drives"
+        greeting={getTpoGreeting(profile?.full_name ?? "Placement team")}
+        title="Manage one drive queue at a time."
+        description="Choose a drive state below, review that list in full, and keep lower-priority actions tucked away instead of crowding the page."
+        primaryAction={(
+          <Link to="/tpo/drives/create">
+            <Button>Create Drive</Button>
+          </Link>
+        )}
+        secondaryAction={(
+          <Button
+            variant="secondary"
+            onClick={() => setFiltersOpen((current) => !current)}
+          >
+            Filters
+          </Button>
+        )}
+        actionMenu={(
+          <TpoActionMenu
+            items={[
+              { label: "Open Reports", href: "/tpo/reports" },
+              { label: "Open Communication", href: "/tpo/communication" },
+            ]}
+          />
+        )}
+      />
 
-      <nav className="tpo-drives-subnav" aria-label="Drive status filters">
-        <div className="tpo-drives-subnav-links">
-          {statusTabs.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className={status === item.id ? "tpo-drives-subnav-link is-active" : "tpo-drives-subnav-link"}
-              onClick={() => setStatus(item.id)}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-      </nav>
+      {filtersOpen ? (
+        <section className="tpo-drives-panel">
+          <div className="workspace-panel-header">
+            <div>
+              <p className="workspace-eyebrow">Filters</p>
+              <h2>Choose which drive queue to review</h2>
+              <p className="muted-text">Use one status at a time so the drive list stays focused.</p>
+            </div>
+            <div className="hero-actions">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setStatus("published");
+                  setFiltersOpen(false);
+                }}
+              >
+                Reset Filters
+              </Button>
+            </div>
+          </div>
+          <div className="tpo-compact-select-grid">
+            <label>
+              Drive status
+              <Select value={status} onChange={(event) => setStatus(event.target.value as DriveSummary["status"])}>
+                {statusTabs.map((item) => (
+                  <option key={item.id} value={item.id}>{item.label}</option>
+                ))}
+              </Select>
+            </label>
+          </div>
+        </section>
+      ) : null}
 
       <section className="tpo-drives-panel">
         <div className="tpo-drives-panel-head">
@@ -106,16 +148,21 @@ export default function TpoDrivesPage() {
                   <td>
                     <div className="tpo-drives-actions">
                       <Link to={`/tpo/drives/${drive.id}`}>Open</Link>
-                      <Link to={`/tpo/drives/${drive.id}/results`}>Results</Link>
-                      {drive.status !== "cancelled" ? (
-                        <Button
-                          variant="ghost"
-                          disabled={busyDriveId === drive.id}
-                          onClick={() => onDelete(drive.id)}
-                        >
-                          {busyDriveId === drive.id ? "Cancelling..." : "Cancel"}
-                        </Button>
-                      ) : null}
+                      <TpoActionMenu
+                        items={[
+                          { label: "Open Results", href: `/tpo/drives/${drive.id}/results` },
+                          ...(drive.status !== "cancelled"
+                            ? [{
+                              label: busyDriveId === drive.id ? "Cancelling..." : "Cancel Drive",
+                              onSelect: () => {
+                                if (busyDriveId === drive.id) return;
+                                void onDelete(drive.id);
+                              },
+                              tone: "danger" as const,
+                            }]
+                            : []),
+                        ]}
+                      />
                     </div>
                   </td>
                 </tr>

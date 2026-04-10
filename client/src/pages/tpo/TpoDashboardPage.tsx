@@ -3,13 +3,22 @@ import { mutate } from "swr";
 import { Link } from "react-router-dom";
 
 import { Badge, Button, Card, ConfirmActionModal, Skeleton, Table } from "../../components/ui";
+import { TpoActionMenu } from "../../components/composites/TpoActionMenu";
+import { TpoSubviewSwitcher } from "../../components/composites/TpoSubviewSwitcher";
+import { TpoWorkspaceHeader } from "../../components/composites/TpoWorkspaceHeader";
 import { AnimatedNumber } from "../../components/motion/AnimatedNumber";
 import { useTpoControlCenter } from "../../hooks/use-analytics";
 import { runAutomationNow, useTpoAutomationSummary } from "../../hooks/use-tpo-automation";
 import { computeDriveEligibility } from "../../hooks/use-drives";
-import { approveSupportRequest, denySupportRequest, resolveStudentSupportRequest } from "../../hooks/use-support";
-import { reviewStudentUnlockRequest } from "../../hooks/use-tpo-students";
+import { getTpoGreeting } from "../../config/tpo-workspace";
 import { tpoWhatsNewEntries } from "../../config/tpo-whats-new";
+import {
+  getAutomationDisplayMeta,
+  getAutomationRunCountLabel,
+  getAutomationRunReason,
+  getAutomationRunTargetPath,
+  getAutomationRunTitle,
+} from "../../config/tpo-automation-display";
 import { useAuth } from "../../components/providers/AuthProvider";
 
 function formatDate(value: string | null | undefined) {
@@ -24,12 +33,6 @@ function formatDateTime(value: string | null | undefined) {
   const parsed = new Date(value);
   if (Number.isNaN(parsed.getTime())) return value;
   return parsed.toLocaleString();
-}
-
-function badgeVariantFromPriority(priority: string) {
-  if (priority === "high") return "danger" as const;
-  if (priority === "medium") return "warning" as const;
-  return "default" as const;
 }
 
 function badgeVariantFromRisk(score: number) {
@@ -75,6 +78,7 @@ export default function TpoDashboardPage() {
   const { data, isLoading, error } = useTpoControlCenter();
   const automationSummary = useTpoAutomationSummary();
   const { profile } = useAuth();
+  const [activePane, setActivePane] = useState<"today" | "students" | "drives" | "reports" | "updates">("today");
   const [pendingExport, setPendingExport] = useState<null | {
     title: string;
     href: string;
@@ -104,7 +108,7 @@ export default function TpoDashboardPage() {
   const checklistSteps = [
     { id: "students", label: "Import students", href: "/tpo/students/upload", complete: data.summary.totalStudents > 0 },
     { id: "drives", label: "Create your first drive", href: "/tpo/drives/create", complete: data.summary.totalDrives > 0 },
-    { id: "announcements", label: "Send an announcement", href: "/tpo/communication", complete: data.summary.outreachStartedCount > 0 },
+    { id: "announcements", label: "Send an announcement", href: "/tpo/communication?view=announcements", complete: data.summary.outreachStartedCount > 0 },
     { id: "ready", label: "You are ready", href: null, complete: data.summary.totalStudents > 0 && data.summary.totalDrives > 0 && data.summary.outreachStartedCount > 0 },
   ];
   const checklistComplete = checklistSteps.every((step) => step.complete);
@@ -132,17 +136,6 @@ export default function TpoDashboardPage() {
     },
   ];
 
-  const needsAttentionItems = [
-    ...data.dashboardQueues.profileUnlockRequests.items.slice(0, 3),
-    ...data.dashboardQueues.studentSupportRequests.items.slice(0, 3),
-    ...data.dashboardQueues.communicationTasks.items.slice(0, 3),
-  ]
-    .sort((a, b) => {
-      const priorityWeight = (value: string) => (value === "high" ? 2 : value === "medium" ? 1 : 0);
-      return priorityWeight(b.priority) - priorityWeight(a.priority);
-    })
-    .slice(0, 8);
-
   const followUpStudents = [
     ...data.actionCenter.studentsToContactToday,
     ...data.actionCenter.readyButInactive,
@@ -150,6 +143,7 @@ export default function TpoDashboardPage() {
   ]
     .filter((student, index, list) => list.findIndex((candidate) => candidate.studentId === student.studentId) === index)
     .slice(0, 12);
+
   const pilotProof = data.pilotProof ?? {
     activationWindowDays: 7,
     metrics: {
@@ -204,50 +198,45 @@ export default function TpoDashboardPage() {
       releasedFirstResult: false,
     },
   };
+
   const pilotProofItems = [
     {
       label: "Activated in 7d",
       value: `${pilotProof.metrics.activatedStudents7d.pct}%`,
       countLabel: `${pilotProof.metrics.activatedStudents7d.count} students`,
-      helper: pilotProof.metrics.activatedStudents7d.helper,
     },
     {
       label: "Profiles complete",
       value: `${pilotProof.metrics.profileComplete.pct}%`,
       countLabel: `${pilotProof.metrics.profileComplete.count} students`,
-      helper: pilotProof.metrics.profileComplete.helper,
     },
     {
       label: "Resume ready",
       value: `${pilotProof.metrics.resumeReady.pct}%`,
       countLabel: `${pilotProof.metrics.resumeReady.count} students`,
-      helper: pilotProof.metrics.resumeReady.helper,
     },
     {
       label: "Eligible for drives",
       value: `${pilotProof.metrics.eligibleForUpcoming.pct}%`,
       countLabel: `${pilotProof.metrics.eligibleForUpcoming.count} students`,
-      helper: pilotProof.metrics.eligibleForUpcoming.helper,
     },
     {
       label: "Eligible not applied",
       value: `${pilotProof.metrics.eligibleButNotApplied.pct}%`,
       countLabel: `${pilotProof.metrics.eligibleButNotApplied.count} students`,
-      helper: pilotProof.metrics.eligibleButNotApplied.helper,
     },
     {
       label: "Mock adoption",
       value: `${pilotProof.metrics.mockAdoption.pct}%`,
       countLabel: `${pilotProof.metrics.mockAdoption.count} students`,
-      helper: pilotProof.metrics.mockAdoption.helper,
     },
     {
       label: "Announcement read rate",
       value: `${pilotProof.metrics.announcementReadRate.pct}%`,
       countLabel: `${pilotProof.metrics.announcementReadRate.readCount}/${pilotProof.metrics.announcementReadRate.recipientCount || 0} reads`,
-      helper: pilotProof.metrics.announcementReadRate.helper,
     },
   ];
+
   const milestoneChecklist = [
     { label: "Imported students", complete: pilotProof.milestoneChecklist.importedStudents },
     { label: "Created first drive", complete: pilotProof.milestoneChecklist.createdFirstDrive },
@@ -255,32 +244,67 @@ export default function TpoDashboardPage() {
     { label: "Released first result", complete: pilotProof.milestoneChecklist.releasedFirstResult },
   ];
 
+  const automationMetrics = automationSummary.data ? [
+    {
+      label: getAutomationDisplayMeta("eligible_not_applied").dashboardMetricLabel,
+      value: automationSummary.data.counts.eligibleNotApplied,
+      note: "Students currently sitting in reminder drafts.",
+    },
+    {
+      label: getAutomationDisplayMeta("blocked_profile_followup").dashboardMetricLabel,
+      value: automationSummary.data.counts.blockedProfiles,
+      note: "Students blocked by profile, resume, or certification gaps.",
+    },
+    {
+      label: getAutomationDisplayMeta("scheduled_report_pack").dashboardMetricLabel,
+      value: automationSummary.data.lastReportPackAt ? 1 : 0,
+      note: automationSummary.data.lastReportPackAt ? `Last prepared ${formatDateTime(automationSummary.data.lastReportPackAt)}` : "No scheduled pack generated yet.",
+    },
+    {
+      label: getAutomationDisplayMeta("unplaced_intervention_refresh").dashboardMetricLabel,
+      value: automationSummary.data.counts.unplacedIntervention,
+      note: "Students currently grouped into intervention queues.",
+    },
+  ] : [];
+
+  const greeting = getTpoGreeting(profile?.full_name ?? "Placement team");
+  const eligibleStudentQueuePath = "/tpo/students?mode=ops&view=eligible_but_not_applied";
+  const interventionQueuePath = "/tpo/students?mode=ops&view=needs_mock_push";
+  const studentsQueuePath = "/tpo/students?mode=ops&view=ready_but_inactive";
+  const reportsPath = "/tpo/reports?focus=scheduled-reports";
+  const reviewQueuePath = "/tpo/communication?view=review";
+
   if (isFullyEmptyTenant && !onboardingDismissed) {
     return (
       <section className="tpo-dashboard control-center-page">
         <Card className="career-hero-card control-center-hero-card">
-          <div className="workspace-panel-header">
-            <div>
-              <p className="workspace-eyebrow">First Run Setup</p>
-              <h1>Let&apos;s get this placement workspace ready.</h1>
-              <p className="muted-text">
-                A brand new TPO account should not feel broken or empty. We guide the first operational steps here, then hand over to
-                the full dashboard once your college data starts flowing.
-              </p>
-            </div>
-            <Link to="/tpo/whats-new">
-              <Button variant="secondary">What&apos;s New</Button>
-            </Link>
-          </div>
+          <TpoWorkspaceHeader
+            eyebrow="First Run Setup"
+            greeting={greeting}
+            title="Let's get this placement workspace ready."
+            description="A brand new TPO account should not feel broken or empty. Start with these four setup steps, then the regular dashboard takes over."
+            primaryAction={(
+              <Link to="/tpo/students/upload">
+                <Button>Import Students</Button>
+              </Link>
+            )}
+            actionMenu={(
+              <TpoActionMenu
+                items={[
+                  { label: "Create first drive", href: "/tpo/drives/create" },
+                  { label: "Open communication", href: "/tpo/communication" },
+                  { label: "What's new", href: "/tpo/whats-new" },
+                ]}
+              />
+            )}
+          />
           <div className="tpo-action-list">
             {checklistSteps.map((step, index) => (
               <div key={step.id} className="tpo-action-row">
                 <div>
                   <div className="tpo-action-row-head">
                     <strong>{index + 1}. {step.label}</strong>
-                    <Badge variant={step.complete ? "success" : "warning"}>
-                      {step.complete ? "Done" : "Pending"}
-                    </Badge>
+                    <Badge variant={step.complete ? "success" : "warning"}>{step.complete ? "Done" : "Pending"}</Badge>
                   </div>
                   <p className="muted-text">
                     {step.id === "students" ? "Upload your student roster so readiness, eligibility, and profile tracking can start." : null}
@@ -291,14 +315,10 @@ export default function TpoDashboardPage() {
                 </div>
                 {step.href ? (
                   <Link to={step.href}>
-                    <Button variant={step.complete ? "secondary" : "primary"}>
-                      {step.complete ? "Review" : "Open"}
-                    </Button>
+                    <Button variant={step.complete ? "secondary" : "primary"}>{step.complete ? "Review" : "Open"}</Button>
                   </Link>
                 ) : (
-                  <Button variant="secondary" disabled>
-                    Ready state
-                  </Button>
+                  <Button variant="secondary" disabled>Ready state</Button>
                 )}
               </div>
             ))}
@@ -307,9 +327,7 @@ export default function TpoDashboardPage() {
             <div className="hero-actions">
               <Button
                 onClick={() => {
-                  if (onboardingStorageKey) {
-                    localStorage.setItem(onboardingStorageKey, "true");
-                  }
+                  if (onboardingStorageKey) localStorage.setItem(onboardingStorageKey, "true");
                   setOnboardingDismissed(true);
                 }}
               >
@@ -324,675 +342,335 @@ export default function TpoDashboardPage() {
 
   return (
     <section className="tpo-dashboard control-center-page">
-      <Card className="career-hero-card control-center-hero-card">
-        <div className="tpo-ops-hero">
-          <div className="tpo-ops-hero-copy">
-            <p className="workspace-eyebrow">TPO Operations Console</p>
-            <h1>See what needs action first.</h1>
-            <p className="muted-text">
-              Start with the queues, drive movement, and follow-up items that need intervention today. Secondary analytics stay lower on the page.
-            </p>
-          </div>
-          <div className="hero-actions">
-            <Link to="/tpo/drives/create">
-              <Button>Create Drive</Button>
-            </Link>
-            <Link to="/tpo/communication">
-              <Button variant="secondary">Open Communication</Button>
-            </Link>
-            <Link to="/tpo/reports">
-              <Button variant="secondary">Open Reports</Button>
-            </Link>
-            <Link to="/tpo/whats-new">
-              <Button variant="secondary">What&apos;s New</Button>
-            </Link>
-          </div>
-        </div>
-        <div className="tpo-ops-signal-strip">
-          <Link className="tpo-ops-signal" to="/tpo/interventions/eligible-not-applied">
-            <span>Eligible not applied</span>
-            <strong><AnimatedNumber value={data.actionCenter.eligibleButNotApplied.length} /></strong>
+      <TpoWorkspaceHeader
+        eyebrow="TPO Workspace"
+        greeting={greeting}
+        title="Start with today's queue, then open one workspace at a time."
+        description="This dashboard is now the calm starting point for TPO work. Pick the current workspace below and focus on one operational block instead of scanning multiple competing cards."
+        primaryAction={(
+          <Link to={reviewQueuePath}>
+            <Button>Open Review Queue</Button>
           </Link>
-          <Link className="tpo-ops-signal" to="/tpo/interventions/needs-mock-push">
-            <span>Needs mock push</span>
-            <strong><AnimatedNumber value={data.actionCenter.lowReadinessNearDriveImpact.length} /></strong>
+        )}
+        secondaryAction={(
+          <Link to={studentsQueuePath}>
+            <Button variant="secondary">Open Students Queue</Button>
           </Link>
-          <Link className="tpo-ops-signal" to="/tpo/students">
-            <span>Unlock requests</span>
-            <strong><AnimatedNumber value={data.dashboardQueues.profileUnlockRequests.count} /></strong>
-          </Link>
-          <Link className="tpo-ops-signal" to="/tpo/drives">
-            <span>Low-apply drives</span>
-            <strong><AnimatedNumber value={data.drivePreparedness.items.filter((drive) => drive.lowApplyRisk).length} /></strong>
-          </Link>
-          <Link className="tpo-ops-signal" to="/tpo/communication">
-            <span>Communication tasks</span>
-            <strong><AnimatedNumber value={data.dashboardQueues.communicationTasks.count} /></strong>
-          </Link>
-        </div>
-        <div className="control-center-pill-grid">
-          <div className="control-center-pill">
-            <span>Total Students</span>
-            <strong><AnimatedNumber value={data.summary.totalStudents} /></strong>
-            {data.summary.totalStudents === 0 ? <p className="muted-text">Import your student list to start using the operations dashboard.</p> : null}
-          </div>
-          <div className="control-center-pill">
-            <span>Active 7d</span>
-            <strong><AnimatedNumber value={data.summary.activeStudents7d} /></strong>
-          </div>
-          <div className="control-center-pill">
-            <span>Upcoming Drives</span>
-            <strong><AnimatedNumber value={data.summary.upcomingDrives} /></strong>
-            {data.summary.totalDrives === 0 ? <p className="muted-text">Create your first drive to activate eligibility and applications.</p> : null}
-          </div>
-          <div className="control-center-pill">
-            <span>Avg Readiness</span>
-            <strong>{data.summary.avgReadiness}</strong>
-          </div>
-          <div className="control-center-pill">
-            <span>At Risk</span>
-            <strong><AnimatedNumber value={data.summary.atRiskStudents} /></strong>
-          </div>
-          <div className="control-center-pill">
-            <span>Eligible For Upcoming</span>
-            <strong><AnimatedNumber value={data.readinessFunnel.eligibleForUpcomingDrives} /></strong>
-          </div>
-        </div>
-      </Card>
+        )}
+        actionMenu={(
+          <TpoActionMenu
+            items={[
+              { label: "Create drive", href: "/tpo/drives/create" },
+              { label: "Open scheduled reports", href: reportsPath },
+              { label: "Open changelog", href: "/tpo/whats-new" },
+            ]}
+          />
+        )}
+      />
 
-      <Card className="tpo-list-card">
-        <div className="workspace-panel-header">
-          <div>
-            <p className="workspace-eyebrow">Next Best Actions</p>
-            <h2>What to do next</h2>
-          </div>
-          <p className="muted-text">One action model for queues, drive risk, and student follow-up so the dashboard stays coherent.</p>
-        </div>
-        <div className="tpo-action-list">
-          {data.nextBestActions.length === 0 ? (
-            <p className="muted-text">No urgent actions are waiting right now.</p>
-          ) : (
-            data.nextBestActions.slice(0, 5).map((action) => (
-              <div key={action.id} className="tpo-action-row">
-                <div>
-                  <div className="tpo-action-row-head">
-                    <strong>{action.title}</strong>
-                    <Badge variant={badgeVariantFromPriority(action.priority)}>{action.urgency.replace("_", " ")}</Badge>
-                  </div>
-                  <p className="muted-text">{action.explanation}</p>
-                  <p className="muted-text">Workflow: {action.affectedWorkflow}</p>
-                </div>
-                <Link to={action.targetPath}>
-                  <Button variant="secondary">{action.ctaLabel}</Button>
-                </Link>
-              </div>
-            ))
-          )}
-        </div>
-      </Card>
+      <TpoSubviewSwitcher
+        label="TPO workspace sections"
+        items={[
+          { id: "today", label: "Today's queue" },
+          { id: "students", label: "Students" },
+          { id: "drives", label: "Drives" },
+          { id: "reports", label: "Reports" },
+          { id: "updates", label: "Updates" },
+        ]}
+        activeId={activePane}
+        onChange={(next) => setActivePane(next as typeof activePane)}
+      />
 
-      {automationSummary.data ? (
-        <Card className="tpo-list-card">
-          <div className="workspace-panel-header">
+      {activePane === "today" ? (
+        <Card className="tpo-single-pane-card">
+          <div className="tpo-inline-section-head">
             <div>
-              <p className="workspace-eyebrow">Automation Review</p>
-              <h2>Review-first automations waiting on the placement office</h2>
-            </div>
-            <div className="hero-actions">
-              <Link to="/tpo/communication">
-                <Button variant="secondary">Open Drafts</Button>
-              </Link>
-              <Button
-                variant="secondary"
-                onClick={async () => {
-                  try {
-                    await runAutomationNow({ automationType: "blocked_profile_followup" });
-                  } catch (actionError) {
-                    window.alert(actionError instanceof Error ? actionError.message : "Unable to refresh automation drafts right now.");
-                  }
-                }}
-              >
-                Refresh Drafts
-              </Button>
+              <p className="workspace-eyebrow">Today's queue</p>
+              <h2>What needs attention now</h2>
+              <p className="muted-text">Start here to review reminders, follow-ups, and manual approvals generated for today.</p>
             </div>
           </div>
-          <div className="tpo-blocker-grid">
-            <div><span>Pending drafts</span><strong>{automationSummary.data.pendingDrafts}</strong></div>
-            <div><span>Due today</span><strong>{automationSummary.data.dueToday}</strong></div>
-            <div><span>Eligible not applied</span><strong>{automationSummary.data.counts.eligibleNotApplied}</strong></div>
-            <div><span>Blocked profiles</span><strong>{automationSummary.data.counts.blockedProfiles}</strong></div>
-            <div><span>Unplaced intervention</span><strong>{automationSummary.data.counts.unplacedIntervention}</strong></div>
-          </div>
-          <div className="tpo-action-list">
-            {automationSummary.data.items.length === 0 ? (
-              <p className="muted-text">No review-first automation drafts are waiting right now.</p>
-            ) : (
-              automationSummary.data.items.map((item) => (
-                <div key={item.id} className="tpo-action-row">
-                  <div>
-                    <strong>{item.automationType.replace(/_/g, " ")}</strong>
-                    <p className="muted-text">{item.explanation}</p>
-                  </div>
-                  <Link to={item.targetPath}>
-                    <Button variant="secondary">Open</Button>
-                  </Link>
+
+          <div className="tpo-inline-section">
+            <div className="tpo-queue-summary-grid">
+              {queueSummary.map((item) => (
+                <div key={item.label} className="tpo-queue-summary-card">
+                  <span>{item.label}</span>
+                  <strong><AnimatedNumber value={item.value} /></strong>
+                  <p className="muted-text">{item.helper}</p>
                 </div>
-              ))
+              ))}
+            </div>
+          </div>
+
+          <div className="tpo-inline-section">
+            <div className="tpo-inline-section-head">
+              <div>
+                <h3>Automation review</h3>
+                <p className="muted-text">These drafts are waiting for approval or follow-up.</p>
+              </div>
+              <TpoActionMenu
+                items={[
+                  {
+                    label: "Refresh blocked follow-up",
+                    onSelect: async () => {
+                      try {
+                        await runAutomationNow({ automationType: "blocked_profile_followup" });
+                      } catch (actionError) {
+                        window.alert(actionError instanceof Error ? actionError.message : "Unable to refresh automation drafts right now.");
+                      }
+                    },
+                  },
+                  { label: "Open scheduled reports", href: reportsPath },
+                ]}
+              />
+            </div>
+            {automationSummary.data ? (
+              <>
+                <div className="tpo-blocker-grid">
+                  {automationMetrics.map((metric) => (
+                    <div key={metric.label}>
+                      <span>{metric.label}</span>
+                      <strong>{metric.value}</strong>
+                      <p className="muted-text">{metric.note}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="tpo-action-list">
+                  {automationSummary.data.items.length === 0 ? (
+                    <p className="muted-text">No review-first automation drafts are waiting right now.</p>
+                  ) : (
+                    automationSummary.data.items.map((item) => (
+                      <div key={item.id} className="tpo-action-row">
+                        <div>
+                          <div className="tpo-action-row-head">
+                            <strong>{getAutomationRunTitle(item)}</strong>
+                            <Badge variant="warning">{getAutomationRunCountLabel(item)}</Badge>
+                          </div>
+                          <p className="muted-text">{getAutomationRunReason(item)}</p>
+                        </div>
+                        <Link to={getAutomationRunTargetPath(item)}>
+                          <Button variant="secondary">Open</Button>
+                        </Link>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </>
+            ) : (
+              <p className="muted-text">Automation review is loading.</p>
             )}
           </div>
         </Card>
       ) : null}
 
-      <Card className="tpo-list-card">
-        <div className="workspace-panel-header">
-          <div>
-            <p className="workspace-eyebrow">Needs Attention Today</p>
-            <h2>Top queues and follow-up items</h2>
-          </div>
-          <div className="hero-actions">
-            <Link to="/tpo/students">
-              <Button variant="secondary">Open Students</Button>
-            </Link>
-            <Link to="/tpo/drives">
-              <Button variant="secondary">Open Drives</Button>
-            </Link>
-          </div>
-        </div>
-        <div className="tpo-queue-summary-grid">
-          {queueSummary.map((item) => (
-            <div key={item.label} className="tpo-queue-summary-card">
-              <span>{item.label}</span>
-              <strong>{item.value}</strong>
-              <p className="muted-text">
-                {item.value === 0 && item.label === "Student Support"
-                  ? "Open student support requests will appear here once students begin using the portal."
-                  : item.value === 0 && item.label === "Communication Tasks"
-                    ? "Drive reminders and result-release follow-up will appear here after outreach starts."
-                    : item.helper}
-              </p>
-            </div>
-          ))}
-        </div>
-        <div className="tpo-action-list">
-          {needsAttentionItems.length === 0 ? (
-            <p className="muted-text">No urgent queues right now.</p>
-          ) : (
-            needsAttentionItems.map((item) => (
-              <div key={item.id} className="tpo-action-row">
-                <div>
-                  <div className="tpo-action-row-head">
-                    <strong>{item.title}</strong>
-                    <Badge variant={badgeVariantFromPriority(item.priority)}>{item.priority}</Badge>
-                  </div>
-                  <p className="muted-text">{item.summary}</p>
-                </div>
-                <Link to={item.targetPath}>
-                  <Button variant="secondary">{item.ctaLabel}</Button>
-                </Link>
-              </div>
-            ))
-          )}
-        </div>
-      </Card>
-
-      <Card className="tpo-list-card">
-        <div className="workspace-panel-header">
-          <div>
-            <p className="workspace-eyebrow">Adoption Snapshot</p>
-            <h2>Proof and follow-through, kept below operations</h2>
-          </div>
-          <p className="muted-text">
-            These metrics help with placement reviews and leadership updates after the action queues and live drive health are handled.
-          </p>
-        </div>
-        <div className="tpo-queue-summary-grid">
-          {pilotProofItems.map((item) => (
-            <div key={item.label} className="tpo-queue-summary-card">
-              <span>{item.label}</span>
-              <strong>{item.value}</strong>
-              <p className="muted-text">{item.countLabel}</p>
-              <p className="muted-text">{item.helper}</p>
-            </div>
-          ))}
-        </div>
-        <div className="student-workspace-inline-note">
-          {milestoneChecklist.map((item) => (
-            <span key={item.label}>{item.complete ? "Done" : "Pending"}: {item.label}</span>
-          ))}
-        </div>
-        <p className="muted-text">
-          Readiness is based on stronger placement evidence. Platform activity remains useful for engagement and follow-up, but low Smart Path usage alone does not mean a student is incapable.
-        </p>
-      </Card>
-
-      <Card className="tpo-list-card">
-        <div className="workspace-panel-header">
-          <div>
-            <p className="workspace-eyebrow">Active Drive Health</p>
-            <h2>Live drive operations</h2>
-          </div>
-          <p className="muted-text">Each card shows eligibility coverage, application movement, export readiness, and next direct actions.</p>
-        </div>
-        <div className="tpo-drive-health-grid">
-          {data.drivePreparedness.items.length === 0 ? (
-            <p className="muted-text">No active or upcoming drives yet. Create your first drive to start eligibility, applications, and export workflows.</p>
-          ) : (
-            data.drivePreparedness.items.map((drive) => (
-              <div key={drive.driveId} className="tpo-drive-health-card">
-                <div className="tpo-drive-health-head">
-                  <div>
-                    <strong>{drive.company}</strong>
-                    <p className="muted-text">
-                      {drive.role ? `${drive.role} | ` : ""}
-                      {formatDate(drive.driveDate)}
-                    </p>
-                  </div>
-                  <div className="tpo-drive-health-badges">
-                    <Badge variant={badgeVariantFromRisk(drive.driveRiskScore)}>Risk {drive.driveRiskScore}</Badge>
-                    <Badge variant={drive.lowApplyRisk ? "warning" : "default"}>{drive.status.replace(/_/g, " ")}</Badge>
-                  </div>
-                </div>
-                <div className="tpo-drive-health-metrics">
-                  <div><span>Eligible</span><strong>{drive.eligibleStudents}</strong></div>
-                  <div><span>Applied</span><strong>{drive.appliedCount}</strong></div>
-                  <div><span>Eligible Not Applied</span><strong>{drive.eligibleButNotAppliedCount}</strong></div>
-                  <div><span>Days Remaining</span><strong>{drive.daysRemaining ?? "NA"}</strong></div>
-                </div>
-                <div className="tpo-drive-health-meta">
-                  <div>
-                    <span>Resume export</span>
-                    <strong>{drive.resumeExportReady ? "Ready" : `${drive.exportReadyApplicants}/${drive.appliedCount} ready`}</strong>
-                  </div>
-                  <div>
-                    <span>Results</span>
-                    <strong>{drive.resultPublicationState.replace(/_/g, " ")}</strong>
-                  </div>
-                  <div>
-                    <span>Eligible but weak</span>
-                    <strong>{drive.drilldown.eligibleButWeak}</strong>
-                  </div>
-                  <div>
-                    <span>No recent activity</span>
-                    <strong>{drive.drilldown.noRecentActivity}</strong>
-                  </div>
-                </div>
-                <div className="hero-actions">
-                  <Link to={`/tpo/drives/${drive.driveId}`}>
-                    <Button variant="secondary">Open Drive</Button>
-                  </Link>
-                  <Button
-                    variant="secondary"
-                    onClick={async () => {
-                      try {
-                        await computeDriveEligibility(drive.driveId);
-                        await mutate("/api/v1/tpo/dashboard/control-center");
-                      } catch (actionError) {
-                        window.alert(actionError instanceof Error ? actionError.message : "Unable to compute eligibility right now.");
-                      }
-                    }}
-                  >
-                    Compute Eligibility
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    onClick={() =>
-                      setPendingExport({
-                        title: "Export eligible CSV",
-                        href: `/api/v1/drives/${drive.driveId}/export?format=csv`,
-                        details: [
-                          `Drive: ${drive.company}${drive.role ? ` - ${drive.role}` : ""}`,
-                          `Eligible students: ${drive.eligibleStudents}`,
-                        ],
-                      })
-                    }
-                  >
-                    Export Eligible CSV
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    onClick={() =>
-                      setPendingExport({
-                        title: "Export resumes",
-                        href: `/api/v1/drives/${drive.driveId}/export/resumes`,
-                        details: [
-                          `Drive: ${drive.company}${drive.role ? ` - ${drive.role}` : ""}`,
-                          `Applied students: ${drive.appliedCount}`,
-                        ],
-                      })
-                    }
-                  >
-                    Export Resumes
-                  </Button>
-                  <Link to={`/tpo/drives/${drive.driveId}/results`}>
-                    <Button variant="secondary">Manage Results</Button>
-                  </Link>
-                  <Link to="/tpo/communication">
-                    <Button variant="secondary">Send Reminder</Button>
-                  </Link>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-      </Card>
-
-      <div className="tpo-ops-grid">
-        <Card className="tpo-list-card">
-          <div className="workspace-panel-header">
+      {activePane === "students" ? (
+        <Card className="tpo-single-pane-card">
+          <div className="tpo-inline-section-head">
             <div>
-              <p className="workspace-eyebrow">What&apos;s New</p>
-              <h2>Recent product changes visible to TPOs</h2>
+              <p className="workspace-eyebrow">Students</p>
+              <h2>Act on one student queue at a time</h2>
+              <p className="muted-text">Use this section for follow-up cohorts, approvals, and intervention-ready student lists.</p>
+            </div>
+            <TpoActionMenu
+              items={[
+                { label: "Open full student workspace", href: studentsQueuePath },
+                { label: "Eligible, not applied", href: eligibleStudentQueuePath },
+                { label: "Needs intervention", href: interventionQueuePath },
+                { label: "Upload students", href: "/tpo/students/upload" },
+              ]}
+            />
+          </div>
+
+          <div className="tpo-inline-section">
+            <div className="tpo-inline-section-head">
+              <div>
+                <h3>Students needing follow-up</h3>
+                <p className="muted-text">Ready but inactive, or eligible but still underprepared.</p>
+              </div>
+              <Link to={studentsQueuePath}>
+                <Button variant="secondary">View students</Button>
+              </Link>
+            </div>
+            <div className="tpo-ranking-table-wrap">
+              <Table>
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Branch</th>
+                    <th>Batch</th>
+                    <th>Risk</th>
+                    <th>Profile</th>
+                    <th>Resume</th>
+                    <th>Certified</th>
+                    <th>Next Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {followUpStudents.length === 0 ? (
+                    <tr>
+                      <td colSpan={8} className="muted-text">No follow-up students right now.</td>
+                    </tr>
+                  ) : (
+                    followUpStudents.map((student) => {
+                      const fullRow = data.operationsBoard.items.find((item) => item.studentId === student.studentId);
+                      return (
+                        <tr key={student.studentId}>
+                          <td><Link to={`/tpo/students/${student.studentId}`}>{student.fullName}</Link></td>
+                          <td>{fullRow?.branch ?? "-"}</td>
+                          <td>{fullRow?.batch ?? "-"}</td>
+                          <td>
+                            <Badge variant={badgeVariantFromRisk(fullRow?.riskScore ?? 0)}>
+                              {fullRow?.riskLevel ?? "Monitor"}
+                            </Badge>
+                          </td>
+                          <td>{fullRow ? `${fullRow.profileCompletenessPct}%` : "-"}</td>
+                          <td>{fullRow?.hasResumeReady ? "Ready" : "Missing"}</td>
+                          <td>{fullRow?.isProfileCertified ? "Certified" : "Pending"}</td>
+                          <td>{student.nextRecommendedAction}</td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </Table>
+            </div>
+          </div>
+        </Card>
+      ) : null}
+
+      {activePane === "drives" ? (
+        <Card className="tpo-single-pane-card">
+          <div className="tpo-inline-section-head">
+            <div>
+              <p className="workspace-eyebrow">Drives</p>
+              <h2>Live drive operations</h2>
+              <p className="muted-text">Review one drive list at a time, then open the drive itself for deeper work.</p>
+            </div>
+            <Link to="/tpo/drives">
+              <Button variant="secondary">Open drives</Button>
+            </Link>
+          </div>
+          <div className="tpo-inline-section">
+            <div className="tpo-drive-health-grid">
+              {data.drivePreparedness.items.length === 0 ? (
+                <p className="muted-text">No active or upcoming drives yet. Create your first drive to start eligibility, applications, and export workflows.</p>
+              ) : (
+                data.drivePreparedness.items.map((drive) => (
+                  <div key={drive.driveId} className="tpo-drive-health-card">
+                    <div className="tpo-drive-health-head">
+                      <div>
+                        <strong>{drive.company}</strong>
+                        <p className="muted-text">{drive.role ? `${drive.role} | ` : ""}{formatDate(drive.driveDate)}</p>
+                      </div>
+                      <div className="tpo-drive-health-badges">
+                        <Badge variant={badgeVariantFromRisk(drive.driveRiskScore)}>Risk {drive.driveRiskScore}</Badge>
+                        <Badge variant={drive.lowApplyRisk ? "warning" : "default"}>{drive.status.replace(/_/g, " ")}</Badge>
+                      </div>
+                    </div>
+                    <div className="tpo-drive-health-metrics">
+                      <div><span>Eligible</span><strong>{drive.eligibleStudents}</strong></div>
+                      <div><span>Applied</span><strong>{drive.appliedCount}</strong></div>
+                      <div><span>Eligible Not Applied</span><strong>{drive.eligibleButNotAppliedCount}</strong></div>
+                      <div><span>Days Remaining</span><strong>{drive.daysRemaining ?? "NA"}</strong></div>
+                    </div>
+                    <div className="tpo-drives-actions">
+                      <Link to={`/tpo/drives/${drive.driveId}`}>Open</Link>
+                      <TpoActionMenu
+                        items={[
+                          {
+                            label: "Compute eligibility",
+                            onSelect: async () => {
+                              try {
+                                await computeDriveEligibility(drive.driveId);
+                                await mutate("/api/v1/tpo/dashboard/control-center");
+                              } catch (actionError) {
+                                window.alert(actionError instanceof Error ? actionError.message : "Unable to compute eligibility right now.");
+                              }
+                            },
+                          },
+                          {
+                            label: "Export eligible CSV",
+                            onSelect: () => setPendingExport({
+                              title: "Export eligible CSV",
+                              href: `/api/v1/drives/${drive.driveId}/export?format=csv`,
+                              details: [
+                                `Drive: ${drive.company}${drive.role ? ` - ${drive.role}` : ""}`,
+                                `Eligible students: ${drive.eligibleStudents}`,
+                              ],
+                            }),
+                          },
+                          { label: "Manage results", href: `/tpo/drives/${drive.driveId}/results` },
+                        ]}
+                      />
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </Card>
+      ) : null}
+
+      {activePane === "reports" ? (
+        <Card className="tpo-single-pane-card">
+          <div className="tpo-inline-section-head">
+            <div>
+              <p className="workspace-eyebrow">Reports</p>
+              <h2>Readiness and export health</h2>
+              <p className="muted-text">Keep report signals and evidence together in one calm workspace instead of spreading them across the page.</p>
+            </div>
+            <Link to={reportsPath}>
+              <Button variant="secondary">Open reports</Button>
+            </Link>
+          </div>
+          <div className="tpo-inline-section">
+            <h3>Adoption snapshot</h3>
+            <div className="tpo-queue-summary-grid">
+              {pilotProofItems.map((item) => (
+                <div key={item.label} className="tpo-queue-summary-card">
+                  <span>{item.label}</span>
+                  <strong>{item.value}</strong>
+                  <p className="muted-text">{item.countLabel}</p>
+                </div>
+              ))}
+            </div>
+            <div className="student-workspace-inline-note">
+              {milestoneChecklist.map((item) => (
+                <span key={item.label}>{item.complete ? "Done" : "Pending"}: {item.label}</span>
+              ))}
+            </div>
+          </div>
+        </Card>
+      ) : null}
+
+      {activePane === "updates" ? (
+        <Card className="tpo-single-pane-card">
+          <div className="tpo-inline-section-head">
+            <div>
+              <p className="workspace-eyebrow">Updates</p>
+              <h2>Recent changes and compact trend signals</h2>
+              <p className="muted-text">Keep secondary product updates and trend reading below the operational queue.</p>
             </div>
             <Link to="/tpo/whats-new">
               <Button variant="secondary">Open changelog</Button>
             </Link>
           </div>
-          <div className="tpo-action-list">
-            {tpoWhatsNewEntries.slice(0, 3).map((entry) => (
-              <div key={entry.id} className="tpo-action-row">
-                <div>
-                  <strong>{entry.title}</strong>
-                  <p className="muted-text">
-                    {new Date(entry.date).toLocaleDateString()} | {entry.workflow}
-                  </p>
-                  <p className="muted-text">{entry.summary}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
-
-        <Card className="tpo-list-card">
-          <div className="workspace-panel-header">
-            <div>
-              <p className="workspace-eyebrow">Student Readiness Funnel</p>
-              <h2>Where the batch is getting blocked</h2>
-            </div>
-          </div>
-          <div className="tpo-funnel-grid">
-            <div className="tpo-funnel-step"><span>Total Students</span><strong>{data.readinessFunnel.totalStudents}</strong></div>
-            <div className="tpo-funnel-step"><span>Profile Complete</span><strong>{data.readinessFunnel.completeProfiles}</strong></div>
-            <div className="tpo-funnel-step"><span>Certified</span><strong>{data.readinessFunnel.certifiedProfiles}</strong></div>
-            <div className="tpo-funnel-step"><span>Resume Ready</span><strong>{data.readinessFunnel.resumeReadyProfiles}</strong></div>
-            <div className="tpo-funnel-step"><span>Eligible</span><strong>{data.readinessFunnel.eligibleForUpcomingDrives}</strong></div>
-            <div className="tpo-funnel-step"><span>Applied Recently</span><strong>{data.readinessFunnel.appliedRecently}</strong></div>
-          </div>
-          <div className="tpo-blocker-grid">
-            <div><span>Missing resume</span><strong>{data.blockerSegments.missingResume}</strong></div>
-            <div><span>Uncertified</span><strong>{data.blockerSegments.uncertified}</strong></div>
-            <div><span>Incomplete profile</span><strong>{data.blockerSegments.incompleteProfile}</strong></div>
-            <div><span>Academically blocked</span><strong>{data.blockerSegments.academicallyBlocked}</strong></div>
-            <div><span>Low engagement</span><strong>{data.blockerSegments.lowEngagement}</strong></div>
-          </div>
-        </Card>
-
-        <Card className="tpo-list-card">
-          <div className="workspace-panel-header">
-            <div>
-              <p className="workspace-eyebrow">Intervention Queues</p>
-              <h2>Queues that need a response</h2>
-            </div>
-          </div>
-          <div className="tpo-action-list">
-            {data.dashboardQueues.profileUnlockRequests.items.slice(0, 4).map((item) => (
-              <div key={item.id} className="tpo-action-row">
-                <div>
-                  <strong>{item.studentName}</strong>
-                  <p className="muted-text">
-                    {item.reasonCategory.replace(/_/g, " ")} | {formatDateTime(item.createdAt)}
-                  </p>
-                </div>
-                <div className="hero-actions">
-                  <Button
-                    onClick={async () => {
-                      try {
-                        await reviewStudentUnlockRequest({
-                          studentId: item.studentId,
-                          requestId: item.requestId,
-                          decision: "approved",
-                        });
-                        await mutate("/api/v1/tpo/dashboard/control-center");
-                      } catch (actionError) {
-                        window.alert(actionError instanceof Error ? actionError.message : "Unable to approve unlock request.");
-                      }
-                    }}
-                  >
-                    Approve
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    onClick={async () => {
-                      const note = window.prompt("Add an optional note for the student:", "Please update only the requested fields.");
-                      try {
-                        await reviewStudentUnlockRequest({
-                          studentId: item.studentId,
-                          requestId: item.requestId,
-                          decision: "denied",
-                          responseNote: note ?? undefined,
-                        });
-                        await mutate("/api/v1/tpo/dashboard/control-center");
-                      } catch (actionError) {
-                        window.alert(actionError instanceof Error ? actionError.message : "Unable to deny unlock request.");
-                      }
-                    }}
-                  >
-                    Deny
-                  </Button>
-                </div>
-              </div>
-            ))}
-            {data.dashboardQueues.studentSupportRequests.items.slice(0, 3).map((item) => (
-              <div key={item.id} className="tpo-action-row">
-                <div>
-                  <strong>{item.subject}</strong>
-                  <p className="muted-text">
-                    {item.studentName} | {formatDateTime(item.createdAt)}
-                  </p>
-                </div>
-                <Button
-                  onClick={async () => {
-                    const note = window.prompt("Add a short resolution note for the student:", "Resolved by placement office");
-                    if (!note || !note.trim()) return;
-                    try {
-                      await resolveStudentSupportRequest(item.requestId, note.trim());
-                      await mutate("/api/v1/tpo/dashboard/control-center");
-                    } catch (actionError) {
-                      window.alert(actionError instanceof Error ? actionError.message : "Unable to resolve support request.");
-                    }
-                  }}
-                >
-                  Mark Resolved
-                </Button>
-              </div>
-            ))}
-            {data.dashboardQueues.supportAccessRequests.items.slice(0, 3).map((item) => (
-              <div key={item.id} className="tpo-action-row">
-                <div>
-                  <strong>{item.requestedByEmail}</strong>
-                  <p className="muted-text">{item.reason}</p>
-                </div>
-                <div className="hero-actions">
-                  <Button
-                    onClick={async () => {
-                      try {
-                        await approveSupportRequest(item.requestId, 60);
-                        await mutate("/api/v1/tpo/dashboard/control-center");
-                      } catch (actionError) {
-                        window.alert(actionError instanceof Error ? actionError.message : "Unable to approve support access.");
-                      }
-                    }}
-                  >
-                    Approve (60m)
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    onClick={async () => {
-                      try {
-                        await denySupportRequest(item.requestId, "Denied by TPO");
-                        await mutate("/api/v1/tpo/dashboard/control-center");
-                      } catch (actionError) {
-                        window.alert(actionError instanceof Error ? actionError.message : "Unable to deny support access.");
-                      }
-                    }}
-                  >
-                    Deny
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
-      </div>
-
-      <Card className="tpo-list-card">
-        <div className="workspace-panel-header">
-          <div>
-            <p className="workspace-eyebrow">Students Needing Follow-up</p>
-            <h2>Ready but inactive, or eligible but underprepared</h2>
-          </div>
-        </div>
-        <div className="tpo-ranking-table-wrap">
-          <Table>
-            <thead>
-              <tr>
-                <th>Student</th>
-                <th>Branch</th>
-                <th>Batch</th>
-                <th>Risk</th>
-                <th>Profile</th>
-                <th>Resume</th>
-                <th>Certified</th>
-                <th>Next Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {followUpStudents.length === 0 ? (
-                <tr>
-                  <td colSpan={8} className="muted-text">No follow-up students right now.</td>
-                </tr>
-              ) : (
-                followUpStudents.map((student) => {
-                  const fullRow = data.operationsBoard.items.find((item) => item.studentId === student.studentId);
-                  return (
-                    <tr key={student.studentId}>
-                      <td>
-                        <Link to={`/tpo/students/${student.studentId}`}>{student.fullName}</Link>
-                      </td>
-                      <td>{fullRow?.branch ?? "-"}</td>
-                      <td>{fullRow?.batch ?? "-"}</td>
-                      <td>
-                        <Badge variant={badgeVariantFromRisk(fullRow?.riskScore ?? 0)}>
-                          {fullRow?.riskLevel ?? "Monitor"}
-                        </Badge>
-                      </td>
-                      <td>{fullRow ? `${fullRow.profileCompletenessPct}%` : "-"}</td>
-                      <td>{fullRow?.hasResumeReady ? "Ready" : "Missing"}</td>
-                      <td>{fullRow?.isProfileCertified ? "Certified" : "Pending"}</td>
-                      <td>{student.nextRecommendedAction}</td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </Table>
-        </div>
-      </Card>
-
-      <div className="tpo-ops-grid">
-        <Card className="tpo-list-card">
-          <div className="workspace-panel-header">
-            <div>
-              <p className="workspace-eyebrow">Drive-Specific Intervention</p>
-              <h2>Eligible but not applied</h2>
-            </div>
-            <Link to="/tpo/interventions/eligible-not-applied">
-              <Button variant="secondary">Open full queue</Button>
-            </Link>
-          </div>
-          <div className="tpo-action-list">
-            {data.actionCenter.eligibleButNotApplied.length === 0 ? (
-              <p className="muted-text">No eligible-but-not-applied drive queues right now.</p>
-            ) : (
-              data.actionCenter.eligibleButNotApplied.map((drive) => (
-                <div key={drive.driveId} className="tpo-action-row">
+          <div className="tpo-inline-section">
+            <div className="tpo-action-list">
+              {tpoWhatsNewEntries.slice(0, 4).map((entry) => (
+                <div key={entry.id} className="tpo-action-row">
                   <div>
-                    <strong>{drive.company}</strong>
-                    <p className="muted-text">
-                      {drive.eligibleButNotAppliedCount} eligible students still have not applied | {formatDate(drive.driveDate)}
-                    </p>
+                    <strong>{entry.title}</strong>
+                    <p className="muted-text">{new Date(entry.date).toLocaleDateString()} | {entry.workflow}</p>
+                    <p className="muted-text">{entry.summary}</p>
                   </div>
-                  <Link to={`/tpo/drives/${drive.driveId}`}>
-                    <Button variant="secondary">Open Drive</Button>
-                  </Link>
                 </div>
-              ))
-            )}
+              ))}
+            </div>
           </div>
         </Card>
-
-        <Card className="tpo-list-card">
-          <div className="workspace-panel-header">
-            <div>
-              <p className="workspace-eyebrow">Practice Intervention</p>
-              <h2>Needs mock push</h2>
-            </div>
-            <Link to="/tpo/interventions/needs-mock-push">
-              <Button variant="secondary">Open full queue</Button>
-            </Link>
-          </div>
-          <div className="tpo-action-list">
-            {data.actionCenter.lowReadinessNearDriveImpact.length === 0 ? (
-              <p className="muted-text">No students need an urgent mock push right now.</p>
-            ) : (
-              data.actionCenter.lowReadinessNearDriveImpact.map((student) => (
-                <div key={student.studentId} className="tpo-action-row">
-                  <div>
-                    <strong>{student.fullName}</strong>
-                    <p className="muted-text">
-                      {student.riskLevel} risk | {student.nextRecommendedAction}
-                    </p>
-                  </div>
-                  <Link to={`/tpo/students/${student.studentId}`}>
-                    <Button variant="secondary">Open Student</Button>
-                  </Link>
-                </div>
-              ))
-            )}
-          </div>
-        </Card>
-
-        <Card className="tpo-list-card">
-          <div className="workspace-panel-header">
-            <div>
-              <p className="workspace-eyebrow">Secondary Trends</p>
-              <h2>Compact signals, kept below operations</h2>
-            </div>
-          </div>
-          <div className="tpo-blocker-grid">
-            <div>
-              <span>Readiness trend points</span>
-              <strong>{data.trends.readinessTrend.length}</strong>
-            </div>
-            <div>
-              <span>Batch mixes</span>
-              <strong>{data.trends.batchActivity.length}</strong>
-            </div>
-            <div>
-              <span>Weak-topic clusters</span>
-              <strong>{data.trends.weakTopicsByBranch.length}</strong>
-            </div>
-          </div>
-          <div className="tpo-action-list">
-            {(data.alerts.topAlerts.length > 0 ? data.alerts.topAlerts : ["No major alert spikes at the moment."]).map((alert) => (
-              <div key={alert} className="tpo-action-row">
-                <div>
-                  <strong>{alert}</strong>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
-      </div>
+      ) : null}
 
       <ConfirmActionModal
         open={Boolean(pendingExport)}

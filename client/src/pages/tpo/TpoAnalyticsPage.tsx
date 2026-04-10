@@ -60,7 +60,7 @@ export default function TpoAnalyticsPage() {
       <Card className="career-hero-card control-center-hero-card">
         <h1>TPO Analytics</h1>
         <p className="muted-text">
-          A working analytics view for the pilot build, focused on readiness, drive eligibility, and student risk.
+          A focused analytics view for readiness, drive eligibility, and student risk.
         </p>
         <div className="hero-actions">
           <Link to="/tpo/reports">

@@ -16,7 +16,7 @@ export default function TpoAnalyticsReadinessPage() {
   }
 
   return (
-    <section className="dashboard-grid">
+    <section className="tpo-page-shell">
       <Card>
         <h1>Readiness Analytics</h1>
         <p>Batch-wise readiness overview and trend over the last 30 days.</p>

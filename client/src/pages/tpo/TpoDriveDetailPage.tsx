@@ -1,7 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import { useMemo, useState } from "react";
 
-import { Badge, Button, ConfirmActionModal, Input, Select, Table } from "../../components/ui";
+import { TpoActionMenu } from "../../components/composites/TpoActionMenu";
+import { TpoSubviewSwitcher } from "../../components/composites/TpoSubviewSwitcher";
+import { TpoWorkspaceHeader } from "../../components/composites/TpoWorkspaceHeader";
+import { useAuth } from "../../components/providers/AuthProvider";
+import { Button, ConfirmActionModal, Input, Select, Table } from "../../components/ui";
+import { getTpoGreeting } from "../../config/tpo-workspace";
 import { computeDriveEligibility, updateDrive, useDriveAudit, useDriveById, type DriveSummary } from "../../hooks/use-drives";
 
 const lifecycleOptions: Array<{ value: DriveSummary["status"]; label: string }> = [
@@ -52,6 +57,7 @@ function renderAuditSummary(metadata: Record<string, unknown>) {
 }
 
 export default function TpoDriveDetailPage() {
+  const { profile } = useAuth();
   const { driveId } = useParams();
   const { data, isLoading, error, mutate } = useDriveById(driveId ?? null);
   const { data: auditEntries } = useDriveAudit(driveId ?? null, 12);
@@ -183,14 +189,56 @@ export default function TpoDriveDetailPage() {
 
   return (
     <section className="workspace-shell tpo-drive-detail-page">
-      <header className="workspace-header">
-        <div>
-          <p className="workspace-eyebrow">Drive Operations</p>
-          <h1>{data.company}{data.role ? ` - ${data.role}` : ""}</h1>
-          <p className="muted-text">Keep this drive explainable and operational without burying core actions inside oversized cards.</p>
-        </div>
-        <Badge>{data.status}</Badge>
-      </header>
+      <TpoWorkspaceHeader
+        eyebrow="Drive Operations"
+        greeting={getTpoGreeting(profile?.full_name ?? "Placement team")}
+        title={`${data.company}${data.role ? ` - ${data.role}` : ""}`}
+        description="Keep this drive explainable and operational without burying core actions inside oversized cards."
+        primaryAction={(
+          <Button disabled={busy} onClick={onComputeEligibility}>
+            {busy ? "Computing..." : "Compute Eligibility"}
+          </Button>
+        )}
+        secondaryAction={(
+          <Link to={`/tpo/drives/${data.id}/results`}>
+            <Button variant="secondary">Manage Results</Button>
+          </Link>
+        )}
+        actionMenu={(
+          <TpoActionMenu
+            items={[
+              {
+                label: "Export eligible CSV",
+                onSelect: () =>
+                  setPendingExport({
+                    title: "Eligible CSV export",
+                    href: `/api/v1/drives/${data.id}/export?format=csv`,
+                    message: `This will export the latest eligible-student list for ${data.company}.`,
+                  }),
+              },
+              {
+                label: "Download summary PDF",
+                onSelect: () =>
+                  setPendingExport({
+                    title: "Drive summary PDF",
+                    href: `/api/v1/drives/${data.id}/export?format=pdf`,
+                    message: `This will generate the current drive summary PDF for ${data.company}.`,
+                  }),
+              },
+              {
+                label: "Export resumes",
+                onSelect: () =>
+                  setPendingExport({
+                    title: "Resume export",
+                    href: `/api/v1/drives/${data.id}/export/resumes`,
+                    message: `This will download the current resume bundle for applicants in ${data.company}.`,
+                  }),
+              },
+              { label: "Open reports", href: `/tpo/reports?group=Must-have+Reports&reportType=drive_completion_summary&driveId=${data.id}` },
+            ]}
+          />
+        )}
+      />
 
       <div className="workspace-context-strip">
         <strong>{data.company}{data.role ? ` - ${data.role}` : ""}</strong>
@@ -201,67 +249,12 @@ export default function TpoDriveDetailPage() {
         </span>
       </div>
 
-      <nav className="workspace-subnav" aria-label="Drive sections">
-        {sections.map((section) => (
-          <button
-            key={section.id}
-            type="button"
-            className={section.id === activeSection ? "workspace-subnav-link is-active" : "workspace-subnav-link"}
-            onClick={() => setActiveSection(section.id)}
-          >
-            {section.label}
-          </button>
-        ))}
-      </nav>
-
-      <div className="hero-actions tpo-drive-detail-toolbar">
-        <Button disabled={busy} onClick={onComputeEligibility}>
-          {busy ? "Computing..." : "Compute Eligibility"}
-        </Button>
-        <Button
-          variant="secondary"
-          disabled={!data.eligibility?.latestVersion}
-          onClick={() =>
-            setPendingExport({
-              title: "Eligible CSV export",
-              href: `/api/v1/drives/${data.id}/export?format=csv`,
-              message: `This will export the latest eligible-student list for ${data.company}.`,
-            })
-          }
-        >
-          Export Eligible CSV
-        </Button>
-        <Button
-          variant="secondary"
-          onClick={() =>
-            setPendingExport({
-              title: "Drive summary PDF",
-              href: `/api/v1/drives/${data.id}/export?format=pdf`,
-              message: `This will generate the current drive summary PDF for ${data.company}.`,
-            })
-          }
-        >
-          Download Summary PDF
-        </Button>
-        <Button
-          variant="secondary"
-          onClick={() =>
-            setPendingExport({
-              title: "Resume export",
-              href: `/api/v1/drives/${data.id}/export/resumes`,
-              message: `This will download the current resume bundle for applicants in ${data.company}.`,
-            })
-          }
-        >
-          Export Resumes
-        </Button>
-        <Link to={`/tpo/drives/${data.id}/results`}>
-          <Button variant="secondary">Manage Results</Button>
-        </Link>
-        <Link to={`/tpo/reports?group=Drive+Reports&reportType=drive_completion_summary&driveId=${data.id}`}>
-          <Button variant="secondary">Open Reports</Button>
-        </Link>
-      </div>
+      <TpoSubviewSwitcher
+        label="Drive sections"
+        items={sections.map((section) => ({ id: section.id, label: section.label }))}
+        activeId={activeSection}
+        onChange={(next) => setActiveSection(next as SectionId)}
+      />
 
       {statusMessage ? (
         <p className={statusTone === "success" ? "success-text" : "error-text"}>{statusMessage}</p>

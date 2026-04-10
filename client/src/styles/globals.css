@@ -2879,6 +2879,15 @@ textarea {
   overflow: hidden;
 }
 
+.tpo-page-shell {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.tpo-page-shell > * {
+  min-width: 0;
+}
+
 .tpo-template-preview {
   display: grid;
   gap: var(--space-3);
@@ -2961,7 +2970,7 @@ textarea {
 .tpo-communication-simple-grid {
   display: grid;
   gap: 1.25rem;
-  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.8fr);
+  grid-template-columns: 1fr;
   align-items: start;
 }
 
@@ -2969,6 +2978,20 @@ textarea {
 .tpo-communication-side {
   display: grid;
   gap: 1rem;
+}
+
+.tpo-compact-select-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tpo-compact-select-grid label {
+  display: grid;
+  gap: 0.45rem;
+  color: var(--color-text);
+  font-size: 0.92rem;
+  font-weight: 600;
 }
 
 .tpo-communication-inline-grid {
@@ -3449,6 +3472,141 @@ textarea {
 .workspace-context-strip strong {
   color: var(--color-text);
   font-weight: 700;
+}
+
+.tpo-workspace-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(20, 34, 53, 0.08);
+}
+
+.tpo-workspace-header-copy {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.tpo-workspace-header-copy h1,
+.tpo-workspace-header-copy p {
+  margin: 0;
+}
+
+.tpo-workspace-greeting {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--color-primary-strong);
+}
+
+.tpo-workspace-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.tpo-subview-switcher {
+  width: 100%;
+}
+
+.tpo-action-menu {
+  position: relative;
+}
+
+.tpo-action-menu summary {
+  list-style: none;
+}
+
+.tpo-action-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.tpo-action-menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.85rem;
+  padding: 0.7rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(20, 34, 53, 0.1);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--color-text);
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(20, 34, 53, 0.04);
+}
+
+.tpo-action-menu-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.45rem);
+  z-index: 20;
+  min-width: 220px;
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.5rem;
+  border: 1px solid rgba(20, 34, 53, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 18px 35px rgba(20, 34, 53, 0.12);
+}
+
+.tpo-action-menu-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 2.7rem;
+  padding: 0.7rem 0.85rem;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--color-text);
+  text-decoration: none;
+  text-align: left;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tpo-action-menu-item:hover {
+  background: rgba(239, 246, 255, 0.92);
+  text-decoration: none;
+}
+
+.tpo-action-menu-item.danger {
+  color: #b42318;
+}
+
+.tpo-single-pane-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.tpo-inline-section {
+  display: grid;
+  gap: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(20, 34, 53, 0.08);
+}
+
+.tpo-inline-section:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.tpo-inline-section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 1rem;
+}
+
+.tpo-inline-section-head h2,
+.tpo-inline-section-head p {
+  margin: 0;
 }
 
 .workspace-subnav {
@@ -4229,6 +4387,13 @@ textarea {
     linear-gradient(180deg, #ffffff, #f8fbff);
 }
 
+.tpo-students-control-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
 .tpo-students-mode-strip,
 .tpo-students-bulk-bar,
 .tpo-communication-direct-audience {
@@ -4251,11 +4416,37 @@ textarea {
 
 .tpo-students-hero-summary {
   display: grid;
-  gap: 0.2rem;
+  gap: 0.35rem;
+  min-width: 0;
 }
 
 .tpo-students-hero-summary span {
   color: var(--color-text-muted);
+}
+
+.tpo-students-hero-summary strong {
+  font-size: 1.4rem;
+  color: var(--color-heading);
+}
+
+.tpo-students-count-chip {
+  min-width: 180px;
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.95rem 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(37, 99, 235, 0.14);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.tpo-students-count-chip strong {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.tpo-students-count-chip span {
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
 }
 
 .tpo-students-kpi-pill {
@@ -4308,6 +4499,89 @@ textarea {
   position: sticky;
   top: 1rem;
   z-index: 5;
+}
+
+.tpo-students-primary-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.tpo-students-stat-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(20, 34, 53, 0.08);
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.tpo-students-stat-line span {
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+}
+
+.tpo-students-stat-line strong {
+  color: var(--color-heading);
+}
+
+.tpo-student-mobile-list {
+  display: none;
+  gap: 0.9rem;
+}
+
+.tpo-student-mobile-card {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem;
+  border: 1px solid rgba(20, 34, 53, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.tpo-student-mobile-card-head,
+.tpo-student-mobile-sections {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.tpo-student-mobile-card-head {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+}
+
+.tpo-student-mobile-card-head p,
+.tpo-student-mobile-sections p {
+  margin: 0.2rem 0 0;
+  color: var(--color-text-muted);
+}
+
+.tpo-student-mobile-metrics {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tpo-student-mobile-metrics > div,
+.tpo-student-mobile-sections > div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.tpo-student-mobile-metrics span,
+.tpo-student-mobile-sections span {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tpo-student-mobile-metrics strong {
+  color: var(--color-heading);
+}
+
+.tpo-student-desktop-table {
+  display: block;
 }
 
 .tpo-student-ops-stack,
@@ -4550,6 +4824,37 @@ textarea {
 .tpo-report-row > div {
   display: grid;
   gap: 0.3rem;
+}
+
+.tpo-report-row-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.tpo-report-download-item {
+  min-width: 220px;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(20, 34, 53, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.tpo-report-download-item > div:first-child {
+  min-width: 0;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.tpo-report-download-item strong,
+.tpo-report-download-item span {
+  overflow-wrap: anywhere;
 }
 
 .tpo-report-row span {
@@ -6484,6 +6789,7 @@ button.ui-button[type="submit"]:active,
   .tpo-communication-panel-head,
   .tpo-template-row,
   .tpo-students-header,
+  .tpo-students-control-head,
   .tpo-students-advanced-head,
   .tpo-students-table-head {
     flex-direction: column;
@@ -6506,7 +6812,8 @@ button.ui-button[type="submit"]:active,
   .tpo-communication-review-grid,
   .tpo-communication-journey-list,
   .tpo-communication-purpose-list,
-  .tpo-communication-inline-grid {
+  .tpo-communication-inline-grid,
+  .tpo-compact-select-grid {
     grid-template-columns: 1fr;
   }
 
@@ -6527,7 +6834,8 @@ button.ui-button[type="submit"]:active,
 
   .tpo-reports-header,
   .tpo-reports-preview-head,
-  .tpo-report-row {
+  .tpo-report-row,
+  .tpo-report-download-item {
     flex-direction: column;
     align-items: flex-start;
   }
@@ -6543,6 +6851,11 @@ button.ui-button[type="submit"]:active,
   .tpo-reports-header-primary-actions .ui-button,
   .tpo-reports-header-export-actions .ui-button {
     flex: 1 1 180px;
+  }
+
+  .tpo-report-row-actions {
+    width: 100%;
+    justify-content: flex-start;
   }
 
   .tpo-reports-filter-bar,
@@ -6603,6 +6916,10 @@ button.ui-button[type="submit"]:active,
     gap: 1rem;
   }
 
+  .tpo-students-primary-grid {
+    grid-template-columns: 1fr;
+  }
+
   .tpo-form-card .hero-actions,
   .tpo-table-actions-card .hero-actions {
     flex-direction: column;
@@ -6651,6 +6968,10 @@ button.ui-button[type="submit"]:active,
   .tpo-students-kpi-pill,
   .tpo-saved-view-pill {
     min-width: 100%;
+  }
+
+  .tpo-students-count-chip {
+    width: 100%;
   }
 
   .tpo-student-drawer-head {
@@ -8522,6 +8843,36 @@ textarea::placeholder {
   .resources-discovery-steps {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .tpo-page-shell {
+    gap: 1.25rem;
+  }
+
+  .tpo-workspace-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tpo-workspace-header-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .tpo-students-primary-grid,
+  .tpo-reports-filter-bar,
+  .tpo-reports-filter-bar-more {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tpo-reports-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tpo-student-inline-grid,
+  .tpo-student-summary-grid,
+  .tpo-student-drawer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 860px) {
@@ -8627,6 +8978,8 @@ textarea::placeholder {
 
   .student-workspace-row,
   .risk-student-row,
+  .tpo-workspace-header,
+  .tpo-inline-section-head,
   .workspace-panel-header,
   .workspace-header,
   .marketing-footer,
@@ -8663,7 +9016,26 @@ textarea::placeholder {
     flex: 1 1 calc(50% - 0.4rem);
   }
 
+  .tpo-workspace-header-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
   .resources-discovery-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .tpo-student-mobile-list {
+    display: grid;
+  }
+
+  .tpo-student-desktop-table {
+    display: none;
+  }
+
+  .tpo-student-mobile-metrics,
+  .tpo-student-mobile-sections,
+  .tpo-student-drawer-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -9225,6 +9597,20 @@ textarea::placeholder {
   .hero-actions .ui-button {
     width: 100%;
     justify-content: center;
+  }
+
+  .tpo-action-menu {
+    width: 100%;
+  }
+
+  .tpo-action-menu-trigger {
+    width: 100%;
+  }
+
+  .tpo-action-menu-panel {
+    position: static;
+    min-width: 0;
+    margin-top: 0.45rem;
   }
 
   .student-workspace-panel-head {

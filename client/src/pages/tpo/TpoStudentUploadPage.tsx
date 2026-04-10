@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 
+import { TpoActionMenu } from "../../components/composites/TpoActionMenu";
+import { TpoWorkspaceHeader } from "../../components/composites/TpoWorkspaceHeader";
+import { useAuth } from "../../components/providers/AuthProvider";
 import { Button, Card, Select, Table } from "../../components/ui";
+import { getTpoGreeting } from "../../config/tpo-workspace";
 import {
   type StudentImportJob,
   confirmStudentCsvAsync,
@@ -21,6 +25,7 @@ function downloadTextFile(filename: string, contents: string) {
 }
 
 export default function TpoStudentUploadPage() {
+  const { profile } = useAuth();
   const [csvText, setCsvText] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<null | {
@@ -107,23 +112,32 @@ export default function TpoStudentUploadPage() {
   };
 
   return (
-    <section className="dashboard-grid">
+    <section className="tpo-page-shell tpo-student-upload-page">
+      <TpoWorkspaceHeader
+        eyebrow="Student Upload"
+        greeting={getTpoGreeting(profile?.full_name ?? "Placement team")}
+        title="Import one roster cleanly before moving on."
+        description="Preview the file, confirm the mapping, then review the job report. This keeps upload work in one pane instead of scattering steps across multiple buttons."
+        actionMenu={(
+          <TpoActionMenu
+            items={[
+              {
+                label: "Download CSV Template",
+                onSelect: () => {
+                  downloadTextFile(
+                    "student-upload-template.csv",
+                    "full_name,email,prn,roll_number,degree,branch,batch,current_semester,cgpa,backlogs,total_historical_backlogs,attendance\n",
+                  );
+                },
+              },
+            ]}
+          />
+        )}
+      />
+
       <Card>
         <h1>Student Upload Wizard</h1>
         <p>Step 1: Upload CSV/Excel or paste CSV, Step 2: Review mapping, Step 3: Validate, Step 4: Confirm upsert.</p>
-        <div className="hero-actions">
-          <Button
-            variant="secondary"
-            onClick={() => {
-              downloadTextFile(
-                "student-upload-template.csv",
-                "full_name,email,prn,roll_number,degree,branch,batch,current_semester,cgpa,backlogs,total_historical_backlogs,attendance\n",
-              );
-            }}
-          >
-            Download CSV Template
-          </Button>
-        </div>
         <label>
           Upload file (.csv / .xlsx)
           <input

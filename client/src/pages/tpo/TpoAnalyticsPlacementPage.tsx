@@ -23,7 +23,7 @@ export default function TpoAnalyticsPlacementPage() {
   ];
 
   return (
-    <section className="dashboard-grid">
+    <section className="tpo-page-shell">
       <Card>
         <h1>Placement Funnel</h1>
         <p>Track conversion from eligible students to final selections.</p>
