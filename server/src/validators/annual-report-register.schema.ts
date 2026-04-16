@@ -25,6 +25,7 @@ export const annualRegisterEntryInputSchema = z.discriminatedUnion("registerType
       programName: z.string().trim().min(2).max(200),
       date: isoDateSchema,
       conductedBy: z.string().trim().min(2).max(200),
+      participantCount: z.number().int().min(1).max(10000).optional(),
     }),
   }),
   z.object({

@@ -13,6 +13,7 @@ export interface TrainingActivityPayload {
   programName: string;
   date: string;
   conductedBy: string;
+  participantCount?: number;
 }
 
 export interface IndustrialInplantTrainingPayload {
@@ -112,6 +113,9 @@ function normalizePayload(input: SaveAnnualRegisterInput): AnnualRegisterPayload
         programName: input.payload.programName.trim(),
         date: normalizeDate(input.payload.date),
         conductedBy: input.payload.conductedBy.trim(),
+        participantCount: input.payload.participantCount === undefined
+          ? undefined
+          : Number(input.payload.participantCount),
       };
     case "industrial_inplant_training":
       return {

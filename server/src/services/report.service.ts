@@ -81,6 +81,14 @@ interface DriveRecord {
   branchCriteria: string[];
   eligibleCount: number;
   sectorOrIndustry: string | null;
+  employerFirstName: string | null;
+  employerLastName: string | null;
+  employerDesignation: string | null;
+  employerDepartment: string | null;
+  employerOfficialEmail: string | null;
+  employerPersonalEmail: string | null;
+  employerMobile: string | null;
+  employerOfficeAddress: string | null;
   ctcMinLpa: number | null;
   ctcMaxLpa: number | null;
   ctcFinalLpa: number | null;
@@ -252,6 +260,14 @@ async function loadReportDataset(tenantId: string) {
           drive_date: 1,
           visit_date: 1,
           sector_or_industry: 1,
+          employer_first_name: 1,
+          employer_last_name: 1,
+          employer_designation: 1,
+          employer_department: 1,
+          employer_official_email: 1,
+          employer_personal_email: 1,
+          employer_mobile: 1,
+          employer_office_address: 1,
           ctc_min_lpa: 1,
           ctc_max_lpa: 1,
           ctc_final_lpa: 1,
@@ -328,6 +344,14 @@ async function loadReportDataset(tenantId: string) {
       branchCriteria: Array.isArray(criteria.branches) ? criteria.branches.map((item) => String(item)) : [],
       eligibleCount: Number(drive.eligible_count ?? 0),
       sectorOrIndustry: drive.sector_or_industry ? String(drive.sector_or_industry) : null,
+      employerFirstName: drive.employer_first_name ? String(drive.employer_first_name) : null,
+      employerLastName: drive.employer_last_name ? String(drive.employer_last_name) : null,
+      employerDesignation: drive.employer_designation ? String(drive.employer_designation) : null,
+      employerDepartment: drive.employer_department ? String(drive.employer_department) : null,
+      employerOfficialEmail: drive.employer_official_email ? String(drive.employer_official_email) : null,
+      employerPersonalEmail: drive.employer_personal_email ? String(drive.employer_personal_email) : null,
+      employerMobile: drive.employer_mobile ? String(drive.employer_mobile) : null,
+      employerOfficeAddress: drive.employer_office_address ? String(drive.employer_office_address) : null,
       ctcMinLpa: drive.ctc_min_lpa === undefined || drive.ctc_min_lpa === null ? null : Number(drive.ctc_min_lpa),
       ctcMaxLpa: drive.ctc_max_lpa === undefined || drive.ctc_max_lpa === null ? null : Number(drive.ctc_max_lpa),
       ctcFinalLpa: drive.ctc_final_lpa === undefined || drive.ctc_final_lpa === null ? null : Number(drive.ctc_final_lpa),
@@ -430,10 +454,183 @@ function formatPackageNote(values: number[]) {
   return `Lowest=${Math.min(...positive)}       Highest=${Math.max(...positive)}       Average=${average(positive)}`;
 }
 
+const BRANCH_DISPLAY_ORDER = [
+  "Food Technology",
+  "Chemical Engineering",
+  "Electronics and Telecommunication Engineering",
+  "Electronics Communication Technology",
+  "Civil Engineering",
+  "Mechanical Engineering",
+  "Computer Science and Technology",
+  "Computer Science and Engineering",
+  "Information Technology",
+];
+
+const TEMPLATE_TRAINING_BRANCH_ORDER = [
+  "Food Technology",
+  "Chemical Engineering",
+  "Mechanical Engineering",
+  "Computer Science and Technology",
+  "Civil Engineering",
+  "Electronics Communication Technology",
+  "Energy Technology",
+];
+
+const TEMPLATE_PLACEMENT_ACTIVITY_BRANCH_ORDER = [
+  "Food Technology",
+  "Chemical Engineering",
+  "Electronics and Telecommunication Engineering",
+  "Civil Engineering",
+  "Mechanical Engineering",
+  "Computer Science and Technology",
+  "Energy Technology",
+  "Environmental Science and Technology",
+];
+
+const TEMPLATE_INPLANT_BRANCH_ORDER = [
+  "Food Technology",
+  "Chemical Engineering",
+  "Computer Science and Technology",
+  "Mechanical Engineering",
+  "Electronics and Telecommunication Engineering",
+  "Civil Engineering",
+];
+
+const TEMPLATE_PLACEMENT_SELECTION_BRANCH_ORDER = [
+  "Food Technology",
+  "Chemical Engineering",
+  "Electronics Communication Technology",
+  "Civil Engineering",
+  "Mechanical Engineering",
+  "Computer Science and Technology",
+  "Energy Technology",
+  "Electronics and Telecommunication Engineering",
+];
+
+const TEMPLATE_VISIT_BRANCH_ORDER = [
+  "Food Technology",
+  "Chemical Engineering",
+  "Electronics Communication Technology",
+  "Civil Engineering",
+  "Mechanical Engineering",
+  "Computer Science and Technology",
+  "Energy Technology",
+  "Environmental Science and Technology",
+];
+
+function canonicalBranchName(branch: string | null | undefined) {
+  const raw = String(branch ?? "").trim();
+  const normalized = raw.toLowerCase();
+  if (!raw) return "";
+  if (normalized === "civil") return "Civil Engineering";
+  if (normalized === "cst") return "Computer Science and Technology";
+  if (normalized === "ect") return "Electronics Communication Technology";
+  if (normalized === "cicvil engineering") return "Civil Engineering";
+  if (normalized === "electronics and telecommunication") return "Electronics and Telecommunication Engineering";
+  if (normalized === "electronics tele-communication engineering") return "Electronics and Telecommunication Engineering";
+  if (normalized === "electronics telecommunication engineering") return "Electronics and Telecommunication Engineering";
+  return raw;
+}
+
+function normalizeBranchList(branches: string[]) {
+  const normalized: string[] = [];
+  const seen = new Set<string>();
+
+  branches.forEach((branch) => {
+    const canonical = canonicalBranchName(branch);
+    if (!canonical) return;
+    const key = canonical.toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    normalized.push(canonical);
+  });
+
+  return normalized;
+}
+
+function mergeBranchLists(preferredBranches: string[], observedBranches: string[]) {
+  const merged = normalizeBranchList(preferredBranches);
+  const seen = new Set(merged.map((branch) => branch.toLowerCase()));
+
+  normalizeBranchList(observedBranches).forEach((branch) => {
+    const key = branch.toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    merged.push(branch);
+  });
+
+  return merged;
+}
+
+function sortBranchesByPreferredOrder(branches: string[], preferredOrder: string[]) {
+  const normalizedBranches = normalizeBranchList(branches);
+  const normalizedPreferred = normalizeBranchList(preferredOrder);
+  const preferredRank = new Map(normalizedPreferred.map((branch, index) => [branch.toLowerCase(), index]));
+
+  return normalizedBranches.sort((left, right) => {
+    const leftRank = preferredRank.get(left.toLowerCase());
+    const rightRank = preferredRank.get(right.toLowerCase());
+
+    if (leftRank !== undefined && rightRank !== undefined && leftRank !== rightRank) {
+      return leftRank - rightRank;
+    }
+    if (leftRank !== undefined && rightRank === undefined) return -1;
+    if (rightRank !== undefined && leftRank === undefined) return 1;
+
+    return compareBranchNames(left, right);
+  });
+}
+
+function compareBranchNames(left: string, right: string) {
+  if (left === "All Branches" && right !== "All Branches") return -1;
+  if (right === "All Branches" && left !== "All Branches") return 1;
+
+  const leftRank = BRANCH_DISPLAY_ORDER.findIndex((branch) => branch.toLowerCase() === left.toLowerCase());
+  const rightRank = BRANCH_DISPLAY_ORDER.findIndex((branch) => branch.toLowerCase() === right.toLowerCase());
+  if (leftRank >= 0 && rightRank >= 0 && leftRank !== rightRank) {
+    return leftRank - rightRank;
+  }
+  if (leftRank >= 0 && rightRank < 0) return -1;
+  if (rightRank >= 0 && leftRank < 0) return 1;
+  return left.localeCompare(right);
+}
+
+function formatDriveStatus(status: string | null | undefined) {
+  const normalized = String(status ?? "").trim().toLowerCase();
+  if (!normalized) return "";
+  if (normalized === "in_process") return "In Process";
+  if (normalized === "results_pending") return "Results Pending";
+  if (normalized === "upcoming") return "Upcoming";
+  if (normalized === "active") return "Active";
+  if (normalized === "completed") return "Completed";
+  if (normalized === "cancelled") return "Cancelled";
+  return normalized
+    .split(/[_\s]+/g)
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+function preferRicherText(current: string, incoming: string) {
+  const currentValue = current.trim();
+  const incomingValue = incoming.trim();
+
+  if (!currentValue) return incomingValue;
+  if (!incomingValue) return currentValue;
+
+  return incomingValue.length > currentValue.length ? incomingValue : currentValue;
+}
+
 function buildEmployerRegisterRows(data: ReturnType<typeof applyReportFilters>) {
   const companyMap = new Map<string, {
     organization: string;
+    firstName: string;
+    lastName: string;
+    designation: string;
+    department: string;
     industry: string;
+    officialEmail: string;
+    personalEmail: string;
     address: string;
     mobile: string;
   }>();
@@ -441,36 +638,71 @@ function buildEmployerRegisterRows(data: ReturnType<typeof applyReportFilters>) 
   data.drives.forEach((drive) => {
     const key = drive.company.trim().toLowerCase();
     if (!key) return;
-    if (!companyMap.has(key)) {
+
+    const organization = drive.company.trim();
+    const firstName = (drive.employerFirstName ?? "").trim();
+    const lastName = (drive.employerLastName ?? "").trim();
+    const designation = (drive.employerDesignation ?? drive.role ?? "").trim();
+    const department = (drive.employerDepartment ?? "").trim();
+    const industry = (drive.sectorOrIndustry ?? "").trim();
+    const officialEmail = (drive.employerOfficialEmail ?? "").trim();
+    const personalEmail = (drive.employerPersonalEmail ?? "").trim();
+    const address = (drive.employerOfficeAddress ?? drive.reportingNotes ?? "").trim();
+    const mobile = (drive.employerMobile ?? "").trim();
+    const existing = companyMap.get(key);
+
+    if (!existing) {
       companyMap.set(key, {
-        organization: drive.company,
-        industry: drive.sectorOrIndustry ?? "",
-        address: drive.reportingNotes ?? "",
-        mobile: "",
+        organization,
+        firstName,
+        lastName,
+        designation,
+        department,
+        industry,
+        officialEmail,
+        personalEmail,
+        address,
+        mobile,
       });
+      return;
     }
+
+    companyMap.set(key, {
+      organization: preferRicherText(existing.organization, organization),
+      firstName: preferRicherText(existing.firstName, firstName),
+      lastName: preferRicherText(existing.lastName, lastName),
+      designation: preferRicherText(existing.designation, designation),
+      department: preferRicherText(existing.department, department),
+      industry: preferRicherText(existing.industry, industry),
+      officialEmail: preferRicherText(existing.officialEmail, officialEmail),
+      personalEmail: preferRicherText(existing.personalEmail, personalEmail),
+      address: preferRicherText(existing.address, address),
+      mobile: preferRicherText(existing.mobile, mobile),
+    });
   });
 
-  return [...companyMap.values()].map((company, index) => ({
-    "Sr. No.": index + 1,
-    "First Name": "",
-    "Last Name": "",
-    Designation: "",
-    "Name of Organization": company.organization,
-    Department: "",
-    Industry: company.industry,
-    "Official E-mail ID": "",
-    "Personal Email ID": "",
-    "Office Address": company.address,
-    "Mobile No.": company.mobile,
-  }));
+  return [...companyMap.values()]
+    .sort((left, right) => left.organization.localeCompare(right.organization))
+    .map((company, index) => ({
+      "Sr. No.": index + 1,
+      "First Name": company.firstName,
+      "Last Name": company.lastName,
+      Designation: company.designation,
+      "Name of Organization": company.organization,
+      Department: company.department,
+      Industry: company.industry,
+      "Official E-mail ID": company.officialEmail,
+      "Personal Email ID": company.personalEmail,
+      "Office Address": company.address,
+      "Mobile No.": company.mobile,
+    }));
 }
 
 function buildAnnualSummaryRows(data: ReturnType<typeof applyReportFilters>) {
-  const branches = [...new Set(data.students.map((student) => student.branch))].sort((a, b) => a.localeCompare(b));
+  const branches = orderedBranchNames(data);
   return branches.map((branch) => {
-    const branchStudents = data.students.filter((student) => student.branch === branch);
-    const branchResults = data.results.filter((result) => result.student?.branch === branch);
+    const branchStudents = data.students.filter((student) => canonicalBranchName(student.branch) === branch);
+    const branchResults = data.results.filter((result) => canonicalBranchName(result.student?.branch) === branch);
     const onCampusSelected = uniqueCount(branchResults.filter((result) => result.outcome === "selected" && result.selectionSource === "on_campus").map((result) => result.studentId));
     const offCampusSelected = uniqueCount(branchResults.filter((result) => result.outcome === "selected" && result.selectionSource !== "on_campus").map((result) => result.studentId));
     const totalSelected = uniqueCount(branchResults.filter((result) => result.outcome === "selected").map((result) => result.studentId));
@@ -515,7 +747,7 @@ function buildPlacementActivitiesRows(data: ReturnType<typeof applyReportFilters
       "Company Name": drive.company,
       "Job Title": drive.role ?? "",
       "Job posted on": formatWorkbookDate(drive.visitDate ?? drive.driveDate),
-      Status: drive.status,
+      Status: formatDriveStatus(drive.status),
       "Eligible students": drive.eligibleCount,
       Applied: applied,
       "Offered Students": offered,
@@ -552,6 +784,7 @@ function buildTrainingActivityRows(entries: AnnualRegisterEntry[]) {
       "Name of Program": payload.programName,
       Date: formatWorkbookDate(payload.date),
       "Conducted by": payload.conductedBy,
+      "Number of Students participated": payload.participantCount ?? "",
     };
   });
 }
@@ -595,6 +828,279 @@ function buildIndustrialVisitRows(entries: AnnualRegisterEntry[]) {
       "Date of Visit": formatWorkbookDate(payload.visitDate),
     };
   });
+}
+
+function normalizeSectionBranch(branch: string | null | undefined) {
+  const normalized = String(branch ?? "").trim();
+  if (!normalized) return null;
+  if (normalized.toLowerCase() === "all branches") return null;
+  if (normalized.toLowerCase() === "common") return null;
+  return canonicalBranchName(normalized);
+}
+
+function isMTechBranchName(branch: string) {
+  const normalized = branch.toLowerCase();
+  return normalized.includes("m.tech")
+    || normalized.includes("mtech")
+    || normalized.includes("master")
+    || normalized.includes("pg");
+}
+
+function orderedBranchNames(data: ReturnType<typeof applyReportFilters>) {
+  const names = new Set<string>();
+  data.students.forEach((student) => {
+    if (student.branch) names.add(canonicalBranchName(student.branch));
+  });
+  data.results.forEach((result) => {
+    if (result.student?.branch) names.add(canonicalBranchName(result.student.branch));
+  });
+  return [...names].filter(Boolean).sort(compareBranchNames);
+}
+
+function buildAnnualSummaryTotalRow(
+  rows: ReturnType<typeof buildAnnualSummaryRows>,
+  data: ReturnType<typeof applyReportFilters>,
+  branchSet: Set<string>,
+) {
+  const intake = rows.reduce((sum, row) => sum + Number(row.intake ?? 0), 0);
+  const enrolled = rows.reduce((sum, row) => sum + Number(row.enrolled ?? 0), 0);
+  const onCampusCount = rows.reduce((sum, row) => sum + Number(row.onCampusCount ?? 0), 0);
+  const offCampusCount = rows.reduce((sum, row) => sum + Number(row.offCampusCount ?? 0), 0);
+  const totalCount = rows.reduce((sum, row) => sum + Number(row.totalCount ?? 0), 0);
+  const higherEducationCount = rows.reduce((sum, row) => sum + Number(row.higherEducationCount ?? 0), 0);
+  const entrepreneurCount = rows.reduce((sum, row) => sum + Number(row.entrepreneurCount ?? 0), 0);
+  const grandTotalCount = rows.reduce((sum, row) => sum + Number(row.grandTotalCount ?? 0), 0);
+
+  const ctcValues = data.results
+    .filter((result) => result.outcome === "selected" && Boolean(result.student?.branch) && branchSet.has(canonicalBranchName(result.student?.branch)))
+    .map((result) => result.finalCtcLpa ?? result.drive?.ctcFinalLpa ?? result.drive?.ctcMaxLpa ?? result.drive?.ctcMinLpa ?? 0)
+    .filter((value) => value > 0);
+
+  return {
+    branch: "Total",
+    intake,
+    enrolled,
+    onCampusCount,
+    onCampusPct: renderPlacementPct(onCampusCount, enrolled),
+    offCampusCount,
+    offCampusPct: renderPlacementPct(offCampusCount, enrolled),
+    totalCount,
+    totalPct: renderPlacementPct(totalCount, enrolled),
+    higherEducationCount,
+    higherEducationPct: renderPlacementPct(higherEducationCount, enrolled),
+    entrepreneurCount,
+    entrepreneurPct: renderPlacementPct(entrepreneurCount, enrolled),
+    grandTotalCount,
+    grandTotalPct: renderPlacementPct(grandTotalCount, enrolled),
+    salaryNote: formatPackageNote(ctcValues),
+  };
+}
+
+function buildBranchWisePlacementActivitiesSections(data: ReturnType<typeof applyReportFilters>, branchCandidates: string[] = []) {
+  const drivesOrdered = [...data.drives].sort((left, right) => {
+    const leftDate = left.visitDate ?? left.driveDate ?? "";
+    const rightDate = right.visitDate ?? right.driveDate ?? "";
+    if (leftDate !== rightDate) {
+      return leftDate.localeCompare(rightDate);
+    }
+    return left.company.localeCompare(right.company);
+  });
+
+  const branches = sortBranchesByPreferredOrder(
+    mergeBranchLists(branchCandidates, orderedBranchNames(data)),
+    branchCandidates,
+  );
+
+  return branches.map((branch) => {
+    const rows: Array<{
+      "Sr. No": number;
+      "Company Name": string;
+      "Job Title": string;
+      "Job posted on": string;
+      Status: string;
+      "Eligible students": number;
+      Applied: number;
+      "Offered Students": number;
+    }> = [];
+
+    drivesOrdered.forEach((drive) => {
+      const branchResults = data.results.filter((result) => result.driveId === drive.id && canonicalBranchName(result.student?.branch) === branch);
+      if (branchResults.length === 0) return;
+
+      const eligible = uniqueCount(
+        branchResults
+          .filter((result) => result.status === "eligible" || result.status === "applied" || result.outcome !== "pending")
+          .map((result) => result.studentId),
+      );
+      const applied = uniqueCount(
+        branchResults
+          .filter((result) => result.registered === true || result.status === "applied" || result.outcome !== "pending")
+          .map((result) => result.studentId),
+      );
+      const offered = uniqueCount(branchResults.filter((result) => result.outcome === "selected").map((result) => result.studentId));
+
+      rows.push({
+        "Sr. No": rows.length + 1,
+        "Company Name": drive.company,
+        "Job Title": drive.role ?? "",
+        "Job posted on": formatWorkbookDate(drive.visitDate ?? drive.driveDate),
+        Status: formatDriveStatus(drive.status),
+        "Eligible students": eligible,
+        Applied: applied,
+        "Offered Students": offered,
+      });
+    });
+
+    return { branch, rows };
+  });
+}
+
+function buildBranchWisePlacementSelectionSections(data: ReturnType<typeof applyReportFilters>, branchCandidates: string[] = []) {
+  const selected = data.results
+    .filter((result) => result.outcome === "selected" && Boolean(result.student?.branch))
+    .sort((left, right) => {
+      const leftDate = left.offerDate ?? left.drive?.visitDate ?? left.drive?.driveDate ?? "";
+      const rightDate = right.offerDate ?? right.drive?.visitDate ?? right.drive?.driveDate ?? "";
+      if (leftDate !== rightDate) return leftDate.localeCompare(rightDate);
+      return (left.student?.fullName ?? "").localeCompare(right.student?.fullName ?? "");
+    });
+
+  const map = new Map<string, ResultRecord[]>();
+  selected.forEach((result) => {
+    const branch = canonicalBranchName(result.student?.branch);
+    if (!branch) return;
+    const list = map.get(branch) ?? [];
+    list.push(result);
+    map.set(branch, list);
+  });
+
+  const branches = sortBranchesByPreferredOrder(
+    mergeBranchLists(branchCandidates, orderedBranchNames(data)),
+    branchCandidates,
+  );
+
+  return branches.map((branch) => ({
+    branch,
+    rows: (map.get(branch) ?? []).map((result, index) => ({
+      "Sr. No": index + 1,
+      "Name of Students": result.student?.fullName ?? "",
+      "Name of the company": result.drive?.company ?? "",
+      "On campus/ Off Campus": result.selectionSource === "on_campus" ? "On campus" : "Off Campus",
+      "Package (Lakh)": result.finalCtcLpa ?? result.drive?.ctcFinalLpa ?? result.drive?.ctcMaxLpa ?? result.drive?.ctcMinLpa ?? "",
+    })),
+  }));
+}
+
+function buildTrainingActivitySections(entries: AnnualRegisterEntry[], branchCandidates: string[] = []) {
+  const commonRows: ReturnType<typeof buildTrainingActivityRows> = [];
+  const branchMap = new Map<string, ReturnType<typeof buildTrainingActivityRows>>();
+
+  entries.forEach((entry) => {
+    const payload = entry.payload as TrainingActivityPayload;
+    const row = {
+      "Sr. No": 0,
+      "Name of Program": payload.programName,
+      Date: formatWorkbookDate(payload.date),
+      "Conducted by": payload.conductedBy,
+      "Number of Students participated": payload.participantCount ?? "",
+    };
+    const normalizedBranch = normalizeSectionBranch(entry.branch);
+    if (!normalizedBranch) {
+      commonRows.push(row);
+      return;
+    }
+    const list = branchMap.get(normalizedBranch) ?? [];
+    list.push(row);
+    branchMap.set(normalizedBranch, list);
+  });
+
+  const preferredBranches = normalizeBranchList(branchCandidates).filter((branch) => !isMTechBranchName(branch));
+  const orderedBranches = sortBranchesByPreferredOrder(
+    mergeBranchLists(preferredBranches, [...branchMap.keys()]),
+    preferredBranches,
+  );
+
+  const common = commonRows
+    .sort((left, right) => String(left.Date).localeCompare(String(right.Date)))
+    .map((row, index) => ({ ...row, "Sr. No": index + 1 }));
+
+  const branches = orderedBranches
+    .map((branch) => ({
+      branch,
+      rows: (branchMap.get(branch) ?? [])
+        .sort((left, right) => String(left.Date).localeCompare(String(right.Date)))
+        .map((row, index) => ({ ...row, "Sr. No": index + 1 })),
+    }));
+
+  return { common, branches };
+}
+
+function buildIndustrialInplantSections(entries: AnnualRegisterEntry[], branchCandidates: string[] = []) {
+  const branchMap = new Map<string, ReturnType<typeof buildIndustrialInplantRows>>();
+
+  entries.forEach((entry) => {
+    const payload = entry.payload as IndustrialInplantTrainingPayload;
+    const row = {
+      "Sr. No": 0,
+      "Name of Students": payload.studentName,
+      "Name of the company": payload.companyName,
+      "Status (Online/Offline)": payload.mode === "online" ? "Online" : "Offline",
+      From: formatWorkbookDate(payload.fromDate),
+      To: formatWorkbookDate(payload.toDate),
+      "B.Tech/M.Tech": payload.programme,
+    };
+    const normalizedBranch = normalizeSectionBranch(entry.branch) ?? "All Branches";
+    const list = branchMap.get(normalizedBranch) ?? [];
+    list.push(row);
+    branchMap.set(normalizedBranch, list);
+  });
+
+  const orderedBranches = sortBranchesByPreferredOrder(
+    mergeBranchLists(branchCandidates, [...branchMap.keys()]),
+    branchCandidates,
+  );
+
+  return orderedBranches
+    .map((branch) => ({
+      branch,
+      rows: (branchMap.get(branch) ?? [])
+        .sort((left, right) => String(left.From).localeCompare(String(right.From)))
+        .map((row, index) => ({ ...row, "Sr. No": index + 1 })),
+    }));
+}
+
+function buildIndustrialVisitSections(entries: AnnualRegisterEntry[], branchCandidates: string[] = []) {
+  const branchMap = new Map<string, ReturnType<typeof buildIndustrialVisitRows>>();
+
+  entries.forEach((entry) => {
+    const payload = entry.payload as IndustrialVisitPayload;
+    const row = {
+      "Sr. No": 0,
+      "Company Name": payload.companyName,
+      "Number of Student": payload.studentCount,
+      "Date of Visit": formatWorkbookDate(payload.visitDate),
+    };
+    const normalizedBranch = normalizeSectionBranch(entry.branch) ?? "All Branches";
+    const sectionBranch = normalizedBranch === "Electronics and Telecommunication Engineering"
+      ? "Electronics Communication Technology"
+      : normalizedBranch;
+    const list = branchMap.get(sectionBranch) ?? [];
+    list.push(row);
+    branchMap.set(sectionBranch, list);
+  });
+
+  const orderedBranches = sortBranchesByPreferredOrder(
+    mergeBranchLists(branchCandidates, [...branchMap.keys()]),
+    branchCandidates,
+  );
+
+  return orderedBranches
+    .map((branch) => ({
+      branch,
+      rows: (branchMap.get(branch) ?? [])
+        .sort((left, right) => String(left["Date of Visit"]).localeCompare(String(right["Date of Visit"])))
+        .map((row, index) => ({ ...row, "Sr. No": index + 1 })),
+    }));
 }
 
 function buildReadinessBlockers(type: ReportType, results: ResultRecord[], drives: DriveRecord[], students: StudentRecord[]) {
@@ -1188,117 +1694,262 @@ function buildAnnualReportWorkbook(
 ) {
   const workbook = XLSX.utils.book_new();
   const annualSummaryRows = buildAnnualSummaryRows(data);
-  const placementActivitiesRows = buildPlacementActivitiesRows(data);
-  const placementSelectionRows = buildPlacementSelectionRows(data);
-  const employerRows = buildEmployerRegisterRows(data);
-  const trainingActivityRows = buildTrainingActivityRows(structuredData.trainingActivities);
-  const industrialInplantRows = buildIndustrialInplantRows(structuredData.industrialInplantTraining);
-  const higherEducationRows = buildHigherEducationRows(structuredData.higherEducationAbroad);
-  const industrialVisitRows = buildIndustrialVisitRows(structuredData.industrialVisits);
-  const annualTitle = `B.Tech Summary of Placement Records for the Academic Year: ${filters.academicYear ?? "Selected Year"}`;
+  const btechSummaryRows = annualSummaryRows.filter((row) => !isMTechBranchName(row.branch));
+  const mtechSummaryRows = annualSummaryRows.filter((row) => isMTechBranchName(row.branch));
+  const effectiveBtechSummaryRows = btechSummaryRows.length > 0 ? btechSummaryRows : annualSummaryRows;
+  const btechBranchSet = new Set(effectiveBtechSummaryRows.map((row) => row.branch));
+  const mtechBranchSet = new Set(mtechSummaryRows.map((row) => row.branch));
 
-  appendSheet(workbook, " Summary of Placement Records", [
-    [annualTitle],
-    [""],
-    [""],
-    ["Branch Name", "Intake", "Enroll", "Placements A", "", "Off Campus", "", "Total", "", "Higher Education B", "", "Entrepreneur C", "", "Grand Total (A+B+C)", "", "", ""],
-    ["", "", "", "On Campus", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-    ["", "", "", "No", "%", "No", "%", "No", "%", "No", "%", "No", "%", "No", "%", "Compensation Summary", ""],
-    ...annualSummaryRows.map((row) => [
-      row.branch,
-      row.intake,
-      row.enrolled,
-      row.onCampusCount,
-      row.onCampusPct,
-      row.offCampusCount,
-      row.offCampusPct,
-      row.totalCount,
-      row.totalPct,
-      row.higherEducationCount,
-      row.higherEducationPct,
-      row.entrepreneurCount,
-      row.entrepreneurPct,
-      row.grandTotalCount,
-      row.grandTotalPct,
-      row.salaryNote,
+  const summarySheetRows: Array<Array<ReportRowValue>> = [];
+  const summaryMerges: string[] = [];
+  const appendSummaryBlock = (
+    title: string,
+    rows: ReturnType<typeof buildAnnualSummaryRows>,
+    branchSet: Set<string>,
+    titleRowSpan: number,
+  ) => {
+    const titleRowStart = summarySheetRows.length + 1;
+    summarySheetRows.push([title]);
+    for (let i = 1; i < titleRowSpan; i += 1) {
+      summarySheetRows.push([]);
+    }
+
+    const groupedHeaderRow = summarySheetRows.length + 1;
+    summarySheetRows.push(["Branch Name", "Intake", "Enroll", "Placements A", "", "Off Campus", "", "Total", "", "Higher Education B", "", "Entrepreneur C", "", "Grand Total (A+B+C)", "", "", ""]);
+    const campusHeaderRow = summarySheetRows.length + 1;
+    summarySheetRows.push(["", "", "", "On Campus", "", "Off Campus", "", "Total", "", "", "", "", "", "", "", "", ""]);
+    summarySheetRows.push(["", "", "", "No", "%", "No", "%", "No", "%", "No", "%", "No", "%", "No", "%", "Compensation Summary", ""]);
+
+    summaryMerges.push(
+      `A${titleRowStart}:Q${titleRowStart + titleRowSpan - 1}`,
+      `D${groupedHeaderRow}:I${groupedHeaderRow}`,
+      `J${groupedHeaderRow}:K${groupedHeaderRow}`,
+      `L${groupedHeaderRow}:M${groupedHeaderRow}`,
+      `N${groupedHeaderRow}:O${groupedHeaderRow}`,
+      `D${campusHeaderRow}:E${campusHeaderRow}`,
+      `F${campusHeaderRow}:G${campusHeaderRow}`,
+      `H${campusHeaderRow}:I${campusHeaderRow}`,
+      `J${campusHeaderRow}:K${campusHeaderRow}`,
+      `L${campusHeaderRow}:M${campusHeaderRow}`,
+      `N${campusHeaderRow}:O${campusHeaderRow}`,
+    );
+
+    rows.forEach((row) => {
+      summarySheetRows.push([
+        row.branch,
+        row.intake,
+        row.enrolled,
+        row.onCampusCount,
+        row.onCampusPct,
+        row.offCampusCount,
+        row.offCampusPct,
+        row.totalCount,
+        row.totalPct,
+        row.higherEducationCount,
+        row.higherEducationPct,
+        row.entrepreneurCount,
+        row.entrepreneurPct,
+        row.grandTotalCount,
+        row.grandTotalPct,
+        row.salaryNote,
+        "",
+      ]);
+    });
+
+    const total = buildAnnualSummaryTotalRow(rows, data, branchSet);
+    summarySheetRows.push([
+      total.branch,
+      total.intake,
+      total.enrolled,
+      total.onCampusCount,
+      total.onCampusPct,
+      total.offCampusCount,
+      total.offCampusPct,
+      total.totalCount,
+      total.totalPct,
+      total.higherEducationCount,
+      total.higherEducationPct,
+      total.entrepreneurCount,
+      total.entrepreneurPct,
+      total.grandTotalCount,
+      total.grandTotalPct,
+      total.salaryNote,
       "",
-    ]),
-  ], {
-    merges: ["A1:Q1", "D4:I4", "J4:K4", "L4:M4", "N4:O4"],
+    ]);
+  };
+
+  appendSummaryBlock(
+    `B.Tech Summary of Placement Records for the Academic Year: ${filters.academicYear ?? "Selected Year"}`,
+    effectiveBtechSummaryRows,
+    btechBranchSet,
+    3,
+  );
+  appendSummaryBlock(
+    `M.Tech Summary of Placement Records for the Academic Year: ${filters.academicYear ?? "Selected Year"}`,
+    mtechSummaryRows,
+    mtechBranchSet,
+    2,
+  );
+
+  appendSheet(workbook, " Summary of Placement Records", summarySheetRows, {
+    merges: summaryMerges,
     cols: [
       { wch: 34 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 8 }, { wch: 10 }, { wch: 8 }, { wch: 10 }, { wch: 8 }, { wch: 10 }, { wch: 8 }, { wch: 10 }, { wch: 8 }, { wch: 12 }, { wch: 8 }, { wch: 42 }, { wch: 4 },
     ],
   });
 
-  appendSheet(workbook, "Training Activities", [
+  const trainingSections = buildTrainingActivitySections(structuredData.trainingActivities, TEMPLATE_TRAINING_BRANCH_ORDER);
+  const trainingSheetRows: Array<Array<ReportRowValue>> = [
     ["SHIVAJI UNIVERSITY"],
     ["DEPARTMENT OF TECHNOLOGY"],
     ["TRAINING AND PLACEMENT CELL"],
     [`Activity Report-Academic Year ${filters.academicYear ?? ""}`],
-    [""],
+    [],
     ["I. Training Activities : B. Tech- Common to all"],
-    [""],
-    ["Sr No", "Name of Program", "Date", "Conducted by"],
-    ...trainingActivityRows.map((row) => [row["Sr. No"], row["Name of Program"], row.Date, row["Conducted by"]]),
-  ], {
-    merges: ["A1:D1", "A2:D2", "A3:D3", "A4:D4", "A6:D6"],
-    cols: [{ wch: 8 }, { wch: 44 }, { wch: 16 }, { wch: 28 }],
+    [],
+  ];
+
+  const commonHeaderRow = trainingSheetRows.length + 1;
+  trainingSheetRows.push(["Sr No", "Name of Program", "Date", "Conducted by", ""]);
+  const commonSubHeaderRow = trainingSheetRows.length + 1;
+  trainingSheetRows.push(["", "", "", "", ""]);
+  trainingSections.common.forEach((row) => {
+    trainingSheetRows.push([
+      row["Sr. No"],
+      row["Name of Program"],
+      row.Date,
+      row["Conducted by"],
+      "",
+    ]);
+  });
+  trainingSheetRows.push([]);
+  const branchWiseTitleRow = trainingSheetRows.length + 1;
+  trainingSheetRows.push(["II. Training Activities :Branch wise"]);
+  trainingSheetRows.push(["Sr. No", "Activity", "Dates of Activity", "Name and address of Resource Person/Experts", "Number of Students participated"]);
+
+  const trainingMerges = [
+    "A1:E1",
+    "A2:E2",
+    "A3:E3",
+    "A4:E4",
+    "A6:E6",
+    `A${branchWiseTitleRow}:E${branchWiseTitleRow}`,
+    `D${commonHeaderRow}:E${commonHeaderRow}`,
+    `D${commonSubHeaderRow}:E${commonSubHeaderRow}`,
+  ];
+  trainingSections.branches.forEach((section, sectionIndex) => {
+    const branchRow = trainingSheetRows.length + 1;
+    trainingSheetRows.push([`Branch: ${section.branch}`]);
+    trainingMerges.push(`A${branchRow}:E${branchRow}`);
+    section.rows.forEach((row) => {
+      trainingSheetRows.push([
+        row["Sr. No"],
+        row["Name of Program"],
+        row.Date,
+        row["Conducted by"],
+        row["Number of Students participated"],
+      ]);
+    });
+    if (sectionIndex < trainingSections.branches.length - 1) {
+      trainingSheetRows.push([]);
+    }
   });
 
-  appendSheet(workbook, "Placement Activities", [
+  appendSheet(workbook, "Training Activities", trainingSheetRows, {
+    merges: trainingMerges,
+    cols: [{ wch: 8 }, { wch: 44 }, { wch: 18 }, { wch: 36 }, { wch: 18 }],
+  });
+
+  const placementActivitySections = buildBranchWisePlacementActivitiesSections(data, TEMPLATE_PLACEMENT_ACTIVITY_BRANCH_ORDER);
+  const placementActivityRows: Array<Array<ReportRowValue>> = [
     ["Placement Activities"],
     [`List of Placement Activities-${filters.academicYear ?? ""}`],
-    [`Branch: ${filters.branch ?? "All Branches"}`],
-    ["Sr. No", "Company Name", "Job Title", "Job posted on", "Status", "Eligible students", "Applied", "Offered Students"],
-    ...placementActivitiesRows.map((row) => [
-      row["Sr. No"],
-      row["Company Name"],
-      row["Job Title"],
-      row["Job posted on"],
-      row.Status,
-      row["Eligible students"],
-      row.Applied,
-      row["Offered Students"],
-    ]),
-  ], {
-    merges: ["A1:H1", "A2:H2", "A3:H3"],
+  ];
+  const placementActivityMerges = ["A1:H1", "A2:H2"];
+  placementActivitySections.forEach((section) => {
+    const branchRow = placementActivityRows.length + 1;
+    placementActivityRows.push([`Branch: ${section.branch}`]);
+    placementActivityMerges.push(`A${branchRow}:H${branchRow}`);
+    placementActivityRows.push(["Sr. No", "Company Name", "Job Title", "Job posted on", "Status", "Eligible students", "Applied", "Offered Students"]);
+    section.rows.forEach((row) => {
+      placementActivityRows.push([
+        row["Sr. No"],
+        row["Company Name"],
+        row["Job Title"],
+        row["Job posted on"],
+        row.Status,
+        row["Eligible students"],
+        row.Applied,
+        row["Offered Students"],
+      ]);
+    });
+    placementActivityRows.push([]);
+  });
+
+  appendSheet(workbook, "Placement Activities", placementActivityRows, {
+    merges: placementActivityMerges,
     cols: [{ wch: 8 }, { wch: 42 }, { wch: 24 }, { wch: 16 }, { wch: 16 }, { wch: 16 }, { wch: 12 }, { wch: 16 }],
   });
 
-  appendSheet(workbook, "Industrial In-Plant Training", [
-    [`Summary of Industrial Internships/Industrial In-Plant Training-${filters.academicYear ?? ""}`],
-    [`Branch: ${filters.branch ?? "All Branches"}`],
-    ["Sr. No", "Name of Students", "Name of the company", "Status (Online/Offline)", "From", "To", "B.Tech/M.Tech"],
-    ...industrialInplantRows.map((row) => [
-      row["Sr. No"],
-      row["Name of Students"],
-      row["Name of the company"],
-      row["Status (Online/Offline)"],
-      row.From,
-      row.To,
-      row["B.Tech/M.Tech"],
-    ]),
-  ], {
-    merges: ["A1:G1", "A2:G2"],
+  const inplantSections = buildIndustrialInplantSections(structuredData.industrialInplantTraining, TEMPLATE_INPLANT_BRANCH_ORDER);
+  const inplantRows: Array<Array<ReportRowValue>> = [[`Summary of Industrial Internships/Industrial In-Plant Training-${filters.academicYear ?? ""}`]];
+  const inplantMerges = ["A1:F1"];
+  let inplantHeaderMergeApplied = false;
+  inplantSections.forEach((section) => {
+    const branchRow = inplantRows.length + 1;
+    inplantRows.push([`Branch: ${section.branch}`]);
+    inplantMerges.push(`A${branchRow}:F${branchRow}`);
+    const headerRow = inplantRows.length + 1;
+    inplantRows.push(["Sr. No", "Name of Students", "Name of the company", "Status (Online/Offline)", "From", "To", "B.Tech/M.Tech"]);
+    if (!inplantHeaderMergeApplied) {
+      inplantMerges.push(`E${headerRow}:F${headerRow}`);
+      inplantHeaderMergeApplied = true;
+    }
+    section.rows.forEach((row) => {
+      inplantRows.push([
+        row["Sr. No"],
+        row["Name of Students"],
+        row["Name of the company"],
+        row["Status (Online/Offline)"],
+        row.From,
+        row.To,
+        row["B.Tech/M.Tech"],
+      ]);
+    });
+    inplantRows.push([]);
+  });
+
+  appendSheet(workbook, "Industrial In-Plant Training", inplantRows, {
+    merges: inplantMerges,
     cols: [{ wch: 8 }, { wch: 28 }, { wch: 34 }, { wch: 20 }, { wch: 16 }, { wch: 16 }, { wch: 14 }],
   });
 
-  appendSheet(workbook, "Placament Activity", [
-    [`Placament Activity-${filters.academicYear ?? ""}`],
-    [`Branch: ${filters.branch ?? "All Branches"}`],
-    ["Sr. No", "Name of Students", "Name of the company", "On campus/ Off Campus", "Package (Lakh)"],
-    ...placementSelectionRows.map((row) => [
-      row["Sr. No"],
-      row["Name of Students"],
-      row["Name of the company"],
-      row["On campus/ Off Campus"],
-      row["Package (Lakh)"],
-    ]),
-  ], {
-    merges: ["A1:E1", "A2:E2"],
+  const placementSelectionSections = buildBranchWisePlacementSelectionSections(data, TEMPLATE_PLACEMENT_SELECTION_BRANCH_ORDER);
+  const placementSelectionRows: Array<Array<ReportRowValue>> = [[`Placament Activity-${filters.academicYear ?? ""}`]];
+  const placementSelectionMerges = ["A1:E1"];
+  placementSelectionSections.forEach((section) => {
+    const branchRow = placementSelectionRows.length + 1;
+    placementSelectionRows.push([`Branch: ${section.branch}`]);
+    placementSelectionMerges.push(`A${branchRow}:E${branchRow}`);
+    placementSelectionRows.push(["Sr. No", "Name of Students", "Name of the company", "On campus/ Off Campus", "Package (Lakh)"]);
+    section.rows.forEach((row) => {
+      placementSelectionRows.push([
+        row["Sr. No"],
+        row["Name of Students"],
+        row["Name of the company"],
+        row["On campus/ Off Campus"],
+        row["Package (Lakh)"],
+      ]);
+    });
+    placementSelectionRows.push([]);
+  });
+
+  appendSheet(workbook, "Placament Activity", placementSelectionRows, {
+    merges: placementSelectionMerges,
     cols: [{ wch: 8 }, { wch: 28 }, { wch: 40 }, { wch: 20 }, { wch: 16 }],
   });
 
+  const higherEducationRows = buildHigherEducationRows(structuredData.higherEducationAbroad);
   appendSheet(workbook, "Higher Education Abroad", [
     [`List of Students Persuing Higher Education ${filters.academicYear ?? ""}`],
     ["Sr.No.", "Name of Student", "Programme", "Course Persuing", "Name of the Institute", "Country"],
@@ -1315,45 +1966,28 @@ function buildAnnualReportWorkbook(
     cols: [{ wch: 8 }, { wch: 28 }, { wch: 22 }, { wch: 24 }, { wch: 36 }, { wch: 18 }],
   });
 
-  appendSheet(workbook, "Industrial Visit", [
-    [`Industrial Visit ${filters.academicYear ?? ""}`],
-    [`Branch: ${filters.branch ?? "All Branches"}`],
-    ["Sr. No", "Company Name", "Number of Student", "Date of Visit"],
-    ...industrialVisitRows.map((row) => [
-      row["Sr. No"],
-      row["Company Name"],
-      row["Number of Student"],
-      row["Date of Visit"],
-    ]),
-  ], {
-    merges: ["A1:D1", "A2:D2"],
-    cols: [{ wch: 8 }, { wch: 42 }, { wch: 18 }, { wch: 18 }],
+  const industrialVisitSections = buildIndustrialVisitSections(structuredData.industrialVisits, TEMPLATE_VISIT_BRANCH_ORDER);
+  const industrialVisitRows: Array<Array<ReportRowValue>> = [[`Industrial Visit ${filters.academicYear ?? ""}`]];
+  const industrialVisitMerges = ["A1:D1"];
+  industrialVisitSections.forEach((section) => {
+    const branchRow = industrialVisitRows.length + 1;
+    industrialVisitRows.push([`Branch: ${section.branch}`]);
+    industrialVisitMerges.push(`A${branchRow}:D${branchRow}`);
+    industrialVisitRows.push(["Sr. No", "Company Name", "Number of Student", "Date of Visit"]);
+    section.rows.forEach((row) => {
+      industrialVisitRows.push([
+        row["Sr. No"],
+        row["Company Name"],
+        row["Number of Student"],
+        row["Date of Visit"],
+      ]);
+    });
+    industrialVisitRows.push([]);
   });
 
-  appendSheet(workbook, "Employer Data", [
-    ["Shivaji University, Kolhapur"],
-    ["School of Engineering and Technology"],
-    ["Employer Data"],
-    [""],
-    ["Sr. No.", "First Name", "Last Name", "Designation", "Name of Organization", "Department", "Industry", "Official E-mail ID", "Personal Email ID", "Office Address", "Mobile No."],
-    ...employerRows.map((row) => [
-      row["Sr. No."],
-      row["First Name"],
-      row["Last Name"],
-      row.Designation,
-      row["Name of Organization"],
-      row.Department,
-      row.Industry,
-      row["Official E-mail ID"],
-      row["Personal Email ID"],
-      row["Office Address"],
-      row["Mobile No."],
-    ]),
-  ], {
-    merges: ["A1:K1", "A2:K2", "A3:K3"],
-    cols: [
-      { wch: 8 }, { wch: 18 }, { wch: 18 }, { wch: 18 }, { wch: 32 }, { wch: 16 }, { wch: 18 }, { wch: 28 }, { wch: 28 }, { wch: 42 }, { wch: 18 },
-    ],
+  appendSheet(workbook, "Industrial Visit", industrialVisitRows, {
+    merges: industrialVisitMerges,
+    cols: [{ wch: 8 }, { wch: 42 }, { wch: 18 }, { wch: 18 }],
   });
 
   return Buffer.from(XLSX.write(workbook, { type: "buffer", bookType: "xlsx" }));
@@ -1368,19 +2002,23 @@ function summarizeAnnualWorkbook(
   if (!meta) throw new AppError("REPORT_TEMPLATE_NOT_FOUND", "Report template not found", 404);
 
   const annualSummaryRows = buildAnnualSummaryRows(data);
-  const placementRows = buildPlacementSelectionRows(data);
-  const activityRows = buildPlacementActivitiesRows(data);
-  const employerRows = buildEmployerRegisterRows(data);
-  const trainingRows = buildTrainingActivityRows(structuredData.trainingActivities);
-  const inplantRows = buildIndustrialInplantRows(structuredData.industrialInplantTraining);
+  const placementSections = buildBranchWisePlacementSelectionSections(data, TEMPLATE_PLACEMENT_SELECTION_BRANCH_ORDER);
+  const activitySections = buildBranchWisePlacementActivitiesSections(data, TEMPLATE_PLACEMENT_ACTIVITY_BRANCH_ORDER);
+  const trainingSections = buildTrainingActivitySections(structuredData.trainingActivities, TEMPLATE_TRAINING_BRANCH_ORDER);
+  const inplantSections = buildIndustrialInplantSections(structuredData.industrialInplantTraining, TEMPLATE_INPLANT_BRANCH_ORDER);
   const higherEducationRows = buildHigherEducationRows(structuredData.higherEducationAbroad);
-  const visitRows = buildIndustrialVisitRows(structuredData.industrialVisits);
+  const visitSections = buildIndustrialVisitSections(structuredData.industrialVisits, TEMPLATE_VISIT_BRANCH_ORDER);
+  const placementRowsCount = placementSections.reduce((sum, section) => sum + section.rows.length, 0);
+  const activityRowsCount = activitySections.reduce((sum, section) => sum + section.rows.length, 0);
+  const trainingRowsCount = trainingSections.common.length + trainingSections.branches.reduce((sum, section) => sum + section.rows.length, 0);
+  const inplantRowsCount = inplantSections.reduce((sum, section) => sum + section.rows.length, 0);
+  const visitRowsCount = visitSections.reduce((sum, section) => sum + section.rows.length, 0);
 
   const missingSheets = [
-    { key: "trainingActivities", label: "Training Activities", count: trainingRows.length },
-    { key: "industrialInplantTraining", label: "Industrial In-Plant Training", count: inplantRows.length },
+    { key: "trainingActivities", label: "Training Activities", count: trainingRowsCount },
+    { key: "industrialInplantTraining", label: "Industrial In-Plant Training", count: inplantRowsCount },
     { key: "higherEducationAbroad", label: "Higher Education Abroad", count: higherEducationRows.length },
-    { key: "industrialVisits", label: "Industrial Visit", count: visitRows.length },
+    { key: "industrialVisits", label: "Industrial Visit", count: visitRowsCount },
   ].filter((item) => item.count === 0);
 
   return {
@@ -1400,21 +2038,19 @@ function summarizeAnnualWorkbook(
     })),
     summaryMetrics: [
       { label: "Summary rows", value: annualSummaryRows.length },
-      { label: "Placement activity rows", value: activityRows.length },
-      { label: "Selected placement rows", value: placementRows.length },
-      { label: "Employer rows", value: employerRows.length },
-      { label: "Structured annual entries", value: trainingRows.length + inplantRows.length + higherEducationRows.length + visitRows.length },
+      { label: "Placement activity rows", value: activityRowsCount },
+      { label: "Selected placement rows", value: placementRowsCount },
+      { label: "Structured annual entries", value: trainingRowsCount + inplantRowsCount + higherEducationRows.length + visitRowsCount },
     ],
     columns: ["sheet", "status", "rows", "note"],
     rows: [
       { sheet: "Summary of Placement Records", status: "live", rows: annualSummaryRows.length, note: "Derived from current student, drive, and placement data." },
-      { sheet: "Placement Activities", status: "live", rows: activityRows.length, note: "Derived from current drive records." },
-      { sheet: "Placament Activity", status: "live", rows: placementRows.length, note: "Derived from selected placement outcomes." },
-      { sheet: "Employer Data", status: employerRows.length > 0 ? "live_with_gaps" : "live", rows: employerRows.length, note: "Generated from current recruiter and drive data available in Smart Path." },
-      { sheet: "Training Activities", status: trainingRows.length > 0 ? "live" : "missing", rows: trainingRows.length, note: trainingRows.length > 0 ? "Filled from the annual training register." : "Add training activities below to auto-fill this sheet." },
-      { sheet: "Industrial In-Plant Training", status: inplantRows.length > 0 ? "live" : "missing", rows: inplantRows.length, note: inplantRows.length > 0 ? "Filled from the in-plant training register." : "Add internship / in-plant rows below to auto-fill this sheet." },
+      { sheet: "Placement Activities", status: "live", rows: activityRowsCount, note: "Derived from current drive records and grouped branch-wise." },
+      { sheet: "Placament Activity", status: "live", rows: placementRowsCount, note: "Derived from selected placement outcomes and grouped branch-wise." },
+      { sheet: "Training Activities", status: trainingRowsCount > 0 ? "live" : "missing", rows: trainingRowsCount, note: trainingRowsCount > 0 ? "Filled from the annual training register." : "Add training activities below to auto-fill this sheet." },
+      { sheet: "Industrial In-Plant Training", status: inplantRowsCount > 0 ? "live" : "missing", rows: inplantRowsCount, note: inplantRowsCount > 0 ? "Filled from the in-plant training register." : "Add internship / in-plant rows below to auto-fill this sheet." },
       { sheet: "Higher Education Abroad", status: higherEducationRows.length > 0 ? "live" : "missing", rows: higherEducationRows.length, note: higherEducationRows.length > 0 ? "Filled from the higher education register." : "Add higher education rows below to auto-fill this sheet." },
-      { sheet: "Industrial Visit", status: visitRows.length > 0 ? "live" : "missing", rows: visitRows.length, note: visitRows.length > 0 ? "Filled from the industrial visit register." : "Add industrial visit rows below to auto-fill this sheet." },
+      { sheet: "Industrial Visit", status: visitRowsCount > 0 ? "live" : "missing", rows: visitRowsCount, note: visitRowsCount > 0 ? "Filled from the industrial visit register." : "Add industrial visit rows below to auto-fill this sheet." },
     ],
   };
 }

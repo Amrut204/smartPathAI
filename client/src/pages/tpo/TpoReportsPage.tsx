@@ -30,6 +30,7 @@ type AnnualRegisterDraft = {
   programName: string;
   date: string;
   conductedBy: string;
+  participantCount: string;
   studentName: string;
   companyName: string;
   mode: "online" | "offline";
@@ -97,6 +98,7 @@ const emptyAnnualRegisterDraft: AnnualRegisterDraft = {
   programName: "",
   date: "",
   conductedBy: "",
+  participantCount: "",
   studentName: "",
   companyName: "",
   mode: "offline",
@@ -301,6 +303,9 @@ export default function TpoReportsPage() {
             programName: annualRegisterDraft.programName,
             date: annualRegisterDraft.date,
             conductedBy: annualRegisterDraft.conductedBy,
+            participantCount: annualRegisterDraft.participantCount.trim()
+              ? Number(annualRegisterDraft.participantCount)
+              : undefined,
           },
         };
       case "industrial_inplant_training":
@@ -354,6 +359,7 @@ export default function TpoReportsPage() {
       programName: String(payload.programName ?? ""),
       date: String(payload.date ?? ""),
       conductedBy: String(payload.conductedBy ?? ""),
+      participantCount: payload.participantCount === undefined ? "" : String(payload.participantCount),
       studentName: String(payload.studentName ?? ""),
       companyName: String(payload.companyName ?? ""),
       mode: payload.mode === "online" ? "online" : "offline",
@@ -938,6 +944,10 @@ export default function TpoReportsPage() {
                       Conducted by
                       <Input value={annualRegisterDraft.conductedBy} onChange={(event) => updateAnnualDraft("conductedBy", event.target.value)} />
                     </label>
+                    <label>
+                      Participants (optional)
+                      <Input type="number" min="1" value={annualRegisterDraft.participantCount} onChange={(event) => updateAnnualDraft("participantCount", event.target.value)} />
+                    </label>
                   </div>
                 ) : null}
 
@@ -1056,7 +1066,7 @@ export default function TpoReportsPage() {
                         {annualEntriesForActiveTab.map((entry) => {
                           const payload = entry.payload as Record<string, string | number>;
                           const details = activeAnnualRegister === "training_activities"
-                            ? `${String(payload.programName ?? "")} | ${String(payload.date ?? "")} | ${String(payload.conductedBy ?? "")}`
+                            ? `${String(payload.programName ?? "")} | ${String(payload.date ?? "")} | ${String(payload.conductedBy ?? "")}${payload.participantCount ? ` | ${String(payload.participantCount)} participants` : ""}`
                             : activeAnnualRegister === "industrial_inplant_training"
                               ? `${String(payload.studentName ?? "")} | ${String(payload.companyName ?? "")} | ${String(payload.fromDate ?? "")} to ${String(payload.toDate ?? "")}`
                               : activeAnnualRegister === "higher_education_abroad"
