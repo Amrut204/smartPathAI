@@ -2,6 +2,14 @@ import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import * as XLSX from "xlsx";
 
 import { AppError } from "../middleware/error-handler.js";
+import {
+  AnnualReportRegisterService,
+  type AnnualRegisterEntry,
+  type HigherEducationPayload,
+  type IndustrialInplantTrainingPayload,
+  type IndustrialVisitPayload,
+  type TrainingActivityPayload,
+} from "./annual-report-register.service.js";
 import { getMongoDb } from "../utils/mongodb.js";
 
 export type ReportType =
@@ -13,7 +21,9 @@ export type ReportType =
   | "naac_5_2_progression"
   | "branch_wise_placement_analysis"
   | "placement_brochure_pack"
-  | "unplaced_student_action_report";
+  | "unplaced_student_action_report"
+  | "employer_data_register"
+  | "tp_annual_report_workbook";
 
 export interface ReportFilters {
   preset: "this_week" | "this_month" | "placement_season" | "academic_year" | "custom";
@@ -122,22 +132,32 @@ interface AttemptStat {
   averageScore: number;
 }
 
+interface AnnualWorkbookStructuredData {
+  trainingActivities: AnnualRegisterEntry[];
+  industrialInplantTraining: AnnualRegisterEntry[];
+  higherEducationAbroad: AnnualRegisterEntry[];
+  industrialVisits: AnnualRegisterEntry[];
+}
+
 const TEMPLATE_META: Array<{
   type: ReportType;
   title: string;
   audience: ReportAudienceExtended;
   group: ReportGroup;
   description: string;
+  exportFormats: Array<"xlsx" | "pdf" | "csv">;
 }> = [
-  { type: "drive_completion_summary", title: "Drive Report", audience: "Placement Office / Principal", group: "Must-have Reports", description: "Per-drive summary of eligible, appeared, shortlisted, selected, and final CTC." },
-  { type: "weekly_placement_status", title: "Weekly Drive Activity Report", audience: "Principal / Director", group: "Must-have Reports", description: "Peak-season weekly update on drives conducted, offers made, and cumulative placed count." },
-  { type: "monthly_branch_breakdown", title: "Monthly Branch Snapshot", audience: "HODs", group: "Operational Tracking", description: "Internal branch-wise participation view, useful mainly during peak season." },
-  { type: "company_visit_register", title: "Company Visit Register", audience: "NAAC / NBA", group: "Must-have Reports", description: "Running visit log for companies, roles, CTC, outcomes, and NAAC-ready evidence tracking." },
-  { type: "final_placement_statistics", title: "Season Placement Summary", audience: "All Authorities", group: "Must-have Reports", description: "End-of-season placement summary with placement %, offers, companies, and CTC." },
-  { type: "naac_5_2_progression", title: "NAAC Placement Evidence Package", audience: "NAAC / NBA", group: "Compliance / Evidence", description: "Placement evidence export with student rows, offer proof readiness, and verification status." },
-  { type: "branch_wise_placement_analysis", title: "Branch-wise Placement Breakdown", audience: "HODs", group: "Operational Tracking", description: "Branch-level placement and unplaced visibility, best used as an internal branch view." },
-  { type: "placement_brochure_pack", title: "Marketing / Brochure Export", audience: "Management / Marketing", group: "Exports", description: "Marketing-oriented headline export, not a core TPO report." },
-  { type: "unplaced_student_action_report", title: "Unplaced Student Tracker", audience: "Placement Office", group: "Operational Tracking", description: "Internal tracker for unplaced students, gaps, and follow-up actions." },
+  { type: "drive_completion_summary", title: "Drive Report", audience: "Placement Office / Principal", group: "Must-have Reports", description: "Per-drive summary of eligible, appeared, shortlisted, selected, and final CTC.", exportFormats: ["xlsx", "pdf", "csv"] },
+  { type: "weekly_placement_status", title: "Weekly Drive Activity Report", audience: "Principal / Director", group: "Must-have Reports", description: "Peak-season weekly update on drives conducted, offers made, and cumulative placed count.", exportFormats: ["xlsx", "pdf", "csv"] },
+  { type: "monthly_branch_breakdown", title: "Monthly Branch Snapshot", audience: "HODs", group: "Operational Tracking", description: "Internal branch-wise participation view, useful mainly during peak season.", exportFormats: ["xlsx", "pdf", "csv"] },
+  { type: "company_visit_register", title: "Company Visit Register", audience: "NAAC / NBA", group: "Must-have Reports", description: "Running visit log for companies, roles, CTC, outcomes, and NAAC-ready evidence tracking.", exportFormats: ["xlsx", "pdf", "csv"] },
+  { type: "final_placement_statistics", title: "Season Placement Summary", audience: "All Authorities", group: "Must-have Reports", description: "End-of-season placement summary with placement %, offers, companies, and CTC.", exportFormats: ["xlsx", "pdf", "csv"] },
+  { type: "naac_5_2_progression", title: "NAAC Placement Evidence Package", audience: "NAAC / NBA", group: "Compliance / Evidence", description: "Placement evidence export with student rows, offer proof readiness, and verification status.", exportFormats: ["xlsx", "pdf", "csv"] },
+  { type: "branch_wise_placement_analysis", title: "Branch-wise Placement Breakdown", audience: "HODs", group: "Operational Tracking", description: "Branch-level placement and unplaced visibility, best used as an internal branch view.", exportFormats: ["xlsx", "pdf", "csv"] },
+  { type: "placement_brochure_pack", title: "Marketing / Brochure Export", audience: "Management / Marketing", group: "Exports", description: "Marketing-oriented headline export, not a core TPO report.", exportFormats: ["xlsx", "pdf", "csv"] },
+  { type: "unplaced_student_action_report", title: "Unplaced Student Tracker", audience: "Placement Office", group: "Operational Tracking", description: "Internal tracker for unplaced students, gaps, and follow-up actions.", exportFormats: ["xlsx", "pdf", "csv"] },
+  { type: "employer_data_register", title: "Employer Data Register", audience: "Placement Office / Principal", group: "Compliance / Evidence", description: "College-style employer contact register workbook using the current recruiter and drive data available in Smart Path.", exportFormats: ["xlsx"] },
+  { type: "tp_annual_report_workbook", title: "T&P Annual Report Workbook", audience: "Principal / Director", group: "Compliance / Evidence", description: "Multi-sheet annual placement workbook matching the college reporting pattern, with live placement sheets and placeholders where structured activity data is not yet captured.", exportFormats: ["xlsx"] },
 ];
 
 function average(values: number[]) {
@@ -393,6 +413,188 @@ function applyReportFilters(
   });
 
   return { students, drives, results, attemptStats: dataset.attemptStats };
+}
+
+function formatWorkbookDate(value: string | null | undefined) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return String(value).slice(0, 10);
+  return date.toLocaleDateString("en-GB");
+}
+
+function formatPackageNote(values: number[]) {
+  const positive = values.filter((value) => value > 0);
+  if (positive.length === 0) {
+    return "Lowest=        Highest=         Average= ";
+  }
+  return `Lowest=${Math.min(...positive)}       Highest=${Math.max(...positive)}       Average=${average(positive)}`;
+}
+
+function buildEmployerRegisterRows(data: ReturnType<typeof applyReportFilters>) {
+  const companyMap = new Map<string, {
+    organization: string;
+    industry: string;
+    address: string;
+    mobile: string;
+  }>();
+
+  data.drives.forEach((drive) => {
+    const key = drive.company.trim().toLowerCase();
+    if (!key) return;
+    if (!companyMap.has(key)) {
+      companyMap.set(key, {
+        organization: drive.company,
+        industry: drive.sectorOrIndustry ?? "",
+        address: drive.reportingNotes ?? "",
+        mobile: "",
+      });
+    }
+  });
+
+  return [...companyMap.values()].map((company, index) => ({
+    "Sr. No.": index + 1,
+    "First Name": "",
+    "Last Name": "",
+    Designation: "",
+    "Name of Organization": company.organization,
+    Department: "",
+    Industry: company.industry,
+    "Official E-mail ID": "",
+    "Personal Email ID": "",
+    "Office Address": company.address,
+    "Mobile No.": company.mobile,
+  }));
+}
+
+function buildAnnualSummaryRows(data: ReturnType<typeof applyReportFilters>) {
+  const branches = [...new Set(data.students.map((student) => student.branch))].sort((a, b) => a.localeCompare(b));
+  return branches.map((branch) => {
+    const branchStudents = data.students.filter((student) => student.branch === branch);
+    const branchResults = data.results.filter((result) => result.student?.branch === branch);
+    const onCampusSelected = uniqueCount(branchResults.filter((result) => result.outcome === "selected" && result.selectionSource === "on_campus").map((result) => result.studentId));
+    const offCampusSelected = uniqueCount(branchResults.filter((result) => result.outcome === "selected" && result.selectionSource !== "on_campus").map((result) => result.studentId));
+    const totalSelected = uniqueCount(branchResults.filter((result) => result.outcome === "selected").map((result) => result.studentId));
+    const ctcValues = branchResults
+      .filter((result) => result.outcome === "selected")
+      .map((result) => result.finalCtcLpa ?? result.drive?.ctcFinalLpa ?? result.drive?.ctcMaxLpa ?? result.drive?.ctcMinLpa ?? 0)
+      .filter((value) => value > 0);
+
+    return {
+      branch,
+      intake: branchStudents.length,
+      enrolled: branchStudents.length,
+      onCampusCount: onCampusSelected,
+      onCampusPct: renderPlacementPct(onCampusSelected, branchStudents.length),
+      offCampusCount: offCampusSelected,
+      offCampusPct: renderPlacementPct(offCampusSelected, branchStudents.length),
+      totalCount: totalSelected,
+      totalPct: renderPlacementPct(totalSelected, branchStudents.length),
+      higherEducationCount: 0,
+      higherEducationPct: 0,
+      entrepreneurCount: 0,
+      entrepreneurPct: 0,
+      grandTotalCount: totalSelected,
+      grandTotalPct: renderPlacementPct(totalSelected, branchStudents.length),
+      salaryNote: formatPackageNote(ctcValues),
+    };
+  });
+}
+
+function buildPlacementActivitiesRows(data: ReturnType<typeof applyReportFilters>) {
+  return data.drives.map((drive, index) => {
+    const driveResults = data.results.filter((result) => result.driveId === drive.id);
+    const applied = uniqueCount(
+      driveResults
+        .filter((result) => result.registered === true || result.status === "applied" || result.outcome !== "pending")
+        .map((result) => result.studentId),
+    );
+    const offered = uniqueCount(driveResults.filter((result) => result.outcome === "selected").map((result) => result.studentId));
+
+    return {
+      "Sr. No": index + 1,
+      "Company Name": drive.company,
+      "Job Title": drive.role ?? "",
+      "Job posted on": formatWorkbookDate(drive.visitDate ?? drive.driveDate),
+      Status: drive.status,
+      "Eligible students": drive.eligibleCount,
+      Applied: applied,
+      "Offered Students": offered,
+    };
+  });
+}
+
+function buildPlacementSelectionRows(data: ReturnType<typeof applyReportFilters>) {
+  return data.results
+    .filter((result) => result.outcome === "selected")
+    .map((result, index) => ({
+      "Sr. No": index + 1,
+      "Name of Students": result.student?.fullName ?? "",
+      "Name of the company": result.drive?.company ?? "",
+      "On campus/ Off Campus": result.selectionSource === "on_campus" ? "On Campus" : "Off Campus",
+      "Package (Lakh)": result.finalCtcLpa ?? result.drive?.ctcFinalLpa ?? result.drive?.ctcMaxLpa ?? result.drive?.ctcMinLpa ?? "",
+    }));
+}
+
+function buildAnnualWorkbookStructuredData(entries: AnnualRegisterEntry[]): AnnualWorkbookStructuredData {
+  return {
+    trainingActivities: entries.filter((entry) => entry.registerType === "training_activities"),
+    industrialInplantTraining: entries.filter((entry) => entry.registerType === "industrial_inplant_training"),
+    higherEducationAbroad: entries.filter((entry) => entry.registerType === "higher_education_abroad"),
+    industrialVisits: entries.filter((entry) => entry.registerType === "industrial_visit"),
+  };
+}
+
+function buildTrainingActivityRows(entries: AnnualRegisterEntry[]) {
+  return entries.map((entry, index) => {
+    const payload = entry.payload as TrainingActivityPayload;
+    return {
+      "Sr. No": index + 1,
+      "Name of Program": payload.programName,
+      Date: formatWorkbookDate(payload.date),
+      "Conducted by": payload.conductedBy,
+    };
+  });
+}
+
+function buildIndustrialInplantRows(entries: AnnualRegisterEntry[]) {
+  return entries.map((entry, index) => {
+    const payload = entry.payload as IndustrialInplantTrainingPayload;
+    return {
+      "Sr. No": index + 1,
+      "Name of Students": payload.studentName,
+      "Name of the company": payload.companyName,
+      "Status (Online/Offline)": payload.mode === "online" ? "Online" : "Offline",
+      From: formatWorkbookDate(payload.fromDate),
+      To: formatWorkbookDate(payload.toDate),
+      "B.Tech/M.Tech": payload.programme,
+    };
+  });
+}
+
+function buildHigherEducationRows(entries: AnnualRegisterEntry[]) {
+  return entries.map((entry, index) => {
+    const payload = entry.payload as HigherEducationPayload;
+    return {
+      "Sr.No.": index + 1,
+      "Name of Student": payload.studentName,
+      Programme: payload.programme,
+      "Course Persuing": payload.coursePursuing,
+      "Name of the Institute": payload.instituteName,
+      Country: payload.country,
+    };
+  });
+}
+
+function buildIndustrialVisitRows(entries: AnnualRegisterEntry[]) {
+  return entries.map((entry, index) => {
+    const payload = entry.payload as IndustrialVisitPayload;
+    return {
+      "Sr. No": index + 1,
+      "Company Name": payload.companyName,
+      "Number of Student": payload.studentCount,
+      "Date of Visit": formatWorkbookDate(payload.visitDate),
+    };
+  });
 }
 
 function buildReadinessBlockers(type: ReportType, results: ResultRecord[], drives: DriveRecord[], students: StudentRecord[]) {
@@ -652,6 +854,58 @@ function summarizeForType(
     };
   }
 
+  if (type === "employer_data_register") {
+    const rows = buildEmployerRegisterRows(data).map((row) => ({
+      sr_no: row["Sr. No."],
+      organization: row["Name of Organization"],
+      industry: row.Industry,
+      office_address: row["Office Address"],
+      official_email: row["Official E-mail ID"],
+      mobile_no: row["Mobile No."],
+    }));
+
+    const missingContactDetails = rows.filter((row) => !row.official_email || !row.mobile_no).length;
+    const blockers = missingContactDetails > 0
+      ? [`${missingContactDetails} employer rows still need recruiter contact details such as official email or mobile number.`]
+      : [];
+
+    return {
+      type,
+      title: meta.title,
+      audience: meta.audience,
+      group: meta.group,
+      reportingPeriod,
+      ready: blockers.length === 0,
+      blockers,
+      missingData: missingContactDetails > 0
+        ? [{ key: "missingEmployerContacts", label: "Employer rows missing recruiter contact details", count: missingContactDetails }]
+        : [],
+      summaryMetrics: [
+        { label: "Employer rows", value: rows.length },
+        { label: "Industries covered", value: uniqueCount(rows.map((row) => String(row.industry ?? ""))) },
+        { label: "Rows with contact gaps", value: missingContactDetails },
+      ],
+      columns: ["sr_no", "organization", "industry", "office_address", "official_email", "mobile_no"],
+      rows,
+    };
+  }
+
+  if (type === "tp_annual_report_workbook") {
+    return {
+      type,
+      title: meta.title,
+      audience: meta.audience,
+      group: meta.group,
+      reportingPeriod,
+      ready: false,
+      blockers: ["Annual workbook preview requires structured register context."],
+      missingData: [],
+      summaryMetrics: [],
+      columns: ["sheet", "status", "rows", "note"],
+      rows: [],
+    };
+  }
+
   if (type === "placement_brochure_pack") {
     const recruiterCounts = new Map<string, number>();
     const sectorCounts = new Map<string, number>();
@@ -864,6 +1118,307 @@ function buildCsv(report: PreparedReport) {
   return `${header}\n${body.join("\n")}\n`;
 }
 
+function appendSheet(
+  workbook: XLSX.WorkBook,
+  name: string,
+  rows: Array<Array<ReportRowValue>>,
+  options?: {
+    merges?: string[];
+    cols?: Array<{ wch: number }>;
+  },
+) {
+  const sheet = XLSX.utils.aoa_to_sheet(rows);
+  if (options?.merges?.length) {
+    sheet["!merges"] = options.merges.map((merge) => XLSX.utils.decode_range(merge));
+  }
+  if (options?.cols?.length) {
+    sheet["!cols"] = options.cols;
+  }
+  XLSX.utils.book_append_sheet(workbook, sheet, name.slice(0, 31));
+}
+
+function buildEmployerDataWorkbook(data: ReturnType<typeof applyReportFilters>) {
+  const workbook = XLSX.utils.book_new();
+  const rows = buildEmployerRegisterRows(data);
+  const sheetRows: Array<Array<ReportRowValue>> = [
+    ["Shivaji University, Kolhapur"],
+    ["School of Engineering and Technology"],
+    ["Employer Data"],
+    [""],
+    ["Sr. No.", "First Name", "Last Name", "Designation", "Name of Organization", "Department", "Industry", "Official E-mail ID", "Personal Email ID", "Office Address", "Mobile No."],
+    ...rows.map((row) => [
+      row["Sr. No."],
+      row["First Name"],
+      row["Last Name"],
+      row.Designation,
+      row["Name of Organization"],
+      row.Department,
+      row.Industry,
+      row["Official E-mail ID"],
+      row["Personal Email ID"],
+      row["Office Address"],
+      row["Mobile No."],
+    ]),
+  ];
+
+  appendSheet(workbook, "Employer Data", sheetRows, {
+    merges: ["A1:K1", "A2:K2", "A3:K3"],
+    cols: [
+      { wch: 8 },
+      { wch: 18 },
+      { wch: 18 },
+      { wch: 18 },
+      { wch: 32 },
+      { wch: 16 },
+      { wch: 18 },
+      { wch: 28 },
+      { wch: 28 },
+      { wch: 42 },
+      { wch: 18 },
+    ],
+  });
+
+  return Buffer.from(XLSX.write(workbook, { type: "buffer", bookType: "xlsx" }));
+}
+
+function buildAnnualReportWorkbook(
+  data: ReturnType<typeof applyReportFilters>,
+  filters: ReportFilters & { dateFrom: string; dateTo: string },
+  structuredData: AnnualWorkbookStructuredData,
+) {
+  const workbook = XLSX.utils.book_new();
+  const annualSummaryRows = buildAnnualSummaryRows(data);
+  const placementActivitiesRows = buildPlacementActivitiesRows(data);
+  const placementSelectionRows = buildPlacementSelectionRows(data);
+  const employerRows = buildEmployerRegisterRows(data);
+  const trainingActivityRows = buildTrainingActivityRows(structuredData.trainingActivities);
+  const industrialInplantRows = buildIndustrialInplantRows(structuredData.industrialInplantTraining);
+  const higherEducationRows = buildHigherEducationRows(structuredData.higherEducationAbroad);
+  const industrialVisitRows = buildIndustrialVisitRows(structuredData.industrialVisits);
+  const annualTitle = `B.Tech Summary of Placement Records for the Academic Year: ${filters.academicYear ?? "Selected Year"}`;
+
+  appendSheet(workbook, " Summary of Placement Records", [
+    [annualTitle],
+    [""],
+    [""],
+    ["Branch Name", "Intake", "Enroll", "Placements A", "", "Off Campus", "", "Total", "", "Higher Education B", "", "Entrepreneur C", "", "Grand Total (A+B+C)", "", "", ""],
+    ["", "", "", "On Campus", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+    ["", "", "", "No", "%", "No", "%", "No", "%", "No", "%", "No", "%", "No", "%", "Compensation Summary", ""],
+    ...annualSummaryRows.map((row) => [
+      row.branch,
+      row.intake,
+      row.enrolled,
+      row.onCampusCount,
+      row.onCampusPct,
+      row.offCampusCount,
+      row.offCampusPct,
+      row.totalCount,
+      row.totalPct,
+      row.higherEducationCount,
+      row.higherEducationPct,
+      row.entrepreneurCount,
+      row.entrepreneurPct,
+      row.grandTotalCount,
+      row.grandTotalPct,
+      row.salaryNote,
+      "",
+    ]),
+  ], {
+    merges: ["A1:Q1", "D4:I4", "J4:K4", "L4:M4", "N4:O4"],
+    cols: [
+      { wch: 34 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 8 }, { wch: 10 }, { wch: 8 }, { wch: 10 }, { wch: 8 }, { wch: 10 }, { wch: 8 }, { wch: 10 }, { wch: 8 }, { wch: 12 }, { wch: 8 }, { wch: 42 }, { wch: 4 },
+    ],
+  });
+
+  appendSheet(workbook, "Training Activities", [
+    ["SHIVAJI UNIVERSITY"],
+    ["DEPARTMENT OF TECHNOLOGY"],
+    ["TRAINING AND PLACEMENT CELL"],
+    [`Activity Report-Academic Year ${filters.academicYear ?? ""}`],
+    [""],
+    ["I. Training Activities : B. Tech- Common to all"],
+    [""],
+    ["Sr No", "Name of Program", "Date", "Conducted by"],
+    ...trainingActivityRows.map((row) => [row["Sr. No"], row["Name of Program"], row.Date, row["Conducted by"]]),
+  ], {
+    merges: ["A1:D1", "A2:D2", "A3:D3", "A4:D4", "A6:D6"],
+    cols: [{ wch: 8 }, { wch: 44 }, { wch: 16 }, { wch: 28 }],
+  });
+
+  appendSheet(workbook, "Placement Activities", [
+    ["Placement Activities"],
+    [`List of Placement Activities-${filters.academicYear ?? ""}`],
+    [`Branch: ${filters.branch ?? "All Branches"}`],
+    ["Sr. No", "Company Name", "Job Title", "Job posted on", "Status", "Eligible students", "Applied", "Offered Students"],
+    ...placementActivitiesRows.map((row) => [
+      row["Sr. No"],
+      row["Company Name"],
+      row["Job Title"],
+      row["Job posted on"],
+      row.Status,
+      row["Eligible students"],
+      row.Applied,
+      row["Offered Students"],
+    ]),
+  ], {
+    merges: ["A1:H1", "A2:H2", "A3:H3"],
+    cols: [{ wch: 8 }, { wch: 42 }, { wch: 24 }, { wch: 16 }, { wch: 16 }, { wch: 16 }, { wch: 12 }, { wch: 16 }],
+  });
+
+  appendSheet(workbook, "Industrial In-Plant Training", [
+    [`Summary of Industrial Internships/Industrial In-Plant Training-${filters.academicYear ?? ""}`],
+    [`Branch: ${filters.branch ?? "All Branches"}`],
+    ["Sr. No", "Name of Students", "Name of the company", "Status (Online/Offline)", "From", "To", "B.Tech/M.Tech"],
+    ...industrialInplantRows.map((row) => [
+      row["Sr. No"],
+      row["Name of Students"],
+      row["Name of the company"],
+      row["Status (Online/Offline)"],
+      row.From,
+      row.To,
+      row["B.Tech/M.Tech"],
+    ]),
+  ], {
+    merges: ["A1:G1", "A2:G2"],
+    cols: [{ wch: 8 }, { wch: 28 }, { wch: 34 }, { wch: 20 }, { wch: 16 }, { wch: 16 }, { wch: 14 }],
+  });
+
+  appendSheet(workbook, "Placament Activity", [
+    [`Placament Activity-${filters.academicYear ?? ""}`],
+    [`Branch: ${filters.branch ?? "All Branches"}`],
+    ["Sr. No", "Name of Students", "Name of the company", "On campus/ Off Campus", "Package (Lakh)"],
+    ...placementSelectionRows.map((row) => [
+      row["Sr. No"],
+      row["Name of Students"],
+      row["Name of the company"],
+      row["On campus/ Off Campus"],
+      row["Package (Lakh)"],
+    ]),
+  ], {
+    merges: ["A1:E1", "A2:E2"],
+    cols: [{ wch: 8 }, { wch: 28 }, { wch: 40 }, { wch: 20 }, { wch: 16 }],
+  });
+
+  appendSheet(workbook, "Higher Education Abroad", [
+    [`List of Students Persuing Higher Education ${filters.academicYear ?? ""}`],
+    ["Sr.No.", "Name of Student", "Programme", "Course Persuing", "Name of the Institute", "Country"],
+    ...higherEducationRows.map((row) => [
+      row["Sr.No."],
+      row["Name of Student"],
+      row.Programme,
+      row["Course Persuing"],
+      row["Name of the Institute"],
+      row.Country,
+    ]),
+  ], {
+    merges: ["A1:F1"],
+    cols: [{ wch: 8 }, { wch: 28 }, { wch: 22 }, { wch: 24 }, { wch: 36 }, { wch: 18 }],
+  });
+
+  appendSheet(workbook, "Industrial Visit", [
+    [`Industrial Visit ${filters.academicYear ?? ""}`],
+    [`Branch: ${filters.branch ?? "All Branches"}`],
+    ["Sr. No", "Company Name", "Number of Student", "Date of Visit"],
+    ...industrialVisitRows.map((row) => [
+      row["Sr. No"],
+      row["Company Name"],
+      row["Number of Student"],
+      row["Date of Visit"],
+    ]),
+  ], {
+    merges: ["A1:D1", "A2:D2"],
+    cols: [{ wch: 8 }, { wch: 42 }, { wch: 18 }, { wch: 18 }],
+  });
+
+  appendSheet(workbook, "Employer Data", [
+    ["Shivaji University, Kolhapur"],
+    ["School of Engineering and Technology"],
+    ["Employer Data"],
+    [""],
+    ["Sr. No.", "First Name", "Last Name", "Designation", "Name of Organization", "Department", "Industry", "Official E-mail ID", "Personal Email ID", "Office Address", "Mobile No."],
+    ...employerRows.map((row) => [
+      row["Sr. No."],
+      row["First Name"],
+      row["Last Name"],
+      row.Designation,
+      row["Name of Organization"],
+      row.Department,
+      row.Industry,
+      row["Official E-mail ID"],
+      row["Personal Email ID"],
+      row["Office Address"],
+      row["Mobile No."],
+    ]),
+  ], {
+    merges: ["A1:K1", "A2:K2", "A3:K3"],
+    cols: [
+      { wch: 8 }, { wch: 18 }, { wch: 18 }, { wch: 18 }, { wch: 32 }, { wch: 16 }, { wch: 18 }, { wch: 28 }, { wch: 28 }, { wch: 42 }, { wch: 18 },
+    ],
+  });
+
+  return Buffer.from(XLSX.write(workbook, { type: "buffer", bookType: "xlsx" }));
+}
+
+function summarizeAnnualWorkbook(
+  data: ReturnType<typeof applyReportFilters>,
+  reportingPeriod: string,
+  structuredData: AnnualWorkbookStructuredData,
+): Omit<PreparedReport, "generatedAt" | "filtersUsed"> {
+  const meta = TEMPLATE_META.find((item) => item.type === "tp_annual_report_workbook");
+  if (!meta) throw new AppError("REPORT_TEMPLATE_NOT_FOUND", "Report template not found", 404);
+
+  const annualSummaryRows = buildAnnualSummaryRows(data);
+  const placementRows = buildPlacementSelectionRows(data);
+  const activityRows = buildPlacementActivitiesRows(data);
+  const employerRows = buildEmployerRegisterRows(data);
+  const trainingRows = buildTrainingActivityRows(structuredData.trainingActivities);
+  const inplantRows = buildIndustrialInplantRows(structuredData.industrialInplantTraining);
+  const higherEducationRows = buildHigherEducationRows(structuredData.higherEducationAbroad);
+  const visitRows = buildIndustrialVisitRows(structuredData.industrialVisits);
+
+  const missingSheets = [
+    { key: "trainingActivities", label: "Training Activities", count: trainingRows.length },
+    { key: "industrialInplantTraining", label: "Industrial In-Plant Training", count: inplantRows.length },
+    { key: "higherEducationAbroad", label: "Higher Education Abroad", count: higherEducationRows.length },
+    { key: "industrialVisits", label: "Industrial Visit", count: visitRows.length },
+  ].filter((item) => item.count === 0);
+
+  return {
+    type: "tp_annual_report_workbook",
+    title: meta.title,
+    audience: meta.audience,
+    group: meta.group,
+    reportingPeriod,
+    ready: missingSheets.length === 0,
+    blockers: missingSheets.length > 0
+      ? missingSheets.map((item) => `${item.label} is still empty for the selected academic year.`)
+      : [],
+    missingData: missingSheets.map((item) => ({
+      key: item.key,
+      label: `${item.label} entries still missing`,
+      count: 1,
+    })),
+    summaryMetrics: [
+      { label: "Summary rows", value: annualSummaryRows.length },
+      { label: "Placement activity rows", value: activityRows.length },
+      { label: "Selected placement rows", value: placementRows.length },
+      { label: "Employer rows", value: employerRows.length },
+      { label: "Structured annual entries", value: trainingRows.length + inplantRows.length + higherEducationRows.length + visitRows.length },
+    ],
+    columns: ["sheet", "status", "rows", "note"],
+    rows: [
+      { sheet: "Summary of Placement Records", status: "live", rows: annualSummaryRows.length, note: "Derived from current student, drive, and placement data." },
+      { sheet: "Placement Activities", status: "live", rows: activityRows.length, note: "Derived from current drive records." },
+      { sheet: "Placament Activity", status: "live", rows: placementRows.length, note: "Derived from selected placement outcomes." },
+      { sheet: "Employer Data", status: employerRows.length > 0 ? "live_with_gaps" : "live", rows: employerRows.length, note: "Generated from current recruiter and drive data available in Smart Path." },
+      { sheet: "Training Activities", status: trainingRows.length > 0 ? "live" : "missing", rows: trainingRows.length, note: trainingRows.length > 0 ? "Filled from the annual training register." : "Add training activities below to auto-fill this sheet." },
+      { sheet: "Industrial In-Plant Training", status: inplantRows.length > 0 ? "live" : "missing", rows: inplantRows.length, note: inplantRows.length > 0 ? "Filled from the in-plant training register." : "Add internship / in-plant rows below to auto-fill this sheet." },
+      { sheet: "Higher Education Abroad", status: higherEducationRows.length > 0 ? "live" : "missing", rows: higherEducationRows.length, note: higherEducationRows.length > 0 ? "Filled from the higher education register." : "Add higher education rows below to auto-fill this sheet." },
+      { sheet: "Industrial Visit", status: visitRows.length > 0 ? "live" : "missing", rows: visitRows.length, note: visitRows.length > 0 ? "Filled from the industrial visit register." : "Add industrial visit rows below to auto-fill this sheet." },
+    ],
+  };
+}
+
 function buildXlsx(report: PreparedReport) {
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(report.summaryMetrics.map((metric) => ({ metric: metric.label, value: metric.value }))), "Summary");
@@ -873,10 +1428,7 @@ function buildXlsx(report: PreparedReport) {
 
 export const ReportService = {
   getTemplates() {
-    return TEMPLATE_META.map((item) => ({
-      ...item,
-      exportFormats: ["xlsx", "pdf", "csv"],
-    }));
+    return TEMPLATE_META.map((item) => ({ ...item }));
   },
 
   async preview(tenantId: string, type: ReportType, rawFilters: ReportFilters) {
@@ -884,8 +1436,18 @@ export const ReportService = {
     const filters = { ...rawFilters, ...window };
     const dataset = await loadReportDataset(tenantId);
     const filtered = applyReportFilters(dataset, filters);
+    const structuredAnnualEntries = type === "tp_annual_report_workbook"
+      ? buildAnnualWorkbookStructuredData(
+        await AnnualReportRegisterService.listEntries(tenantId, {
+          academicYear: filters.academicYear,
+          branch: filters.branch,
+        }),
+      )
+      : null;
     return {
-      ...summarizeForType(type, filtered, window.reportingPeriod),
+      ...(type === "tp_annual_report_workbook" && structuredAnnualEntries
+        ? summarizeAnnualWorkbook(filtered, window.reportingPeriod, structuredAnnualEntries)
+        : summarizeForType(type, filtered, window.reportingPeriod)),
       generatedAt: new Date().toISOString(),
       filtersUsed: filters,
     } satisfies PreparedReport;
@@ -906,6 +1468,14 @@ export const ReportService = {
   },
 
   async export(tenantId: string, type: ReportType, filters: ReportFilters, format: "xlsx" | "pdf" | "csv") {
+    const meta = TEMPLATE_META.find((item) => item.type === type);
+    if (!meta) {
+      throw new AppError("REPORT_TEMPLATE_NOT_FOUND", "Report template not found", 404);
+    }
+    if (!meta.exportFormats.includes(format)) {
+      throw new AppError("REPORT_FORMAT_UNSUPPORTED", `The ${meta.title} report is available only in ${meta.exportFormats.join(", ")} format.`, 400);
+    }
+
     const report = await this.preview(tenantId, type, filters);
     const filename = `${safeFilename(report.title)}-${report.generatedAt.slice(0, 10)}.${format}`;
 
@@ -915,6 +1485,27 @@ export const ReportService = {
 
     if (format === "pdf") {
       return { filename, contentType: "application/pdf", body: await buildPdf(report) };
+    }
+
+    if (type === "employer_data_register" || type === "tp_annual_report_workbook") {
+      const window = resolveWindow(filters);
+      const dataset = await loadReportDataset(tenantId);
+      const filtered = applyReportFilters(dataset, { ...filters, ...window });
+      const structuredAnnualEntries = type === "tp_annual_report_workbook"
+        ? buildAnnualWorkbookStructuredData(
+          await AnnualReportRegisterService.listEntries(tenantId, {
+            academicYear: filters.academicYear,
+            branch: filters.branch,
+          }),
+        )
+        : null;
+      return {
+        filename,
+        contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        body: type === "employer_data_register"
+          ? buildEmployerDataWorkbook(filtered)
+          : buildAnnualReportWorkbook(filtered, { ...filters, ...window }, structuredAnnualEntries ?? buildAnnualWorkbookStructuredData([])),
+      };
     }
 
     return {

@@ -3,7 +3,9 @@ import { Router } from "express";
 import { requireAuth } from "../middleware/auth.middleware.js";
 import { asyncHandler } from "../middleware/error-handler.js";
 import { authorizeRole } from "../middleware/rbac.middleware.js";
+import { AnnualReportRegisterService } from "../services/annual-report-register.service.js";
 import { ReportService } from "../services/report.service.js";
+import { annualRegisterEntryInputSchema, annualRegisterListQuerySchema, type AnnualRegisterEntryInput } from "../validators/annual-report-register.schema.js";
 import { reportExportQuerySchema, reportFilterSchema, reportTypeSchema } from "../validators/report.schema.js";
 import { successResponse } from "../utils/response-envelope.js";
 
@@ -11,6 +13,41 @@ const router = Router();
 
 router.use(asyncHandler(requireAuth));
 router.use(authorizeRole("tpo", "admin"));
+
+router.get(
+  "/annual-registers",
+  asyncHandler(async (req, res) => {
+    const query = annualRegisterListQuerySchema.parse(req.query);
+    const data = await AnnualReportRegisterService.listEntries(req.auth!.tenantId, query);
+    res.json(successResponse(data));
+  }),
+);
+
+router.post(
+  "/annual-registers",
+  asyncHandler(async (req, res) => {
+    const input = annualRegisterEntryInputSchema.parse(req.body ?? {}) as AnnualRegisterEntryInput;
+    const data = await AnnualReportRegisterService.createEntry(req.auth!.tenantId, req.auth!.userId, input);
+    res.json(successResponse(data));
+  }),
+);
+
+router.put(
+  "/annual-registers/:entryId",
+  asyncHandler(async (req, res) => {
+    const input = annualRegisterEntryInputSchema.parse(req.body ?? {}) as AnnualRegisterEntryInput;
+    const data = await AnnualReportRegisterService.updateEntry(req.auth!.tenantId, String(req.params.entryId), req.auth!.userId, input);
+    res.json(successResponse(data));
+  }),
+);
+
+router.delete(
+  "/annual-registers/:entryId",
+  asyncHandler(async (req, res) => {
+    const data = await AnnualReportRegisterService.deleteEntry(req.auth!.tenantId, String(req.params.entryId));
+    res.json(successResponse(data));
+  }),
+);
 
 router.get(
   "/templates",

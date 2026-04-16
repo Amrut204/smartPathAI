@@ -1,4 +1,6 @@
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
+
+import { withCsrfHeader } from "../utils/csrf";
 
 interface ApiResponse<T> {
   success: boolean;
@@ -24,7 +26,9 @@ export type ReportType =
   | "naac_5_2_progression"
   | "branch_wise_placement_analysis"
   | "placement_brochure_pack"
-  | "unplaced_student_action_report";
+  | "unplaced_student_action_report"
+  | "employer_data_register"
+  | "tp_annual_report_workbook";
 
 export interface ReportFilters {
   preset?: "this_week" | "this_month" | "placement_season" | "academic_year" | "custom";
@@ -67,6 +71,22 @@ export interface ReportPreview {
   filtersUsed: Record<string, string | number | boolean | null>;
 }
 
+export type AnnualRegisterType =
+  | "training_activities"
+  | "industrial_inplant_training"
+  | "higher_education_abroad"
+  | "industrial_visit";
+
+export interface AnnualReportRegisterEntry {
+  id: string;
+  registerType: AnnualRegisterType;
+  academicYear: string;
+  branch: string | null;
+  payload: Record<string, string | number>;
+  createdAt: string;
+  updatedAt: string;
+}
+
 function buildQuery(filters?: ReportFilters) {
   const params = new URLSearchParams();
   if (!filters) return params.toString();
@@ -94,6 +114,59 @@ export function useReportPreview(type: ReportType | null, filters?: ReportFilter
   const query = buildQuery(filters);
   return useSWR<ReportPreview>(type ? `/api/v1/reports/${type}/preview${query ? `?${query}` : ""}` : null, fetcher, {
     revalidateOnFocus: false,
+  });
+}
+
+export function useAnnualReportRegisterEntries(query: {
+  academicYear?: string;
+  branch?: string;
+  registerType?: AnnualRegisterType;
+}) {
+  const params = new URLSearchParams();
+  if (query.academicYear) params.set("academicYear", query.academicYear);
+  if (query.branch) params.set("branch", query.branch);
+  if (query.registerType) params.set("registerType", query.registerType);
+  const href = `/api/v1/reports/annual-registers${params.toString() ? `?${params.toString()}` : ""}`;
+  return useSWR<AnnualReportRegisterEntry[]>(href, fetcher, { revalidateOnFocus: false });
+}
+
+async function sendAnnualRegisterMutation<T>(url: string, init: RequestInit) {
+  const response = await fetch(url, {
+    credentials: "include",
+    ...init,
+    headers: {
+      ...withCsrfHeader({ "Content-Type": "application/json" }),
+      ...(init.headers ?? {}),
+    },
+  });
+  const payload = (await response.json()) as ApiResponse<T>;
+  if (!payload.success) {
+    throw new Error(payload.error.message);
+  }
+  await Promise.all([
+    mutate((key) => typeof key === "string" && key.startsWith("/api/v1/reports/annual-registers")),
+    mutate((key) => typeof key === "string" && key.startsWith("/api/v1/reports/tp_annual_report_workbook/preview")),
+  ]);
+  return payload.data;
+}
+
+export function createAnnualReportRegisterEntry(body: Record<string, unknown>) {
+  return sendAnnualRegisterMutation<AnnualReportRegisterEntry>("/api/v1/reports/annual-registers", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+export function updateAnnualReportRegisterEntry(entryId: string, body: Record<string, unknown>) {
+  return sendAnnualRegisterMutation<AnnualReportRegisterEntry>(`/api/v1/reports/annual-registers/${encodeURIComponent(entryId)}`, {
+    method: "PUT",
+    body: JSON.stringify(body),
+  });
+}
+
+export function deleteAnnualReportRegisterEntry(entryId: string) {
+  return sendAnnualRegisterMutation<{ id: string; deleted: boolean }>(`/api/v1/reports/annual-registers/${encodeURIComponent(entryId)}`, {
+    method: "DELETE",
   });
 }
 

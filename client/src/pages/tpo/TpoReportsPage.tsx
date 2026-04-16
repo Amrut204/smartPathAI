@@ -9,10 +9,39 @@ import { Badge, Button, Input, Select, Table, Tabs } from "../../components/ui";
 import { getTpoGreeting } from "../../config/tpo-workspace";
 import { useTpoControlCenter } from "../../hooks/use-analytics";
 import { extractReportPayload, regenerateScheduledReportRun, useScheduledReportPacks } from "../../hooks/use-tpo-automation";
-import { downloadReport, type ReportFilters, type ReportType, useReportPreview, useReportTemplates } from "../../hooks/use-reports";
+import {
+  createAnnualReportRegisterEntry,
+  deleteAnnualReportRegisterEntry,
+  downloadReport,
+  type AnnualRegisterType,
+  type AnnualReportRegisterEntry,
+  type ReportFilters,
+  type ReportType,
+  updateAnnualReportRegisterEntry,
+  useAnnualReportRegisterEntries,
+  useReportPreview,
+  useReportTemplates,
+} from "../../hooks/use-reports";
 
 type ReportGroup = "Must-have Reports" | "Compliance / Evidence" | "Operational Tracking" | "Exports";
 type ReportsView = "report-browser" | "scheduled-pack" | "export-library";
+type AnnualRegisterDraft = {
+  branch: string;
+  programName: string;
+  date: string;
+  conductedBy: string;
+  studentName: string;
+  companyName: string;
+  mode: "online" | "offline";
+  fromDate: string;
+  toDate: string;
+  programme: string;
+  coursePursuing: string;
+  instituteName: string;
+  country: string;
+  studentCount: string;
+  visitDate: string;
+};
 
 const groupTabs: Array<{ id: ReportGroup; label: string }> = [
   { id: "Must-have Reports", label: "Must-have" },
@@ -38,6 +67,8 @@ const reportGroupByType: Record<ReportType, ReportGroup> = {
   branch_wise_placement_analysis: "Operational Tracking",
   placement_brochure_pack: "Exports",
   unplaced_student_action_report: "Operational Tracking",
+  employer_data_register: "Compliance / Evidence",
+  tp_annual_report_workbook: "Compliance / Evidence",
 };
 
 const plannedNextByGroup: Record<ReportGroup, Array<{ title: string; note: string }>> = {
@@ -53,6 +84,48 @@ const plannedNextByGroup: Record<ReportGroup, Array<{ title: string; note: strin
   ],
   "Exports": [],
 };
+
+const annualRegisterTabs: Array<{ id: AnnualRegisterType; label: string }> = [
+  { id: "training_activities", label: "Training Activities" },
+  { id: "industrial_inplant_training", label: "Industrial In-Plant Training" },
+  { id: "higher_education_abroad", label: "Higher Education Abroad" },
+  { id: "industrial_visit", label: "Industrial Visit" },
+];
+
+const emptyAnnualRegisterDraft: AnnualRegisterDraft = {
+  branch: "",
+  programName: "",
+  date: "",
+  conductedBy: "",
+  studentName: "",
+  companyName: "",
+  mode: "offline",
+  fromDate: "",
+  toDate: "",
+  programme: "B.Tech",
+  coursePursuing: "",
+  instituteName: "",
+  country: "",
+  studentCount: "",
+  visitDate: "",
+};
+
+function annualRegisterTitle(registerType: AnnualRegisterType) {
+  return annualRegisterTabs.find((item) => item.id === registerType)?.label ?? registerType;
+}
+
+function annualRegisterReason(registerType: AnnualRegisterType) {
+  switch (registerType) {
+    case "training_activities":
+      return "These rows feed the Training Activities sheet in the annual workbook.";
+    case "industrial_inplant_training":
+      return "These rows feed the Industrial In-Plant Training sheet in the annual workbook.";
+    case "higher_education_abroad":
+      return "These rows feed the Higher Education Abroad sheet in the annual workbook.";
+    case "industrial_visit":
+      return "These rows feed the Industrial Visit sheet in the annual workbook.";
+  }
+}
 
 function isValidGroup(value: string | null): value is ReportGroup {
   return value === "Must-have Reports"
@@ -70,7 +143,9 @@ function isValidReportType(value: string | null): value is ReportType {
     || value === "naac_5_2_progression"
     || value === "branch_wise_placement_analysis"
     || value === "placement_brochure_pack"
-    || value === "unplaced_student_action_report";
+    || value === "unplaced_student_action_report"
+    || value === "employer_data_register"
+    || value === "tp_annual_report_workbook";
 }
 
 function getFilters(params: URLSearchParams): ReportFilters {
@@ -96,6 +171,10 @@ export default function TpoReportsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [showMoreFilters, setShowMoreFilters] = useState(false);
+  const [activeAnnualRegister, setActiveAnnualRegister] = useState<AnnualRegisterType>("training_activities");
+  const [annualRegisterDraft, setAnnualRegisterDraft] = useState<AnnualRegisterDraft>(emptyAnnualRegisterDraft);
+  const [editingAnnualRegisterId, setEditingAnnualRegisterId] = useState<string | null>(null);
+  const [annualRegisterBusy, setAnnualRegisterBusy] = useState(false);
   const scheduledReportsRef = useRef<HTMLDivElement | null>(null);
   const filterPanelRef = useRef<HTMLDivElement | null>(null);
   const previewPanelRef = useRef<HTMLDivElement | null>(null);
@@ -115,6 +194,10 @@ export default function TpoReportsPage() {
   const activeReport = requestedReport || defaultReportByGroup[group];
   const filters = getFilters(searchParams);
   const preview = useReportPreview(activeReport, filters);
+  const annualRegisterEntries = useAnnualReportRegisterEntries({
+    academicYear: activeReport === "tp_annual_report_workbook" ? (filters.academicYear ?? "2025-2026") : undefined,
+    branch: activeReport === "tp_annual_report_workbook" ? filters.branch : undefined,
+  });
   const previewData = preview.data;
   const previewError = preview.error instanceof Error ? preview.error.message : null;
   const isPreviewPending = !previewData && !previewError;
@@ -151,6 +234,14 @@ export default function TpoReportsPage() {
     () => (templates.data ?? []).filter((template) => template.group === group),
     [group, templates.data],
   );
+  const activeTemplate = useMemo(
+    () => (templates.data ?? []).find((template) => template.type === activeReport) ?? null,
+    [activeReport, templates.data],
+  );
+  const annualEntriesForActiveTab = useMemo(
+    () => (annualRegisterEntries.data ?? []).filter((entry) => entry.registerType === activeAnnualRegister),
+    [activeAnnualRegister, annualRegisterEntries.data],
+  );
 
   useEffect(() => {
     if (searchParams.get("focus") !== "scheduled-reports") return;
@@ -181,6 +272,135 @@ export default function TpoReportsPage() {
       setFiltersOpen(true);
     }
   }, [filters]);
+
+  useEffect(() => {
+    setAnnualRegisterDraft(emptyAnnualRegisterDraft);
+    setEditingAnnualRegisterId(null);
+  }, [activeAnnualRegister, filters.academicYear, filters.branch]);
+
+  const updateAnnualDraft = <K extends keyof AnnualRegisterDraft>(key: K, value: AnnualRegisterDraft[K]) => {
+    setAnnualRegisterDraft((current) => ({ ...current, [key]: value }));
+  };
+
+  const resetAnnualDraft = () => {
+    setAnnualRegisterDraft(emptyAnnualRegisterDraft);
+    setEditingAnnualRegisterId(null);
+  };
+
+  const buildAnnualPayload = (): Record<string, unknown> => {
+    const academicYear = filters.academicYear ?? "2025-2026";
+    const branch = annualRegisterDraft.branch.trim() || filters.branch || undefined;
+
+    switch (activeAnnualRegister) {
+      case "training_activities":
+        return {
+          registerType: activeAnnualRegister,
+          academicYear,
+          branch,
+          payload: {
+            programName: annualRegisterDraft.programName,
+            date: annualRegisterDraft.date,
+            conductedBy: annualRegisterDraft.conductedBy,
+          },
+        };
+      case "industrial_inplant_training":
+        return {
+          registerType: activeAnnualRegister,
+          academicYear,
+          branch,
+          payload: {
+            studentName: annualRegisterDraft.studentName,
+            companyName: annualRegisterDraft.companyName,
+            mode: annualRegisterDraft.mode,
+            fromDate: annualRegisterDraft.fromDate,
+            toDate: annualRegisterDraft.toDate,
+            programme: annualRegisterDraft.programme,
+          },
+        };
+      case "higher_education_abroad":
+        return {
+          registerType: activeAnnualRegister,
+          academicYear,
+          branch,
+          payload: {
+            studentName: annualRegisterDraft.studentName,
+            programme: annualRegisterDraft.programme,
+            coursePursuing: annualRegisterDraft.coursePursuing,
+            instituteName: annualRegisterDraft.instituteName,
+            country: annualRegisterDraft.country,
+          },
+        };
+      case "industrial_visit":
+        return {
+          registerType: activeAnnualRegister,
+          academicYear,
+          branch,
+          payload: {
+            companyName: annualRegisterDraft.companyName,
+            studentCount: Number(annualRegisterDraft.studentCount || 0),
+            visitDate: annualRegisterDraft.visitDate,
+          },
+        };
+    }
+  };
+
+  const startAnnualRegisterEdit = (entry: AnnualReportRegisterEntry) => {
+    const payload = entry.payload as Record<string, string | number>;
+    setEditingAnnualRegisterId(entry.id);
+    setActiveAnnualRegister(entry.registerType);
+    setAnnualRegisterDraft({
+      ...emptyAnnualRegisterDraft,
+      branch: entry.branch ?? "",
+      programName: String(payload.programName ?? ""),
+      date: String(payload.date ?? ""),
+      conductedBy: String(payload.conductedBy ?? ""),
+      studentName: String(payload.studentName ?? ""),
+      companyName: String(payload.companyName ?? ""),
+      mode: payload.mode === "online" ? "online" : "offline",
+      fromDate: String(payload.fromDate ?? ""),
+      toDate: String(payload.toDate ?? ""),
+      programme: String(payload.programme ?? "B.Tech"),
+      coursePursuing: String(payload.coursePursuing ?? ""),
+      instituteName: String(payload.instituteName ?? ""),
+      country: String(payload.country ?? ""),
+      studentCount: payload.studentCount === undefined ? "" : String(payload.studentCount),
+      visitDate: String(payload.visitDate ?? ""),
+    });
+  };
+
+  const saveAnnualRegisterEntry = async () => {
+    setAnnualRegisterBusy(true);
+    try {
+      const payload = buildAnnualPayload();
+      if (editingAnnualRegisterId) {
+        await updateAnnualReportRegisterEntry(editingAnnualRegisterId, payload);
+      } else {
+        await createAnnualReportRegisterEntry(payload);
+      }
+      await preview.mutate();
+      resetAnnualDraft();
+    } catch (actionError) {
+      window.alert(actionError instanceof Error ? actionError.message : "Unable to save the annual report entry.");
+    } finally {
+      setAnnualRegisterBusy(false);
+    }
+  };
+
+  const removeAnnualRegisterEntry = async (entryId: string) => {
+    if (!window.confirm("Delete this annual report register entry?")) return;
+    setAnnualRegisterBusy(true);
+    try {
+      await deleteAnnualReportRegisterEntry(entryId);
+      await preview.mutate();
+      if (editingAnnualRegisterId === entryId) {
+        resetAnnualDraft();
+      }
+    } catch (actionError) {
+      window.alert(actionError instanceof Error ? actionError.message : "Unable to delete the annual report entry.");
+    } finally {
+      setAnnualRegisterBusy(false);
+    }
+  };
 
   const updateParam = (key: string, value?: string | boolean) => {
     const next = new URLSearchParams(searchParams);
@@ -259,12 +479,11 @@ export default function TpoReportsPage() {
                   setSearchParams(next, { replace: true });
                 },
               },
-              ...(previewData
-                ? [
-                    { label: "Export Excel", onSelect: () => downloadReport(activeReport, filters, "xlsx") },
-                    { label: "Export CSV", onSelect: () => downloadReport(activeReport, filters, "csv") },
-                    { label: "Export PDF", onSelect: () => downloadReport(activeReport, filters, "pdf") },
-                  ]
+              ...(previewData && activeTemplate
+                ? activeTemplate.exportFormats.map((format) => ({
+                    label: `Export ${format.toUpperCase()}`,
+                    onSelect: () => downloadReport(activeReport, filters, format as "xlsx" | "csv" | "pdf"),
+                  }))
                 : []),
             ]}
           />
@@ -339,9 +558,10 @@ export default function TpoReportsPage() {
                           <TpoActionMenu
                             label="Download"
                             items={[
-                              { label: "Download Excel", onSelect: () => downloadReport(report.reportType, report.filters, "xlsx") },
-                              { label: "Download CSV", onSelect: () => downloadReport(report.reportType, report.filters, "csv") },
-                              { label: "Download PDF", onSelect: () => downloadReport(report.reportType, report.filters, "pdf") },
+                              ...(((templates.data ?? []).find((template) => template.type === report.reportType)?.exportFormats ?? ["xlsx", "csv", "pdf"]).map((format) => ({
+                                label: `Download ${format.toUpperCase()}`,
+                                onSelect: () => downloadReport(report.reportType, report.filters, format as "xlsx" | "csv" | "pdf"),
+                              }))),
                               {
                                 label: "Open in report browser",
                                 onSelect: () => {
@@ -409,11 +629,10 @@ export default function TpoReportsPage() {
                     </Button>
                     <TpoActionMenu
                       label="Download"
-                      items={[
-                        { label: "Download Excel", onSelect: () => downloadReport(template.type, filters, "xlsx") },
-                        { label: "Download CSV", onSelect: () => downloadReport(template.type, filters, "csv") },
-                        { label: "Download PDF", onSelect: () => downloadReport(template.type, filters, "pdf") },
-                      ]}
+                      items={template.exportFormats.map((format) => ({
+                        label: `Download ${format.toUpperCase()}`,
+                        onSelect: () => downloadReport(template.type, filters, format as "xlsx" | "csv" | "pdf"),
+                      }))}
                     />
                   </div>
                 </div>
@@ -664,6 +883,204 @@ export default function TpoReportsPage() {
             </div>
           )}
         </div>
+        ) : null}
+
+        {activeView === "report-browser" && activeReport === "tp_annual_report_workbook" ? (
+          <div className="tpo-reports-block">
+            <div className="workspace-panel-header">
+              <div>
+                <p className="workspace-eyebrow">Annual Workbook Data Capture</p>
+                <h2>Keep the college workbook auto-filled</h2>
+              </div>
+              <p className="muted-text">
+                Add or update the structured rows below. These entries directly feed the annual workbook sheets for the selected academic year.
+              </p>
+            </div>
+
+            <Tabs
+              tabs={annualRegisterTabs.map((item) => ({ id: item.id, label: item.label }))}
+              activeId={activeAnnualRegister}
+              onChange={(id) => setActiveAnnualRegister(id as AnnualRegisterType)}
+            />
+
+            <div className="tpo-reports-annual-register-grid">
+              <div className="tpo-reports-annual-form">
+                <div className="workspace-panel-header">
+                  <div>
+                    <p className="workspace-eyebrow">{annualRegisterTitle(activeAnnualRegister)}</p>
+                    <h2>{editingAnnualRegisterId ? "Edit selected row" : "Add a new row"}</h2>
+                  </div>
+                  <p className="muted-text">{annualRegisterReason(activeAnnualRegister)}</p>
+                </div>
+
+                <div className="tpo-reports-filter-bar">
+                  <label>
+                    Academic year
+                    <Input value={filters.academicYear ?? "2025-2026"} readOnly />
+                  </label>
+                  <label>
+                    Branch
+                    <Input value={annualRegisterDraft.branch} onChange={(event) => updateAnnualDraft("branch", event.target.value)} placeholder={filters.branch ?? "Optional"} />
+                  </label>
+                </div>
+
+                {activeAnnualRegister === "training_activities" ? (
+                  <div className="tpo-reports-filter-bar">
+                    <label>
+                      Program name
+                      <Input value={annualRegisterDraft.programName} onChange={(event) => updateAnnualDraft("programName", event.target.value)} />
+                    </label>
+                    <label>
+                      Date
+                      <Input type="date" value={annualRegisterDraft.date} onChange={(event) => updateAnnualDraft("date", event.target.value)} />
+                    </label>
+                    <label>
+                      Conducted by
+                      <Input value={annualRegisterDraft.conductedBy} onChange={(event) => updateAnnualDraft("conductedBy", event.target.value)} />
+                    </label>
+                  </div>
+                ) : null}
+
+                {activeAnnualRegister === "industrial_inplant_training" ? (
+                  <div className="tpo-reports-filter-bar">
+                    <label>
+                      Student name
+                      <Input value={annualRegisterDraft.studentName} onChange={(event) => updateAnnualDraft("studentName", event.target.value)} />
+                    </label>
+                    <label>
+                      Company name
+                      <Input value={annualRegisterDraft.companyName} onChange={(event) => updateAnnualDraft("companyName", event.target.value)} />
+                    </label>
+                    <label>
+                      Mode
+                      <Select value={annualRegisterDraft.mode} onChange={(event) => updateAnnualDraft("mode", event.target.value as "online" | "offline")}>
+                        <option value="offline">Offline</option>
+                        <option value="online">Online</option>
+                      </Select>
+                    </label>
+                    <label>
+                      From
+                      <Input type="date" value={annualRegisterDraft.fromDate} onChange={(event) => updateAnnualDraft("fromDate", event.target.value)} />
+                    </label>
+                    <label>
+                      To
+                      <Input type="date" value={annualRegisterDraft.toDate} onChange={(event) => updateAnnualDraft("toDate", event.target.value)} />
+                    </label>
+                    <label>
+                      Programme
+                      <Input value={annualRegisterDraft.programme} onChange={(event) => updateAnnualDraft("programme", event.target.value)} />
+                    </label>
+                  </div>
+                ) : null}
+
+                {activeAnnualRegister === "higher_education_abroad" ? (
+                  <div className="tpo-reports-filter-bar">
+                    <label>
+                      Student name
+                      <Input value={annualRegisterDraft.studentName} onChange={(event) => updateAnnualDraft("studentName", event.target.value)} />
+                    </label>
+                    <label>
+                      Programme
+                      <Input value={annualRegisterDraft.programme} onChange={(event) => updateAnnualDraft("programme", event.target.value)} />
+                    </label>
+                    <label>
+                      Course pursuing
+                      <Input value={annualRegisterDraft.coursePursuing} onChange={(event) => updateAnnualDraft("coursePursuing", event.target.value)} />
+                    </label>
+                    <label>
+                      Institute
+                      <Input value={annualRegisterDraft.instituteName} onChange={(event) => updateAnnualDraft("instituteName", event.target.value)} />
+                    </label>
+                    <label>
+                      Country
+                      <Input value={annualRegisterDraft.country} onChange={(event) => updateAnnualDraft("country", event.target.value)} />
+                    </label>
+                  </div>
+                ) : null}
+
+                {activeAnnualRegister === "industrial_visit" ? (
+                  <div className="tpo-reports-filter-bar">
+                    <label>
+                      Company name
+                      <Input value={annualRegisterDraft.companyName} onChange={(event) => updateAnnualDraft("companyName", event.target.value)} />
+                    </label>
+                    <label>
+                      Student count
+                      <Input type="number" value={annualRegisterDraft.studentCount} onChange={(event) => updateAnnualDraft("studentCount", event.target.value)} />
+                    </label>
+                    <label>
+                      Visit date
+                      <Input type="date" value={annualRegisterDraft.visitDate} onChange={(event) => updateAnnualDraft("visitDate", event.target.value)} />
+                    </label>
+                  </div>
+                ) : null}
+
+                <div className="hero-actions tpo-reports-filter-actions-row">
+                  <Button onClick={saveAnnualRegisterEntry} disabled={annualRegisterBusy}>
+                    {editingAnnualRegisterId ? "Update entry" : "Save entry"}
+                  </Button>
+                  <Button variant="ghost" onClick={resetAnnualDraft} disabled={annualRegisterBusy}>
+                    Clear form
+                  </Button>
+                </div>
+              </div>
+
+              <div className="tpo-reports-annual-list">
+                <div className="workspace-panel-header">
+                  <div>
+                    <p className="workspace-eyebrow">Current Rows</p>
+                    <h2>{annualEntriesForActiveTab.length} row{annualEntriesForActiveTab.length === 1 ? "" : "s"} in this register</h2>
+                  </div>
+                  <p className="muted-text">
+                    These are the saved rows currently feeding the {annualRegisterTitle(activeAnnualRegister)} sheet.
+                  </p>
+                </div>
+
+                {annualRegisterEntries.error ? (
+                  <p className="error-text">Unable to load annual register entries right now.</p>
+                ) : annualRegisterEntries.data === undefined ? (
+                  <p className="muted-text">Loading annual register entries...</p>
+                ) : annualEntriesForActiveTab.length === 0 ? (
+                  <p className="muted-text">No saved rows yet for this register. Add the first row from the form.</p>
+                ) : (
+                  <div className="tpo-ranking-table-wrap">
+                    <Table>
+                      <thead>
+                        <tr>
+                          <th>Details</th>
+                          <th>Branch</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {annualEntriesForActiveTab.map((entry) => {
+                          const payload = entry.payload as Record<string, string | number>;
+                          const details = activeAnnualRegister === "training_activities"
+                            ? `${String(payload.programName ?? "")} | ${String(payload.date ?? "")} | ${String(payload.conductedBy ?? "")}`
+                            : activeAnnualRegister === "industrial_inplant_training"
+                              ? `${String(payload.studentName ?? "")} | ${String(payload.companyName ?? "")} | ${String(payload.fromDate ?? "")} to ${String(payload.toDate ?? "")}`
+                              : activeAnnualRegister === "higher_education_abroad"
+                                ? `${String(payload.studentName ?? "")} | ${String(payload.instituteName ?? "")} | ${String(payload.country ?? "")}`
+                                : `${String(payload.companyName ?? "")} | ${String(payload.studentCount ?? "")} students | ${String(payload.visitDate ?? "")}`;
+
+                          return (
+                            <tr key={entry.id}>
+                              <td>{details}</td>
+                              <td>{entry.branch ?? "All Branches"}</td>
+                              <td className="tpo-report-row-actions">
+                                <Button variant="secondary" onClick={() => startAnnualRegisterEdit(entry)}>Edit</Button>
+                                <Button variant="ghost" onClick={() => removeAnnualRegisterEntry(entry.id)}>Delete</Button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </Table>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         ) : null}
       </section>
     </section>

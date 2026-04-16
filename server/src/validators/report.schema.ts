@@ -20,6 +20,8 @@ export const reportTypeSchema = z.enum([
   "branch_wise_placement_analysis",
   "placement_brochure_pack",
   "unplaced_student_action_report",
+  "employer_data_register",
+  "tp_annual_report_workbook",
 ]);
 
 const reportFilterBaseSchema = z.object({

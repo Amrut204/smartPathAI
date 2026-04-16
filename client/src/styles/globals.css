@@ -4931,6 +4931,19 @@ textarea {
   font-family: var(--font-display);
 }
 
+.tpo-reports-annual-register-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+}
+
+.tpo-reports-annual-form,
+.tpo-reports-annual-list {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
 .tpo-drives-shell {
   display: grid;
   gap: 1.1rem;
@@ -6860,6 +6873,10 @@ button.ui-button[type="submit"]:active,
 
   .tpo-reports-filter-bar,
   .tpo-reports-filter-bar-more {
+    grid-template-columns: 1fr;
+  }
+
+  .tpo-reports-annual-register-grid {
     grid-template-columns: 1fr;
   }
 
