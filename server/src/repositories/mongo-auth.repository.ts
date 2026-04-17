@@ -63,7 +63,8 @@ interface CreateUserInput {
 interface CreateStudentInput {
   tenantId: string;
   userId: string;
-  rollNumber: string;
+  prn: string;
+  rollNumber?: string;
   branch: string;
   batch: string;
 }
@@ -258,7 +259,7 @@ export const MongoAuthRepository = {
       id: randomUUID(),
       tenant_id: input.tenantId,
       user_id: input.userId,
-      roll_number: input.rollNumber,
+      roll_number: input.rollNumber?.trim() ?? "",
       branch: input.branch,
       batch: input.batch,
       cgpa: 0,
@@ -271,6 +272,7 @@ export const MongoAuthRepository = {
       streak_longest: 0,
       readiness_score: 0,
       profile_data: {
+        prn: input.prn.trim(),
         totalHistoricalBacklogs: 0,
       },
       created_at: timestamp,

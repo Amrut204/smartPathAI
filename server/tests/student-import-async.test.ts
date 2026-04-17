@@ -85,6 +85,7 @@ describe("Student import async job", () => {
       mapping: {
         fullName: "full_name",
         email: "email",
+        prn: "prn",
         rollNumber: "roll_number",
         branch: "branch",
         batch: "batch",
@@ -96,6 +97,7 @@ describe("Student import async job", () => {
         {
           full_name: "Student One",
           email: `student1-${crypto.randomUUID().slice(0, 8)}@test.local`,
+          prn: `PRN-R-001-${crypto.randomUUID().slice(0, 4)}`,
           roll_number: "R-001",
           branch: "ME",
           batch: "2026",
@@ -106,6 +108,7 @@ describe("Student import async job", () => {
         {
           full_name: "Student Two",
           email: `student2-${crypto.randomUUID().slice(0, 8)}@test.local`,
+          prn: `PRN-R-002-${crypto.randomUUID().slice(0, 4)}`,
           roll_number: "R-002",
           branch: "ECE",
           batch: "2026",

@@ -23,7 +23,8 @@ interface SignupInput {
   tenantSlug: string;
   branch: string;
   batch: string;
-  rollNumber: string;
+  prn: string;
+  rollNumber?: string;
 }
 
 interface AuthSessionResult {
@@ -160,6 +161,7 @@ export const AuthService = {
     await MongoAuthRepository.createStudent({
       tenantId: tenant.id,
       userId: createdUser.id,
+      prn: input.prn,
       rollNumber: input.rollNumber,
       branch: input.branch,
       batch: input.batch,

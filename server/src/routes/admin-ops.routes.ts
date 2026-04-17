@@ -161,7 +161,8 @@ router.post(
     await logAdminAudit(req, body.tenantId, "admin_ops_student_created", {
       studentId: data.student.id,
       email: data.student.email,
-      rollNumber: data.student.rollNumber,
+      prn: data.student.prn,
+      rollNumber: data.student.rollNumber ?? null,
       credentialJobId: data.credentialJob.id,
     });
     res.status(201).json(successResponse(data));

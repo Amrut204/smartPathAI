@@ -15,7 +15,8 @@ export const signupSchema = z.object({
   tenantSlug: z.string().trim().min(2).max(120).regex(/^[a-z0-9-]+$/, "Invalid tenant slug"),
   branch: z.string().trim().min(2).max(64),
   batch: z.string().trim().min(4).max(4).regex(/^\d{4}$/),
-  rollNumber: z.string().trim().min(3).max(64),
+  prn: z.string().trim().min(3).max(64),
+  rollNumber: z.string().trim().min(1).max(64).optional(),
 });
 
 export const refreshSchema = z.object({

@@ -12,11 +12,15 @@ type StudentImportPayload = {
   mapping: {
     fullName: string;
     email: string;
-    rollNumber: string;
+    prn: string;
+    rollNumber?: string;
+    degree?: string;
     branch: string;
     batch: string;
+    currentSemester?: string;
     cgpa?: string;
     backlogs?: string;
+    totalHistoricalBacklogs?: string;
     attendancePct?: string;
   };
   rows: Array<Record<string, string>>;

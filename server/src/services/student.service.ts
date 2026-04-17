@@ -4184,10 +4184,10 @@ export const StudentService = {
 
     const errors: Array<{ row: number; message: string }> = [];
 
-    if (!mapping.fullName || !mapping.email || !mapping.rollNumber || !mapping.branch || !mapping.batch) {
+    if (!mapping.fullName || !mapping.email || !mapping.prn || !mapping.branch || !mapping.batch) {
       errors.push({
         row: 1,
-        message: "Missing required columns. Required: fullName, email, rollNumber, branch, batch",
+        message: "Missing required columns. Required: fullName, email, prn, branch, batch",
       });
     }
 
@@ -4197,7 +4197,7 @@ export const StudentService = {
 
       if (mapping.fullName && !row[mapping.fullName]) rowErrors.push({ row: rowNumber, message: "fullName missing" });
       if (mapping.email && !row[mapping.email]) rowErrors.push({ row: rowNumber, message: "email missing" });
-      if (mapping.rollNumber && !row[mapping.rollNumber]) rowErrors.push({ row: rowNumber, message: "rollNumber missing" });
+      if (mapping.prn && !row[mapping.prn]) rowErrors.push({ row: rowNumber, message: "prn missing" });
       if (mapping.branch && !row[mapping.branch]) rowErrors.push({ row: rowNumber, message: "branch missing" });
       if (mapping.batch && !row[mapping.batch]) rowErrors.push({ row: rowNumber, message: "batch missing" });
 
@@ -4246,8 +4246,8 @@ export const StudentService = {
       mapping: {
         fullName: string;
         email: string;
-        prn?: string;
-        rollNumber: string;
+        prn: string;
+        rollNumber?: string;
         degree?: string;
         branch: string;
         batch: string;

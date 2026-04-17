@@ -111,6 +111,21 @@ export default function TpoStudentUploadPage() {
     }
   };
 
+  const mappingFields: Array<{ key: string; label: string; required: boolean }> = [
+    { key: "fullName", label: "Full name", required: true },
+    { key: "email", label: "Email", required: true },
+    { key: "prn", label: "PRN", required: true },
+    { key: "rollNumber", label: "Roll number", required: false },
+    { key: "degree", label: "Degree", required: false },
+    { key: "branch", label: "Branch", required: true },
+    { key: "batch", label: "Batch", required: true },
+    { key: "currentSemester", label: "Current semester", required: false },
+    { key: "cgpa", label: "CGPA", required: false },
+    { key: "backlogs", label: "Backlogs", required: false },
+    { key: "totalHistoricalBacklogs", label: "Total historical backlogs", required: false },
+    { key: "attendancePct", label: "Attendance %", required: false },
+  ];
+
   return (
     <section className="tpo-page-shell tpo-student-upload-page">
       <TpoWorkspaceHeader
@@ -137,7 +152,7 @@ export default function TpoStudentUploadPage() {
 
       <Card>
         <h1>Student Upload Wizard</h1>
-        <p>Step 1: Upload CSV/Excel or paste CSV, Step 2: Review mapping, Step 3: Validate, Step 4: Confirm upsert.</p>
+        <p>Step 1: Upload CSV/Excel or paste CSV, Step 2: Review mapping, Step 3: Validate, Step 4: Confirm upsert. Required fields: full name, email, PRN, branch, batch.</p>
         <label>
           Upload file (.csv / .xlsx)
           <input
@@ -170,29 +185,16 @@ export default function TpoStudentUploadPage() {
       {preview ? (
         <Card>
           <h2>Column Mapping</h2>
-          {[
-            "fullName",
-            "email",
-            "prn",
-            "rollNumber",
-            "degree",
-            "branch",
-            "batch",
-            "currentSemester",
-            "cgpa",
-            "backlogs",
-            "totalHistoricalBacklogs",
-            "attendancePct",
-          ].map((field) => (
-            <label key={field}>
-              {field}
+          {mappingFields.map((field) => (
+            <label key={field.key}>
+              {field.label}{field.required ? " *" : ""}
               <Select
-                value={mapping[field] ?? ""}
-                onChange={(event) => setMapping((prev) => ({ ...prev, [field]: event.target.value }))}
+                value={mapping[field.key] ?? ""}
+                onChange={(event) => setMapping((prev) => ({ ...prev, [field.key]: event.target.value }))}
               >
-                <option value="">Select column</option>
+                <option value="">{field.required ? "Select column" : "Ignore"}</option>
                 {preview.headers.map((header) => (
-                  <option key={`${field}_${header}`} value={header}>
+                  <option key={`${field.key}_${header}`} value={header}>
                     {header}
                   </option>
                 ))}

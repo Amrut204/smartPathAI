@@ -322,10 +322,10 @@ export async function adminCreateStudent(input: {
   tenantId: string;
   fullName: string;
   email: string;
-  rollNumber: string;
+  prn: string;
+  rollNumber?: string;
   branch: string;
   batch: string;
-  prn?: string;
   degree?: string;
   currentSemester?: string;
   cgpa?: number;

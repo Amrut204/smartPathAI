@@ -74,7 +74,7 @@ async function loadRecipientsForStudents(tenantId: string, studentIds: string[])
   const db = await getMongoDb();
   const students = await db.collection("students").find(
     { tenant_id: tenantId, id: { $in: studentIds } },
-    { projection: { _id: 0, id: 1, user_id: 1, roll_number: 1, branch: 1, batch: 1 } },
+    { projection: { _id: 0, id: 1, user_id: 1, roll_number: 1, profile_data: 1, branch: 1, batch: 1 } },
   ).toArray();
 
   const userIds = students.map((student) => String(student.user_id));
@@ -93,6 +93,7 @@ async function loadRecipientsForStudents(tenantId: string, studentIds: string[])
       userId: String(student.user_id),
       fullName: String(user?.full_name ?? "Student"),
       email: String(user?.email ?? "").trim().toLowerCase(),
+      prn: String((student as { profile_data?: { prn?: unknown } }).profile_data?.prn ?? "").trim(),
       rollNumber: String(student.roll_number ?? ""),
       branch: String(student.branch ?? ""),
       batch: String(student.batch ?? ""),
@@ -133,6 +134,7 @@ async function processCredentialBatch(job: AdminOpsJobDocument) {
     fullName: string;
     email: string;
     accountId: string;
+    prn?: string;
     rollNumber?: string;
     tempPassword: string;
   }> = [];
@@ -157,6 +159,7 @@ async function processCredentialBatch(job: AdminOpsJobDocument) {
       }
 
       const accountId = "studentId" in recipient ? String(recipient.studentId) : String(recipient.userId);
+      const prn = "prn" in recipient ? String(recipient.prn ?? "") : undefined;
       const rollNumber = "rollNumber" in recipient ? String(recipient.rollNumber ?? "") : undefined;
 
       deliveryRows.push({
@@ -164,6 +167,7 @@ async function processCredentialBatch(job: AdminOpsJobDocument) {
         fullName: recipient.fullName,
         email: recipient.email,
         accountId,
+        prn,
         rollNumber,
         tempPassword,
       });
@@ -222,7 +226,9 @@ async function processCredentialBatch(job: AdminOpsJobDocument) {
         tpo_email: row.email,
         temporary_password: row.tempPassword,
         login_url: buildLoginUrl(),
+        prn: row.prn ?? "",
         roll_number: row.rollNumber ?? "",
+        roll_number_line: row.rollNumber ? `Roll number: ${row.rollNumber}\n` : "",
         issued_by: String(job.input.actorName ?? "Smart Path Admin"),
         college_name: String(tenant?.name ?? "College"),
         account_role_label: job.input.targetType === "tpo" ? "TPO" : "Student",

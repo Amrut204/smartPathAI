@@ -102,6 +102,18 @@ export async function ensureCoreIndexes(): Promise<void> {
 
     // Students
     ensureIndex({ collection: "students", keys: { tenant_id: 1, user_id: 1 }, options: { unique: true } }),
+    ensureIndex({
+      collection: "students",
+      keys: { tenant_id: 1, "profile_data.prn": 1 },
+      options: {
+        unique: true,
+        name: "students_tenant_prn_unique",
+        partialFilterExpression: {
+          "profile_data.prn": { $type: "string", $gt: "" },
+        },
+      },
+      tolerateDuplicateData: true,
+    }),
     ensureIndex({ collection: "students", keys: { tenant_id: 1, created_at: -1 } }),
     ensureIndex({ collection: "students", keys: { tenant_id: 1, branch: 1 } }),
     ensureIndex({ collection: "students", keys: { tenant_id: 1, batch: 1 } }),

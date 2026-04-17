@@ -535,10 +535,10 @@ export const AdminOpsService = {
     actorName?: string | null;
     fullName: string;
     email: string;
-    rollNumber: string;
+    prn: string;
+    rollNumber?: string;
     branch: string;
     batch: string;
-    prn?: string;
     degree?: string;
     currentSemester?: string;
     cgpa?: number;
@@ -556,9 +556,14 @@ export const AdminOpsService = {
       throw new AppError("STUDENT_EMAIL_EXISTS", "A student with this email already exists for the selected college.", 409);
     }
 
-    const existingRoll = await db.collection("students").findOne({ tenant_id: tenantId, roll_number: input.rollNumber }, { projection: { _id: 0, id: 1 } });
-    if (existingRoll) {
-      throw new AppError("STUDENT_ROLL_EXISTS", "A student with this roll number already exists for the selected college.", 409);
+    const prn = String(input.prn).trim();
+    const rollNumber = String(input.rollNumber ?? "").trim();
+    const existingPrn = await db.collection("students").findOne(
+      { tenant_id: tenantId, "profile_data.prn": prn },
+      { projection: { _id: 0, id: 1 } },
+    );
+    if (existingPrn) {
+      throw new AppError("STUDENT_PRN_EXISTS", "A student with this PRN already exists for the selected college.", 409);
     }
 
     const tempPassword = `PIQ-${randomUUID()}`;
@@ -581,7 +586,7 @@ export const AdminOpsService = {
       id: studentId,
       tenant_id: tenantId,
       user_id: user.id,
-      roll_number: input.rollNumber,
+      roll_number: rollNumber,
       branch: input.branch,
       batch: input.batch,
       cgpa: Number(input.cgpa ?? 0),
@@ -594,7 +599,7 @@ export const AdminOpsService = {
       streak_longest: 0,
       readiness_score: 0,
       profile_data: {
-        ...(input.prn ? { prn: input.prn } : {}),
+        prn,
         ...(input.degree ? { degree: input.degree } : {}),
         ...(input.currentSemester ? { currentSemester: input.currentSemester } : {}),
         totalHistoricalBacklogs: Number(input.totalHistoricalBacklogs ?? 0),
@@ -621,7 +626,8 @@ export const AdminOpsService = {
         userId: user.id,
         fullName: input.fullName,
         email,
-        rollNumber: input.rollNumber,
+        prn,
+        rollNumber,
         branch: input.branch,
         batch: input.batch,
       },
@@ -926,8 +932,8 @@ export const AdminOpsService = {
       mapping: {
         fullName: string;
         email: string;
-        prn?: string;
-        rollNumber: string;
+        prn: string;
+        rollNumber?: string;
         degree?: string;
         branch: string;
         batch: string;

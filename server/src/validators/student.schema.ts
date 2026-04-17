@@ -248,8 +248,8 @@ export const csvUploadConfirmSchema = z.object({
   mapping: z.object({
     fullName: z.string().min(1),
     email: z.string().min(1),
-    prn: z.string().optional(),
-    rollNumber: z.string().min(1),
+    prn: z.string().min(1),
+    rollNumber: z.string().optional(),
     degree: z.string().optional(),
     branch: z.string().min(1),
     batch: z.string().min(1),

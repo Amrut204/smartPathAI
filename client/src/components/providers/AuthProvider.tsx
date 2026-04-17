@@ -37,7 +37,8 @@ interface AuthContextValue {
     tenantSlug: string;
     branch: string;
     batch: string;
-    rollNumber: string;
+    prn: string;
+    rollNumber?: string;
   }) => Promise<string>;
   logout: () => Promise<void>;
   refreshSession: () => Promise<void>;
@@ -196,7 +197,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
       tenantSlug: string;
       branch: string;
       batch: string;
-      rollNumber: string;
+      prn: string;
+      rollNumber?: string;
     }) => {
       const result = await postJson<{ profile: UserProfile; redirectTo: string; mustChangePassword: boolean }>(
         "/api/v1/auth/signup",

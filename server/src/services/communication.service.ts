@@ -143,7 +143,7 @@ const SYSTEM_EMAIL_TEMPLATES: SystemEmailTemplate[] = [
     name: "Student Onboarding Credentials",
     slug: "student-onboarding-credentials",
     subject: "Your Smart Path login credentials",
-    body: "Dear {{student_name}},\n\nYour Smart Path account is now ready.\n\nLogin URL: {{login_url}}\nEmail: {{student_email}}\nTemporary password: {{temporary_password}}\nRoll number: {{roll_number}}\nIssued by: {{issued_by}}\n\nPlease sign in and change your password immediately after the first login.\n\nRegards,\n{{college_name}} Placement Cell",
+    body: "Dear {{student_name}},\n\nYour Smart Path account is now ready.\n\nLogin URL: {{login_url}}\nEmail: {{student_email}}\nTemporary password: {{temporary_password}}\nPRN: {{prn}}\n{{roll_number_line}}Issued by: {{issued_by}}\n\nPlease sign in and change your password immediately after the first login.\n\nRegards,\n{{college_name}} Placement Cell",
   },
   {
     name: "TPO Onboarding Credentials",

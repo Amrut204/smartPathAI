@@ -67,10 +67,10 @@ type StorageSectionId = (typeof storageSections)[number]["id"];
 const importFields: Array<{ key: keyof ImportMappingState; label: string; required: boolean }> = [
   { key: "fullName", label: "Full name", required: true },
   { key: "email", label: "Email", required: true },
-  { key: "rollNumber", label: "Roll number", required: true },
+  { key: "prn", label: "PRN", required: true },
+  { key: "rollNumber", label: "Roll number", required: false },
   { key: "branch", label: "Branch", required: true },
   { key: "batch", label: "Batch", required: true },
-  { key: "prn", label: "PRN", required: false },
   { key: "degree", label: "Degree", required: false },
   { key: "currentSemester", label: "Semester", required: false },
   { key: "cgpa", label: "CGPA", required: false },
@@ -132,14 +132,15 @@ function downloadText(filename: string, content: string) {
 function validateStudentForm(input: {
   fullName: string;
   email: string;
-  rollNumber: string;
+  prn: string;
+  rollNumber?: string;
   branch: string;
   batch: string;
 }) {
   if (!input.fullName.trim()) throw new Error("Enter the student's full name.");
   if (!input.email.trim()) throw new Error("Enter the student's email address.");
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email.trim())) throw new Error("Enter a valid student email address.");
-  if (!input.rollNumber.trim()) throw new Error("Enter the student's roll number.");
+  if (!input.prn.trim()) throw new Error("Enter the student's PRN.");
   if (!input.branch.trim() || input.branch.trim().length < 2) throw new Error("Enter a valid branch name.");
   if (!/^\d{4}$/.test(input.batch.trim())) throw new Error("Batch must be a 4-digit year like 2026.");
 }
@@ -196,7 +197,7 @@ export default function AdminHubPage() {
   const [importMapping, setImportMapping] = useState<ImportMappingState>(blankMapping());
   const [selectedImportFile, setSelectedImportFile] = useState<File | null>(null);
 
-  const [studentForm, setStudentForm] = useState({ fullName: "", email: "", rollNumber: "", branch: "", batch: "2026" });
+  const [studentForm, setStudentForm] = useState({ fullName: "", email: "", prn: "", rollNumber: "", branch: "", batch: "2026" });
   const [tpoForm, setTpoForm] = useState({ fullName: "", email: "" });
   const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
   const [mockTestForm, setMockTestForm] = useState({ title: "", topicId: "", companyId: "", durationSec: "3600", difficulty: "medium", isActive: false, questionsJson: "[]" });
@@ -461,7 +462,8 @@ export default function AdminHubPage() {
             <div className="form-grid">
               <label><span className="muted-text">Full name</span><Input value={studentForm.fullName} onChange={(event) => setStudentForm((current) => ({ ...current, fullName: event.target.value }))} /></label>
               <label><span className="muted-text">Email</span><Input value={studentForm.email} onChange={(event) => setStudentForm((current) => ({ ...current, email: event.target.value }))} /></label>
-              <label><span className="muted-text">Roll number</span><Input value={studentForm.rollNumber} onChange={(event) => setStudentForm((current) => ({ ...current, rollNumber: event.target.value }))} /></label>
+              <label><span className="muted-text">PRN</span><Input value={studentForm.prn} onChange={(event) => setStudentForm((current) => ({ ...current, prn: event.target.value }))} /></label>
+              <label><span className="muted-text">Roll number (optional)</span><Input value={studentForm.rollNumber} onChange={(event) => setStudentForm((current) => ({ ...current, rollNumber: event.target.value }))} /></label>
               <label><span className="muted-text">Branch</span><Input value={studentForm.branch} onChange={(event) => setStudentForm((current) => ({ ...current, branch: event.target.value }))} /></label>
               <label><span className="muted-text">Batch</span><Input value={studentForm.batch} onChange={(event) => setStudentForm((current) => ({ ...current, batch: event.target.value }))} /></label>
             </div>
@@ -471,7 +473,7 @@ export default function AdminHubPage() {
                 validateStudentForm(studentForm);
                 const created = await adminCreateStudent({ tenantId, ...studentForm });
                 setMessage(`Created ${created.student.fullName}. Credential job ${created.credentialJob.id} is ready. Use Send Credentials from the student row or Jobs tab.`, "success");
-                setStudentForm((current) => ({ ...current, fullName: "", email: "", rollNumber: "", branch: "" }));
+                setStudentForm((current) => ({ ...current, fullName: "", email: "", prn: "", rollNumber: "", branch: "" }));
               })} disabled={busyAction === "create-student"}>Create Student</Button>
             </div>
           </section>
@@ -485,7 +487,12 @@ export default function AdminHubPage() {
                   <tbody>
                     {students.data.items.map((student) => (
                       <tr key={student.id}>
-                        <td>{student.fullName}<br /><span className="muted-text">{student.rollNumber}</span></td>
+                        <td>
+                          {student.fullName}
+                          <br />
+                          <span className="muted-text">PRN: {student.prn || "-"}</span>
+                          {student.rollNumber ? <><br /><span className="muted-text">Roll: {student.rollNumber}</span></> : null}
+                        </td>
                         <td>{student.email}</td>
                         <td>{student.branch}</td>
                         <td>{student.batch}</td>

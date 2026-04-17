@@ -15,6 +15,7 @@ export default function SignupPage() {
   const [tenantSlug, setTenantSlug] = useState("");
   const [branch, setBranch] = useState("");
   const [batch, setBatch] = useState("");
+  const [prn, setPrn] = useState("");
   const [rollNumber, setRollNumber] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -32,7 +33,8 @@ export default function SignupPage() {
         tenantSlug,
         branch,
         batch,
-        rollNumber,
+        prn,
+        rollNumber: rollNumber.trim() || undefined,
       });
 
       navigate(redirectTo);
@@ -59,7 +61,7 @@ export default function SignupPage() {
           <div className="public-auth-highlights">
             <div>
               <strong>Profile setup</strong>
-              <span>Academic details and roll information help the platform match you to the right drives.</span>
+              <span>PRN and academic details help the platform match you to the right drives.</span>
             </div>
             <div>
               <strong>Readiness flow</strong>
@@ -92,12 +94,12 @@ export default function SignupPage() {
               </label>
 
               <label>
-                Roll number
+                PRN
                 <Input
-                  value={rollNumber}
-                  onChange={(event) => setRollNumber(event.target.value)}
+                  value={prn}
+                  onChange={(event) => setPrn(event.target.value)}
                   required
-                  placeholder="College roll number"
+                  placeholder="Permanent Registration Number"
                 />
               </label>
             </div>
@@ -155,6 +157,15 @@ export default function SignupPage() {
                 onChange={(event) => setBatch(event.target.value)}
                 required
                 placeholder="2026"
+              />
+            </label>
+
+            <label>
+              Roll number (optional)
+              <Input
+                value={rollNumber}
+                onChange={(event) => setRollNumber(event.target.value)}
+                placeholder="College roll number"
               />
             </label>
 

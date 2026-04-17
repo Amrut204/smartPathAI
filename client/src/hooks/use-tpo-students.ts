@@ -443,8 +443,8 @@ export async function confirmStudentCsv(input: {
   mapping: {
     fullName: string;
     email: string;
-    prn?: string;
-    rollNumber: string;
+    prn: string;
+    rollNumber?: string;
     degree?: string;
     branch: string;
     batch: string;
@@ -504,8 +504,8 @@ export async function confirmStudentCsvAsync(input: {
   mapping: {
     fullName: string;
     email: string;
-    prn?: string;
-    rollNumber: string;
+    prn: string;
+    rollNumber?: string;
     degree?: string;
     branch: string;
     batch: string;

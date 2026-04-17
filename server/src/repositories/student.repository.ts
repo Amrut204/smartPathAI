@@ -3409,8 +3409,8 @@ export const StudentRepository = {
     mapping: {
       fullName: string;
       email: string;
-      prn?: string;
-      rollNumber: string;
+      prn: string;
+      rollNumber?: string;
       degree?: string;
       branch: string;
       batch: string;
@@ -3442,7 +3442,7 @@ export const StudentRepository = {
       return raw;
     };
 
-    const errorDetails: Array<{ row: number; message: string; email: string; rollNumber: string }> = [];
+    const errorDetails: Array<{ row: number; message: string; email: string; prn: string; rollNumber: string }> = [];
     const report = {
       created: 0,
       updated: 0,
@@ -3472,18 +3472,18 @@ export const StudentRepository = {
       const row = rows[index];
       const email = row[mapping.email]?.trim().toLowerCase();
       const fullName = row[mapping.fullName]?.trim();
-      const rollNumber = row[mapping.rollNumber]?.trim();
+      const prn = row[mapping.prn]?.trim();
+      const rollNumber = mapping.rollNumber ? row[mapping.rollNumber]?.trim() : "";
       const branch = row[mapping.branch]?.trim();
       const batch = row[mapping.batch]?.trim();
-      const prn = mapping.prn ? row[mapping.prn]?.trim() : "";
       const degree = mapping.degree ? row[mapping.degree]?.trim() : "";
       const currentSemester = mapping.currentSemester ? row[mapping.currentSemester]?.trim() : "";
       const rowNumber = index + 2;
 
-      if (!email || !rollNumber || !branch || !batch) {
+      if (!email || !prn || !branch || !batch) {
         report.skipped += 1;
         report.errors.push({ row: rowNumber, message: "Missing required fields" });
-        errorDetails.push({ row: rowNumber, message: "Missing required fields", email: email ?? "", rollNumber: rollNumber ?? "" });
+        errorDetails.push({ row: rowNumber, message: "Missing required fields", email: email ?? "", prn: prn ?? "", rollNumber: rollNumber ?? "" });
         await maybeEmitProgress(index + 1);
         continue;
       }
@@ -3496,36 +3496,55 @@ export const StudentRepository = {
       if (!Number.isFinite(cgpa) || cgpa < 0 || cgpa > 10) {
         report.skipped += 1;
         report.errors.push({ row: rowNumber, message: "Invalid cgpa value" });
-        errorDetails.push({ row: rowNumber, message: "Invalid cgpa value", email, rollNumber });
+        errorDetails.push({ row: rowNumber, message: "Invalid cgpa value", email, prn, rollNumber });
         await maybeEmitProgress(index + 1);
         continue;
       }
       if (!Number.isFinite(backlogs) || backlogs < 0) {
         report.skipped += 1;
         report.errors.push({ row: rowNumber, message: "Invalid backlogs value" });
-        errorDetails.push({ row: rowNumber, message: "Invalid backlogs value", email, rollNumber });
+        errorDetails.push({ row: rowNumber, message: "Invalid backlogs value", email, prn, rollNumber });
         await maybeEmitProgress(index + 1);
         continue;
       }
       if (!Number.isFinite(totalHistoricalBacklogs) || totalHistoricalBacklogs < 0) {
         report.skipped += 1;
         report.errors.push({ row: rowNumber, message: "Invalid totalHistoricalBacklogs value" });
-        errorDetails.push({ row: rowNumber, message: "Invalid totalHistoricalBacklogs value", email, rollNumber });
+        errorDetails.push({ row: rowNumber, message: "Invalid totalHistoricalBacklogs value", email, prn, rollNumber });
         await maybeEmitProgress(index + 1);
         continue;
       }
       if (!Number.isFinite(attendancePct) || attendancePct < 0 || attendancePct > 100) {
         report.skipped += 1;
         report.errors.push({ row: rowNumber, message: "Invalid attendancePct value" });
-        errorDetails.push({ row: rowNumber, message: "Invalid attendancePct value", email, rollNumber });
+        errorDetails.push({ row: rowNumber, message: "Invalid attendancePct value", email, prn, rollNumber });
         await maybeEmitProgress(index + 1);
         continue;
       }
 
-      const existingStudent = await db.collection("students").findOne(
-        { tenant_id: tenantId, roll_number: rollNumber },
-        { projection: { id: 1, user_id: 1, profile_data: 1 } },
+      let existingStudent = await db.collection("students").findOne(
+        { tenant_id: tenantId, "profile_data.prn": prn },
+        { projection: { id: 1, user_id: 1, profile_data: 1, roll_number: 1 } },
       );
+
+      if (!existingStudent && rollNumber) {
+        const legacyStudentByRoll = await db.collection("students").findOne(
+          { tenant_id: tenantId, roll_number: rollNumber },
+          { projection: { id: 1, user_id: 1, profile_data: 1, roll_number: 1 } },
+        );
+
+        if (legacyStudentByRoll) {
+          const legacyPrn = String((legacyStudentByRoll as { profile_data?: { prn?: unknown } }).profile_data?.prn ?? "").trim();
+          if (legacyPrn && legacyPrn !== prn) {
+            report.skipped += 1;
+            report.errors.push({ row: rowNumber, message: "PRN conflicts with an existing student record" });
+            errorDetails.push({ row: rowNumber, message: "PRN conflicts with an existing student record", email, prn, rollNumber });
+            await maybeEmitProgress(index + 1);
+            continue;
+          }
+          existingStudent = legacyStudentByRoll;
+        }
+      }
 
       if (existingStudent) {
         await db.collection("users").updateOne(
@@ -3539,13 +3558,14 @@ export const StudentRepository = {
             $set: {
               branch,
               batch,
+              ...(rollNumber ? { roll_number: rollNumber } : {}),
               cgpa,
               backlogs,
               backlogs_total: totalHistoricalBacklogs,
               attendance_pct: attendancePct,
               profile_data: {
                 ...((existingStudent as { profile_data?: Record<string, unknown> }).profile_data ?? {}),
-                ...(prn ? { prn } : {}),
+                prn,
                 ...(degree ? { degree } : {}),
                 ...(currentSemester ? { currentSemester } : {}),
                 totalHistoricalBacklogs,
@@ -3586,7 +3606,7 @@ export const StudentRepository = {
           id: studentId,
           tenant_id: tenantId,
           user_id: userId,
-          roll_number: rollNumber,
+          roll_number: rollNumber || "",
           branch,
           batch,
           cgpa,
@@ -3599,7 +3619,7 @@ export const StudentRepository = {
           streak_longest: 0,
           readiness_score: 0,
           profile_data: {
-            ...(prn ? { prn } : {}),
+            prn,
             ...(degree ? { degree } : {}),
             ...(currentSemester ? { currentSemester } : {}),
             totalHistoricalBacklogs,
@@ -3617,20 +3637,21 @@ export const StudentRepository = {
         report.skipped += 1;
         const message = err instanceof Error ? err.message : "Insert failed";
         report.errors.push({ row: rowNumber, message });
-        errorDetails.push({ row: rowNumber, message, email, rollNumber });
+        errorDetails.push({ row: rowNumber, message, email, prn, rollNumber });
         await maybeEmitProgress(index + 1);
       }
     }
 
     if (errorDetails.length > 0) {
       report.errorCsv =
-        "row,message,email,roll_number\n"
+        "row,message,email,prn,roll_number\n"
         + errorDetails
           .map((entry) =>
             [
               String(entry.row),
               escapeCsvCell(entry.message),
               escapeCsvCell(entry.email),
+              escapeCsvCell(entry.prn),
               escapeCsvCell(entry.rollNumber),
             ].join(","),
           )

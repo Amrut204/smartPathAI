@@ -180,7 +180,7 @@ export function getOnboardingTypedValueHint(input: {
   rollNumber?: unknown;
   prn?: unknown;
 }): string {
-  return asTrimmedString(input.rollNumber) || asTrimmedString(input.prn) || "I UNDERSTAND";
+  return asTrimmedString(input.prn) || asTrimmedString(input.rollNumber) || "I UNDERSTAND";
 }
 
 export function getMaterialProfileFieldLabels() {
