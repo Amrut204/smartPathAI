@@ -32,8 +32,8 @@ export const saveMockTestProgressSchema = z.object({
 });
 
 export const mockQuestionSchema = z.object({
-  text: z.string().trim().min(1).max(1000),
-  options: z.array(z.string().trim().min(1).max(400)).min(2).max(8),
+  text: z.string().trim().min(1).max(420),
+  options: z.array(z.string().trim().min(1).max(180)).min(2).max(8),
   correctIndex: z.number().int().min(0).max(7),
   explanation: z.string().trim().max(1500).optional(),
   skillTag: z.string().trim().min(1).max(160).optional(),

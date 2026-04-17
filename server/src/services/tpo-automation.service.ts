@@ -814,13 +814,6 @@ async function createUnplacedInterventionRun(params: {
       reason_label: "Low mock activity",
       payload: student as unknown as Record<string, unknown>,
     })),
-    ...actionCenter.studentsNotUsingResources.map((student) => ({
-      entity_type: "student",
-      entity_id: student.studentId,
-      reason_key: "no_drive_history_or_engagement",
-      reason_label: "No recent drive-ready engagement",
-      payload: student as unknown as Record<string, unknown>,
-    })),
     ...actionCenter.eligibleButNotApplied.flatMap((drive) => drive.students.map((student) => ({
       entity_type: "student",
       entity_id: student.studentId,
@@ -850,7 +843,6 @@ async function createUnplacedInterventionRun(params: {
       candidateCount: groupedItems.length,
       highReadinessUnplaced: actionCenter.readyButInactive.length,
       lowMockActivity: actionCenter.studentsNeedingMockPush.length,
-      noDriveHistory: actionCenter.studentsNotUsingResources.length,
       eligibleButInactive: actionCenter.eligibleButNotApplied.reduce((total, drive) => total + drive.students.length, 0),
     },
     filters: { isPlaced: false, needsIntervention: true },
@@ -858,7 +850,7 @@ async function createUnplacedInterventionRun(params: {
     preview: {
       title: "Unplaced intervention refresh",
       channel: "none",
-      targetPath: "/tpo/students?mode=ops&view=all&isPlaced=false&needsIntervention=true&sortBy=risk_score&sortDir=desc",
+      targetPath: "/tpo/students?mode=ops&view=all&isPlaced=false&needsIntervention=true&sortBy=intervention_priority&sortDir=desc",
     },
     items: groupedItems,
   });

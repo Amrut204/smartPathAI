@@ -9,29 +9,36 @@ export function computeReadinessScore(params: {
   eligibleUpcomingDrives: number;
   appliedRecently: boolean;
 }): number {
-  const normalizedProfileCompleteness = Math.max(0, Math.min(100, params.profileCompletenessPct));
+  const clamp = (value: number) => Math.max(0, Math.min(100, value));
+  const normalizedProfileCompleteness = clamp(params.profileCompletenessPct);
   const certificationScore = params.isCertified ? 100 : 0;
   const resumeScore = params.hasResume ? 100 : 0;
-  const evidenceSignals = [params.avgTestScore, params.avgMastery].filter((value): value is number => value !== null);
-  const evidenceScore = evidenceSignals.length > 0
-    ? evidenceSignals.reduce((sum, value) => sum + value, 0) / evidenceSignals.length
-    : 35;
-  const mockConsistencyScore = params.recentMockAttempts14d >= 2
+  const mockPerformanceScore = clamp(params.avgTestScore ?? 20);
+  const masteryEvidenceScore = clamp(params.avgMastery ?? params.avgTestScore ?? 25);
+  const mockConsistencyScore = params.recentMockAttempts14d >= 3
     ? 100
-    : params.recentMockAttempts14d === 1
-      ? 75
-      : params.totalSubmittedAttempts > 0
-        ? 45
-        : 30;
+    : params.recentMockAttempts14d === 2
+      ? 85
+      : params.recentMockAttempts14d === 1
+        ? 60
+        : params.totalSubmittedAttempts > 0
+          ? 45
+          : 20;
   const applicationBehaviorScore = params.eligibleUpcomingDrives > 0
-    ? params.appliedRecently ? 100 : 45
-    : 60;
+    ? params.appliedRecently ? 100 : 55
+    : 70;
+
+  // Readiness is grounded in placement evidence only:
+  // verified profile state, mock performance, recent mock consistency,
+  // and drive behavior. Passive platform activity does not affect it.
   const readiness =
-    normalizedProfileCompleteness * 0.24
-    + certificationScore * 0.16
-    + resumeScore * 0.14
-    + evidenceScore * 0.28
-    + mockConsistencyScore * 0.08
-    + applicationBehaviorScore * 0.10;
+    normalizedProfileCompleteness * 0.18
+    + certificationScore * 0.10
+    + resumeScore * 0.10
+    + mockPerformanceScore * 0.34
+    + masteryEvidenceScore * 0.08
+    + mockConsistencyScore * 0.14
+    + applicationBehaviorScore * 0.06;
+
   return Number(readiness.toFixed(2));
 }

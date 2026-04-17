@@ -19,14 +19,58 @@ export const driveJoiningStatusSchema = z.enum(["pending", "joined", "not_joined
 export const driveResultSourceSchema = z.enum(["employer_email", "employer_portal", "manual_update"]);
 export const driveResultReleaseAudienceSchema = z.enum(["selected", "rejected", "finalized"]);
 
+const employerNameFieldSchema = z.string().trim().min(1).max(120);
+const employerEmailFieldSchema = z.string().trim().email("Invalid email address").max(160);
+const employerMobileFieldSchema = z
+  .string()
+  .trim()
+  .min(7)
+  .max(20)
+  .regex(/^[+()0-9\s-]+$/, "Invalid mobile number");
+const employerOfficeAddressFieldSchema = z.string().trim().min(1).max(500);
+
 export const driveCriteriaSchema = z.object({
   minCgpa: z.number().min(0).max(10).optional(),
   maxBacklogs: z.number().int().min(0).optional(),
   maxActiveBacklogs: z.number().int().min(0).optional(),
   maxTotalBacklogs: z.number().int().min(0).optional(),
   branches: z.array(z.string().trim().min(1).max(64)).max(30).optional(),
+  tenthMarksMin: z.number().min(0).max(100).optional(),
+  tenthMarksMax: z.number().min(0).max(100).optional(),
+  twelfthMarksMin: z.number().min(0).max(100).optional(),
+  twelfthMarksMax: z.number().min(0).max(100).optional(),
+  diplomaMarksMin: z.number().min(0).max(100).optional(),
+  diplomaMarksMax: z.number().min(0).max(100).optional(),
   minAttendance: z.number().min(0).max(100).optional(),
+  readinessMin: z.number().min(0).max(100).optional(),
+  profileCompletenessMin: z.number().min(0).max(100).optional(),
+  hasResume: z.boolean().optional(),
+  isCertified: z.boolean().optional(),
+  canAccessResources: z.boolean().optional(),
+  canAccessMockTests: z.boolean().optional(),
   excludePlacedStudents: z.boolean().optional(),
+}).superRefine((value, ctx) => {
+  if (value.tenthMarksMin != null && value.tenthMarksMax != null && value.tenthMarksMin > value.tenthMarksMax) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "tenthMarksMin cannot be greater than tenthMarksMax",
+      path: ["tenthMarksMin"],
+    });
+  }
+  if (value.twelfthMarksMin != null && value.twelfthMarksMax != null && value.twelfthMarksMin > value.twelfthMarksMax) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "twelfthMarksMin cannot be greater than twelfthMarksMax",
+      path: ["twelfthMarksMin"],
+    });
+  }
+  if (value.diplomaMarksMin != null && value.diplomaMarksMax != null && value.diplomaMarksMin > value.diplomaMarksMax) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "diplomaMarksMin cannot be greater than diplomaMarksMax",
+      path: ["diplomaMarksMin"],
+    });
+  }
 });
 
 export const driveListQuerySchema = z.object({
@@ -40,6 +84,14 @@ export const createDriveSchema = z.object({
   role: z.string().trim().min(1).max(120).optional(),
   driveDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format (YYYY-MM-DD)"),
   sectorOrIndustry: z.string().trim().min(2).max(120).optional(),
+  employerFirstName: employerNameFieldSchema.optional(),
+  employerLastName: employerNameFieldSchema.optional(),
+  employerDesignation: z.string().trim().min(1).max(160).optional(),
+  employerDepartment: z.string().trim().min(1).max(160).optional(),
+  employerOfficialEmail: employerEmailFieldSchema.optional(),
+  employerPersonalEmail: employerEmailFieldSchema.optional(),
+  employerMobile: employerMobileFieldSchema.optional(),
+  employerOfficeAddress: employerOfficeAddressFieldSchema.optional(),
   ctcMinLpa: z.number().min(0).max(1000).optional(),
   ctcMaxLpa: z.number().min(0).max(1000).optional(),
   ctcFinalLpa: z.number().min(0).max(1000).optional(),
@@ -66,6 +118,14 @@ export const updateDriveSchema = z.object({
   role: z.string().trim().min(1).max(120).optional(),
   driveDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format (YYYY-MM-DD)").optional(),
   sectorOrIndustry: z.string().trim().min(2).max(120).optional(),
+  employerFirstName: employerNameFieldSchema.optional(),
+  employerLastName: employerNameFieldSchema.optional(),
+  employerDesignation: z.string().trim().min(1).max(160).optional(),
+  employerDepartment: z.string().trim().min(1).max(160).optional(),
+  employerOfficialEmail: employerEmailFieldSchema.optional(),
+  employerPersonalEmail: employerEmailFieldSchema.optional(),
+  employerMobile: employerMobileFieldSchema.optional(),
+  employerOfficeAddress: employerOfficeAddressFieldSchema.optional(),
   ctcMinLpa: z.number().min(0).max(1000).optional(),
   ctcMaxLpa: z.number().min(0).max(1000).optional(),
   ctcFinalLpa: z.number().min(0).max(1000).optional(),

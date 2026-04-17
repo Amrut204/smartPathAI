@@ -2,6 +2,8 @@ import { createHash, randomUUID } from "node:crypto";
 
 import { AppError } from "../middleware/error-handler.js";
 import { getMongoDb } from "../utils/mongodb.js";
+import { buildStudentProfileSummary, normalizeStudentProfileData } from "../utils/student-profile.js";
+import { buildStudentDeclarationStatus } from "../utils/student-declaration.js";
 
 export interface DriveCriteria {
   minCgpa?: number;
@@ -10,7 +12,19 @@ export interface DriveCriteria {
   maxActiveBacklogs?: number;
   maxTotalBacklogs?: number;
   branches?: string[];
+  tenthMarksMin?: number;
+  tenthMarksMax?: number;
+  twelfthMarksMin?: number;
+  twelfthMarksMax?: number;
+  diplomaMarksMin?: number;
+  diplomaMarksMax?: number;
   minAttendance?: number;
+  readinessMin?: number;
+  profileCompletenessMin?: number;
+  hasResume?: boolean;
+  isCertified?: boolean;
+  canAccessResources?: boolean;
+  canAccessMockTests?: boolean;
   excludePlacedStudents?: boolean;
 }
 
@@ -19,6 +33,14 @@ interface DriveWriteInput {
   role?: string;
   driveDate: string;
   sectorOrIndustry?: string;
+  employerFirstName?: string;
+  employerLastName?: string;
+  employerDesignation?: string;
+  employerDepartment?: string;
+  employerOfficialEmail?: string;
+  employerPersonalEmail?: string;
+  employerMobile?: string;
+  employerOfficeAddress?: string;
   ctcMinLpa?: number;
   ctcMaxLpa?: number;
   ctcFinalLpa?: number;
@@ -103,6 +125,7 @@ interface StudentEligibilityRow {
   backlogs_total?: number | null;
   attendance_pct: number | null;
   readiness_score: number;
+  profile_data?: unknown;
 }
 
 export interface EnrichedStudent {
@@ -116,8 +139,16 @@ export interface EnrichedStudent {
   cgpa: number;
   backlogs: number;
   backlogsTotal: number;
+  tenthMarks?: number;
+  twelfthMarks?: number;
+  diplomaMarks?: number;
   attendancePct: number;
   readinessScore: number;
+  profileCompletenessPct: number;
+  hasResumeReady: boolean;
+  isProfileCertified: boolean;
+  canAccessResources: boolean;
+  canAccessMockTests: boolean;
 }
 
 export interface EligibilityReasonCount {
@@ -234,6 +265,83 @@ export function normalizeDriveLifecycle(value: unknown): DriveLifecycle {
   return "draft";
 }
 
+function parsePercentValue(value: unknown) {
+  if (value === undefined || value === null || value === "") return null;
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return null;
+  if (parsed < 0 || parsed > 100) return null;
+  return parsed;
+}
+
+function readFirstPercentValue(record: Record<string, unknown>, keys: string[]) {
+  for (const key of keys) {
+    const value = parsePercentValue(record[key]);
+    if (value !== null) return value;
+  }
+  return null;
+}
+
+function extractAcademicMarksFromProfileData(profileData: unknown) {
+  const record = profileData && typeof profileData === "object"
+    ? profileData as Record<string, unknown>
+    : {};
+
+  return {
+    tenthMarks: readFirstPercentValue(record, [
+      "tenthMarks",
+      "tenth_marks",
+      "tenthPercentage",
+      "tenth_percentage",
+      "class10Marks",
+      "class10_marks",
+      "class10Percentage",
+      "class10_percentage",
+      "marks10",
+      "marks_10",
+      "xMarks",
+      "x_marks",
+      "xPercentage",
+      "x_percentage",
+      "sscMarks",
+      "ssc_marks",
+      "sscPercentage",
+      "ssc_percentage",
+    ]),
+    twelfthMarks: readFirstPercentValue(record, [
+      "twelfthMarks",
+      "twelfth_marks",
+      "twelfthPercentage",
+      "twelfth_percentage",
+      "class12Marks",
+      "class12_marks",
+      "class12Percentage",
+      "class12_percentage",
+      "marks12",
+      "marks_12",
+      "xiiMarks",
+      "xii_marks",
+      "xiiPercentage",
+      "xii_percentage",
+      "hscMarks",
+      "hsc_marks",
+      "hscPercentage",
+      "hsc_percentage",
+    ]),
+    diplomaMarks: readFirstPercentValue(record, [
+      "diplomaMarks",
+      "diploma_marks",
+      "diplomaPercentage",
+      "diploma_percentage",
+      "diplomaPct",
+      "diploma_pct",
+      "diplomaPercent",
+      "diploma_percent",
+      "diplomaScore",
+      "diploma_score",
+    ]),
+  };
+}
+
 function buildStatusFilter(status: DriveLifecycle) {
   if (status === "published") return { $in: ["published", "upcoming"] };
   if (status === "in_process") return { $in: ["in_process", "active"] };
@@ -241,7 +349,7 @@ function buildStatusFilter(status: DriveLifecycle) {
 }
 
 export function buildDriveCriteriaDigest(criteria: DriveCriteria) {
-  const normalized = {
+  const normalized: Record<string, unknown> = {
     minCgpa: criteria.minCgpa ?? null,
     maxBacklogs: criteria.maxBacklogs ?? null,
     maxActiveBacklogs: criteria.maxActiveBacklogs ?? null,
@@ -250,6 +358,20 @@ export function buildDriveCriteriaDigest(criteria: DriveCriteria) {
     minAttendance: criteria.minAttendance ?? null,
     excludePlacedStudents: Boolean(criteria.excludePlacedStudents),
   };
+
+  if (criteria.readinessMin !== undefined) normalized.readinessMin = criteria.readinessMin;
+  if (criteria.profileCompletenessMin !== undefined) normalized.profileCompletenessMin = criteria.profileCompletenessMin;
+  if (criteria.tenthMarksMin !== undefined) normalized.tenthMarksMin = criteria.tenthMarksMin;
+  if (criteria.tenthMarksMax !== undefined) normalized.tenthMarksMax = criteria.tenthMarksMax;
+  if (criteria.twelfthMarksMin !== undefined) normalized.twelfthMarksMin = criteria.twelfthMarksMin;
+  if (criteria.twelfthMarksMax !== undefined) normalized.twelfthMarksMax = criteria.twelfthMarksMax;
+  if (criteria.diplomaMarksMin !== undefined) normalized.diplomaMarksMin = criteria.diplomaMarksMin;
+  if (criteria.diplomaMarksMax !== undefined) normalized.diplomaMarksMax = criteria.diplomaMarksMax;
+  if (criteria.hasResume !== undefined) normalized.hasResume = criteria.hasResume;
+  if (criteria.isCertified !== undefined) normalized.isCertified = criteria.isCertified;
+  if (criteria.canAccessResources !== undefined) normalized.canAccessResources = criteria.canAccessResources;
+  if (criteria.canAccessMockTests !== undefined) normalized.canAccessMockTests = criteria.canAccessMockTests;
+
   return createHash("sha256").update(JSON.stringify(normalized)).digest("hex");
 }
 
@@ -302,20 +424,56 @@ async function enrichStudents(
 
   const userMap = new Map(users.map((u) => [String(u.id), u]));
 
-  return students.map((student) => ({
-    id: String(student.id),
-    userId: String(student.user_id),
-    fullName: String(userMap.get(String(student.user_id))?.full_name ?? ""),
-    email: String(userMap.get(String(student.user_id))?.email ?? ""),
-    rollNumber: student.roll_number ? String(student.roll_number) : "",
-    branch: String(student.branch),
-    batch: String(student.batch),
-    cgpa: Number(student.cgpa ?? 0),
-    backlogs: Number(student.backlogs ?? 0),
-    backlogsTotal: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
-    attendancePct: Number(student.attendance_pct ?? 0),
-    readinessScore: Number(student.readiness_score ?? 0),
-  })) satisfies EnrichedStudent[];
+  return students.map((student) => {
+    const studentRecord = student as unknown as Record<string, unknown>;
+    const summary = buildStudentProfileSummary({
+      student: studentRecord,
+      user: {
+        full_name: userMap.get(String(student.user_id))?.full_name,
+        email: userMap.get(String(student.user_id))?.email,
+      },
+    });
+    const declarationStatus = buildStudentDeclarationStatus({
+      student: studentRecord,
+      user: {
+        full_name: userMap.get(String(student.user_id))?.full_name,
+        email: userMap.get(String(student.user_id))?.email,
+      },
+    });
+    const normalizedProfile = normalizeStudentProfileData(student.profile_data);
+    const academicMarks = extractAcademicMarksFromProfileData(student.profile_data);
+    const hasResumeReady = Boolean(
+      summary.studentEditableProfile.resumeStorageProvider
+      || summary.studentEditableProfile.resumeDriveFileId
+      || summary.studentEditableProfile.resumeDriveWebLink
+      || summary.studentEditableProfile.resumeUrl
+      || normalizedProfile.resumeDriveWebLink
+      || normalizedProfile.resumeUrl,
+    );
+
+    return {
+      id: String(student.id),
+      userId: String(student.user_id),
+      fullName: String(userMap.get(String(student.user_id))?.full_name ?? ""),
+      email: String(userMap.get(String(student.user_id))?.email ?? ""),
+      rollNumber: student.roll_number ? String(student.roll_number) : "",
+      branch: String(student.branch),
+      batch: String(student.batch),
+      cgpa: Number(student.cgpa ?? 0),
+      backlogs: Number(student.backlogs ?? 0),
+      backlogsTotal: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
+      tenthMarks: academicMarks.tenthMarks ?? undefined,
+      twelfthMarks: academicMarks.twelfthMarks ?? undefined,
+      diplomaMarks: academicMarks.diplomaMarks ?? undefined,
+      attendancePct: Number(student.attendance_pct ?? 0),
+      readinessScore: Number(student.readiness_score ?? 0),
+      profileCompletenessPct: summary.profileCompleteness.pct,
+      hasResumeReady,
+      isProfileCertified: declarationStatus.profileCertification.isCertified,
+      canAccessResources: summary.canAccessResources,
+      canAccessMockTests: summary.canAccessMockTests,
+    };
+  }) satisfies EnrichedStudent[];
 }
 
 export const DriveRepository = {
@@ -336,6 +494,14 @@ export const DriveRepository = {
           role: 1,
           drive_date: 1,
           sector_or_industry: 1,
+          employer_first_name: 1,
+          employer_last_name: 1,
+          employer_designation: 1,
+          employer_department: 1,
+          employer_official_email: 1,
+          employer_personal_email: 1,
+          employer_mobile: 1,
+          employer_office_address: 1,
           ctc_min_lpa: 1,
           ctc_max_lpa: 1,
           ctc_final_lpa: 1,
@@ -366,6 +532,14 @@ export const DriveRepository = {
         role: drive.role ? String(drive.role) : null,
         driveDate: String(drive.drive_date),
         sectorOrIndustry: drive.sector_or_industry ? String(drive.sector_or_industry) : null,
+        employerFirstName: drive.employer_first_name ? String(drive.employer_first_name) : null,
+        employerLastName: drive.employer_last_name ? String(drive.employer_last_name) : null,
+        employerDesignation: drive.employer_designation ? String(drive.employer_designation) : null,
+        employerDepartment: drive.employer_department ? String(drive.employer_department) : null,
+        employerOfficialEmail: drive.employer_official_email ? String(drive.employer_official_email) : null,
+        employerPersonalEmail: drive.employer_personal_email ? String(drive.employer_personal_email) : null,
+        employerMobile: drive.employer_mobile ? String(drive.employer_mobile) : null,
+        employerOfficeAddress: drive.employer_office_address ? String(drive.employer_office_address) : null,
         ctcMinLpa: drive.ctc_min_lpa === undefined || drive.ctc_min_lpa === null ? null : Number(drive.ctc_min_lpa),
         ctcMaxLpa: drive.ctc_max_lpa === undefined || drive.ctc_max_lpa === null ? null : Number(drive.ctc_max_lpa),
         ctcFinalLpa: drive.ctc_final_lpa === undefined || drive.ctc_final_lpa === null ? null : Number(drive.ctc_final_lpa),
@@ -400,6 +574,14 @@ export const DriveRepository = {
       role: input.role ?? null,
       drive_date: input.driveDate,
       sector_or_industry: input.sectorOrIndustry ?? null,
+      employer_first_name: input.employerFirstName ?? null,
+      employer_last_name: input.employerLastName ?? null,
+      employer_designation: input.employerDesignation ?? null,
+      employer_department: input.employerDepartment ?? null,
+      employer_official_email: input.employerOfficialEmail ?? null,
+      employer_personal_email: input.employerPersonalEmail ?? null,
+      employer_mobile: input.employerMobile ?? null,
+      employer_office_address: input.employerOfficeAddress ?? null,
       ctc_min_lpa: input.ctcMinLpa ?? null,
       ctc_max_lpa: input.ctcMaxLpa ?? null,
       ctc_final_lpa: input.ctcFinalLpa ?? null,
@@ -445,6 +627,14 @@ export const DriveRepository = {
           role: 1,
           drive_date: 1,
           sector_or_industry: 1,
+          employer_first_name: 1,
+          employer_last_name: 1,
+          employer_designation: 1,
+          employer_department: 1,
+          employer_official_email: 1,
+          employer_personal_email: 1,
+          employer_mobile: 1,
+          employer_office_address: 1,
           ctc_min_lpa: 1,
           ctc_max_lpa: 1,
           ctc_final_lpa: 1,
@@ -488,6 +678,14 @@ export const DriveRepository = {
       role: drive.role ? String(drive.role) : null,
       driveDate: String(drive.drive_date),
       sectorOrIndustry: drive.sector_or_industry ? String(drive.sector_or_industry) : null,
+      employerFirstName: drive.employer_first_name ? String(drive.employer_first_name) : null,
+      employerLastName: drive.employer_last_name ? String(drive.employer_last_name) : null,
+      employerDesignation: drive.employer_designation ? String(drive.employer_designation) : null,
+      employerDepartment: drive.employer_department ? String(drive.employer_department) : null,
+      employerOfficialEmail: drive.employer_official_email ? String(drive.employer_official_email) : null,
+      employerPersonalEmail: drive.employer_personal_email ? String(drive.employer_personal_email) : null,
+      employerMobile: drive.employer_mobile ? String(drive.employer_mobile) : null,
+      employerOfficeAddress: drive.employer_office_address ? String(drive.employer_office_address) : null,
       ctcMinLpa: drive.ctc_min_lpa === undefined || drive.ctc_min_lpa === null ? null : Number(drive.ctc_min_lpa),
       ctcMaxLpa: drive.ctc_max_lpa === undefined || drive.ctc_max_lpa === null ? null : Number(drive.ctc_max_lpa),
       ctcFinalLpa: drive.ctc_final_lpa === undefined || drive.ctc_final_lpa === null ? null : Number(drive.ctc_final_lpa),
@@ -533,6 +731,14 @@ export const DriveRepository = {
       role: string;
       driveDate: string;
       sectorOrIndustry: string;
+      employerFirstName: string;
+      employerLastName: string;
+      employerDesignation: string;
+      employerDepartment: string;
+      employerOfficialEmail: string;
+      employerPersonalEmail: string;
+      employerMobile: string;
+      employerOfficeAddress: string;
       ctcMinLpa: number;
       ctcMaxLpa: number;
       ctcFinalLpa: number;
@@ -557,6 +763,14 @@ export const DriveRepository = {
     if (updates.role !== undefined) payload.role = updates.role;
     if (updates.driveDate !== undefined) payload.drive_date = updates.driveDate;
     if (updates.sectorOrIndustry !== undefined) payload.sector_or_industry = updates.sectorOrIndustry;
+    if (updates.employerFirstName !== undefined) payload.employer_first_name = updates.employerFirstName;
+    if (updates.employerLastName !== undefined) payload.employer_last_name = updates.employerLastName;
+    if (updates.employerDesignation !== undefined) payload.employer_designation = updates.employerDesignation;
+    if (updates.employerDepartment !== undefined) payload.employer_department = updates.employerDepartment;
+    if (updates.employerOfficialEmail !== undefined) payload.employer_official_email = updates.employerOfficialEmail;
+    if (updates.employerPersonalEmail !== undefined) payload.employer_personal_email = updates.employerPersonalEmail;
+    if (updates.employerMobile !== undefined) payload.employer_mobile = updates.employerMobile;
+    if (updates.employerOfficeAddress !== undefined) payload.employer_office_address = updates.employerOfficeAddress;
     if (updates.ctcMinLpa !== undefined) payload.ctc_min_lpa = updates.ctcMinLpa;
     if (updates.ctcMaxLpa !== undefined) payload.ctc_max_lpa = updates.ctcMaxLpa;
     if (updates.ctcFinalLpa !== undefined) payload.ctc_final_lpa = updates.ctcFinalLpa;
@@ -636,13 +850,16 @@ export const DriveRepository = {
     if (criteria.minAttendance !== undefined) {
       filter.attendance_pct = { $gte: criteria.minAttendance };
     }
+    if (criteria.readinessMin !== undefined) {
+      filter.readiness_score = { $gte: criteria.readinessMin };
+    }
     if (criteria.branches && criteria.branches.length > 0) {
       filter.branch = { $in: criteria.branches };
     }
 
     const students = await db.collection("students").find(
       filter,
-      { projection: { _id: 0, id: 1, user_id: 1, roll_number: 1, branch: 1, batch: 1, cgpa: 1, backlogs: 1, backlogs_total: 1, attendance_pct: 1, readiness_score: 1 } },
+      { projection: { _id: 0, id: 1, user_id: 1, roll_number: 1, branch: 1, batch: 1, cgpa: 1, backlogs: 1, backlogs_total: 1, attendance_pct: 1, readiness_score: 1, profile_data: 1 } },
     ).sort({ cgpa: -1, id: 1 }).toArray();
 
     return enrichStudents(tenantId, students as unknown as StudentEligibilityRow[]);
@@ -665,6 +882,7 @@ export const DriveRepository = {
           backlogs_total: 1,
           attendance_pct: 1,
           readiness_score: 1,
+          profile_data: 1,
         },
       },
     ).sort({ cgpa: -1, id: 1 }).toArray();

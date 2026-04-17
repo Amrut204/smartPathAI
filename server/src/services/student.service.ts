@@ -286,6 +286,12 @@ async function evaluateEligibilityWithPlacementPolicy(params: {
     maxTotalBacklogs?: number;
     branches?: string[];
     minAttendance?: number;
+    readinessMin?: number;
+    profileCompletenessMin?: number;
+    hasResume?: boolean;
+    isCertified?: boolean;
+    canAccessResources?: boolean;
+    canAccessMockTests?: boolean;
     excludePlacedStudents?: boolean;
   };
   student: {
@@ -294,6 +300,12 @@ async function evaluateEligibilityWithPlacementPolicy(params: {
     totalBacklogs: number;
     branch: string;
     attendancePct: number;
+    readinessScore?: number;
+    profileCompletenessPct?: number;
+    hasResumeReady?: boolean;
+    isProfileCertified?: boolean;
+    canAccessResources?: boolean;
+    canAccessMockTests?: boolean;
   };
   isPlaced: boolean;
 }) {
@@ -1275,6 +1287,12 @@ async function buildProfileExperience(profile: Awaited<ReturnType<typeof Student
         totalBacklogs: Number((profile as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
         branch: String(profile.branch ?? ""),
         attendancePct: Number(profile.attendance_pct ?? 0),
+        readinessScore: Number(profile.readiness_score ?? 0),
+        profileCompletenessPct: Number(base.profileCompleteness.pct ?? 0),
+        hasResumeReady: hasResume,
+        isProfileCertified: base.declarationStatus.profileCertification.isCertified,
+        canAccessResources: base.canAccessResources,
+        canAccessMockTests: base.canAccessMockTests,
       },
       criteria: (drive.criteria ?? {}) as {
         minCgpa?: number;
@@ -1736,6 +1754,12 @@ async function collectStudentDriveReadinessNotificationContext(params: {
         totalBacklogs: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
         branch: String(student.branch ?? ""),
         attendancePct: Number(student.attendance_pct ?? 0),
+        readinessScore: Number(student.readiness_score ?? 0),
+        profileCompletenessPct: Number(params.profileResponse.profileCompleteness.pct ?? 0),
+        hasResumeReady: hasResume,
+        isProfileCertified: profileCertified,
+        canAccessResources: params.profileResponse.canAccessResources,
+        canAccessMockTests: params.profileResponse.canAccessMockTests,
       },
       criteria: (drive.criteria ?? {}) as {
         minCgpa?: number;
@@ -2073,6 +2097,19 @@ export const StudentService = {
         email: user?.email,
       },
     });
+    const declarationStatus = buildStudentDeclarationStatus({
+      student,
+      user: {
+        full_name: user?.full_name,
+        email: user?.email,
+      },
+    });
+    const hasResumeReady = Boolean(
+      profileSummary.studentEditableProfile.resumeStorageProvider
+      || profileSummary.studentEditableProfile.resumeDriveFileId
+      || profileSummary.studentEditableProfile.resumeDriveWebLink
+      || profileSummary.studentEditableProfile.resumeUrl,
+    );
     const profileCompletenessPct = profileSummary.profileCompleteness.pct;
     const driveResultMap = new Map(driveResults.map((item) => [String(item.drive_id), item]));
     const eligibilityChecks = await Promise.all(
@@ -2085,6 +2122,12 @@ export const StudentService = {
             totalBacklogs: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
             branch: String(student.branch ?? ""),
             attendancePct: Number(student.attendance_pct ?? 0),
+            readinessScore: Number(student.readiness_score ?? 0),
+            profileCompletenessPct,
+            hasResumeReady,
+            isProfileCertified: declarationStatus.profileCertification.isCertified,
+            canAccessResources: profileSummary.canAccessResources,
+            canAccessMockTests: profileSummary.canAccessMockTests,
           },
           criteria: (drive.criteria ?? {}) as {
             minCgpa?: number;
@@ -2186,6 +2229,12 @@ export const StudentService = {
           totalBacklogs: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
           branch: String(student.branch ?? ""),
           attendancePct: Number(student.attendance_pct ?? 0),
+          readinessScore: Number(student.readiness_score ?? 0),
+          profileCompletenessPct: Number(profileExperience.profileCompleteness.pct ?? 0),
+          hasResumeReady: hasResume,
+          isProfileCertified: profileCertified,
+          canAccessResources: profileExperience.canAccessResources,
+          canAccessMockTests: profileExperience.canAccessMockTests,
         },
         criteria: (drive.criteria ?? {}) as {
           minCgpa?: number;
@@ -2358,6 +2407,17 @@ export const StudentService = {
         totalBacklogs: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
         branch: String(student.branch ?? ""),
         attendancePct: Number(student.attendance_pct ?? 0),
+        readinessScore: Number(student.readiness_score ?? 0),
+        profileCompletenessPct: Number(myProfile.profileCompleteness.pct ?? 0),
+        hasResumeReady: Boolean(
+          myProfile.studentEditableProfile.resumeStorageProvider
+          || myProfile.studentEditableProfile.resumeDriveFileId
+          || myProfile.studentEditableProfile.resumeDriveWebLink
+          || myProfile.studentEditableProfile.resumeUrl,
+        ),
+        isProfileCertified: myProfile.declarationStatus.profileCertification.isCertified,
+        canAccessResources: myProfile.canAccessResources,
+        canAccessMockTests: myProfile.canAccessMockTests,
       },
       isPlaced: myProfile.placementStatus.isPlaced,
     });
@@ -3919,6 +3979,12 @@ export const StudentService = {
       prn?: string;
       cgpaMin?: number;
       cgpaMax?: number;
+      tenthMarksMin?: number;
+      tenthMarksMax?: number;
+      twelfthMarksMin?: number;
+      twelfthMarksMax?: number;
+      diplomaMarksMin?: number;
+      diplomaMarksMax?: number;
       readinessMin?: number;
       readinessMax?: number;
       attendanceMin?: number;
@@ -3944,7 +4010,7 @@ export const StudentService = {
       isActive7d?: boolean;
       appliedRecently?: boolean;
       needsIntervention?: boolean;
-      sortBy: "cgpa" | "created_at" | "readiness_score" | "profile_completeness" | "risk_score" | "upcoming_drive_impact" | "activity";
+      sortBy: "cgpa" | "created_at" | "readiness_score" | "profile_completeness" | "risk_score" | "intervention_priority" | "upcoming_drive_impact" | "activity";
       sortDir: "asc" | "desc";
     },
   ) {

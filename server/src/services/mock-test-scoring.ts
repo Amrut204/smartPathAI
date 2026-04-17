@@ -8,6 +8,51 @@ export interface ParsedQuestion {
   skillTag: string | undefined;
 }
 
+const MAX_QUESTION_TEXT_LENGTH = 420;
+const MAX_OPTION_TEXT_LENGTH = 180;
+const MAX_EXPLANATION_LENGTH = 1500;
+const MAX_SKILL_TAG_LENGTH = 160;
+
+function normalizeInlineText(value: unknown, maxLength: number): string {
+  const compact = String(value ?? "").replace(/\s+/g, " ").trim();
+  if (!compact) {
+    return "";
+  }
+
+  if (compact.length <= maxLength) {
+    return compact;
+  }
+
+  const truncatedLength = Math.max(1, maxLength - 3);
+  return `${compact.slice(0, truncatedLength).trimEnd()}...`;
+}
+
+function normalizeOptions(rawOptions: unknown): string[] {
+  if (!Array.isArray(rawOptions)) {
+    return [];
+  }
+
+  const seen = new Set<string>();
+  const options: string[] = [];
+
+  for (const option of rawOptions) {
+    const normalized = normalizeInlineText(option, MAX_OPTION_TEXT_LENGTH);
+    if (!normalized) {
+      continue;
+    }
+
+    const dedupeKey = normalized.toLowerCase();
+    if (seen.has(dedupeKey)) {
+      continue;
+    }
+
+    seen.add(dedupeKey);
+    options.push(normalized);
+  }
+
+  return options;
+}
+
 function shuffle(items: number[]) {
   const next = [...items];
   for (let index = next.length - 1; index > 0; index -= 1) {
@@ -29,16 +74,29 @@ export function parseQuestions(raw: unknown): ParsedQuestion[] {
       }
 
       const q = question as Record<string, unknown>;
-      if (!Array.isArray(q.options)) {
+      const text = normalizeInlineText(q.text, MAX_QUESTION_TEXT_LENGTH);
+      const options = normalizeOptions(q.options);
+
+      if (!text || options.length < 2) {
         return null;
       }
 
+      const parsedCorrectIndex = Number(q.correctIndex ?? -1);
+      const correctIndex = Number.isInteger(parsedCorrectIndex)
+        && parsedCorrectIndex >= 0
+        && parsedCorrectIndex < options.length
+        ? parsedCorrectIndex
+        : 0;
+
+      const explanationText = normalizeInlineText(q.explanation, MAX_EXPLANATION_LENGTH);
+      const skillTagText = normalizeInlineText(q.skillTag, MAX_SKILL_TAG_LENGTH);
+
       return {
-        text: String(q.text ?? ""),
-        options: q.options.map((option) => String(option)),
-        correctIndex: Number(q.correctIndex ?? -1),
-        explanation: q.explanation ? String(q.explanation) : undefined,
-        skillTag: q.skillTag ? String(q.skillTag) : undefined,
+        text,
+        options,
+        correctIndex,
+        explanation: explanationText || undefined,
+        skillTag: skillTagText || undefined,
       };
     })
     .filter((question): question is ParsedQuestion => question !== null);

@@ -640,7 +640,11 @@ export const MockTestService = {
       isActive: boolean;
     },
   ) {
-    const created = await MockTestRepository.createTest(tenantId, createdBy, input);
+    const normalizedQuestions = parseQuestions(input.questions);
+    const created = await MockTestRepository.createTest(tenantId, createdBy, {
+      ...input,
+      questions: normalizedQuestions,
+    });
     const questions = parseQuestions(created.questions);
 
     return {
@@ -732,7 +736,12 @@ export const MockTestService = {
       }>;
     },
   ) {
-    return MockTestRepository.upsertQuestions(tenantId, testId, input.questions, input.append);
+    const normalizedQuestions = parseQuestions(input.questions);
+    if (normalizedQuestions.length === 0) {
+      throw new AppError("INVALID_QUESTION_PAYLOAD", "At least one valid question is required", 400);
+    }
+
+    return MockTestRepository.upsertQuestions(tenantId, testId, normalizedQuestions, input.append);
   },
 
   async saveAttemptProgress(input: SaveProgressInput) {
