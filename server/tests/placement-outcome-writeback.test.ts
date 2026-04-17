@@ -30,6 +30,67 @@ describe("Placement outcome writeback", () => {
   const strictFutureDriveId = crypto.randomUUID();
   const passwordHashPromise = hash("Test@12345", 10);
 
+  async function resetPlacementState(excludePlacedStudentsByDefault = true) {
+    const db = await getMongoDb();
+    const ts = nowIso();
+    await db.collection("tenants").updateOne(
+      { id: tenantId },
+      {
+        $set: {
+          "config.placementPolicy.excludePlacedStudentsByDefault": excludePlacedStudentsByDefault,
+          updated_at: ts,
+        },
+      },
+    );
+    await db.collection("students").updateOne(
+      { tenant_id: tenantId, id: studentId },
+      {
+        $set: {
+          profile_data: {
+            prn: "PRN-PLC-001",
+            phone: "9999999999",
+            personalEmail: "student.personal@test.local",
+            resumeUrl: "https://example.com/resume.pdf",
+            targetRoles: ["Software Engineer"],
+            preferredLocations: ["Pune"],
+            willingToRelocate: true,
+            declaration: {
+              onboardingAcceptedAt: ts,
+              onboardingVersion: STUDENT_DECLARATION_POLICY_VERSION,
+              onboardingTypedValue: "PLC-001",
+              profileCertifiedAt: ts,
+              profileCertificationVersion: STUDENT_DECLARATION_POLICY_VERSION,
+              profileCertificationTypedValue: PROFILE_CERTIFICATION_TYPED_VALUE,
+              profileCertificationSnapshotHash: "placement-test-hash",
+              lastCertifiedProfileAt: ts,
+            },
+          },
+          updated_at: ts,
+        },
+      },
+    );
+    await db.collection("student_placement_history").deleteMany({ tenant_id: tenantId, student_id: studentId });
+    await db.collection("announcements").deleteMany({ tenant_id: tenantId });
+    await db.collection("communications").deleteMany({ tenant_id: tenantId });
+    await db.collection("audit_logs").deleteMany({ tenant_id: tenantId });
+    await db.collection("drive_results").deleteMany({ tenant_id: tenantId, drive_id: selectedDriveId, student_id: studentId });
+    await db.collection("drive_results").insertOne({
+      id: crypto.randomUUID(),
+      tenant_id: tenantId,
+      drive_id: selectedDriveId,
+      student_id: studentId,
+      status: "applied",
+      application_state: "applied",
+      outcome: "selected",
+      final_ctc_lpa: 8.5,
+      remarks: null,
+      registered: true,
+      appeared: true,
+      created_at: ts,
+      updated_at: ts,
+    });
+  }
+
   beforeAll(async () => {
     const db = await getMongoDb();
     const ts = nowIso();
@@ -166,21 +227,11 @@ describe("Placement outcome writeback", () => {
       },
     ]);
 
-    await db.collection("drive_results").insertOne({
-      id: crypto.randomUUID(),
-      tenant_id: tenantId,
-      drive_id: selectedDriveId,
-      student_id: studentId,
-      status: "applied",
-      application_state: "applied",
-      outcome: "selected",
-      final_ctc_lpa: 8.5,
-      remarks: null,
-      registered: true,
-      appeared: true,
-      created_at: ts,
-      updated_at: ts,
-    });
+    await resetPlacementState(true);
+  });
+
+  beforeEach(async () => {
+    await resetPlacementState(true);
   });
 
   afterAll(async () => {
@@ -271,5 +322,58 @@ describe("Placement outcome writeback", () => {
       event_type: "student_placement_status_reviewed",
     }).toArray();
     expect(auditRows.length).toBeGreaterThan(0);
+  });
+
+  it("surfaces placed students in placed/unplaced TPO filters after result release", async () => {
+    await DriveService.releaseDriveResults({
+      tenantId,
+      actorUserId: tpoUserId,
+      actorRole: "tpo",
+      driveId: selectedDriveId,
+      audience: "selected",
+    });
+
+    const placedOnly = await StudentService.listStudentsForTpo(tenantId, {
+      limit: 50,
+      isPlaced: true,
+      sortBy: "created_at",
+      sortDir: "desc",
+    });
+    expect(placedOnly.items.some((item) => item.id === studentId)).toBe(true);
+
+    const unplacedOnly = await StudentService.listStudentsForTpo(tenantId, {
+      limit: 50,
+      isPlaced: false,
+      sortBy: "created_at",
+      sortDir: "desc",
+    });
+    expect(unplacedOnly.items.some((item) => item.id === studentId)).toBe(false);
+  });
+
+  it("publishes the result announcement only once per drive audience key", async () => {
+    await DriveService.releaseDriveResults({
+      tenantId,
+      actorUserId: tpoUserId,
+      actorRole: "tpo",
+      driveId: selectedDriveId,
+      audience: "selected",
+    });
+
+    await DriveService.releaseDriveResults({
+      tenantId,
+      actorUserId: tpoUserId,
+      actorRole: "tpo",
+      driveId: selectedDriveId,
+      audience: "selected",
+    });
+
+    const db = await getMongoDb();
+    const announcements = await db.collection("announcements").find(
+      { tenant_id: tenantId, system_key: `drive-results-published:${selectedDriveId}:selected` },
+      { projection: { _id: 0, system_key: 1, recipient_student_ids: 1 } },
+    ).toArray();
+
+    expect(announcements).toHaveLength(1);
+    expect(announcements[0]?.recipient_student_ids).toContain(studentId);
   });
 });
