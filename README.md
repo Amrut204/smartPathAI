@@ -213,6 +213,36 @@ cd client
 npm run build
 ```
 
+## Student PRN Backfill Utility
+
+Use the PRN backfill utility to populate `profile_data.prn` for legacy student rows that still have empty PRN values.
+
+Dry-run from repo root (recommended first):
+
+```bash
+npm run students:prn:backfill:dry
+```
+
+Apply updates from repo root:
+
+```bash
+npm run students:prn:backfill
+```
+
+Scoped or capped runs (from `server/`):
+
+```bash
+npx tsx scripts/backfill-student-prn.ts --tenant-id=<tenant_id> --max-updates=500
+npx tsx scripts/backfill-student-prn.ts --apply --tenant-id=<tenant_id> --max-updates=500
+```
+
+Each run writes a JSON report to `server/storage_reports/student-prn-backfill-<timestamp>.json` with:
+
+- total scan counts
+- duplicate PRN detection summary
+- backfill candidates and conflict samples
+- update outcomes (dry-run or apply mode)
+
 ## Demo Credentials
 
 Seeded demo users vary by database/seed script. Keep demo credentials out of public production documentation if this repository becomes public.

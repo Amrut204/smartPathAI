@@ -78,7 +78,9 @@
         "questions:generate:resume": "node --env-file=.env scripts/multi-llm-question-generator.mjs --resume",
         "questions:generate:dry": "node --env-file=.env scripts/multi-llm-question-generator.mjs --dry-run",
         "questions:generate:offline": "node --env-file=.env scripts/multi-llm-question-generator.mjs --offline",
-        "questions:build-tests": "node --env-file=.env scripts/build-mock-tests-from-question-bank.mjs"
+        "questions:build-tests": "node --env-file=.env scripts/build-mock-tests-from-question-bank.mjs",
+        "students:prn:backfill:dry": "tsx scripts/backfill-student-prn.ts",
+        "students:prn:backfill": "tsx scripts/backfill-student-prn.ts --apply"
     },
     "dependencies": {
         "@aws-sdk/client-s3": "^3.917.0",

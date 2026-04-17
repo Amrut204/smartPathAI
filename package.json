@@ -18,6 +18,8 @@
     "onboarding:verify": "node ops/student-onboarding/verify.mjs",
     "onboarding:send": "node ops/student-onboarding/send-credentials.mjs",
     "onboarding:run": "node ops/student-onboarding/run.mjs",
+    "students:prn:backfill:dry": "cd server && npm run students:prn:backfill:dry",
+    "students:prn:backfill": "cd server && npm run students:prn:backfill",
     "backup:mongo": "cd server && npm run backup:mongo",
     "backup:material": "cd server && npm run backup:material",
     "audit:delete-high-risk": "cd server && npm run audit:delete-high-risk",
