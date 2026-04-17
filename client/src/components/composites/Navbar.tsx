@@ -1,9 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
-import { pilotFeedbackLinks } from "../../config/pilot-feedback";
-import { isClientFeatureEnabled } from "../../config/features";
-import { Brand } from "./Brand";
 import { Button } from "../ui";
 
 type NavbarRole = "student" | "tpo";
@@ -13,17 +10,24 @@ interface NavLink {
   label: string;
 }
 
-const studentLinks: NavLink[] = [
-  { href: "/dashboard", label: "Dashboard" },
+const studentDesktopLinks: NavLink[] = [
+  { href: "/dashboard", label: "Home" },
   { href: "/announcements", label: "Announcements" },
   { href: "/drives", label: "Drives" },
   { href: "/resources", label: "Resources" },
-  { href: "/study-guides", label: "Study Guides" },
-  { href: "/mock-tests", label: "Mock Tests" },
+  { href: "/mock-tests", label: "Tests" },
   { href: "/profile", label: "Profile" },
 ];
 
-const tpoLinks: NavLink[] = [
+const studentMobileLinks: NavLink[] = [
+  { href: "/dashboard", label: "Home" },
+  { href: "/drives", label: "Drives" },
+  { href: "/mock-tests", label: "Tests" },
+  { href: "/resources", label: "Resources" },
+  { href: "/profile", label: "Profile" },
+];
+
+const tpoDesktopLinks: NavLink[] = [
   { href: "/tpo/dashboard", label: "Dashboard" },
   { href: "/tpo/students", label: "Students" },
   { href: "/tpo/drives", label: "Drives" },
@@ -31,12 +35,17 @@ const tpoLinks: NavLink[] = [
   { href: "/tpo/communication", label: "Communication" },
 ];
 
-const adminLinks: NavLink[] = [
-  { href: "/admin/hub", label: "Admin Hub" },
+const tpoMobileLinks: NavLink[] = [
+  { href: "/tpo/dashboard", label: "Dashboard" },
+  { href: "/tpo/students", label: "Students" },
+  { href: "/tpo/drives", label: "Drives" },
+  { href: "/tpo/reports", label: "Reports" },
+  { href: "/tpo/communication", label: "Comms" },
 ];
 
 interface NavbarProps {
   role: NavbarRole;
+  title: string;
   userName: string;
   showAdminLinks?: boolean;
   studentProfileCompletionPct?: number | null;
@@ -46,6 +55,7 @@ interface NavbarProps {
 
 export function Navbar({
   role,
+  title,
   userName,
   showAdminLinks = false,
   studentProfileCompletionPct = null,
@@ -54,41 +64,32 @@ export function Navbar({
 }: NavbarProps) {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [supportOpen, setSupportOpen] = useState(false);
 
-  const links = useMemo(() => {
-    const baseLinks =
-      role === "student"
-        ? studentLinks
-        : showAdminLinks
-          ? adminLinks
-          : tpoLinks;
-
-    return baseLinks.filter((link) => {
-      if (link.href === "/ai-assistant") return isClientFeatureEnabled("aiAssistant");
-      if (link.href === "/career-lab") return isClientFeatureEnabled("careerLab");
-      if (link.href === "/mastery") return isClientFeatureEnabled("mastery");
-      if (link.href === "/vault") return isClientFeatureEnabled("vault");
-      if (link.href === "/mentorship") return isClientFeatureEnabled("mentorship");
-      if (link.href === "/wallet") return isClientFeatureEnabled("wallet");
-      if (link.href === "/tpo/ops-hub") return isClientFeatureEnabled("opsHub");
-      if (link.href === "/study-guides") return isClientFeatureEnabled("studyGuides");
-      return true;
-    });
+  const desktopLinks = useMemo(() => {
+    return role === "student"
+      ? studentDesktopLinks
+      : showAdminLinks
+        ? [...tpoDesktopLinks]
+        : tpoDesktopLinks;
   }, [role, showAdminLinks]);
+
+  const mobileLinks = role === "student" ? studentMobileLinks : tpoMobileLinks;
 
   useEffect(() => {
     setMenuOpen(false);
-    setSupportOpen(false);
   }, [location.pathname]);
 
-  const showFeedbackButton = Boolean(pilotFeedbackLinks.googleFormUrl);
-  const showSupportButton = role === "student" || Boolean(pilotFeedbackLinks.whatsappUrl || pilotFeedbackLinks.supportEmailHref);
-  const homeHref = role === "student" ? "/dashboard" : showAdminLinks ? "/admin/hub" : "/tpo/dashboard";
+  const isLinkActive = (href: string) =>
+    location.pathname === href || location.pathname.startsWith(`${href}/`);
 
   return (
     <nav className="navbar">
-      <Brand href={homeHref} variant="compact" className="navbar-brand" />
+      <div className="navbar-brand-wrap">
+        <div className="navbar-brand">{title}</div>
+        <span className="navbar-workspace-label">
+          {role === "student" ? "Student workspace" : showAdminLinks ? "Admin workspace" : "TPO workspace"}
+        </span>
+      </div>
 
       <button
         className="navbar-toggle"
@@ -99,11 +100,8 @@ export function Navbar({
       </button>
 
       <div className={`navbar-nav ${menuOpen ? "open" : ""}`.trim()}>
-        {links.map((link) => {
-          const isActive =
-            location.pathname === link.href ||
-            location.pathname.startsWith(`${link.href}/`);
-
+        {desktopLinks.map((link) => {
+          const isActive = isLinkActive(link.href);
           return (
             <Link
               key={link.href}
@@ -124,48 +122,6 @@ export function Navbar({
           );
         })}
         <div className="navbar-mobile-panel">
-          <div className="navbar-mobile-support">
-            {showFeedbackButton ? (
-              <a
-                className="navbar-utility-link"
-                href={pilotFeedbackLinks.googleFormUrl ?? "#"}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Feedback Form
-              </a>
-            ) : null}
-            {showSupportButton ? (
-              <div className="navbar-mobile-support-menu">
-                <button
-                  type="button"
-                  className="navbar-utility-button"
-                  onClick={() => setSupportOpen((value) => !value)}
-                >
-                  Support
-                </button>
-                {supportOpen ? (
-                  <div className="navbar-support-menu navbar-support-menu-mobile">
-                    {role === "student" ? (
-                      <Link to="/support">
-                        Request Support
-                      </Link>
-                    ) : null}
-                    {pilotFeedbackLinks.whatsappUrl ? (
-                      <a href={pilotFeedbackLinks.whatsappUrl} target="_blank" rel="noreferrer">
-                        WhatsApp Support
-                      </a>
-                    ) : null}
-                    {pilotFeedbackLinks.supportEmailHref ? (
-                      <a href={pilotFeedbackLinks.supportEmailHref}>
-                        Email Support
-                      </a>
-                    ) : null}
-                  </div>
-                ) : null}
-              </div>
-            ) : null}
-          </div>
           <div className="navbar-mobile-user">
             <span className="ui-avatar">
               {userName.charAt(0).toUpperCase()}
@@ -188,47 +144,6 @@ export function Navbar({
       </div>
 
       <div className="navbar-actions">
-        {showFeedbackButton ? (
-          <a
-            className="navbar-utility-link"
-            href={pilotFeedbackLinks.googleFormUrl ?? "#"}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Feedback Form
-          </a>
-        ) : null}
-        {showSupportButton ? (
-          <div className="navbar-support">
-            <button
-              type="button"
-              className="navbar-utility-button"
-              onClick={() => setSupportOpen((value) => !value)}
-              aria-expanded={supportOpen}
-            >
-              Support
-            </button>
-            {supportOpen ? (
-              <div className="navbar-support-menu">
-                {role === "student" ? (
-                  <Link to="/support">
-                    Request Support
-                  </Link>
-                ) : null}
-                {pilotFeedbackLinks.whatsappUrl ? (
-                  <a href={pilotFeedbackLinks.whatsappUrl} target="_blank" rel="noreferrer">
-                    WhatsApp Support
-                  </a>
-                ) : null}
-                {pilotFeedbackLinks.supportEmailHref ? (
-                  <a href={pilotFeedbackLinks.supportEmailHref}>
-                    Email Support
-                  </a>
-                ) : null}
-              </div>
-            ) : null}
-          </div>
-        ) : null}
         <span className="ui-avatar">
           {userName.charAt(0).toUpperCase()}
         </span>
@@ -236,6 +151,27 @@ export function Navbar({
         <Button variant="ghost" onClick={onLogout}>
           Logout
         </Button>
+      </div>
+
+      <div className="navbar-bottom-nav" aria-label={`${role} mobile navigation`}>
+        {mobileLinks.map((link) => {
+          const isActive = isLinkActive(link.href);
+          return (
+            <Link
+              key={link.href}
+              to={link.href}
+              className={`navbar-bottom-link ${isActive ? "active" : ""}`.trim()}
+            >
+              <span>{link.label}</span>
+              {role === "student" && link.href === "/profile" && typeof studentProfileCompletionPct === "number" ? (
+                <small>{studentProfileCompletionPct >= 100 ? "Ready" : `${studentProfileCompletionPct}%`}</small>
+              ) : null}
+              {role === "student" && link.href === "/dashboard" && studentHasAnnouncementDot ? (
+                <span className="navbar-link-dot navbar-bottom-dot" aria-label="New announcements" />
+              ) : null}
+            </Link>
+          );
+        })}
       </div>
     </nav>
   );

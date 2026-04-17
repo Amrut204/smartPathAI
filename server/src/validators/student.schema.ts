@@ -147,6 +147,12 @@ export const tpoStudentListQuerySchema = z
     prn: z.string().trim().min(1).max(64).optional(),
     cgpaMin: z.coerce.number().min(0).max(10).optional(),
     cgpaMax: z.coerce.number().min(0).max(10).optional(),
+    tenthMarksMin: z.coerce.number().min(0).max(100).optional(),
+    tenthMarksMax: z.coerce.number().min(0).max(100).optional(),
+    twelfthMarksMin: z.coerce.number().min(0).max(100).optional(),
+    twelfthMarksMax: z.coerce.number().min(0).max(100).optional(),
+    diplomaMarksMin: z.coerce.number().min(0).max(100).optional(),
+    diplomaMarksMax: z.coerce.number().min(0).max(100).optional(),
     readinessMin: z.coerce.number().min(0).max(100).optional(),
     readinessMax: z.coerce.number().min(0).max(100).optional(),
     attendanceMin: z.coerce.number().min(0).max(100).optional(),
@@ -172,12 +178,21 @@ export const tpoStudentListQuerySchema = z
     isActive7d: optionalQueryBooleanSchema,
     appliedRecently: optionalQueryBooleanSchema,
     needsIntervention: optionalQueryBooleanSchema,
-    sortBy: z.enum(["cgpa", "created_at", "readiness_score", "profile_completeness", "risk_score", "upcoming_drive_impact", "activity"]).default("created_at"),
+    sortBy: z.enum(["cgpa", "created_at", "readiness_score", "profile_completeness", "risk_score", "intervention_priority", "upcoming_drive_impact", "activity"]).default("created_at"),
     sortDir: z.enum(["asc", "desc"]).default("desc"),
   })
   .superRefine((value, ctx) => {
     if (value.cgpaMin != null && value.cgpaMax != null && value.cgpaMin > value.cgpaMax) {
       ctx.addIssue({ code: "custom", message: "cgpaMin cannot be greater than cgpaMax", path: ["cgpaMin"] });
+    }
+    if (value.tenthMarksMin != null && value.tenthMarksMax != null && value.tenthMarksMin > value.tenthMarksMax) {
+      ctx.addIssue({ code: "custom", message: "tenthMarksMin cannot be greater than tenthMarksMax", path: ["tenthMarksMin"] });
+    }
+    if (value.twelfthMarksMin != null && value.twelfthMarksMax != null && value.twelfthMarksMin > value.twelfthMarksMax) {
+      ctx.addIssue({ code: "custom", message: "twelfthMarksMin cannot be greater than twelfthMarksMax", path: ["twelfthMarksMin"] });
+    }
+    if (value.diplomaMarksMin != null && value.diplomaMarksMax != null && value.diplomaMarksMin > value.diplomaMarksMax) {
+      ctx.addIssue({ code: "custom", message: "diplomaMarksMin cannot be greater than diplomaMarksMax", path: ["diplomaMarksMin"] });
     }
     if (value.backlogsMin != null && value.backlogsMax != null && value.backlogsMin > value.backlogsMax) {
       ctx.addIssue({ code: "custom", message: "backlogsMin cannot be greater than backlogsMax", path: ["backlogsMin"] });

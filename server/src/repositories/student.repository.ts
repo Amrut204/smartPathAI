@@ -6,6 +6,7 @@ import { hash as bcryptHash } from "bcryptjs";
 
 import { getBranchPrepTrack, matchesBranchPrepTrackTag } from "../config/branch-prep.config.js";
 import { AppError } from "../middleware/error-handler.js";
+import { deriveInterventionPolicy, getInterventionPriorityRank } from "../services/intervention-priority.logic.js";
 import { buildStudentProfileSummary, normalizeStudentProfileData } from "../utils/student-profile.js";
 import { buildStudentDeclarationStatus } from "../utils/student-declaration.js";
 import {
@@ -294,6 +295,83 @@ function normalizePlacementStatus(profileData: unknown): PlacementStatusSummary 
     sourceDriveId: raw.sourceDriveId ? String(raw.sourceDriveId) : null,
     correctionReason: raw.correctionReason ? String(raw.correctionReason) : null,
     correctedAt: raw.correctedAt ? String(raw.correctedAt) : null,
+  };
+}
+
+function parsePercentValue(value: unknown) {
+  if (value === undefined || value === null || value === "") return null;
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return null;
+  if (parsed < 0 || parsed > 100) return null;
+  return parsed;
+}
+
+function readFirstPercentValue(record: Record<string, unknown>, keys: string[]) {
+  for (const key of keys) {
+    const value = parsePercentValue(record[key]);
+    if (value !== null) return value;
+  }
+  return null;
+}
+
+function extractAcademicMarksFromProfileData(profileData: unknown) {
+  const record = profileData && typeof profileData === "object"
+    ? profileData as Record<string, unknown>
+    : {};
+
+  return {
+    tenthMarks: readFirstPercentValue(record, [
+      "tenthMarks",
+      "tenth_marks",
+      "tenthPercentage",
+      "tenth_percentage",
+      "class10Marks",
+      "class10_marks",
+      "class10Percentage",
+      "class10_percentage",
+      "marks10",
+      "marks_10",
+      "xMarks",
+      "x_marks",
+      "xPercentage",
+      "x_percentage",
+      "sscMarks",
+      "ssc_marks",
+      "sscPercentage",
+      "ssc_percentage",
+    ]),
+    twelfthMarks: readFirstPercentValue(record, [
+      "twelfthMarks",
+      "twelfth_marks",
+      "twelfthPercentage",
+      "twelfth_percentage",
+      "class12Marks",
+      "class12_marks",
+      "class12Percentage",
+      "class12_percentage",
+      "marks12",
+      "marks_12",
+      "xiiMarks",
+      "xii_marks",
+      "xiiPercentage",
+      "xii_percentage",
+      "hscMarks",
+      "hsc_marks",
+      "hscPercentage",
+      "hsc_percentage",
+    ]),
+    diplomaMarks: readFirstPercentValue(record, [
+      "diplomaMarks",
+      "diploma_marks",
+      "diplomaPercentage",
+      "diploma_percentage",
+      "diplomaPct",
+      "diploma_pct",
+      "diplomaPercent",
+      "diploma_percent",
+      "diplomaScore",
+      "diploma_score",
+    ]),
   };
 }
 
@@ -2569,6 +2647,12 @@ export const StudentRepository = {
       prn?: string;
       cgpaMin?: number;
       cgpaMax?: number;
+      tenthMarksMin?: number;
+      tenthMarksMax?: number;
+      twelfthMarksMin?: number;
+      twelfthMarksMax?: number;
+      diplomaMarksMin?: number;
+      diplomaMarksMax?: number;
       readinessMin?: number;
       readinessMax?: number;
       attendanceMin?: number;
@@ -2594,7 +2678,7 @@ export const StudentRepository = {
       isActive7d?: boolean;
       appliedRecently?: boolean;
       needsIntervention?: boolean;
-      sortBy: "cgpa" | "created_at" | "readiness_score" | "profile_completeness" | "risk_score" | "upcoming_drive_impact" | "activity";
+      sortBy: "cgpa" | "created_at" | "readiness_score" | "profile_completeness" | "risk_score" | "intervention_priority" | "upcoming_drive_impact" | "activity";
       sortDir: "asc" | "desc";
     },
   ) {
@@ -2608,9 +2692,12 @@ export const StudentRepository = {
       data,
       drives,
       driveResults,
-      resourceViewEvents,
       attempts,
       aiConversations,
+      studyHours,
+      codingProfiles,
+      interviewSessions,
+      walletItems,
     ] = await Promise.all([
       db.collection("students").find(
         { tenant_id: tenantId },
@@ -2652,10 +2739,6 @@ export const StudentRepository = {
           },
         },
       ).toArray(),
-      db.collection("resource_view_events").find(
-        { tenant_id: tenantId, created_at: { $gte: `${start30}T00:00:00.000Z` } },
-        { projection: { _id: 0, student_id: 1, created_at: 1 } },
-      ).toArray(),
       db.collection("student_attempts").find(
         { tenant_id: tenantId, status: "submitted", submitted_at: { $gte: `${start30}T00:00:00.000Z` } },
         { projection: { _id: 0, student_id: 1, submitted_at: 1, score: 1 } },
@@ -2663,6 +2746,34 @@ export const StudentRepository = {
       db.collection("ai_conversations").find(
         { tenant_id: tenantId, updated_at: { $gte: `${start30}T00:00:00.000Z` } },
         { projection: { _id: 0, student_id: 1, updated_at: 1 } },
+      ).toArray(),
+      db.collection("study_hours").find(
+        { tenant_id: tenantId, study_date: { $gte: start30 } },
+        { projection: { _id: 0, student_id: 1, study_date: 1 } },
+      ).toArray(),
+      db.collection("coding_profiles").find(
+        { tenant_id: tenantId, updated_at: { $gte: `${start30}T00:00:00.000Z` } },
+        { projection: { _id: 0, student_id: 1, updated_at: 1 } },
+      ).toArray(),
+      db.collection("interview_sessions").find(
+        {
+          tenant_id: tenantId,
+          $or: [
+            { completed_at: { $gte: `${start30}T00:00:00.000Z` } },
+            { created_at: { $gte: `${start30}T00:00:00.000Z` } },
+          ],
+        },
+        { projection: { _id: 0, student_id: 1, completed_at: 1, created_at: 1 } },
+      ).toArray(),
+      db.collection("achievement_wallet").find(
+        {
+          tenant_id: tenantId,
+          $or: [
+            { created_at: { $gte: `${start30}T00:00:00.000Z` } },
+            { achieved_at: { $gte: `${start30}T00:00:00.000Z` } },
+          ],
+        },
+        { projection: { _id: 0, student_id: 1, created_at: 1, achieved_at: 1 } },
       ).toArray(),
     ]);
 
@@ -2690,21 +2801,18 @@ export const StudentRepository = {
         }]),
     );
     const driveResultsByStudent = new Map<string, Array<Record<string, unknown>>>();
-    const resourceViewsByStudent = new Map<string, string[]>();
     const attemptsByStudent = new Map<string, Array<{ submittedAt: string; score: number }>>();
     const aiByStudent = new Map<string, string[]>();
+    const studyByStudent = new Map<string, string[]>();
+    const codingByStudent = new Map<string, string[]>();
+    const interviewByStudent = new Map<string, string[]>();
+    const walletByStudent = new Map<string, string[]>();
 
     driveResults.forEach((entry) => {
       const key = String(entry.student_id ?? "");
       const list = driveResultsByStudent.get(key) ?? [];
       list.push(entry as Record<string, unknown>);
       driveResultsByStudent.set(key, list);
-    });
-    resourceViewEvents.forEach((entry) => {
-      const key = String(entry.student_id ?? "");
-      const list = resourceViewsByStudent.get(key) ?? [];
-      list.push(String(entry.created_at ?? ""));
-      resourceViewsByStudent.set(key, list);
     });
     attempts.forEach((entry) => {
       const key = String(entry.student_id ?? "");
@@ -2721,10 +2829,43 @@ export const StudentRepository = {
       list.push(String(entry.updated_at ?? ""));
       aiByStudent.set(key, list);
     });
+    studyHours.forEach((entry) => {
+      const key = String(entry.student_id ?? "");
+      const studyDate = String(entry.study_date ?? "");
+      if (!studyDate) return;
+      const list = studyByStudent.get(key) ?? [];
+      list.push(`${studyDate.slice(0, 10)}T00:00:00.000Z`);
+      studyByStudent.set(key, list);
+    });
+    codingProfiles.forEach((entry) => {
+      const key = String(entry.student_id ?? "");
+      const updatedAt = String(entry.updated_at ?? "");
+      if (!updatedAt) return;
+      const list = codingByStudent.get(key) ?? [];
+      list.push(updatedAt);
+      codingByStudent.set(key, list);
+    });
+    interviewSessions.forEach((entry) => {
+      const key = String(entry.student_id ?? "");
+      const interviewAt = String(entry.completed_at ?? entry.created_at ?? "");
+      if (!interviewAt) return;
+      const list = interviewByStudent.get(key) ?? [];
+      list.push(interviewAt);
+      interviewByStudent.set(key, list);
+    });
+    walletItems.forEach((entry) => {
+      const key = String(entry.student_id ?? "");
+      const walletAt = String(entry.created_at ?? entry.achieved_at ?? "");
+      if (!walletAt) return;
+      const list = walletByStudent.get(key) ?? [];
+      list.push(walletAt);
+      walletByStudent.set(key, list);
+    });
 
     const allItems = data.map((row) => {
       const user = userMap.get(String(row.user_id));
       const normalizedProfile = normalizeStudentProfileData(row.profile_data);
+      const academicMarks = extractAcademicMarksFromProfileData(row.profile_data);
       const placementStatus = normalizePlacementStatus(row.profile_data);
       const summary = buildStudentProfileSummary({
         student: row as Record<string, unknown>,
@@ -2751,10 +2892,12 @@ export const StudentRepository = {
       const driveList = (driveResultsByStudent.get(studentId) ?? [])
         .filter((item) => upcomingDriveMap.has(String(item.drive_id ?? "")));
       const activitySignals = [
-        ...(resourceViewsByStudent.get(studentId) ?? []),
         ...(attemptsByStudent.get(studentId) ?? []).map((item) => item.submittedAt),
         ...(aiByStudent.get(studentId) ?? []),
-        ...driveList.flatMap((item) => [String(item.updated_at ?? ""), String(item.created_at ?? "")]),
+        ...(studyByStudent.get(studentId) ?? []),
+        ...(codingByStudent.get(studentId) ?? []),
+        ...(interviewByStudent.get(studentId) ?? []),
+        ...(walletByStudent.get(studentId) ?? []),
       ];
       const lastActiveAt = maxIsoDate(activitySignals);
       const isActive7d = Boolean(lastActiveAt && lastActiveAt.slice(0, 10) >= start7);
@@ -2786,25 +2929,6 @@ export const StudentRepository = {
       });
       const profileComplete = summary.profileCompleteness.pct >= 100;
 
-      let interventionLabel = "Stable";
-      if (!hasResumeReady) {
-        interventionLabel = "Resume missing";
-      } else if (placementStatus.isPlaced) {
-        interventionLabel = "Placed";
-      } else if (!profileCertified) {
-        interventionLabel = "Uncertified";
-      } else if (!profileComplete) {
-        interventionLabel = "Incomplete profile";
-      } else if (eligibleUpcomingDriveIds.size > 0 && !appliedRecently) {
-        interventionLabel = "Eligible but not applied";
-      } else if (profileComplete && profileCertified && hasResumeReady && !isActive7d) {
-        interventionLabel = "Ready but inactive";
-      } else if (blockedUpcomingDriveIds.size > 0 && eligibleUpcomingDriveIds.size === 0) {
-        interventionLabel = "Academically blocked";
-      } else if (recentMockAttempts14d === 0 || mockAvg < 55) {
-        interventionLabel = "Needs mock push";
-      }
-
       let primaryBlocker: string | null = null;
       if (!hasResumeReady) {
         primaryBlocker = "Resume missing";
@@ -2832,7 +2956,21 @@ export const StudentRepository = {
       if ((recentMockAttempts14d === 0 || mockAvg < 55) && eligibleUpcomingDriveIds.size > 0) riskScore += 10;
       if (blockedUpcomingDriveIds.size > 0 && eligibleUpcomingDriveIds.size === 0) riskScore += 10;
       riskScore = Math.min(riskScore, 100);
-      const needsIntervention = placementStatus.isPlaced ? false : riskScore > 0 || interventionLabel !== "Stable";
+      const interventionPolicy = deriveInterventionPolicy({
+        isPlaced: placementStatus.isPlaced,
+        readinessScore: Number(row.readiness_score ?? 0),
+        hasResumeReady,
+        isProfileCertified: profileCertified,
+        profileCompletenessPct: summary.profileCompleteness.pct,
+        isActive7d,
+        eligibleUpcomingDriveCount: eligibleUpcomingDriveIds.size,
+        blockedUpcomingDriveCount: blockedUpcomingDriveIds.size,
+        nearestUpcomingDriveDate,
+        appliedRecently,
+        recentMockAttempts14d,
+        mockAvg,
+        primaryBlocker,
+      });
 
       return {
         id: studentId,
@@ -2848,6 +2986,9 @@ export const StudentRepository = {
         backlogs: Number(row.backlogs ?? 0),
         totalHistoricalBacklogs: Number(row.backlogs_total ?? normalizedProfile.totalHistoricalBacklogs ?? 0),
         attendancePct: Number(row.attendance_pct ?? 0),
+        tenthMarks: academicMarks.tenthMarks,
+        twelfthMarks: academicMarks.twelfthMarks,
+        diplomaMarks: academicMarks.diplomaMarks,
         readinessScore: Number(row.readiness_score ?? 0),
         profileCompletenessPct: summary.profileCompleteness.pct,
         missingRequiredCount: summary.missingRequiredFields.length,
@@ -2866,8 +3007,10 @@ export const StudentRepository = {
         blockedUpcomingDriveCount: blockedUpcomingDriveIds.size,
         nearestUpcomingDriveDate,
         primaryBlocker,
-        needsIntervention,
-        interventionLabel,
+        needsIntervention: interventionPolicy.needsIntervention,
+        interventionPriority: interventionPolicy.interventionPriority,
+        interventionReason: interventionPolicy.interventionReason,
+        interventionLabel: interventionPolicy.interventionLabel,
         lastActiveAt,
         riskScore,
         mockAttempts30d: attempts30d.length,
@@ -2889,6 +3032,12 @@ export const StudentRepository = {
       if (prnQuery && !item.prn.toLowerCase().includes(prnQuery)) return false;
       if (params.cgpaMin !== undefined && item.cgpa < params.cgpaMin) return false;
       if (params.cgpaMax !== undefined && item.cgpa > params.cgpaMax) return false;
+      if (params.tenthMarksMin !== undefined && (item.tenthMarks === null || item.tenthMarks < params.tenthMarksMin)) return false;
+      if (params.tenthMarksMax !== undefined && (item.tenthMarks === null || item.tenthMarks > params.tenthMarksMax)) return false;
+      if (params.twelfthMarksMin !== undefined && (item.twelfthMarks === null || item.twelfthMarks < params.twelfthMarksMin)) return false;
+      if (params.twelfthMarksMax !== undefined && (item.twelfthMarks === null || item.twelfthMarks > params.twelfthMarksMax)) return false;
+      if (params.diplomaMarksMin !== undefined && (item.diplomaMarks === null || item.diplomaMarks < params.diplomaMarksMin)) return false;
+      if (params.diplomaMarksMax !== undefined && (item.diplomaMarks === null || item.diplomaMarks > params.diplomaMarksMax)) return false;
       if (params.readinessMin !== undefined && item.readinessScore < params.readinessMin) return false;
       if (params.readinessMax !== undefined && item.readinessScore > params.readinessMax) return false;
       if (params.attendanceMin !== undefined && item.attendancePct < params.attendanceMin) return false;
@@ -2952,6 +3101,11 @@ export const StudentRepository = {
         result = compareNumber(left.cgpa, right.cgpa);
       } else if (params.sortBy === "risk_score") {
         result = compareNumber(left.riskScore, right.riskScore);
+      } else if (params.sortBy === "intervention_priority") {
+        result = compareNumber(
+          getInterventionPriorityRank(left.interventionPriority),
+          getInterventionPriorityRank(right.interventionPriority),
+        );
       } else if (params.sortBy === "upcoming_drive_impact") {
         result = compareNumber(left.eligibleUpcomingDriveCount, right.eligibleUpcomingDriveCount);
         if (result === 0) {

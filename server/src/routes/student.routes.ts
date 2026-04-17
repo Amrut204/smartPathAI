@@ -14,8 +14,6 @@ import { StudentImportJobService } from "../services/student-import-job.service.
 import { uploadRateLimiter } from "../middleware/rate-limit.middleware.js";
 import {
   studyHoursSchema,
-  updateTopicProgressSchema,
-  bulkTopicProgressSchema,
   updateStudentProfileSchema,
   studentDriveApplySchema,
   studentDriveWithdrawSchema,
@@ -24,8 +22,6 @@ import {
   studentProfileUnlockRequestSchema,
   reviewStudentProfileUnlockRequestSchema,
   reviewStudentPlacementStatusSchema,
-  leaderboardQuerySchema,
-  pointsHistoryQuerySchema,
   tpoStudentListQuerySchema,
   tpoStudentUpdateSchema,
   csvUploadPreviewSchema,
@@ -285,72 +281,7 @@ router.get(
   }),
 );
 
-router.get(
-  "/me/mastery",
-  requireFeature("mastery"),
-  authorizeRole("student"),
-  asyncHandler(async (req, res) => {
-    const data = await StudentService.getMastery(req.auth!.tenantId, req.auth!.userId);
-    res.json(successResponse(data));
-  }),
-);
-
-router.get(
-  "/me/topic-progress",
-  requireFeature("mastery"),
-  authorizeRole("student"),
-  asyncHandler(async (req, res) => {
-    const data = await StudentService.getTopicProgress(req.auth!.tenantId, req.auth!.userId);
-    res.json(successResponse(data));
-  }),
-);
-
-router.patch(
-  "/me/topic-progress",
-  requireFeature("mastery"),
-  authorizeRole("student"),
-  asyncHandler(async (req, res) => {
-    const body = updateTopicProgressSchema.parse(req.body);
-    const data = await StudentService.updateTopicProgress({
-      tenantId: req.auth!.tenantId,
-      userId: req.auth!.userId,
-      topicId: body.topicId,
-      status: body.status,
-    });
-    res.json(successResponse(data));
-  }),
-);
-
-router.patch(
-  "/me/topic-progress/bulk",
-  requireFeature("mastery"),
-  authorizeRole("student"),
-  asyncHandler(async (req, res) => {
-    const body = bulkTopicProgressSchema.parse(req.body);
-    const data = await StudentService.updateTopicProgressBulk({
-      tenantId: req.auth!.tenantId,
-      userId: req.auth!.userId,
-      topicIds: body.topicIds,
-      status: body.status,
-    });
-    res.json(successResponse(data));
-  }),
-);
-
-router.get(
-  "/me/points",
-  requireFeature("points"),
-  authorizeRole("student"),
-  asyncHandler(async (req, res) => {
-    const query = pointsHistoryQuerySchema.parse(req.query);
-    const data = await StudentService.getPointsHistory(
-      req.auth!.tenantId,
-      req.auth!.userId,
-      query.limit,
-    );
-    res.json(successResponse(data));
-  }),
-);
+// REMOVED: mastery routes (4 endpoints) and points route — features deleted
 
 router.post(
   "/me/study-hours",
@@ -382,19 +313,7 @@ router.get(
 
 // --- Shared routes ---
 
-router.get(
-  "/leaderboard",
-  requireFeature("points"),
-  asyncHandler(async (req, res) => {
-    const query = leaderboardQuerySchema.parse(req.query);
-    const data = await StudentService.getLeaderboard(
-      req.auth!.tenantId,
-      query.limit,
-      query.cursor,
-    );
-    res.json(successResponse(data));
-  }),
-);
+// REMOVED: /leaderboard route — points feature deleted
 
 // --- Vault & Resources routes ---
 

@@ -197,6 +197,11 @@ export function useTpoControlCenter() {
         aiUsage7d: number;
         profileCompletenessPct: number;
         profileMissingFields: string[];
+        needsIntervention: boolean;
+        interventionPriority: "urgent" | "follow_up" | "monitor";
+        interventionPriorityLabel: "Urgent" | "Follow-up" | "Monitor";
+        interventionReason: string;
+        interventionLabel: string;
         riskScore: number;
         riskLevel: "Low" | "Moderate" | "High" | "Critical";
         riskReasons: string[];
@@ -464,10 +469,10 @@ export function useTpoControlCenter() {
       }>;
     };
     actionCenter: {
-      studentsToContactToday: Array<{ studentId: string; fullName: string; riskLevel: string; nextRecommendedAction: string }>;
+      studentsToContactToday: Array<{ studentId: string; fullName: string; interventionPriority: "urgent" | "follow_up" | "monitor"; interventionReason: string; nextRecommendedAction: string }>;
       eligibleButNotApplied: Array<{ driveId: string; company: string; role: string | null; driveDate: string; eligibleButNotAppliedCount: number; daysRemaining: number | null; students: Array<{ studentId: string; fullName: string; email: string; branch: string; batch: string; readinessScore: number; profileCompletenessPct: number; hasResumeReady: boolean; isProfileCertified: boolean; nextRecommendedAction: string }>; nextRecommendedAction: string }>;
-      readyButInactive: Array<{ studentId: string; fullName: string; riskLevel: string; nextRecommendedAction: string }>;
-      lowReadinessNearDriveImpact: Array<{ studentId: string; fullName: string; riskLevel: string; nextRecommendedAction: string }>;
+      readyButInactive: Array<{ studentId: string; fullName: string; interventionPriority: "urgent" | "follow_up" | "monitor"; interventionReason: string; nextRecommendedAction: string }>;
+      lowReadinessNearDriveImpact: Array<{ studentId: string; fullName: string; interventionPriority: "urgent" | "follow_up" | "monitor"; interventionReason: string; nextRecommendedAction: string }>;
       studentsNeedingMockPush: Array<{ studentId: string; fullName: string; mockAvg: number; mockAttempts: number; nextRecommendedAction: string }>;
       studentsNeedingInterviewCoaching: Array<{ studentId: string; fullName: string; interviewScore: number | null; nextRecommendedAction: string }>;
       studentsNeedingProfileCompletion: Array<{ studentId: string; fullName: string; profileCompletenessPct: number; nextRecommendedAction: string }>;

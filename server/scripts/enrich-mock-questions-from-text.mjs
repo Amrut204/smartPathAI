@@ -5,6 +5,18 @@ import { fileURLToPath } from "node:url";
 import { MongoClient } from "mongodb";
 
 const IMPORT_SOURCE = "material_analysis_v1";
+const MAX_QUESTION_TEXT_LENGTH = 420;
+const MAX_OPTION_TEXT_LENGTH = 180;
+const MAX_QUESTION_CONTINUATIONS = 2;
+const MAX_OPTION_CONTINUATIONS = 1;
+
+function normalizeInlineText(value, maxLength) {
+  const compact = String(value ?? "").replace(/\s+/g, " ").trim();
+  if (!compact) return "";
+  if (compact.length <= maxLength) return compact;
+  const truncatedLength = Math.max(1, maxLength - 3);
+  return `${compact.slice(0, truncatedLength).trimEnd()}...`;
+}
 
 function parseArgs(argv) {
   const args = {
@@ -56,7 +68,8 @@ function cleanQuestionPrefix(line) {
 function parseOption(line) {
   const matched = line.match(/^(?:\(?([A-Da-d])\)?[\).:-]|\d{1,2}[\).:-])\s+(.+)$/);
   if (!matched) return null;
-  return matched[2].trim();
+  const normalized = normalizeInlineText(matched[2], MAX_OPTION_TEXT_LENGTH);
+  return normalized || null;
 }
 
 function findLocalAnswer(blockLines) {
@@ -81,7 +94,8 @@ function parseQuestionsFromText(content, maxQuestions = 40) {
       continue;
     }
 
-    let questionText = cleanQuestionPrefix(line);
+    let questionText = normalizeInlineText(cleanQuestionPrefix(line), MAX_QUESTION_TEXT_LENGTH);
+    let questionContinuationCount = 0;
     const blockLines = [line];
     const options = [];
 
@@ -100,6 +114,7 @@ function parseQuestionsFromText(content, maxQuestions = 40) {
         options.push(parsedOption);
         blockLines.push(current);
         i += 1;
+        let optionContinuationCount = 0;
 
         while (i < lines.length) {
           const continuation = lines[i];
@@ -107,9 +122,13 @@ function parseQuestionsFromText(content, maxQuestions = 40) {
           if (parseOption(continuation) !== null) break;
           if (/^\banswer\b/i.test(continuation)) break;
 
-          if (continuation.length < 300 && options.length > 0) {
-            options[options.length - 1] = `${options[options.length - 1]} ${continuation}`.trim();
+          if (continuation.length < 300 && options.length > 0 && optionContinuationCount < MAX_OPTION_CONTINUATIONS) {
+            options[options.length - 1] = normalizeInlineText(
+              `${options[options.length - 1]} ${continuation}`,
+              MAX_OPTION_TEXT_LENGTH,
+            );
             blockLines.push(continuation);
+            optionContinuationCount += 1;
             i += 1;
             continue;
           }
@@ -118,9 +137,10 @@ function parseQuestionsFromText(content, maxQuestions = 40) {
         continue;
       }
 
-      if (options.length === 0 && current.length < 260) {
-        questionText = `${questionText} ${current}`.trim();
+      if (options.length === 0 && current.length < 260 && questionContinuationCount < MAX_QUESTION_CONTINUATIONS) {
+        questionText = normalizeInlineText(`${questionText} ${current}`, MAX_QUESTION_TEXT_LENGTH);
         blockLines.push(current);
+        questionContinuationCount += 1;
         i += 1;
         continue;
       }
@@ -129,7 +149,18 @@ function parseQuestionsFromText(content, maxQuestions = 40) {
       i += 1;
     }
 
-    const uniqueOptions = Array.from(new Set(options.map((opt) => opt.trim()).filter(Boolean))).slice(0, 4);
+    const seenOptionKeys = new Set();
+    const uniqueOptions = [];
+    for (const option of options) {
+      const normalized = normalizeInlineText(option, MAX_OPTION_TEXT_LENGTH);
+      if (!normalized) continue;
+      const key = normalized.toLowerCase();
+      if (seenOptionKeys.has(key)) continue;
+      seenOptionKeys.add(key);
+      uniqueOptions.push(normalized);
+      if (uniqueOptions.length >= 4) break;
+    }
+
     if (uniqueOptions.length < 2 || questionText.length < 8) {
       continue;
     }

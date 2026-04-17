@@ -1,6 +1,8 @@
 # DigitalOcean Deployment
 
-This deployment path is for a single Ubuntu droplet hosting only the app containers.
+This deployment path is an alternate option for a single Ubuntu droplet hosting only the app containers.
+
+For the current pilot-safe launch tranche, Render is the primary recommended path. Use this document only if you explicitly want a self-managed Docker host instead of Render.
 
 Runtime shape:
 - Hosting: DigitalOcean droplet

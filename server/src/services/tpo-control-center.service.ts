@@ -1,5 +1,6 @@
 import { getMongoDb } from "../utils/mongodb.js";
 import { StudentActivityService } from "./student-activity.service.js";
+import { deriveInterventionPolicy, getInterventionPriorityLabel, getInterventionPriorityRank } from "./intervention-priority.logic.js";
 import { buildStudentProfileSummary } from "../utils/student-profile.js";
 import { buildStudentDeclarationStatus } from "../utils/student-declaration.js";
 
@@ -11,6 +12,11 @@ const controlCenterCache = new Map<string, { expiresAt: number; value: Awaited<R
 function average(values: number[]): number {
   if (values.length === 0) return 0;
   return Number((values.reduce((sum, value) => sum + value, 0) / values.length).toFixed(2));
+}
+
+function percentage(count: number, total: number): number {
+  if (total <= 0) return 0;
+  return Number(((count / total) * 100).toFixed(1));
 }
 
 function clamp(value: number, min: number, max: number): number {
@@ -140,6 +146,8 @@ async function computeControlCenter(tenantId: string) {
     profileUnlockRequests,
     studentSupportRequests,
     supportAccessRequests,
+    publishedAnnouncements,
+    announcementReads,
     publishedAnnouncementCount,
     sentCommunicationCount,
   ] = await Promise.all([
@@ -269,12 +277,21 @@ async function computeControlCenter(tenantId: string) {
         },
       },
     ).sort({ created_at: 1 }).limit(20).toArray(),
+    db.collection("announcements").find(
+      { tenant_id: tenantId, status: "published" },
+      { projection: { _id: 0, id: 1, recipient_student_ids: 1, published_at: 1, created_at: 1 } },
+    ).toArray(),
+    db.collection("announcement_reads").find(
+      { tenant_id: tenantId, read_at: { $ne: null } },
+      { projection: { _id: 0, announcement_id: 1, student_id: 1, read_at: 1 } },
+    ).toArray(),
     db.collection("announcements").countDocuments({ tenant_id: tenantId, status: "published" }),
     db.collection("communications").countDocuments({ tenant_id: tenantId, status: { $in: ["sent", "partial"] } }),
   ]);
 
   const userMap = new Map(users.map((user) => [String(user.id), { fullName: String(user.full_name ?? ""), email: String(user.email ?? "") }]));
   const studentMap = new Map(students.map((student) => [String(student.id), student]));
+  const driveDateById = new Map(drives.map((drive) => [String(drive.id), String(drive.drive_date ?? "")]));
   const topicMap = new Map(topics.map((topic) => [String(topic.id), String(topic.name ?? "")]));
   const testMap = new Map(tests.map((test) => [String(test.id), { title: String(test.title ?? ""), difficulty: String(test.difficulty ?? "unknown") }]));
   const resourceMap = new Map(sharedResources.map((resource) => [
@@ -675,6 +692,14 @@ async function computeControlCenter(tenantId: string) {
     const profileCertified = declarationStatus.profileCertification.isCertified;
     const hasResumeReady = !profile.missingResume;
     const profileComplete = profile.completenessPct >= 100;
+    const placementStatus = student.profile_data && typeof student.profile_data === "object"
+      ? (student.profile_data as Record<string, unknown>).placementStatus
+      : null;
+    const isPlaced = Boolean(
+      placementStatus
+      && typeof placementStatus === "object"
+      && (placementStatus as Record<string, unknown>).isPlaced === true,
+    );
     const eligibleUpcoming = driveList.some((item) => String(item.status ?? "") === "eligible");
     const appliedRecently = driveList.some((item) => {
       const applicationState = String(item.application_state ?? "");
@@ -686,6 +711,10 @@ async function computeControlCenter(tenantId: string) {
       : eligibleUpcoming
         ? "Eligible for upcoming drive."
         : "No immediate drive risk.";
+    const blockedDriveCount = Math.max(
+      0,
+      driveList.filter((item) => String(item.status ?? "") !== "eligible").length,
+    );
 
     const reasons: string[] = [];
     let risk = 0;
@@ -732,9 +761,39 @@ async function computeControlCenter(tenantId: string) {
             ? "Assign voice interview practice."
             : reasons[0]?.includes("Profile")
               ? "Complete resume and profile fields before next drive."
-              : eligibleUpcoming
+            : eligibleUpcoming
                 ? "Review drive preparedness and intervene."
                 : "Maintain current progress.";
+
+    const primaryBlocker = !hasResumeReady
+      ? "Resume missing"
+      : !profileCertified
+        ? "Profile certification pending"
+        : !profileComplete
+          ? "Profile incomplete"
+          : blockedDriveCount > 0
+            ? "Drive criteria not met"
+            : !isActive7d
+              ? "No recent activity"
+              : null;
+    const interventionPolicy = deriveInterventionPolicy({
+      isPlaced,
+      readinessScore: Number(student.readiness_score ?? 0),
+      hasResumeReady,
+      isProfileCertified: profileCertified,
+      profileCompletenessPct: profile.completenessPct,
+      isActive7d,
+      eligibleUpcomingDriveCount: eligibleUpcoming ? 1 : 0,
+      blockedUpcomingDriveCount: blockedDriveCount,
+      nearestUpcomingDriveDate: driveList
+        .map((item) => driveDateById.get(String(item.drive_id ?? "")) ?? "")
+        .filter(Boolean)
+        .sort((left, right) => left.localeCompare(right))[0] ?? null,
+      appliedRecently,
+      recentMockAttempts14d: attemptsList.filter((row) => String(row.submittedAt).slice(0, 10) >= start14).length,
+      mockAvg,
+      primaryBlocker,
+    });
 
     return {
       studentId,
@@ -758,6 +817,11 @@ async function computeControlCenter(tenantId: string) {
       hasResumeReady,
       isProfileComplete: profileComplete,
       appliedRecently,
+      needsIntervention: interventionPolicy.needsIntervention,
+      interventionPriority: interventionPolicy.interventionPriority,
+      interventionPriorityLabel: getInterventionPriorityLabel(interventionPolicy.interventionPriority),
+      interventionReason: interventionPolicy.interventionReason,
+      interventionLabel: interventionPolicy.interventionLabel,
       riskScore: risk,
       riskLevel: riskLevel(risk),
       riskReasons: reasons,
@@ -765,7 +829,10 @@ async function computeControlCenter(tenantId: string) {
       driveEligibleUpcoming: eligibleUpcoming,
       driveImpact,
     };
-  }).sort((a, b) => b.riskScore - a.riskScore || a.fullName.localeCompare(b.fullName));
+  }).sort((a, b) =>
+    getInterventionPriorityRank(b.interventionPriority) - getInterventionPriorityRank(a.interventionPriority)
+    || b.riskScore - a.riskScore
+    || a.fullName.localeCompare(b.fullName));
 
   const weakTopicsByBranchMap = new Map<string, Map<string, number[]>>();
   students.forEach((student) => {
@@ -1035,6 +1102,78 @@ async function computeControlCenter(tenantId: string) {
     lowEngagement: operationsRows.filter((row) => !row.isActive7d || row.mockAttempts === 0).length,
   };
 
+  const uniqueEligibleStudentIds = new Set(
+    operationsRows
+      .filter((row) => row.driveEligibleUpcoming)
+      .map((row) => row.studentId),
+  );
+  const uniqueEligibleButNotAppliedStudentIds = new Set(
+    drivePreparednessItems.flatMap((drive) => drive.eligibleButNotAppliedStudents.map((student) => student.studentId)),
+  );
+  const studentsWithMockAttempts = operationsRows.filter((row) => row.mockAttempts > 0).length;
+  const announcementRecipientCount = publishedAnnouncements.reduce((sum, announcement) => {
+    const recipients = Array.isArray(announcement.recipient_student_ids)
+      ? announcement.recipient_student_ids.filter(Boolean).length
+      : 0;
+    return sum + recipients;
+  }, 0);
+  const announcementReadCount = announcementReads.length;
+  const announcementReadRatePct = percentage(announcementReadCount, announcementRecipientCount);
+  const pilotProof = {
+    activationWindowDays: 7,
+    metrics: {
+      activatedStudents7d: {
+        count: activeStudents7d,
+        pct: percentage(activeStudents7d, totalStudents),
+        helper: "Students who logged in or showed meaningful activity in the last 7 days.",
+      },
+      profileComplete: {
+        count: readinessFunnel.completeProfiles,
+        pct: percentage(readinessFunnel.completeProfiles, totalStudents),
+        helper: "Students with a fully complete placement profile.",
+      },
+      certifiedProfiles: {
+        count: readinessFunnel.certifiedProfiles,
+        pct: percentage(readinessFunnel.certifiedProfiles, totalStudents),
+        helper: "Students whose profile is certified and ready for drive use.",
+      },
+      resumeReady: {
+        count: readinessFunnel.resumeReadyProfiles,
+        pct: percentage(readinessFunnel.resumeReadyProfiles, totalStudents),
+        helper: "Students with a usable resume already attached to their placement profile.",
+      },
+      eligibleForUpcoming: {
+        count: readinessFunnel.eligibleForUpcomingDrives,
+        pct: percentage(readinessFunnel.eligibleForUpcomingDrives, totalStudents),
+        helper: "Students eligible for at least one upcoming drive right now.",
+      },
+      eligibleButNotApplied: {
+        count: uniqueEligibleButNotAppliedStudentIds.size,
+        pct: percentage(uniqueEligibleButNotAppliedStudentIds.size, uniqueEligibleStudentIds.size),
+        helper: "Eligible students still not converting into applications.",
+      },
+      mockAdoption: {
+        count: studentsWithMockAttempts,
+        pct: percentage(studentsWithMockAttempts, totalStudents),
+        helper: "Students who have attempted at least one mock test.",
+      },
+      announcementReadRate: {
+        readCount: announcementReadCount,
+        recipientCount: announcementRecipientCount,
+        pct: announcementReadRatePct,
+        helper: announcementRecipientCount > 0
+          ? "Read-through across published announcement deliveries."
+          : "Announcement read rate will appear after you publish student updates.",
+      },
+    },
+    milestoneChecklist: {
+      importedStudents: totalStudents > 0,
+      createdFirstDrive: drives.length > 0,
+      sentFirstAnnouncement: publishedAnnouncementCount + sentCommunicationCount > 0,
+      releasedFirstResult: driveResults.some((item) => Boolean(item.result_released_at)),
+    },
+  };
+
   const unlockQueueItems = profileUnlockRequests.map((request) => {
     const student = studentMap.get(String(request.student_id ?? ""));
     const user = student ? userMap.get(String(student.user_id ?? "")) : null;
@@ -1079,7 +1218,7 @@ async function computeControlCenter(tenantId: string) {
     title: `Admin support access request from ${String(request.requested_by_email ?? "admin")}`,
     summary: String(request.reason ?? "Support access requested."),
     priority: "medium",
-    targetPath: "/tpo/dashboard",
+    targetPath: "/tpo/dashboard?pane=today&queue=support-access",
     ctaLabel: "Review access",
     requestId: String(request.id ?? ""),
     requestedByEmail: String(request.requested_by_email ?? ""),
@@ -1126,11 +1265,11 @@ async function computeControlCenter(tenantId: string) {
     .slice(0, 8);
 
   const readyButInactive = operationsRows
-    .filter((row) => row.isProfileComplete && row.isProfileCertified && row.hasResumeReady && !row.isActive7d)
+    .filter((row) => row.interventionLabel === "Ready but inactive")
     .slice(0, 10);
 
   const lowReadinessNearDriveImpact = operationsRows
-    .filter((row) => row.driveEligibleUpcoming && (row.readinessScore < 60 || row.mockAttempts === 0 || !row.isActive7d))
+    .filter((row) => row.interventionLabel === "Needs mock push" || row.interventionLabel === "Academically blocked")
     .slice(0, 10);
 
   const dashboardQueues = {
@@ -1369,6 +1508,7 @@ async function computeControlCenter(tenantId: string) {
     operationsBoard: { items: operationsRows },
     readinessFunnel,
     blockerSegments,
+    pilotProof,
     dashboardQueues,
     nextBestActions,
     riskSummary: {
@@ -1429,14 +1569,14 @@ async function computeControlCenter(tenantId: string) {
       students: codingStudentRows,
     },
     actionCenter: {
-      studentsToContactToday: operationsRows.filter((item) => item.riskScore >= 40).slice(0, 10),
+      studentsToContactToday: operationsRows.filter((item) => item.interventionPriority === "urgent").slice(0, 10),
       eligibleButNotApplied: actionCenterEligibleButNotApplied,
       readyButInactive,
       lowReadinessNearDriveImpact,
-      studentsNeedingMockPush: operationsRows.filter((item) => item.mockAttempts === 0 || item.mockAvg < 55).slice(0, 10),
+      studentsNeedingMockPush: operationsRows.filter((item) => item.interventionLabel === "Needs mock push").slice(0, 10),
       studentsNeedingInterviewCoaching: operationsRows.filter((item) => item.interviewScore !== null && item.interviewScore < 60).slice(0, 10),
       studentsNeedingProfileCompletion: operationsRows.filter((item) => item.profileCompletenessPct < 100).slice(0, 10),
-      driveSpecificUrgentList: operationsRows.filter((item) => item.driveEligibleUpcoming && item.riskScore >= 20).slice(0, 10),
+      driveSpecificUrgentList: operationsRows.filter((item) => item.driveEligibleUpcoming && item.interventionPriority === "urgent").slice(0, 10),
       studentsNotUsingResources: operationsRows.filter((item) => !resourceOpenEvents7d.some((event) => String(event.student_id ?? "") === item.studentId)).slice(0, 10),
       readingWithoutMock: operationsRows.filter((item) =>
         resourceOpenEvents7d.some((event) => String(event.student_id ?? "") === item.studentId) && item.mockAttempts === 0,
@@ -1489,7 +1629,10 @@ export const TpoControlCenterService = {
 
     const attentionRows = data.operationsBoard.items
       .filter((item) => item.profileCompletenessPct < 100 || item.mockAttempts === 0 || !item.isActive7d)
-      .sort((a, b) => b.riskScore - a.riskScore || a.readinessScore - b.readinessScore)
+      .sort((a, b) =>
+        getInterventionPriorityRank(b.interventionPriority) - getInterventionPriorityRank(a.interventionPriority)
+        || b.riskScore - a.riskScore
+        || a.readinessScore - b.readinessScore)
       .slice(0, 12);
     const studentRecords = attentionRows.length > 0
       ? await db.collection("students").find(

@@ -106,6 +106,7 @@ describe("Readiness score policy", () => {
     await db.collection("student_attempts").deleteMany({ tenant_id: tenantId });
     await db.collection("topic_mastery").deleteMany({ tenant_id: tenantId });
     await db.collection("study_hours").deleteMany({ tenant_id: tenantId });
+    await db.collection("resource_view_events").deleteMany({ tenant_id: tenantId });
     await db.collection("drive_results").deleteMany({ tenant_id: tenantId });
     await db.collection("drives").deleteMany({ tenant_id: tenantId });
     await db.collection("students").deleteMany({ tenant_id: tenantId });
@@ -120,6 +121,7 @@ describe("Readiness score policy", () => {
     await db.collection("student_attempts").deleteMany({ tenant_id: tenantId, student_id: studentId });
     await db.collection("topic_mastery").deleteMany({ tenant_id: tenantId, student_id: studentId });
     await db.collection("study_hours").deleteMany({ tenant_id: tenantId, student_id: studentId });
+    await db.collection("resource_view_events").deleteMany({ tenant_id: tenantId, student_id: studentId });
     await db.collection("drive_results").deleteMany({ tenant_id: tenantId, student_id: studentId });
     await db.collection("students").updateOne(
       { tenant_id: tenantId, id: studentId },
@@ -183,6 +185,36 @@ describe("Readiness score policy", () => {
 
     expect(initialScore).toBeLessThan(50);
     expect(afterActivityScore).toBe(initialScore);
+  });
+
+  it("does not let resource views change readiness when placement evidence is unchanged", async () => {
+    const db = await getMongoDb();
+    const beforeScore = await ReadinessService.calculate(tenantId, studentId);
+
+    await db.collection("resource_view_events").insertMany([
+      {
+        id: crypto.randomUUID(),
+        tenant_id: tenantId,
+        student_id: studentId,
+        resource_id: crypto.randomUUID(),
+        event_type: "open",
+        session_id: crypto.randomUUID(),
+        created_at: nowIso(),
+      },
+      {
+        id: crypto.randomUUID(),
+        tenant_id: tenantId,
+        student_id: studentId,
+        resource_id: crypto.randomUUID(),
+        event_type: "external_redirect",
+        session_id: crypto.randomUUID(),
+        created_at: nowIso(),
+      },
+    ]);
+
+    const afterScore = await ReadinessService.calculate(tenantId, studentId);
+
+    expect(afterScore).toBe(beforeScore);
   });
 
   it("persists stronger readiness after profile, certification, resume, and mock evidence improve", async () => {

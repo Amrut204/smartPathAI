@@ -31,6 +31,8 @@ describe("Auth session hardening", () => {
   const password = "Test@12345";
   const tenant = { id: crypto.randomUUID(), slug: `tenant-auth-${crypto.randomUUID().slice(0, 8)}`, name: "Tenant Auth" };
   const user = { id: crypto.randomUUID(), email: `student-auth-${crypto.randomUUID().slice(0, 8)}@test.local` };
+  const tpoUser = { id: crypto.randomUUID(), email: `tpo-auth-${crypto.randomUUID().slice(0, 8)}@test.local` };
+  const inactiveUser = { id: crypto.randomUUID(), email: `inactive-auth-${crypto.randomUUID().slice(0, 8)}@test.local` };
 
   beforeAll(async () => {
     const db = await getMongoDb();
@@ -46,18 +48,44 @@ describe("Auth session hardening", () => {
       updated_at: ts,
     });
 
-    await db.collection("users").insertOne({
-      id: user.id,
-      tenant_id: tenant.id,
-      email: user.email.toLowerCase(),
-      role: "student",
-      full_name: "Auth Student",
-      is_active: true,
-      password_hash: passwordHash,
-      must_change_password: false,
-      created_at: ts,
-      updated_at: ts,
-    });
+    await db.collection("users").insertMany([
+      {
+        id: user.id,
+        tenant_id: tenant.id,
+        email: user.email.toLowerCase(),
+        role: "student",
+        full_name: "Auth Student",
+        is_active: true,
+        password_hash: passwordHash,
+        must_change_password: false,
+        created_at: ts,
+        updated_at: ts,
+      },
+      {
+        id: tpoUser.id,
+        tenant_id: tenant.id,
+        email: tpoUser.email.toLowerCase(),
+        role: "tpo",
+        full_name: "Auth TPO",
+        is_active: true,
+        password_hash: passwordHash,
+        must_change_password: false,
+        created_at: ts,
+        updated_at: ts,
+      },
+      {
+        id: inactiveUser.id,
+        tenant_id: tenant.id,
+        email: inactiveUser.email.toLowerCase(),
+        role: "student",
+        full_name: "Inactive Auth Student",
+        is_active: false,
+        password_hash: passwordHash,
+        must_change_password: false,
+        created_at: ts,
+        updated_at: ts,
+      },
+    ]);
   });
 
   afterAll(async () => {
@@ -70,7 +98,10 @@ describe("Auth session hardening", () => {
 
   it("rotates refresh tokens as single-use tokens", async () => {
     const agent = request.agent(app);
-    const loginResponse = await agent.post("/api/v1/auth/login").send({ email: user.email, password });
+    const loginResponse = await agent
+      .post("/api/v1/auth/login")
+      .set("X-Forwarded-For", "10.10.10.1")
+      .send({ email: user.email, password });
 
     expect(loginResponse.status).toBe(200);
     const csrfToken = extractCookieValue(loginResponse.headers["set-cookie"], getCsrfCookieName());
@@ -100,7 +131,10 @@ describe("Auth session hardening", () => {
 
   it("revokes refresh sessions on logout", async () => {
     const agent = request.agent(app);
-    const loginResponse = await agent.post("/api/v1/auth/login").send({ email: user.email, password });
+    const loginResponse = await agent
+      .post("/api/v1/auth/login")
+      .set("X-Forwarded-For", "10.10.10.2")
+      .send({ email: user.email, password });
 
     expect(loginResponse.status).toBe(200);
     const csrfToken = extractCookieValue(loginResponse.headers["set-cookie"], getCsrfCookieName());
@@ -123,5 +157,53 @@ describe("Auth session hardening", () => {
 
     expect(refreshAfterLogout.status).toBe(401);
     expect(refreshAfterLogout.body?.error?.code).toBe("SESSION_REVOKED");
+  });
+
+  it("returns student redirect and session cookies on login", async () => {
+    const loginResponse = await request(app)
+      .post("/api/v1/auth/login")
+      .set("X-Forwarded-For", "10.10.10.3")
+      .send({ email: user.email, password });
+
+    expect(loginResponse.status).toBe(200);
+    expect(loginResponse.body?.success).toBe(true);
+    expect(loginResponse.body?.data?.redirectTo).toBe("/dashboard");
+    expect(loginResponse.body?.data?.profile?.role).toBe("student");
+    expect(extractCookieValue(loginResponse.headers["set-cookie"], getCsrfCookieName())).toBeTruthy();
+    expect(extractCookieValue(loginResponse.headers["set-cookie"], getRefreshTokenCookieName())).toBeTruthy();
+  });
+
+  it("returns TPO redirect and session cookies on login", async () => {
+    const loginResponse = await request(app)
+      .post("/api/v1/auth/login")
+      .set("X-Forwarded-For", "10.10.10.4")
+      .send({ email: tpoUser.email, password });
+
+    expect(loginResponse.status).toBe(200);
+    expect(loginResponse.body?.success).toBe(true);
+    expect(loginResponse.body?.data?.redirectTo).toBe("/tpo/dashboard");
+    expect(loginResponse.body?.data?.profile?.role).toBe("tpo");
+    expect(extractCookieValue(loginResponse.headers["set-cookie"], getCsrfCookieName())).toBeTruthy();
+    expect(extractCookieValue(loginResponse.headers["set-cookie"], getRefreshTokenCookieName())).toBeTruthy();
+  });
+
+  it("rejects invalid passwords with 401", async () => {
+    const loginResponse = await request(app)
+      .post("/api/v1/auth/login")
+      .set("X-Forwarded-For", "10.10.10.5")
+      .send({ email: user.email, password: "WrongPassword!123" });
+
+    expect(loginResponse.status).toBe(401);
+    expect(loginResponse.body?.error?.code).toBe("INVALID_CREDENTIALS");
+  });
+
+  it("rejects inactive users with 401", async () => {
+    const loginResponse = await request(app)
+      .post("/api/v1/auth/login")
+      .set("X-Forwarded-For", "10.10.10.6")
+      .send({ email: inactiveUser.email, password });
+
+    expect(loginResponse.status).toBe(401);
+    expect(loginResponse.body?.error?.code).toBe("INVALID_CREDENTIALS");
   });
 });

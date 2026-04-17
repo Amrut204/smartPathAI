@@ -12,7 +12,7 @@ export const tpoWhatsNewEntries: TpoWhatsNewEntry[] = [
     date: "2026-04-02",
     title: "Operations-first TPO dashboard",
     workflow: "Dashboard",
-    summary: "The main TPO home now surfaces action queues, drive health, and intervention-first follow-up instead of a flat pilot summary.",
+    summary: "The main TPO home now surfaces action queues, drive health, and intervention-first follow-up instead of a flat summary page.",
   },
   {
     id: "student-intervention-workspace",

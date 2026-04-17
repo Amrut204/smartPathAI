@@ -3,6 +3,18 @@ import { Link } from "react-router-dom";
 import { Badge, Button, Card, Skeleton, Table } from "../../components/ui";
 import { useTpoControlCenter } from "../../hooks/use-analytics";
 
+function interventionVariant(priority: "urgent" | "follow_up" | "monitor") {
+  if (priority === "urgent") return "danger" as const;
+  if (priority === "follow_up") return "warning" as const;
+  return "success" as const;
+}
+
+function interventionLabel(priority: "urgent" | "follow_up" | "monitor") {
+  if (priority === "urgent") return "Urgent";
+  if (priority === "follow_up") return "Follow-up";
+  return "Monitor";
+}
+
 function NeedsMockPushSkeleton() {
   return (
     <section className="tpo-dashboard control-center-page">
@@ -62,7 +74,7 @@ export default function TpoNeedsMockPushPage() {
             <strong>{students.length}</strong>
           </div>
           <div className="control-center-pill">
-            <span>Low Engagement</span>
+            <span>Low recent activity</span>
             <strong>{data.blockerSegments.lowEngagement}</strong>
           </div>
           <div className="control-center-pill">
@@ -91,7 +103,7 @@ export default function TpoNeedsMockPushPage() {
               <thead>
                 <tr>
                   <th>Student</th>
-                  <th>Risk</th>
+                  <th>Priority</th>
                   <th>Next action</th>
                   <th>Quick links</th>
                 </tr>
@@ -103,11 +115,16 @@ export default function TpoNeedsMockPushPage() {
                       <Link to={`/tpo/students/${student.studentId}`}>{student.fullName}</Link>
                     </td>
                     <td>
-                      <Badge variant={student.riskLevel === "Critical" || student.riskLevel === "High" ? "warning" : "default"}>
-                        {student.riskLevel}
+                      <Badge variant={interventionVariant(student.interventionPriority)}>
+                        {interventionLabel(student.interventionPriority)}
                       </Badge>
                     </td>
-                    <td>{student.nextRecommendedAction}</td>
+                    <td>
+                      <div className="tpo-student-cell-stack">
+                        <strong>{student.interventionReason}</strong>
+                        <span>{student.nextRecommendedAction}</span>
+                      </div>
+                    </td>
                     <td>
                       <div className="hero-actions">
                         <Link to={`/tpo/students/${student.studentId}`}>

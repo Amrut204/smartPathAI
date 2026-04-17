@@ -31,6 +31,9 @@ export interface TpoStudentRow {
   branch: string;
   batch: string;
   cgpa: number;
+  tenthMarks: number | null;
+  twelfthMarks: number | null;
+  diplomaMarks: number | null;
   backlogs: number;
   totalHistoricalBacklogs: number;
   attendancePct: number;
@@ -62,6 +65,8 @@ export interface TpoStudentRow {
   nearestUpcomingDriveDate: string | null;
   primaryBlocker: string | null;
   needsIntervention: boolean;
+  interventionPriority: "urgent" | "follow_up" | "monitor";
+  interventionReason: string;
   interventionLabel: string;
   lastActiveAt: string | null;
   riskScore: number;
@@ -223,6 +228,12 @@ export function useTpoStudents(query?: {
   prn?: string;
   cgpaMin?: number;
   cgpaMax?: number;
+  tenthMarksMin?: number;
+  tenthMarksMax?: number;
+  twelfthMarksMin?: number;
+  twelfthMarksMax?: number;
+  diplomaMarksMin?: number;
+  diplomaMarksMax?: number;
   readinessMin?: number;
   readinessMax?: number;
   attendanceMin?: number;
@@ -248,7 +259,7 @@ export function useTpoStudents(query?: {
   isActive7d?: boolean;
   appliedRecently?: boolean;
   needsIntervention?: boolean;
-  sortBy?: "cgpa" | "created_at" | "readiness_score" | "profile_completeness" | "risk_score" | "upcoming_drive_impact" | "activity";
+  sortBy?: "cgpa" | "created_at" | "readiness_score" | "profile_completeness" | "risk_score" | "intervention_priority" | "upcoming_drive_impact" | "activity";
   sortDir?: "asc" | "desc";
   limit?: number;
 }) {
@@ -260,6 +271,12 @@ export function useTpoStudents(query?: {
   if (query?.prn) params.set("prn", query.prn);
   if (query?.cgpaMin !== undefined) params.set("cgpaMin", String(query.cgpaMin));
   if (query?.cgpaMax !== undefined) params.set("cgpaMax", String(query.cgpaMax));
+  if (query?.tenthMarksMin !== undefined) params.set("tenthMarksMin", String(query.tenthMarksMin));
+  if (query?.tenthMarksMax !== undefined) params.set("tenthMarksMax", String(query.tenthMarksMax));
+  if (query?.twelfthMarksMin !== undefined) params.set("twelfthMarksMin", String(query.twelfthMarksMin));
+  if (query?.twelfthMarksMax !== undefined) params.set("twelfthMarksMax", String(query.twelfthMarksMax));
+  if (query?.diplomaMarksMin !== undefined) params.set("diplomaMarksMin", String(query.diplomaMarksMin));
+  if (query?.diplomaMarksMax !== undefined) params.set("diplomaMarksMax", String(query.diplomaMarksMax));
   if (query?.readinessMin !== undefined) params.set("readinessMin", String(query.readinessMin));
   if (query?.readinessMax !== undefined) params.set("readinessMax", String(query.readinessMax));
   if (query?.attendanceMin !== undefined) params.set("attendanceMin", String(query.attendanceMin));

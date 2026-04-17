@@ -2330,6 +2330,13 @@ textarea {
   font-family: "JetBrains Mono", monospace;
 }
 
+.mock-attempt-question-text {
+  margin-top: var(--space-3);
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 .mock-attempt-options {
   display: grid;
   gap: var(--space-2);
@@ -2556,6 +2563,7 @@ textarea {
 .tpo-queue-summary-card,
 .tpo-funnel-step,
 .tpo-blocker-grid > div,
+.tpo-blocker-card,
 .tpo-drive-health-metrics > div,
 .tpo-drive-health-meta > div {
   padding: 1rem;
@@ -2568,9 +2576,9 @@ textarea {
 
 .tpo-queue-summary-card,
 .tpo-drive-health-card,
-.tpo-action-row,
 .tpo-funnel-step,
-.tpo-blocker-grid > div {
+.tpo-blocker-grid > div,
+.tpo-blocker-card {
   position: relative;
   overflow: hidden;
 }
@@ -2579,7 +2587,8 @@ textarea {
 .tpo-drive-health-card::before,
 .tpo-action-row::before,
 .tpo-funnel-step::before,
-.tpo-blocker-grid > div::before {
+.tpo-blocker-grid > div::before,
+.tpo-blocker-card::before {
   content: "";
   position: absolute;
   inset: 0 auto 0 0;
@@ -2587,17 +2596,42 @@ textarea {
   background: linear-gradient(180deg, rgba(31, 79, 120, 0.95), rgba(74, 163, 161, 0.75));
 }
 
+.tpo-queue-summary-link,
+.tpo-blocker-card {
+  color: inherit;
+  text-decoration: none;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.tpo-queue-summary-link:hover,
+.tpo-blocker-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(31, 79, 120, 0.18);
+  box-shadow: 0 18px 30px rgba(20, 34, 53, 0.06);
+}
+
+.tpo-queue-summary-link:focus-visible,
+.tpo-blocker-card:focus-visible {
+  outline: 2px solid rgba(31, 79, 120, 0.55);
+  outline-offset: 2px;
+}
+
+.tpo-queue-summary-link.is-active {
+  border-color: rgba(31, 79, 120, 0.28);
+  box-shadow: 0 0 0 2px rgba(31, 79, 120, 0.1), 0 18px 30px rgba(20, 34, 53, 0.06);
+}
+
 .tpo-drive-health-grid {
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 
 .tpo-drive-health-card {
-  padding: 1rem;
+  padding: 1rem 1rem 1.1rem;
   border: 1px solid var(--color-border);
   border-radius: 16px;
   background: #fff;
   display: grid;
-  gap: 1rem;
+  gap: 0.9rem;
   transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
 }
 
@@ -2615,10 +2649,20 @@ textarea {
 
 .tpo-drive-health-badges {
   justify-items: end;
+  gap: 0.45rem;
+}
+
+.tpo-drive-health-badges .ui-badge {
+  white-space: nowrap;
+}
+
+.tpo-drive-health-badges .ui-badge:last-child {
+  text-transform: capitalize;
 }
 
 .tpo-drive-health-metrics {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
 }
 
 .tpo-drive-health-meta {
@@ -2634,13 +2678,19 @@ textarea {
   border: 1px solid var(--color-border);
   border-radius: 14px;
   background: #fff;
+  overflow: visible;
+}
+
+.tpo-action-menu[open] {
+  z-index: 40;
 }
 
 .tpo-action-row > div:first-child,
 .tpo-drive-health-card > div,
 .tpo-queue-summary-card,
 .tpo-funnel-step,
-.tpo-blocker-grid > div {
+.tpo-blocker-grid > div,
+.tpo-blocker-card {
   min-width: 0;
 }
 
@@ -2650,10 +2700,21 @@ textarea {
 .tpo-drive-health-metrics span,
 .tpo-drive-health-meta span {
   color: var(--color-text-muted);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
+  line-height: 1.25;
   text-transform: uppercase;
+}
+
+.tpo-drive-health-metrics > div {
+  min-height: 88px;
+  align-content: space-between;
+}
+
+.tpo-drive-health-metrics strong {
+  font-size: 1.6rem;
+  line-height: 1;
 }
 
 .risk-dashboard-card {
@@ -3007,6 +3068,19 @@ textarea {
   color: var(--color-text);
   font-size: 0.92rem;
   font-weight: 600;
+}
+
+.tpo-communication-message-label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.tpo-communication-message-label-row .muted-text {
+  font-size: 0.82rem;
+  font-weight: 500;
 }
 
 .tpo-communication-full {
@@ -5870,6 +5944,19 @@ button.ui-button[type="submit"]:active,
 
 .ui-button:hover {
   text-decoration: none;
+}
+
+.ui-button:disabled {
+  opacity: 0.56;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+  filter: grayscale(0.2);
+}
+
+.ui-button:disabled:hover {
+  box-shadow: none;
+  transform: none;
 }
 
 .ui-button.primary {

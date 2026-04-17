@@ -2,6 +2,7 @@ import { Suspense, lazy, useEffect, useState, type FormEvent, type ReactNode } f
 import { createBrowserRouter, Navigate, Outlet, RouterProvider, useLocation, useNavigate } from "react-router-dom";
 
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import { StudentFooter } from "./components/composites/StudentFooter";
 import { WorkspaceNavbar } from "./components/composites/WorkspaceNavbar";
 import { useAuth } from "./components/providers/AuthProvider";
 import { useStudentAnnouncements } from "./hooks/use-announcements";
@@ -12,6 +13,7 @@ const HomePage = lazy(() => import("./pages/public/HomePage"));
 const LoginPage = lazy(() => import("./pages/public/LoginPage"));
 const InitialPasswordResetPage = lazy(() => import("./pages/public/InitialPasswordResetPage"));
 const SignupPage = lazy(() => import("./pages/public/SignupPage"));
+const ResourceUsagePolicyPage = lazy(() => import("./pages/public/ResourceUsagePolicyPage"));
 const UnsubscribePage = lazy(() => import("./pages/public/UnsubscribePage"));
 const DashboardPage = lazy(() => import("./pages/student/DashboardPage"));
 const StudentOnboardingDeclarationPage = lazy(() => import("./pages/student/StudentOnboardingDeclarationPage"));
@@ -167,6 +169,7 @@ function StudentLayout() {
           <Outlet />
         </ErrorBoundary>
       </main>
+      <StudentFooter />
     </div>
   );
 }
@@ -365,6 +368,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+  { path: "/resource-usage-policy", element: renderRoute(<ResourceUsagePolicyPage />) },
   { path: "*", element: <Navigate to="/" replace /> },
 ]);
 

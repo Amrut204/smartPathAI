@@ -26,7 +26,19 @@ export interface DriveCriteria {
   maxActiveBacklogs?: number;
   maxTotalBacklogs?: number;
   branches?: string[];
+  tenthMarksMin?: number;
+  tenthMarksMax?: number;
+  twelfthMarksMin?: number;
+  twelfthMarksMax?: number;
+  diplomaMarksMin?: number;
+  diplomaMarksMax?: number;
   minAttendance?: number;
+  readinessMin?: number;
+  profileCompletenessMin?: number;
+  hasResume?: boolean;
+  isCertified?: boolean;
+  canAccessResources?: boolean;
+  canAccessMockTests?: boolean;
   excludePlacedStudents?: boolean;
 }
 
@@ -36,6 +48,14 @@ export interface DriveSummary {
   role: string | null;
   driveDate: string;
   sectorOrIndustry: string | null;
+  employerFirstName: string | null;
+  employerLastName: string | null;
+  employerDesignation: string | null;
+  employerDepartment: string | null;
+  employerOfficialEmail: string | null;
+  employerPersonalEmail: string | null;
+  employerMobile: string | null;
+  employerOfficeAddress: string | null;
   ctcMinLpa: number | null;
   ctcMaxLpa: number | null;
   ctcFinalLpa: number | null;
@@ -285,6 +305,14 @@ export async function createDrive(input: {
   role?: string;
   driveDate: string;
   sectorOrIndustry?: string;
+  employerFirstName?: string;
+  employerLastName?: string;
+  employerDesignation?: string;
+  employerDepartment?: string;
+  employerOfficialEmail?: string;
+  employerPersonalEmail?: string;
+  employerMobile?: string;
+  employerOfficeAddress?: string;
   ctcMinLpa?: number;
   ctcMaxLpa?: number;
   ctcFinalLpa?: number;
@@ -343,6 +371,14 @@ export async function updateDrive(
     role: string;
     driveDate: string;
     sectorOrIndustry: string;
+    employerFirstName: string;
+    employerLastName: string;
+    employerDesignation: string;
+    employerDepartment: string;
+    employerOfficialEmail: string;
+    employerPersonalEmail: string;
+    employerMobile: string;
+    employerOfficeAddress: string;
     ctcMinLpa: number;
     ctcMaxLpa: number;
     ctcFinalLpa: number;

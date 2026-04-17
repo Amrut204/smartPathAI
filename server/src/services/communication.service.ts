@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { AppError } from "../middleware/error-handler.js";
 import { getMongoDb } from "../utils/mongodb.js";
 import { MongoAuthRepository } from "../repositories/mongo-auth.repository.js";
+import { StudentRepository } from "../repositories/student.repository.js";
 import {
   getCommunicationQueueBackend,
   enqueueCommunicationJob,
@@ -10,6 +11,8 @@ import {
   isCommunicationQueueInitialized,
 } from "./communication.queue.js";
 import { createUnsubscribeToken, verifyUnsubscribeToken } from "../utils/unsubscribe-token.js";
+import { buildStudentProfileSummary } from "../utils/student-profile.js";
+import { buildStudentDeclarationStatus } from "../utils/student-declaration.js";
 
 type EmailMode = "resend";
 
@@ -30,12 +33,52 @@ type Recipient = {
   variables?: Record<string, string>;
 };
 
+type AnnouncementAudienceMode = "all_students" | "drive_specific" | "custom";
+type DriveAudienceScope = "eligible" | "appearing_applied" | "both";
+
 type CommunicationFilters = {
+  audienceMode?: AnnouncementAudienceMode;
+  driveAudienceScope?: DriveAudienceScope;
+  q?: string;
+  prn?: string;
   driveId?: string;
   eligibleOnly?: boolean;
   batch?: string;
   branch?: string;
   minCgpa?: number;
+  cgpaMax?: number;
+  backlogsMin?: number;
+  backlogsMax?: number;
+  maxActiveBacklogs?: number;
+  totalHistoricalBacklogsMin?: number;
+  totalHistoricalBacklogsMax?: number;
+  maxTotalBacklogs?: number;
+  minAttendance?: number;
+  attendanceMax?: number;
+  readinessMin?: number;
+  readinessMax?: number;
+  profileCompletenessMin?: number;
+  profileCompletenessMax?: number;
+  tenthMarksMin?: number;
+  tenthMarksMax?: number;
+  twelfthMarksMin?: number;
+  twelfthMarksMax?: number;
+  diplomaMarksMin?: number;
+  diplomaMarksMax?: number;
+  waitingOnStudent?: boolean;
+  waitingOnCollege?: boolean;
+  hasResume?: boolean;
+  isCertified?: boolean;
+  canAccessResources?: boolean;
+  canAccessMockTests?: boolean;
+  targetRole?: string;
+  preferredLocation?: string;
+  willingToRelocate?: boolean;
+  eligibleForUpcomingDrive?: boolean;
+  isPlaced?: boolean;
+  isActive7d?: boolean;
+  appliedRecently?: boolean;
+  needsIntervention?: boolean;
   maxRecipients?: number;
   emails?: string[];
   studentIds?: string[];
@@ -416,6 +459,98 @@ function parseMetadata(value: unknown): Record<string, unknown> {
   return value as Record<string, unknown>;
 }
 
+function parseNumberValue(value: unknown) {
+  if (value === undefined || value === null || value === "") return null;
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return null;
+  return parsed;
+}
+
+function parsePercentValue(value: unknown) {
+  const parsed = parseNumberValue(value);
+  if (parsed === null || parsed < 0 || parsed > 100) return null;
+  return parsed;
+}
+
+function readFirstPercentValue(record: Record<string, unknown>, keys: string[]) {
+  for (const key of keys) {
+    const value = parsePercentValue(record[key]);
+    if (value !== null) return value;
+  }
+  return null;
+}
+
+function extractAcademicMarksFromProfileData(profileData: unknown) {
+  const record = profileData && typeof profileData === "object"
+    ? profileData as Record<string, unknown>
+    : {};
+
+  return {
+    tenthMarks: readFirstPercentValue(record, [
+      "tenthMarks",
+      "tenth_marks",
+      "tenthPercentage",
+      "tenth_percentage",
+      "class10Marks",
+      "class10_marks",
+      "class10Percentage",
+      "class10_percentage",
+      "marks10",
+      "marks_10",
+      "xMarks",
+      "x_marks",
+      "xPercentage",
+      "x_percentage",
+      "sscMarks",
+      "ssc_marks",
+      "sscPercentage",
+      "ssc_percentage",
+    ]),
+    twelfthMarks: readFirstPercentValue(record, [
+      "twelfthMarks",
+      "twelfth_marks",
+      "twelfthPercentage",
+      "twelfth_percentage",
+      "class12Marks",
+      "class12_marks",
+      "class12Percentage",
+      "class12_percentage",
+      "marks12",
+      "marks_12",
+      "xiiMarks",
+      "xii_marks",
+      "xiiPercentage",
+      "xii_percentage",
+      "hscMarks",
+      "hsc_marks",
+      "hscPercentage",
+      "hsc_percentage",
+    ]),
+    diplomaMarks: readFirstPercentValue(record, [
+      "diplomaMarks",
+      "diploma_marks",
+      "diplomaPercentage",
+      "diploma_percentage",
+      "diplomaPct",
+      "diploma_pct",
+      "diplomaPercent",
+      "diploma_percent",
+      "diplomaScore",
+      "diploma_score",
+    ]),
+  };
+}
+
+function satisfiesMin(value: number | null, min: number | undefined) {
+  if (min === undefined) return true;
+  return value !== null && value >= min;
+}
+
+function satisfiesMax(value: number | null, max: number | undefined) {
+  if (max === undefined) return true;
+  return value !== null && value <= max;
+}
+
 function parseRecipientPayload(value: unknown): Recipient[] {
   if (!Array.isArray(value)) {
     return [];
@@ -441,13 +576,221 @@ export function renderTemplate(value: string, variables: Record<string, string>)
   return value.replace(/\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g, (_, key: string) => variables[key] ?? "");
 }
 
+async function resolveDriveSpecificStudentIds(
+  tenantId: string,
+  driveId: string,
+  scope: DriveAudienceScope,
+) {
+  const db = await getMongoDb();
+  const drive = await db.collection("drives").findOne(
+    { tenant_id: tenantId, id: driveId, deleted_at: null },
+    { projection: { _id: 0, id: 1 } },
+  );
+
+  if (!drive) {
+    throw new AppError("COMM_DRIVE_NOT_FOUND", "Drive not found for recipient filter", 404);
+  }
+
+  const appearingOrAppliedClauses: Array<Record<string, unknown>> = [
+    { application_state: "applied" },
+    { status: "applied" },
+    { registered: true },
+    { appeared: true },
+  ];
+
+  const query: Record<string, unknown> = {
+    tenant_id: tenantId,
+    drive_id: driveId,
+  };
+
+  if (scope === "eligible") {
+    query.status = "eligible";
+  } else if (scope === "appearing_applied") {
+    query.$or = appearingOrAppliedClauses;
+  } else {
+    query.$or = [{ status: "eligible" }, ...appearingOrAppliedClauses];
+  }
+
+  const rows = await db.collection("drive_results").find(
+    query,
+    { projection: { _id: 0, student_id: 1 } },
+  ).toArray();
+
+  return [...new Set(rows.map((row) => String(row.student_id ?? "").trim()).filter(Boolean))];
+}
+
+async function resolveCustomAudienceRecipients(
+  tenantId: string,
+  filters: CommunicationFilters,
+): Promise<Recipient[]> {
+  const fetchCap = 5000;
+  const baseQuery = {
+    q: filters.q,
+    batch: filters.batch,
+    branch: filters.branch,
+    prn: filters.prn,
+    cgpaMin: filters.minCgpa,
+    cgpaMax: filters.cgpaMax,
+    tenthMarksMin: filters.tenthMarksMin,
+    tenthMarksMax: filters.tenthMarksMax,
+    twelfthMarksMin: filters.twelfthMarksMin,
+    twelfthMarksMax: filters.twelfthMarksMax,
+    diplomaMarksMin: filters.diplomaMarksMin,
+    diplomaMarksMax: filters.diplomaMarksMax,
+    readinessMin: filters.readinessMin,
+    readinessMax: filters.readinessMax,
+    attendanceMin: filters.minAttendance,
+    attendanceMax: filters.attendanceMax,
+    backlogsMin: filters.backlogsMin,
+    backlogsMax: filters.backlogsMax ?? filters.maxActiveBacklogs,
+    totalHistoricalBacklogsMin: filters.totalHistoricalBacklogsMin,
+    totalHistoricalBacklogsMax: filters.totalHistoricalBacklogsMax ?? filters.maxTotalBacklogs,
+    profileCompletenessMin: filters.profileCompletenessMin,
+    profileCompletenessMax: filters.profileCompletenessMax,
+    missingResume: filters.hasResume === undefined ? undefined : !filters.hasResume,
+    waitingOnStudent: filters.waitingOnStudent,
+    waitingOnCollege: filters.waitingOnCollege,
+    canAccessResources: filters.canAccessResources,
+    canAccessMockTests: filters.canAccessMockTests,
+    targetRole: filters.targetRole,
+    preferredLocation: filters.preferredLocation,
+    willingToRelocate: filters.willingToRelocate,
+    eligibleForUpcomingDrive: filters.eligibleForUpcomingDrive,
+    isCertified: filters.isCertified,
+    hasResume: filters.hasResume,
+    isPlaced: filters.isPlaced,
+    isActive7d: filters.isActive7d,
+    appliedRecently: filters.appliedRecently,
+    needsIntervention: filters.needsIntervention,
+    sortBy: "created_at" as const,
+    sortDir: "desc" as const,
+  };
+
+  const rows: Array<{ id: string; fullName: string; email: string }> = [];
+  let driveScopedStudentIds: Set<string> | null = null;
+
+  if (filters.driveId) {
+    const db = await getMongoDb();
+    const driveRows = await db.collection("drive_results").find(
+      {
+        tenant_id: tenantId,
+        drive_id: filters.driveId,
+        ...(filters.eligibleOnly === true ? { status: "eligible" } : {}),
+      },
+      { projection: { _id: 0, student_id: 1 } },
+    ).toArray();
+
+    driveScopedStudentIds = new Set(
+      driveRows.map((row) => String(row.student_id ?? "").trim()).filter(Boolean),
+    );
+
+    if (driveScopedStudentIds.size === 0) {
+      return [];
+    }
+  }
+
+  let cursor: string | undefined;
+
+  while (rows.length < fetchCap) {
+    const page = await StudentRepository.listStudentsForTpo(tenantId, {
+      ...baseQuery,
+      cursor,
+      limit: Math.min(200, fetchCap - rows.length),
+    });
+
+    page.items.forEach((item) => {
+      rows.push({
+        id: String(item.id),
+        fullName: String(item.fullName ?? ""),
+        email: String(item.email ?? ""),
+      });
+    });
+
+    if (!page.hasMore || !page.nextCursor) {
+      break;
+    }
+    cursor = page.nextCursor;
+  }
+
+  if (rows.length === 0) {
+    return [];
+  }
+
+  const suppressed = await listSuppressedEmails(tenantId, rows.map((row) => row.email));
+  let list = rows
+    .filter((row) => row.email && !suppressed.has(normalizeEmail(row.email)))
+    .map((row) => ({
+      studentId: row.id,
+      fullName: row.fullName,
+      email: row.email,
+      driveName: undefined,
+    } satisfies Recipient));
+
+  if (driveScopedStudentIds) {
+    list = list.filter((recipient) => driveScopedStudentIds?.has(recipient.studentId));
+  }
+
+  if (filters.studentIds?.length) {
+    const allowStudentIds = new Set(filters.studentIds.map((value) => String(value).trim()).filter(Boolean));
+    list = list.filter((recipient) => allowStudentIds.has(recipient.studentId));
+  }
+
+  if (filters.emails?.length) {
+    const allowEmails = new Set(filters.emails.map(normalizeEmail).filter(Boolean));
+    list = list.filter((recipient) => allowEmails.has(normalizeEmail(recipient.email)));
+  }
+
+  if (filters.maxRecipients && list.length > filters.maxRecipients) {
+    list = list.slice(0, Math.max(0, filters.maxRecipients));
+  }
+
+  return list;
+}
+
 async function resolveRecipients(
   tenantId: string,
   filters?: CommunicationFilters,
 ): Promise<Recipient[]> {
+  if (filters?.audienceMode === "all_students") {
+    return resolveRecipients(tenantId, {
+      maxRecipients: filters.maxRecipients,
+    });
+  }
+
+  if (filters?.audienceMode === "drive_specific") {
+    if (!filters.driveId) {
+      throw new AppError("COMM_DRIVE_NOT_FOUND", "Drive not found for recipient filter", 404);
+    }
+
+    const scope = filters.driveAudienceScope ?? "eligible";
+    if (scope === "eligible") {
+      return resolveRecipients(tenantId, {
+        driveId: filters.driveId,
+        eligibleOnly: true,
+        maxRecipients: filters.maxRecipients,
+      });
+    }
+
+    const studentIds = await resolveDriveSpecificStudentIds(tenantId, filters.driveId, scope);
+    if (studentIds.length === 0) {
+      return [];
+    }
+
+    return resolveRecipients(tenantId, {
+      driveId: filters.driveId,
+      eligibleOnly: false,
+      studentIds,
+      maxRecipients: filters.maxRecipients,
+    });
+  }
+
+  if (filters?.audienceMode === "custom") {
+    return resolveCustomAudienceRecipients(tenantId, filters);
+  }
+
   const db = await getMongoDb();
   let driveName: string | undefined;
-  let studentIds: string[] | null = null;
+  let driveFilteredStudentIds: string[] | null = null;
 
   if (filters?.driveId) {
     const drive = await db.collection("drives").findOne(
@@ -467,8 +810,8 @@ async function resolveRecipients(
         { projection: { _id: 0, student_id: 1 } },
       ).toArray();
 
-      studentIds = eligibleRows.map((row) => String(row.student_id));
-      if (studentIds.length === 0) {
+      driveFilteredStudentIds = eligibleRows.map((row) => String(row.student_id));
+      if (driveFilteredStudentIds.length === 0) {
         return [];
       }
     }
@@ -488,20 +831,35 @@ async function resolveRecipients(
   if (filters?.studentIds?.length) {
     studentFilter.id = { $in: filters.studentIds };
   }
-  if (studentIds && studentIds.length > 0) {
+  if (driveFilteredStudentIds && driveFilteredStudentIds.length > 0) {
     if (studentFilter.id && typeof studentFilter.id === "object" && "$in" in studentFilter.id) {
       const existingIds = Array.isArray((studentFilter.id as { $in?: unknown[] }).$in)
         ? (studentFilter.id as { $in?: unknown[] }).$in!.map((value) => String(value))
         : [];
-      studentFilter.id = { $in: studentIds.filter((id) => existingIds.includes(id)) };
+      studentFilter.id = { $in: driveFilteredStudentIds.filter((id) => existingIds.includes(id)) };
     } else {
-      studentFilter.id = { $in: studentIds };
+      studentFilter.id = { $in: driveFilteredStudentIds };
     }
   }
 
   const students = await db.collection("students").find(
     studentFilter,
-    { projection: { _id: 0, id: 1, user_id: 1 } },
+    {
+      projection: {
+        _id: 0,
+        id: 1,
+        user_id: 1,
+        roll_number: 1,
+        branch: 1,
+        batch: 1,
+        cgpa: 1,
+        backlogs: 1,
+        backlogs_total: 1,
+        attendance_pct: 1,
+        readiness_score: 1,
+        profile_data: 1,
+      },
+    },
   ).toArray();
 
   const userIds = students.map((student) => String(student.user_id));
@@ -529,6 +887,69 @@ async function resolveRecipients(
       if (suppressed.has(normalizeEmail(String(user.email)))) {
         return null;
       }
+
+      const profileSummary = buildStudentProfileSummary({
+        student: student as Record<string, unknown>,
+        user: {
+          full_name: user.full_name,
+          email: user.email,
+        },
+      });
+      const declarationStatus = buildStudentDeclarationStatus({
+        student: student as Record<string, unknown>,
+        user: {
+          full_name: user.full_name,
+          email: user.email,
+        },
+      });
+      const academicMarks = extractAcademicMarksFromProfileData(student.profile_data);
+      const hasResume = Boolean(
+        profileSummary.studentEditableProfile.resumeStorageProvider
+        || profileSummary.studentEditableProfile.resumeDriveFileId
+        || profileSummary.studentEditableProfile.resumeDriveWebLink
+        || profileSummary.studentEditableProfile.resumeUrl,
+      );
+
+      if (!satisfiesMin(parseNumberValue(profileSummary.studentEditableProfile.cgpa), filters?.minCgpa)) {
+        return null;
+      }
+      if (!satisfiesMax(parseNumberValue(profileSummary.studentEditableProfile.activeBacklogs), filters?.maxActiveBacklogs)) {
+        return null;
+      }
+      if (!satisfiesMax(parseNumberValue(profileSummary.studentEditableProfile.totalHistoricalBacklogs), filters?.maxTotalBacklogs)) {
+        return null;
+      }
+      if (!satisfiesMin(parseNumberValue(profileSummary.studentEditableProfile.attendancePct), filters?.minAttendance)) {
+        return null;
+      }
+      if (!satisfiesMin(parseNumberValue(student.readiness_score), filters?.readinessMin)) {
+        return null;
+      }
+      if (!satisfiesMin(parseNumberValue(profileSummary.profileCompleteness.pct), filters?.profileCompletenessMin)) {
+        return null;
+      }
+      if (!satisfiesMin(academicMarks.tenthMarks, filters?.tenthMarksMin) || !satisfiesMax(academicMarks.tenthMarks, filters?.tenthMarksMax)) {
+        return null;
+      }
+      if (!satisfiesMin(academicMarks.twelfthMarks, filters?.twelfthMarksMin) || !satisfiesMax(academicMarks.twelfthMarks, filters?.twelfthMarksMax)) {
+        return null;
+      }
+      if (!satisfiesMin(academicMarks.diplomaMarks, filters?.diplomaMarksMin) || !satisfiesMax(academicMarks.diplomaMarks, filters?.diplomaMarksMax)) {
+        return null;
+      }
+      if (filters?.hasResume !== undefined && hasResume !== filters.hasResume) {
+        return null;
+      }
+      if (filters?.isCertified !== undefined && declarationStatus.profileCertification.isCertified !== filters.isCertified) {
+        return null;
+      }
+      if (filters?.canAccessResources !== undefined && profileSummary.canAccessResources !== filters.canAccessResources) {
+        return null;
+      }
+      if (filters?.canAccessMockTests !== undefined && profileSummary.canAccessMockTests !== filters.canAccessMockTests) {
+        return null;
+      }
+
       return {
         studentId: String(student.id),
         fullName: String(user.full_name ?? ""),
@@ -555,9 +976,34 @@ function summarizeAudience(filters?: CommunicationFilters) {
     return "All students";
   }
 
+  if (filters.audienceMode === "all_students") {
+    return "All students";
+  }
+
+  if (filters.audienceMode === "drive_specific") {
+    const scopeSummary = filters.driveAudienceScope === "appearing_applied"
+      ? "appearing/applied for selected drive"
+      : filters.driveAudienceScope === "both"
+        ? "eligible or appearing/applied for selected drive"
+        : "eligible for selected drive";
+    if (filters.maxRecipients !== undefined) {
+      return `${scopeSummary} • max ${filters.maxRecipients} students`;
+    }
+    return scopeSummary;
+  }
+
   const parts: string[] = [];
+  if (filters.audienceMode === "custom") {
+    parts.push("custom audience");
+  }
   if (filters.driveId) {
     parts.push(filters.eligibleOnly ?? true ? "eligible for selected drive" : "selected drive audience");
+  }
+  if (filters.q) {
+    parts.push(`search "${filters.q}"`);
+  }
+  if (filters.prn) {
+    parts.push(`PRN contains "${filters.prn}"`);
   }
   if (filters.branch) {
     parts.push(`branch ${filters.branch}`);
@@ -567,6 +1013,96 @@ function summarizeAudience(filters?: CommunicationFilters) {
   }
   if (filters.minCgpa !== undefined) {
     parts.push(`CGPA ${filters.minCgpa}+`);
+  }
+  if (filters.cgpaMax !== undefined) {
+    parts.push(`CGPA <= ${filters.cgpaMax}`);
+  }
+  if (filters.backlogsMin !== undefined) {
+    parts.push(`active backlogs >= ${filters.backlogsMin}`);
+  }
+  if (filters.backlogsMax !== undefined) {
+    parts.push(`active backlogs <= ${filters.backlogsMax}`);
+  }
+  if (filters.maxActiveBacklogs !== undefined) {
+    parts.push(`active backlogs <= ${filters.maxActiveBacklogs}`);
+  }
+  if (filters.totalHistoricalBacklogsMin !== undefined) {
+    parts.push(`total backlogs >= ${filters.totalHistoricalBacklogsMin}`);
+  }
+  if (filters.totalHistoricalBacklogsMax !== undefined) {
+    parts.push(`total backlogs <= ${filters.totalHistoricalBacklogsMax}`);
+  }
+  if (filters.maxTotalBacklogs !== undefined) {
+    parts.push(`total backlogs <= ${filters.maxTotalBacklogs}`);
+  }
+  if (filters.minAttendance !== undefined) {
+    parts.push(`attendance ${filters.minAttendance}%+`);
+  }
+  if (filters.attendanceMax !== undefined) {
+    parts.push(`attendance <= ${filters.attendanceMax}%`);
+  }
+  if (filters.readinessMin !== undefined) {
+    parts.push(`readiness ${filters.readinessMin}%+`);
+  }
+  if (filters.readinessMax !== undefined) {
+    parts.push(`readiness <= ${filters.readinessMax}%`);
+  }
+  if (filters.profileCompletenessMin !== undefined) {
+    parts.push(`profile completeness ${filters.profileCompletenessMin}%+`);
+  }
+  if (filters.profileCompletenessMax !== undefined) {
+    parts.push(`profile completeness <= ${filters.profileCompletenessMax}%`);
+  }
+  if (filters.tenthMarksMin !== undefined || filters.tenthMarksMax !== undefined) {
+    parts.push(`10th marks ${filters.tenthMarksMin ?? 0}-${filters.tenthMarksMax ?? 100}%`);
+  }
+  if (filters.twelfthMarksMin !== undefined || filters.twelfthMarksMax !== undefined) {
+    parts.push(`12th marks ${filters.twelfthMarksMin ?? 0}-${filters.twelfthMarksMax ?? 100}%`);
+  }
+  if (filters.diplomaMarksMin !== undefined || filters.diplomaMarksMax !== undefined) {
+    parts.push(`diploma marks ${filters.diplomaMarksMin ?? 0}-${filters.diplomaMarksMax ?? 100}%`);
+  }
+  if (filters.hasResume !== undefined) {
+    parts.push(filters.hasResume ? "has resume" : "without resume");
+  }
+  if (filters.isCertified !== undefined) {
+    parts.push(filters.isCertified ? "profile certified" : "profile not certified");
+  }
+  if (filters.waitingOnStudent !== undefined) {
+    parts.push(filters.waitingOnStudent ? "waiting on student" : "no pending student fields");
+  }
+  if (filters.waitingOnCollege !== undefined) {
+    parts.push(filters.waitingOnCollege ? "waiting on college" : "no pending college fields");
+  }
+  if (filters.canAccessResources !== undefined) {
+    parts.push(filters.canAccessResources ? "resource access enabled" : "resource access blocked");
+  }
+  if (filters.canAccessMockTests !== undefined) {
+    parts.push(filters.canAccessMockTests ? "mock tests enabled" : "mock tests blocked");
+  }
+  if (filters.targetRole) {
+    parts.push(`target role contains "${filters.targetRole}"`);
+  }
+  if (filters.preferredLocation) {
+    parts.push(`preferred location contains "${filters.preferredLocation}"`);
+  }
+  if (filters.willingToRelocate !== undefined) {
+    parts.push(filters.willingToRelocate ? "willing to relocate" : "not willing to relocate");
+  }
+  if (filters.eligibleForUpcomingDrive !== undefined) {
+    parts.push(filters.eligibleForUpcomingDrive ? "eligible for upcoming drive" : "not eligible for upcoming drive");
+  }
+  if (filters.isPlaced !== undefined) {
+    parts.push(filters.isPlaced ? "placed students" : "unplaced students");
+  }
+  if (filters.isActive7d !== undefined) {
+    parts.push(filters.isActive7d ? "active in 7d" : "inactive in 7d");
+  }
+  if (filters.appliedRecently !== undefined) {
+    parts.push(filters.appliedRecently ? "applied recently" : "not applied recently");
+  }
+  if (filters.needsIntervention !== undefined) {
+    parts.push(filters.needsIntervention ? "needs intervention" : "does not need intervention");
   }
   if (filters.emails?.length) {
     parts.push(`${filters.emails.length} direct email${filters.emails.length === 1 ? "" : "s"}`);
@@ -1179,6 +1715,7 @@ export const CommunicationService = {
       message: payload.message,
       priority: payload.priority,
       audience_filters: payload.filters ?? {},
+      audience_mode: payload.filters?.audienceMode ?? "all_students",
       audience_summary: summarizeAudience(payload.filters),
       related_drive_id: payload.relatedDriveId ?? null,
       related_drive_name: relatedDriveName,
@@ -1239,7 +1776,8 @@ export const CommunicationService = {
           title: params.title,
           message: params.message,
           priority: params.priority,
-          audience_filters: { studentIds: recipientStudentIds },
+          audience_filters: { audienceMode: "custom", studentIds: recipientStudentIds },
+          audience_mode: "custom",
           audience_summary: `System notification for ${recipientStudentIds.length} student${recipientStudentIds.length === 1 ? "" : "s"}`,
           related_drive_id: params.relatedDriveId ?? null,
           related_drive_name: relatedDriveName,

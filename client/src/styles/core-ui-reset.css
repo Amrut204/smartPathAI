@@ -55,7 +55,17 @@
 .student-home-v2-grid {
   display: grid;
   gap: var(--space-4);
-  grid-template-columns: minmax(0, 1.2fr) repeat(2, minmax(260px, 1fr));
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 1fr);
+  align-items: start;
+}
+
+.student-home-v2-grid > .student-home-primary-card {
+  grid-column: 1;
+  grid-row: span 2;
+}
+
+.student-home-v2-grid > .student-home-support-card {
+  grid-column: 2;
 }
 
 .student-home-primary-card,
@@ -68,7 +78,7 @@
 
 .student-home-score-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.95fr);
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.95fr);
   gap: var(--space-4);
   align-items: start;
 }
@@ -230,6 +240,12 @@
 @media (max-width: 960px) {
   .student-home-v2-grid {
     grid-template-columns: 1fr;
+  }
+
+  .student-home-v2-grid > .student-home-primary-card,
+  .student-home-v2-grid > .student-home-support-card {
+    grid-column: auto;
+    grid-row: auto;
   }
 
   .student-home-score-row {

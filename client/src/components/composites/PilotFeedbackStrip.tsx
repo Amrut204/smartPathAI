@@ -8,7 +8,7 @@ type PilotFeedbackStripProps = {
 
 export function PilotFeedbackStrip({
   title = "Need help or found an issue?",
-  description = "Use the fastest channel that works for you during the pilot. We review every report.",
+  description = "Use the fastest support channel that works for you. We review every report.",
 }: PilotFeedbackStripProps) {
   if (!pilotFeedbackLinks.hasAny) {
     return null;

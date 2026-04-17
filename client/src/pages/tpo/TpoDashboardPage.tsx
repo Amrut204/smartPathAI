@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { mutate } from "swr";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import { Badge, Button, Card, ConfirmActionModal, Skeleton, Table } from "../../components/ui";
 import { TpoActionMenu } from "../../components/composites/TpoActionMenu";
@@ -41,6 +41,18 @@ function badgeVariantFromRisk(score: number) {
   return "success" as const;
 }
 
+function badgeVariantFromPriority(priority: "urgent" | "follow_up" | "monitor") {
+  if (priority === "urgent") return "danger" as const;
+  if (priority === "follow_up") return "warning" as const;
+  return "success" as const;
+}
+
+function priorityLabel(priority: "urgent" | "follow_up" | "monitor") {
+  if (priority === "urgent") return "Urgent";
+  if (priority === "follow_up") return "Follow-up";
+  return "Monitor";
+}
+
 function TpoDashboardSkeleton() {
   return (
     <section className="tpo-dashboard control-center-page">
@@ -75,6 +87,7 @@ function TpoDashboardSkeleton() {
 }
 
 export default function TpoDashboardPage() {
+  const [searchParams] = useSearchParams();
   const { data, isLoading, error } = useTpoControlCenter();
   const automationSummary = useTpoAutomationSummary();
   const { profile } = useAuth();
@@ -115,24 +128,39 @@ export default function TpoDashboardPage() {
 
   const queueSummary = [
     {
+      queueKey: "unlock-requests",
       label: "Unlock Requests",
       value: data.dashboardQueues.profileUnlockRequests.count,
       helper: "Students waiting for profile correction approval.",
+      targetPath: data.dashboardQueues.profileUnlockRequests.items[0]?.targetPath ?? "/tpo/students",
+      ctaLabel: data.dashboardQueues.profileUnlockRequests.items[0]?.ctaLabel ?? "Review queue",
     },
     {
+      queueKey: "student-support",
       label: "Student Support",
       value: data.dashboardQueues.studentSupportRequests.count,
       helper: "Open help requests from students.",
+      targetPath: data.dashboardQueues.studentSupportRequests.items[0]?.targetPath ?? "/tpo/students",
+      ctaLabel: data.dashboardQueues.studentSupportRequests.items[0]?.ctaLabel ?? "Open queue",
     },
     {
+      queueKey: "support-access",
       label: "Support Access",
       value: data.dashboardQueues.supportAccessRequests.count,
       helper: "Pending admin support access approvals.",
+      targetPath: data.dashboardQueues.supportAccessRequests.items[0]?.targetPath
+        && data.dashboardQueues.supportAccessRequests.items[0]?.targetPath !== "/tpo/dashboard"
+        ? data.dashboardQueues.supportAccessRequests.items[0]?.targetPath
+        : "/tpo/dashboard?pane=today&queue=support-access",
+      ctaLabel: data.dashboardQueues.supportAccessRequests.items[0]?.ctaLabel ?? "Review access",
     },
     {
+      queueKey: "communication-tasks",
       label: "Communication Tasks",
       value: data.dashboardQueues.communicationTasks.count,
       helper: "Drive follow-up items that need outreach or release action.",
+      targetPath: data.dashboardQueues.communicationTasks.items[0]?.targetPath ?? "/tpo/drives",
+      ctaLabel: data.dashboardQueues.communicationTasks.items[0]?.ctaLabel ?? "Open tasks",
     },
   ];
 
@@ -249,21 +277,25 @@ export default function TpoDashboardPage() {
       label: getAutomationDisplayMeta("eligible_not_applied").dashboardMetricLabel,
       value: automationSummary.data.counts.eligibleNotApplied,
       note: "Students currently sitting in reminder drafts.",
+      targetPath: getAutomationDisplayMeta("eligible_not_applied").fallbackTargetPath,
     },
     {
       label: getAutomationDisplayMeta("blocked_profile_followup").dashboardMetricLabel,
       value: automationSummary.data.counts.blockedProfiles,
       note: "Students blocked by profile, resume, or certification gaps.",
+      targetPath: getAutomationDisplayMeta("blocked_profile_followup").fallbackTargetPath,
     },
     {
       label: getAutomationDisplayMeta("scheduled_report_pack").dashboardMetricLabel,
       value: automationSummary.data.lastReportPackAt ? 1 : 0,
       note: automationSummary.data.lastReportPackAt ? `Last prepared ${formatDateTime(automationSummary.data.lastReportPackAt)}` : "No scheduled pack generated yet.",
+      targetPath: getAutomationDisplayMeta("scheduled_report_pack").fallbackTargetPath,
     },
     {
       label: getAutomationDisplayMeta("unplaced_intervention_refresh").dashboardMetricLabel,
       value: automationSummary.data.counts.unplacedIntervention,
       note: "Students currently grouped into intervention queues.",
+      targetPath: getAutomationDisplayMeta("unplaced_intervention_refresh").fallbackTargetPath,
     },
   ] : [];
 
@@ -273,6 +305,7 @@ export default function TpoDashboardPage() {
   const studentsQueuePath = "/tpo/students?mode=ops&view=ready_but_inactive";
   const reportsPath = "/tpo/reports?focus=scheduled-reports";
   const reviewQueuePath = "/tpo/communication?view=review";
+  const focusedQueue = searchParams.get("queue");
 
   if (isFullyEmptyTenant && !onboardingDismissed) {
     return (
@@ -394,11 +427,16 @@ export default function TpoDashboardPage() {
           <div className="tpo-inline-section">
             <div className="tpo-queue-summary-grid">
               {queueSummary.map((item) => (
-                <div key={item.label} className="tpo-queue-summary-card">
+                <Link
+                  key={item.label}
+                  to={item.targetPath}
+                  className={`tpo-queue-summary-card tpo-queue-summary-link${focusedQueue === item.queueKey ? " is-active" : ""}`}
+                >
                   <span>{item.label}</span>
                   <strong><AnimatedNumber value={item.value} /></strong>
                   <p className="muted-text">{item.helper}</p>
-                </div>
+                  <p className="muted-text">{item.ctaLabel}</p>
+                </Link>
               ))}
             </div>
           </div>
@@ -411,6 +449,7 @@ export default function TpoDashboardPage() {
               </div>
               <TpoActionMenu
                 items={[
+                  { label: "Open review queue", href: reviewQueuePath },
                   {
                     label: "Refresh blocked follow-up",
                     onSelect: async () => {
@@ -429,11 +468,11 @@ export default function TpoDashboardPage() {
               <>
                 <div className="tpo-blocker-grid">
                   {automationMetrics.map((metric) => (
-                    <div key={metric.label}>
+                    <Link key={metric.label} to={metric.targetPath} className="tpo-blocker-card">
                       <span>{metric.label}</span>
                       <strong>{metric.value}</strong>
                       <p className="muted-text">{metric.note}</p>
-                    </div>
+                    </Link>
                   ))}
                 </div>
                 <div className="tpo-action-list">
@@ -499,7 +538,7 @@ export default function TpoDashboardPage() {
                     <th>Student</th>
                     <th>Branch</th>
                     <th>Batch</th>
-                    <th>Risk</th>
+                    <th>Priority</th>
                     <th>Profile</th>
                     <th>Resume</th>
                     <th>Certified</th>
@@ -520,14 +559,19 @@ export default function TpoDashboardPage() {
                           <td>{fullRow?.branch ?? "-"}</td>
                           <td>{fullRow?.batch ?? "-"}</td>
                           <td>
-                            <Badge variant={badgeVariantFromRisk(fullRow?.riskScore ?? 0)}>
-                              {fullRow?.riskLevel ?? "Monitor"}
+                            <Badge variant={badgeVariantFromPriority(fullRow?.interventionPriority ?? "monitor")}>
+                              {fullRow ? priorityLabel(fullRow.interventionPriority) : "Monitor"}
                             </Badge>
                           </td>
                           <td>{fullRow ? `${fullRow.profileCompletenessPct}%` : "-"}</td>
                           <td>{fullRow?.hasResumeReady ? "Ready" : "Missing"}</td>
                           <td>{fullRow?.isProfileCertified ? "Certified" : "Pending"}</td>
-                          <td>{student.nextRecommendedAction}</td>
+                          <td>
+                            <div className="tpo-student-cell-stack">
+                              <strong>{fullRow?.interventionReason ?? student.nextRecommendedAction}</strong>
+                              <span>{student.nextRecommendedAction}</span>
+                            </div>
+                          </td>
                         </tr>
                       );
                     })
