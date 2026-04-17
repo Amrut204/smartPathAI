@@ -35,14 +35,55 @@ async function fetcher<T>(url: string): Promise<T> {
 }
 
 export type AnnouncementPriority = "normal" | "important" | "urgent";
+export type AnnouncementAudienceMode = "all_students" | "drive_specific" | "custom";
+export type DriveAudienceScope = "eligible" | "appearing_applied" | "both";
 
 export type AnnouncementFilters = {
+  audienceMode?: AnnouncementAudienceMode;
+  driveAudienceScope?: DriveAudienceScope;
+  q?: string;
+  prn?: string;
   driveId?: string;
   eligibleOnly?: boolean;
   batch?: string;
   branch?: string;
   minCgpa?: number;
+  cgpaMax?: number;
+  backlogsMin?: number;
+  backlogsMax?: number;
+  maxActiveBacklogs?: number;
+  totalHistoricalBacklogsMin?: number;
+  totalHistoricalBacklogsMax?: number;
+  maxTotalBacklogs?: number;
+  minAttendance?: number;
+  attendanceMax?: number;
+  readinessMin?: number;
+  readinessMax?: number;
+  profileCompletenessMin?: number;
+  profileCompletenessMax?: number;
+  tenthMarksMin?: number;
+  tenthMarksMax?: number;
+  twelfthMarksMin?: number;
+  twelfthMarksMax?: number;
+  diplomaMarksMin?: number;
+  diplomaMarksMax?: number;
+  waitingOnStudent?: boolean;
+  waitingOnCollege?: boolean;
+  hasResume?: boolean;
+  isCertified?: boolean;
+  canAccessResources?: boolean;
+  canAccessMockTests?: boolean;
+  targetRole?: string;
+  preferredLocation?: string;
+  willingToRelocate?: boolean;
+  eligibleForUpcomingDrive?: boolean;
+  isPlaced?: boolean;
+  isActive7d?: boolean;
+  appliedRecently?: boolean;
+  needsIntervention?: boolean;
   maxRecipients?: number;
+  emails?: string[];
+  studentIds?: string[];
 };
 
 export function useAnnouncementHistory() {

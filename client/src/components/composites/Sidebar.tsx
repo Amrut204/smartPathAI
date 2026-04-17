@@ -12,11 +12,8 @@ interface SidebarLink {
 
 const studentLinks: SidebarLink[] = [
   { href: "/dashboard", label: "Dashboard" },
-  { href: "/ai-assistant", label: "AI Assistant" },
   { href: "/resources", label: "Resources" },
   { href: "/mock-tests", label: "Mock Tests" },
-  { href: "/mastery", label: "Topic Mastery" },
-  { href: "/vault", label: "Company Specific" },
   { href: "/profile", label: "Profile" },
 ];
 
@@ -70,7 +67,7 @@ export function Sidebar({ role, title }: SidebarProps) {
       </nav>
 
       <div className="sidebar-footer">
-        <small>{role === "student" ? "AI Assistant available" : "Ctrl+K command palette"}</small>
+        <small>{role === "student" ? "Placement-ready workspace" : "Ctrl+K command palette"}</small>
       </div>
     </aside>
   );

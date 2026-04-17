@@ -72,6 +72,14 @@ export default function TpoDriveDetailPage() {
   }>(null);
   const [metadata, setMetadata] = useState({
     sectorOrIndustry: "",
+    employerFirstName: "",
+    employerLastName: "",
+    employerDesignation: "",
+    employerDepartment: "",
+    employerOfficialEmail: "",
+    employerPersonalEmail: "",
+    employerMobile: "",
+    employerOfficeAddress: "",
     ctcMinLpa: "",
     ctcMaxLpa: "",
     ctcFinalLpa: "",
@@ -109,6 +117,14 @@ export default function TpoDriveDetailPage() {
 
   const reportSections = [
     { label: "Sector / Industry", value: data.sectorOrIndustry || "-" },
+    { label: "Employer First Name", value: data.employerFirstName || "-" },
+    { label: "Employer Last Name", value: data.employerLastName || "-" },
+    { label: "Employer Designation", value: data.employerDesignation || data.role || "-" },
+    { label: "Employer Department", value: data.employerDepartment || "-" },
+    { label: "Official E-mail ID", value: data.employerOfficialEmail || "-" },
+    { label: "Personal Email ID", value: data.employerPersonalEmail || "-" },
+    { label: "Mobile No.", value: data.employerMobile || "-" },
+    { label: "Office Address", value: data.employerOfficeAddress || data.reportingNotes || "-" },
     { label: "Visit Date", value: data.visitDate || "-" },
     { label: "CTC Min (LPA)", value: data.ctcMinLpa ?? "-" },
     { label: "CTC Max (LPA)", value: data.ctcMaxLpa ?? "-" },
@@ -160,6 +176,14 @@ export default function TpoDriveDetailPage() {
     try {
       await updateDrive(driveId, {
         sectorOrIndustry: (metadata.sectorOrIndustry || data.sectorOrIndustry || "").trim() || undefined,
+        employerFirstName: (metadata.employerFirstName || data.employerFirstName || "").trim() || undefined,
+        employerLastName: (metadata.employerLastName || data.employerLastName || "").trim() || undefined,
+        employerDesignation: (metadata.employerDesignation || data.employerDesignation || "").trim() || undefined,
+        employerDepartment: (metadata.employerDepartment || data.employerDepartment || "").trim() || undefined,
+        employerOfficialEmail: (metadata.employerOfficialEmail || data.employerOfficialEmail || "").trim() || undefined,
+        employerPersonalEmail: (metadata.employerPersonalEmail || data.employerPersonalEmail || "").trim() || undefined,
+        employerMobile: (metadata.employerMobile || data.employerMobile || "").trim() || undefined,
+        employerOfficeAddress: (metadata.employerOfficeAddress || data.employerOfficeAddress || "").trim() || undefined,
         ctcMinLpa: (metadata.ctcMinLpa || (data.ctcMinLpa ?? "").toString()).trim() ? Number(metadata.ctcMinLpa || data.ctcMinLpa) : undefined,
         ctcMaxLpa: (metadata.ctcMaxLpa || (data.ctcMaxLpa ?? "").toString()).trim() ? Number(metadata.ctcMaxLpa || data.ctcMaxLpa) : undefined,
         ctcFinalLpa: (metadata.ctcFinalLpa || (data.ctcFinalLpa ?? "").toString()).trim() ? Number(metadata.ctcFinalLpa || data.ctcFinalLpa) : undefined,
@@ -308,7 +332,19 @@ export default function TpoDriveDetailPage() {
             <div><dt>Max Active Backlogs</dt><dd>{(criteria.maxActiveBacklogs ?? criteria.maxBacklogs) ?? "-"}</dd></div>
             <div><dt>Max Total Backlogs</dt><dd>{criteria.maxTotalBacklogs ?? "-"}</dd></div>
             <div><dt>Branches</dt><dd>{criteria.branches?.join(", ") ?? "-"}</dd></div>
+            <div><dt>10th Marks Min</dt><dd>{criteria.tenthMarksMin ?? "-"}</dd></div>
+            <div><dt>10th Marks Max</dt><dd>{criteria.tenthMarksMax ?? "-"}</dd></div>
+            <div><dt>12th Marks Min</dt><dd>{criteria.twelfthMarksMin ?? "-"}</dd></div>
+            <div><dt>12th Marks Max</dt><dd>{criteria.twelfthMarksMax ?? "-"}</dd></div>
+            <div><dt>Diploma Marks Min</dt><dd>{criteria.diplomaMarksMin ?? "-"}</dd></div>
+            <div><dt>Diploma Marks Max</dt><dd>{criteria.diplomaMarksMax ?? "-"}</dd></div>
             <div><dt>Min Attendance</dt><dd>{criteria.minAttendance ?? "-"}</dd></div>
+            <div><dt>Min Readiness Score</dt><dd>{criteria.readinessMin ?? "-"}</dd></div>
+            <div><dt>Min Profile Completeness</dt><dd>{criteria.profileCompletenessMin ?? "-"}</dd></div>
+            <div><dt>Resume Required</dt><dd>{criteria.hasResume === undefined ? "-" : criteria.hasResume ? "Yes" : "No"}</dd></div>
+            <div><dt>Profile Certified Required</dt><dd>{criteria.isCertified === undefined ? "-" : criteria.isCertified ? "Yes" : "No"}</dd></div>
+            <div><dt>Resource Access Required</dt><dd>{criteria.canAccessResources === undefined ? "-" : criteria.canAccessResources ? "Yes" : "No"}</dd></div>
+            <div><dt>Mock Test Access Required</dt><dd>{criteria.canAccessMockTests === undefined ? "-" : criteria.canAccessMockTests ? "Yes" : "No"}</dd></div>
             <div><dt>Exclude Already Placed</dt><dd>{criteria.excludePlacedStudents ? "Yes" : "No"}</dd></div>
           </dl>
         </div>
@@ -344,6 +380,64 @@ export default function TpoDriveDetailPage() {
                   <Input
                     value={metadata.sectorOrIndustry || data.sectorOrIndustry || ""}
                     onChange={(event) => setMetadata((current) => ({ ...current, sectorOrIndustry: event.target.value }))}
+                  />
+                </label>
+                <label>
+                  Employer First Name
+                  <Input
+                    value={metadata.employerFirstName || data.employerFirstName || ""}
+                    onChange={(event) => setMetadata((current) => ({ ...current, employerFirstName: event.target.value }))}
+                  />
+                </label>
+                <label>
+                  Employer Last Name
+                  <Input
+                    value={metadata.employerLastName || data.employerLastName || ""}
+                    onChange={(event) => setMetadata((current) => ({ ...current, employerLastName: event.target.value }))}
+                  />
+                </label>
+                <label>
+                  Employer Designation
+                  <Input
+                    value={metadata.employerDesignation || data.employerDesignation || ""}
+                    onChange={(event) => setMetadata((current) => ({ ...current, employerDesignation: event.target.value }))}
+                  />
+                </label>
+                <label>
+                  Employer Department
+                  <Input
+                    value={metadata.employerDepartment || data.employerDepartment || ""}
+                    onChange={(event) => setMetadata((current) => ({ ...current, employerDepartment: event.target.value }))}
+                  />
+                </label>
+                <label>
+                  Official E-mail ID
+                  <Input
+                    type="email"
+                    value={metadata.employerOfficialEmail || data.employerOfficialEmail || ""}
+                    onChange={(event) => setMetadata((current) => ({ ...current, employerOfficialEmail: event.target.value }))}
+                  />
+                </label>
+                <label>
+                  Personal Email ID
+                  <Input
+                    type="email"
+                    value={metadata.employerPersonalEmail || data.employerPersonalEmail || ""}
+                    onChange={(event) => setMetadata((current) => ({ ...current, employerPersonalEmail: event.target.value }))}
+                  />
+                </label>
+                <label>
+                  Mobile No.
+                  <Input
+                    value={metadata.employerMobile || data.employerMobile || ""}
+                    onChange={(event) => setMetadata((current) => ({ ...current, employerMobile: event.target.value }))}
+                  />
+                </label>
+                <label>
+                  Office Address
+                  <Input
+                    value={metadata.employerOfficeAddress || data.employerOfficeAddress || ""}
+                    onChange={(event) => setMetadata((current) => ({ ...current, employerOfficeAddress: event.target.value }))}
                   />
                 </label>
                 <label>

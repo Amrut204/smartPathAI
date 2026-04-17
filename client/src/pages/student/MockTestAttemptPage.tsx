@@ -337,7 +337,7 @@ export default function MockTestAttemptPage() {
         {!isOnline ? <p className="student-network-banner is-warning">Connection lost. The timer keeps running, but your current answers remain saved on this device.</p> : null}
         {restoreNotice ? <p className="success-text">{restoreNotice}</p> : null}
         {connectivityNotice ? <p className="muted-text">{connectivityNotice}</p> : null}
-        <p>{question.text}</p>
+        <p className="mock-attempt-question-text">{question.text}</p>
         <div className="mock-attempt-options">
           {question.options.map((option, index) => (
             <label key={`${currentQuestion}_${index}`} className="mock-attempt-option">

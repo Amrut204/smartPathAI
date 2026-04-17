@@ -11,10 +11,10 @@ import { useTpoStudents, type TpoStudentRow } from "../../hooks/use-tpo-students
 
 type PageMode = "all" | "ops";
 type SavedViewId = "all" | "ready_but_inactive" | "eligible_but_not_applied" | "missing_resume" | "uncertified" | "incomplete_profile" | "needs_mock_push" | "academically_blocked";
-type SortBy = "cgpa" | "created_at" | "readiness_score" | "profile_completeness" | "risk_score" | "upcoming_drive_impact" | "activity";
+type SortBy = "cgpa" | "created_at" | "readiness_score" | "profile_completeness" | "risk_score" | "intervention_priority" | "upcoming_drive_impact" | "activity";
 
-const ADVANCED_FILTER_KEYS = ["prn", "attendanceMin", "attendanceMax", "totalHistoricalBacklogsMin", "totalHistoricalBacklogsMax", "profileCompletenessMin", "profileCompletenessMax", "missingResume", "waitingOnStudent", "canAccessResources", "canAccessMockTests", "targetRole", "preferredLocation", "willingToRelocate", "readinessMin", "readinessMax", "eligibleForUpcomingDrive", "isCertified", "hasResume", "isPlaced", "isActive7d", "appliedRecently", "needsIntervention"] as const;
-const FILTER_KEYS = ["q", "mode", "view", "batch", "branch", "prn", "cgpaMin", "cgpaMax", "readinessMin", "readinessMax", "attendanceMin", "attendanceMax", "backlogsMin", "backlogsMax", "totalHistoricalBacklogsMin", "totalHistoricalBacklogsMax", "profileCompletenessMin", "profileCompletenessMax", "missingResume", "waitingOnStudent", "canAccessResources", "canAccessMockTests", "targetRole", "preferredLocation", "willingToRelocate", "eligibleForUpcomingDrive", "isCertified", "hasResume", "isPlaced", "isActive7d", "appliedRecently", "needsIntervention", "sortBy", "sortDir"] as const;
+const ADVANCED_FILTER_KEYS = ["prn", "tenthMarksMin", "tenthMarksMax", "twelfthMarksMin", "twelfthMarksMax", "diplomaMarksMin", "diplomaMarksMax", "cgpaMin", "cgpaMax", "backlogsMin", "backlogsMax", "attendanceMin", "attendanceMax", "totalHistoricalBacklogsMin", "totalHistoricalBacklogsMax", "profileCompletenessMin", "profileCompletenessMax", "missingResume", "waitingOnStudent", "canAccessResources", "canAccessMockTests", "targetRole", "preferredLocation", "willingToRelocate", "readinessMin", "readinessMax", "eligibleForUpcomingDrive", "isCertified", "hasResume", "isPlaced", "isActive7d", "appliedRecently", "needsIntervention"] as const;
+const FILTER_KEYS = ["q", "mode", "view", "batch", "branch", "prn", "tenthMarksMin", "tenthMarksMax", "twelfthMarksMin", "twelfthMarksMax", "diplomaMarksMin", "diplomaMarksMax", "cgpaMin", "cgpaMax", "readinessMin", "readinessMax", "attendanceMin", "attendanceMax", "backlogsMin", "backlogsMax", "totalHistoricalBacklogsMin", "totalHistoricalBacklogsMax", "profileCompletenessMin", "profileCompletenessMax", "missingResume", "waitingOnStudent", "canAccessResources", "canAccessMockTests", "targetRole", "preferredLocation", "willingToRelocate", "eligibleForUpcomingDrive", "isCertified", "hasResume", "isPlaced", "isActive7d", "appliedRecently", "needsIntervention", "sortBy", "sortDir"] as const;
 const SAVED_VIEW_PARAM_KEYS = ["view", "eligibleForUpcomingDrive", "isCertified", "hasResume", "isActive7d", "appliedRecently", "needsIntervention", "profileCompletenessMin", "profileCompletenessMax", "sortBy", "sortDir"] as const;
 const SAVED_VIEWS: Array<{ id: SavedViewId; label: string; description: string }> = [
   { id: "ready_but_inactive", label: "Ready but inactive", description: "Profile-ready students who need a push now." },
@@ -61,11 +61,11 @@ function applySavedViewPreset(next: URLSearchParams, viewId: SavedViewId) {
     next.set("sortDir", "desc");
   } else if (viewId === "missing_resume") {
     next.set("hasResume", "false");
-    next.set("sortBy", "risk_score");
+    next.set("sortBy", "intervention_priority");
     next.set("sortDir", "desc");
   } else if (viewId === "uncertified") {
     next.set("isCertified", "false");
-    next.set("sortBy", "risk_score");
+    next.set("sortBy", "intervention_priority");
     next.set("sortDir", "desc");
   } else if (viewId === "incomplete_profile") {
     next.set("profileCompletenessMax", "99");
@@ -73,7 +73,7 @@ function applySavedViewPreset(next: URLSearchParams, viewId: SavedViewId) {
     next.set("sortDir", "asc");
   } else if (viewId === "needs_mock_push") {
     next.set("needsIntervention", "true");
-    next.set("sortBy", "risk_score");
+    next.set("sortBy", "intervention_priority");
     next.set("sortDir", "desc");
   } else if (viewId === "academically_blocked") {
     next.set("hasResume", "true");
@@ -120,6 +120,18 @@ function statusBadges(student: TpoStudentRow) {
   return badges;
 }
 
+function interventionBadgeVariant(priority: TpoStudentRow["interventionPriority"]) {
+  if (priority === "urgent") return "danger" as const;
+  if (priority === "follow_up") return "warning" as const;
+  return "success" as const;
+}
+
+function interventionPriorityLabel(priority: TpoStudentRow["interventionPriority"]) {
+  if (priority === "urgent") return "Urgent";
+  if (priority === "follow_up") return "Follow-up";
+  return "Monitor";
+}
+
 function formatShortDate(value: string | null) {
   if (!value) return "No upcoming drive";
   const parsed = new Date(value);
@@ -148,6 +160,38 @@ function downloadCsv(filename: string, rows: string[][]) {
   anchor.click();
   URL.revokeObjectURL(url);
 }
+
+function escapeHtmlCell(value: string) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function downloadExcel(filename: string, rows: string[][]) {
+  const bodyRows = rows
+    .map((row) => `<tr>${row.map((cell) => `<td>${escapeHtmlCell(cell)}</td>`).join("")}</tr>`)
+    .join("");
+
+  const workbookHtml = [
+    "<html xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:x=\"urn:schemas-microsoft-com:office:excel\" xmlns=\"http://www.w3.org/TR/REC-html40\">",
+    "<head><meta charset=\"utf-8\" /></head>",
+    "<body><table>",
+    bodyRows,
+    "</table></body></html>",
+  ].join("");
+
+  const blob = new Blob(["\ufeff", workbookHtml], { type: "application/vnd.ms-excel;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.click();
+  URL.revokeObjectURL(url);
+}
+
 export default function TpoStudentsPage() {
   const { profile } = useAuth();
   const navigate = useNavigate();
@@ -160,13 +204,13 @@ export default function TpoStudentsPage() {
   useEffect(() => {
     if (!searchParams.has("mode") && !searchParams.has("view")) {
       const next = new URLSearchParams(searchParams);
-      next.set("mode", "ops");
-      applySavedViewPreset(next, "ready_but_inactive");
+      next.set("mode", "all");
+      applySavedViewPreset(next, "all");
       setSearchParams(next, { replace: true });
     }
   }, [searchParams, setSearchParams]);
 
-  const mode = (getStringParam(searchParams, "mode") || "ops") as PageMode;
+  const mode = (getStringParam(searchParams, "mode") || "all") as PageMode;
   const currentView = (getStringParam(searchParams, "view") || (mode === "ops" ? "ready_but_inactive" : "all")) as SavedViewId;
   const baselineParams = useMemo(() => buildSavedViewBaseline(currentView), [currentView]);
   const hasCustomFilters = useMemo(
@@ -193,6 +237,12 @@ export default function TpoStudentsPage() {
     batch: getStringParam(searchParams, "batch") || undefined,
     branch: getStringParam(searchParams, "branch") || undefined,
     prn: getStringParam(searchParams, "prn") || undefined,
+    tenthMarksMin: getNumberParam(searchParams, "tenthMarksMin"),
+    tenthMarksMax: getNumberParam(searchParams, "tenthMarksMax"),
+    twelfthMarksMin: getNumberParam(searchParams, "twelfthMarksMin"),
+    twelfthMarksMax: getNumberParam(searchParams, "twelfthMarksMax"),
+    diplomaMarksMin: getNumberParam(searchParams, "diplomaMarksMin"),
+    diplomaMarksMax: getNumberParam(searchParams, "diplomaMarksMax"),
     cgpaMin: getNumberParam(searchParams, "cgpaMin"),
     cgpaMax: getNumberParam(searchParams, "cgpaMax"),
     readinessMin: getNumberParam(searchParams, "readinessMin"),
@@ -237,8 +287,9 @@ export default function TpoStudentsPage() {
 
   const setMode = (nextMode: PageMode) => {
     const next = new URLSearchParams(searchParams);
+    const nextView: SavedViewId = nextMode === "all" ? "all" : currentView;
     next.set("mode", nextMode);
-    applySavedViewPreset(next, nextMode === "ops" ? (currentView === "all" ? "ready_but_inactive" : currentView) : "all");
+    applySavedViewPreset(next, nextView);
     setSearchParams(next, { replace: true });
   };
 
@@ -252,8 +303,8 @@ export default function TpoStudentsPage() {
   const resetFilters = () => {
     const next = new URLSearchParams(searchParams);
     FILTER_KEYS.forEach((key) => next.delete(key));
-    next.set("mode", "ops");
-    applySavedViewPreset(next, "ready_but_inactive");
+    next.set("mode", "all");
+    applySavedViewPreset(next, "all");
     setSearchParams(next, { replace: true });
     setFiltersOpen(false);
     setAdvancedOpen(false);
@@ -266,6 +317,12 @@ export default function TpoStudentsPage() {
     if (query.batch && isCustom("batch")) chips.push({ key: "batch", label: `Batch: ${query.batch}` });
     if (query.branch && isCustom("branch")) chips.push({ key: "branch", label: `Branch: ${query.branch}` });
     if (query.prn && isCustom("prn")) chips.push({ key: "prn", label: `PRN: ${query.prn}` });
+    if (query.tenthMarksMin !== undefined && isCustom("tenthMarksMin")) chips.push({ key: "tenthMarksMin", label: `10th marks >= ${query.tenthMarksMin}` });
+    if (query.tenthMarksMax !== undefined && isCustom("tenthMarksMax")) chips.push({ key: "tenthMarksMax", label: `10th marks <= ${query.tenthMarksMax}` });
+    if (query.twelfthMarksMin !== undefined && isCustom("twelfthMarksMin")) chips.push({ key: "twelfthMarksMin", label: `12th marks >= ${query.twelfthMarksMin}` });
+    if (query.twelfthMarksMax !== undefined && isCustom("twelfthMarksMax")) chips.push({ key: "twelfthMarksMax", label: `12th marks <= ${query.twelfthMarksMax}` });
+    if (query.diplomaMarksMin !== undefined && isCustom("diplomaMarksMin")) chips.push({ key: "diplomaMarksMin", label: `Diploma marks >= ${query.diplomaMarksMin}` });
+    if (query.diplomaMarksMax !== undefined && isCustom("diplomaMarksMax")) chips.push({ key: "diplomaMarksMax", label: `Diploma marks <= ${query.diplomaMarksMax}` });
     if (query.cgpaMin !== undefined && isCustom("cgpaMin")) chips.push({ key: "cgpaMin", label: `CGPA >= ${query.cgpaMin}` });
     if (query.cgpaMax !== undefined && isCustom("cgpaMax")) chips.push({ key: "cgpaMax", label: `CGPA <= ${query.cgpaMax}` });
     if (query.readinessMin !== undefined && isCustom("readinessMin")) chips.push({ key: "readinessMin", label: `Readiness >= ${query.readinessMin}` });
@@ -290,6 +347,24 @@ export default function TpoStudentsPage() {
   }, [baselineParams, query, searchParams]);
 
   const items = useMemo(() => (data?.items ?? []).filter((student) => matchesSavedView(student, currentView)), [currentView, data?.items]);
+  const branchOptions = useMemo(() => {
+    const unique = new Set<string>();
+    (data?.items ?? []).forEach((student) => {
+      const branch = String(student.branch ?? "").trim();
+      if (branch) unique.add(branch);
+    });
+    if (query.branch) unique.add(query.branch);
+    return [...unique].sort((a, b) => a.localeCompare(b));
+  }, [data?.items, query.branch]);
+  const yearOptions = useMemo(() => {
+    const unique = new Set<string>();
+    (data?.items ?? []).forEach((student) => {
+      const year = String(student.batch ?? "").trim();
+      if (year) unique.add(year);
+    });
+    if (query.batch) unique.add(query.batch);
+    return [...unique].sort((a, b) => a.localeCompare(b));
+  }, [data?.items, query.batch]);
   const selectedStudents = useMemo(() => items.filter((student) => selectedIds.includes(student.id)), [items, selectedIds]);
   const selectedCount = selectedStudents.length;
   const currentViewMeta = getSavedViewMeta(currentView);
@@ -325,9 +400,68 @@ export default function TpoStudentsPage() {
     navigate(`/tpo/communication?mode=email&preset=${encodeURIComponent(preset)}&studentIds=${encodeURIComponent(studentIds)}`);
   };
 
+  const studentExportHeader = [
+    "Name",
+    "Email",
+    "PRN",
+    "Roll Number",
+    "Branch",
+    "Batch",
+    "10th Marks",
+    "12th Marks",
+    "Diploma Marks",
+    "CGPA",
+    "Backlogs",
+    "Total Backlogs",
+    "Attendance %",
+    "Placed",
+    "Placed Company",
+    "Readiness",
+    "Profile %",
+    "Resume",
+    "Certified",
+    "Active 7d",
+    "Eligible Upcoming",
+    "Blocked Upcoming",
+    "Primary Blocker",
+    "Intervention",
+  ];
+
+  const toStudentExportRow = (student: TpoStudentRow) => [
+    student.fullName,
+    student.email,
+    student.prn,
+    student.rollNumber,
+    student.branch,
+    student.batch,
+    student.tenthMarks == null ? "" : String(student.tenthMarks),
+    student.twelfthMarks == null ? "" : String(student.twelfthMarks),
+    student.diplomaMarks == null ? "" : String(student.diplomaMarks),
+    String(student.cgpa),
+    String(student.backlogs),
+    String(student.totalHistoricalBacklogs),
+    String(student.attendancePct),
+    student.placementStatus.isPlaced ? "Yes" : "No",
+    student.placementStatus.placedCompany ?? "",
+    String(student.readinessScore),
+    String(student.profileCompletenessPct),
+    student.hasResumeReady ? "Yes" : "No",
+    student.isProfileCertified ? "Yes" : "No",
+    student.isActive7d ? "Yes" : "No",
+    String(student.eligibleUpcomingDriveCount),
+    String(student.blockedUpcomingDriveCount),
+    student.primaryBlocker ?? "",
+    student.interventionLabel,
+  ];
+
   const onExportSelected = () => {
     if (selectedStudents.length === 0) return;
-    downloadCsv("tpo-selected-students.csv", [["Name", "Email", "PRN", "Roll Number", "Branch", "Batch", "Placed", "Placed Company", "Readiness", "Profile %", "Resume", "Certified", "Active 7d", "Eligible Upcoming", "Blocked Upcoming", "Primary Blocker", "Intervention"], ...selectedStudents.map((student) => [student.fullName, student.email, student.prn, student.rollNumber, student.branch, student.batch, student.placementStatus.isPlaced ? "Yes" : "No", student.placementStatus.placedCompany ?? "", String(student.readinessScore), String(student.profileCompletenessPct), student.hasResumeReady ? "Yes" : "No", student.isProfileCertified ? "Yes" : "No", student.isActive7d ? "Yes" : "No", String(student.eligibleUpcomingDriveCount), String(student.blockedUpcomingDriveCount), student.primaryBlocker ?? "", student.interventionLabel])]);
+    downloadCsv("tpo-selected-students.csv", [studentExportHeader, ...selectedStudents.map(toStudentExportRow)]);
+  };
+
+  const onDownloadFilteredExcel = () => {
+    if (items.length === 0) return;
+    downloadExcel("tpo-filtered-students.xls", [studentExportHeader, ...items.map(toStudentExportRow)]);
   };
 
   const quickMetrics = useMemo(() => ({
@@ -343,9 +477,6 @@ export default function TpoStudentsPage() {
         greeting={getTpoGreeting(profile?.full_name ?? "Placement team")}
         title="Work one student queue at a time."
         description="Use filtered queues to act on student cohorts. The selected view below should be the only main student workspace on screen."
-        primaryAction={(
-          <Link to="/tpo/students/upload"><Button>Bulk Upload Students</Button></Link>
-        )}
         secondaryAction={(
           <Button
             variant="secondary"
@@ -446,11 +577,21 @@ export default function TpoStudentsPage() {
               </label>
               <label>
                 Branch
-                <Input value={getStringParam(searchParams, "branch")} onChange={(event) => updateParams({ branch: event.target.value || null })} />
+                <Select value={getStringParam(searchParams, "branch")} onChange={(event) => updateParams({ branch: event.target.value || null })}>
+                  <option value="">All branches</option>
+                  {branchOptions.map((branch) => (
+                    <option key={branch} value={branch}>{branch}</option>
+                  ))}
+                </Select>
               </label>
               <label>
-                Batch
-                <Input value={getStringParam(searchParams, "batch")} onChange={(event) => updateParams({ batch: event.target.value || null })} />
+                Year
+                <Select value={getStringParam(searchParams, "batch")} onChange={(event) => updateParams({ batch: event.target.value || null })}>
+                  <option value="">All years</option>
+                  {yearOptions.map((year) => (
+                    <option key={year} value={year}>{year}</option>
+                  ))}
+                </Select>
               </label>
               <label>
                 Sort By
@@ -459,7 +600,8 @@ export default function TpoStudentsPage() {
                   <option value="cgpa">CGPA</option>
                   <option value="readiness_score">Readiness</option>
                   <option value="profile_completeness">Profile Completeness</option>
-                  <option value="risk_score">Risk score</option>
+                  <option value="intervention_priority">Intervention priority</option>
+                  <option value="risk_score">Risk score (secondary)</option>
                   <option value="upcoming_drive_impact">Upcoming drive impact</option>
                   <option value="activity">Activity</option>
                 </Select>
@@ -478,6 +620,46 @@ export default function TpoStudentsPage() {
                 <label>
                   PRN
                   <Input value={getStringParam(searchParams, "prn")} onChange={(event) => updateParams({ prn: event.target.value || null })} />
+                </label>
+                <label>
+                  10th Marks Min
+                  <Input type="number" min="0" max="100" step="0.1" value={getStringParam(searchParams, "tenthMarksMin")} onChange={(event) => updateParams({ tenthMarksMin: event.target.value || null })} />
+                </label>
+                <label>
+                  10th Marks Max
+                  <Input type="number" min="0" max="100" step="0.1" value={getStringParam(searchParams, "tenthMarksMax")} onChange={(event) => updateParams({ tenthMarksMax: event.target.value || null })} />
+                </label>
+                <label>
+                  12th Marks Min
+                  <Input type="number" min="0" max="100" step="0.1" value={getStringParam(searchParams, "twelfthMarksMin")} onChange={(event) => updateParams({ twelfthMarksMin: event.target.value || null })} />
+                </label>
+                <label>
+                  12th Marks Max
+                  <Input type="number" min="0" max="100" step="0.1" value={getStringParam(searchParams, "twelfthMarksMax")} onChange={(event) => updateParams({ twelfthMarksMax: event.target.value || null })} />
+                </label>
+                <label>
+                  Diploma Marks Min
+                  <Input type="number" min="0" max="100" step="0.1" value={getStringParam(searchParams, "diplomaMarksMin")} onChange={(event) => updateParams({ diplomaMarksMin: event.target.value || null })} />
+                </label>
+                <label>
+                  Diploma Marks Max
+                  <Input type="number" min="0" max="100" step="0.1" value={getStringParam(searchParams, "diplomaMarksMax")} onChange={(event) => updateParams({ diplomaMarksMax: event.target.value || null })} />
+                </label>
+                <label>
+                  CGPA Min
+                  <Input type="number" min="0" max="10" step="0.01" value={getStringParam(searchParams, "cgpaMin")} onChange={(event) => updateParams({ cgpaMin: event.target.value || null })} />
+                </label>
+                <label>
+                  CGPA Max
+                  <Input type="number" min="0" max="10" step="0.01" value={getStringParam(searchParams, "cgpaMax")} onChange={(event) => updateParams({ cgpaMax: event.target.value || null })} />
+                </label>
+                <label>
+                  Active Backlogs Min
+                  <Input type="number" min="0" step="1" value={getStringParam(searchParams, "backlogsMin")} onChange={(event) => updateParams({ backlogsMin: event.target.value || null })} />
+                </label>
+                <label>
+                  Active Backlogs Max
+                  <Input type="number" min="0" step="1" value={getStringParam(searchParams, "backlogsMax")} onChange={(event) => updateParams({ backlogsMax: event.target.value || null })} />
                 </label>
                 <label>
                   Attendance Min
@@ -584,6 +766,7 @@ export default function TpoStudentsPage() {
                   <Button variant="secondary">Open full queue</Button>
                 </Link>
               ) : null}
+              <Button variant="secondary" onClick={onDownloadFilteredExcel} disabled={items.length === 0}>Download Excel</Button>
               <Button variant="secondary" onClick={toggleSelectAll}>{selectedCount === items.length && items.length > 0 ? "Clear page" : "Select page"}</Button>
             </div>
           </div>
@@ -609,20 +792,21 @@ export default function TpoStudentsPage() {
                       </div>
                       <div className="tpo-student-mobile-metrics">
                         <div><span>Readiness</span><strong>{student.readinessScore.toFixed(1)}%</strong></div>
-                        <div><span>Engagement</span><strong>{student.isActive7d ? "Active" : "Inactive"}</strong></div>
+                        <div><span>Activity</span><strong>{student.isActive7d ? "Active" : "Inactive"}</strong></div>
                         <div><span>Placement</span><strong>{student.placementStatus.isPlaced ? "Placed" : "Unplaced"}</strong></div>
                         <div><span>Upcoming</span><strong>{student.eligibleUpcomingDriveCount} eligible</strong></div>
                       </div>
                       <div className="tpo-student-status-list">
-                        <Badge variant={student.needsIntervention ? "warning" : "success"}>{student.interventionLabel}</Badge>
+                        <Badge variant={interventionBadgeVariant(student.interventionPriority)}>{interventionPriorityLabel(student.interventionPriority)}</Badge>
+                        <Badge variant="default">{student.interventionLabel}</Badge>
                         {statusBadges(student).slice(0, 4).map((badge) => (
                           <Badge key={`${student.id}-${badge.label}`} variant={badge.variant}>{badge.label}</Badge>
                         ))}
                       </div>
                       <div className="tpo-student-mobile-sections">
                         <div>
-                          <span>Profile gaps</span>
-                          <p>{student.primaryBlocker ?? "No major blocker detected"}</p>
+                          <span>Intervention reason</span>
+                          <p>{student.interventionReason}</p>
                         </div>
                         <div>
                           <span>Intent</span>
@@ -667,7 +851,7 @@ export default function TpoStudentsPage() {
                           <div className="tpo-student-cell-stack tpo-student-readiness-stack">
                             <strong>{student.readinessScore.toFixed(1)}% readiness</strong>
                             <span>Profile {student.profileCompletenessPct}% • CGPA {student.cgpa.toFixed(2)} • Backlogs {student.backlogs}</span>
-                            <span>Risk score {student.riskScore} • {student.mockAttempts30d} mock{student.mockAttempts30d === 1 ? "" : "s"} in 30d</span>
+                            <span>{student.mockAttempts30d} mock{student.mockAttempts30d === 1 ? "" : "s"} in 30d • {student.isActive7d ? "Active in 7d" : "Inactive in 7d"}</span>
                           </div>
                         </td>
                         <td>
@@ -679,7 +863,8 @@ export default function TpoStudentsPage() {
                         </td>
                         <td>
                           <div className="tpo-student-ops-stack">
-                            <Badge variant={student.needsIntervention ? "warning" : "success"}>{student.interventionLabel}</Badge>
+                            <Badge variant={interventionBadgeVariant(student.interventionPriority)}>{interventionPriorityLabel(student.interventionPriority)}</Badge>
+                            <span className="muted-text">{student.interventionReason}</span>
                             <div className="tpo-student-status-list">
                               {statusBadges(student).map((badge) => (
                                 <Badge key={`${student.id}-${badge.label}`} variant={badge.variant}>{badge.label}</Badge>
@@ -740,12 +925,13 @@ export default function TpoStudentsPage() {
               </div>
               <div>
                 <strong>Next action</strong>
-                <p>{expandedStudent.interventionLabel}</p>
+                <p>{expandedStudent.interventionReason}</p>
                 <p>{expandedStudent.appliedRecently ? "Applied to a drive recently" : "No recent drive application"}</p>
               </div>
             </div>
             <div className="tpo-student-drawer-meta">
-              <Badge variant={expandedStudent.needsIntervention ? "warning" : "success"}>{expandedStudent.interventionLabel}</Badge>
+              <Badge variant={interventionBadgeVariant(expandedStudent.interventionPriority)}>{interventionPriorityLabel(expandedStudent.interventionPriority)}</Badge>
+              <Badge variant="default">{expandedStudent.interventionLabel}</Badge>
               <Badge variant={expandedStudent.isActive7d ? "success" : "danger"}>{expandedStudent.isActive7d ? "Active in 7d" : "Inactive in 7d"}</Badge>
               <Badge variant={expandedStudent.hasResumeReady ? "success" : "warning"}>{expandedStudent.hasResumeReady ? "Resume ready" : "Resume missing"}</Badge>
               <Badge variant={expandedStudent.isProfileCertified ? "success" : "warning"}>{expandedStudent.isProfileCertified ? "Certified" : "Uncertified"}</Badge>
@@ -765,4 +951,3 @@ export default function TpoStudentsPage() {
     </section>
   );
 }
-

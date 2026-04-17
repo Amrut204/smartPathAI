@@ -57,7 +57,7 @@ const AUTOMATION_DISPLAY: Record<TpoAutomationType, AutomationDisplayMeta> = {
     dashboardMetricLabel: "Intervention refreshes",
     primaryCtaLabel: "View students",
     linkedViewLabel: "View students",
-    fallbackTargetPath: "/tpo/students?mode=ops&view=all&isPlaced=false&needsIntervention=true&sortBy=risk_score&sortDir=desc",
+    fallbackTargetPath: "/tpo/students?mode=ops&view=all&isPlaced=false&needsIntervention=true&sortBy=intervention_priority&sortDir=desc",
   },
   result_notification_review: {
     label: "Result Notification Review",

@@ -625,6 +625,7 @@ export default function TpoReportsPage() {
                     <Button
                       onClick={() => {
                         const next = new URLSearchParams(searchParams);
+                        next.set("view", "report-browser");
                         next.set("group", template.group);
                         next.set("reportType", template.type);
                         setSearchParams(next);

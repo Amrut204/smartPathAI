@@ -28,6 +28,14 @@ export default function TpoDriveCreatePage() {
   const [role, setRole] = useState("");
   const [driveDate, setDriveDate] = useState("");
   const [sectorOrIndustry, setSectorOrIndustry] = useState("");
+  const [employerFirstName, setEmployerFirstName] = useState("");
+  const [employerLastName, setEmployerLastName] = useState("");
+  const [employerDesignation, setEmployerDesignation] = useState("");
+  const [employerDepartment, setEmployerDepartment] = useState("");
+  const [employerOfficialEmail, setEmployerOfficialEmail] = useState("");
+  const [employerPersonalEmail, setEmployerPersonalEmail] = useState("");
+  const [employerMobile, setEmployerMobile] = useState("");
+  const [employerOfficeAddress, setEmployerOfficeAddress] = useState("");
   const [ctcMinLpa, setCtcMinLpa] = useState("");
   const [ctcMaxLpa, setCtcMaxLpa] = useState("");
   const [ctcFinalLpa, setCtcFinalLpa] = useState("");
@@ -39,7 +47,19 @@ export default function TpoDriveCreatePage() {
   const [maxActiveBacklogs, setMaxActiveBacklogs] = useState("");
   const [maxTotalBacklogs, setMaxTotalBacklogs] = useState("");
   const [branches, setBranches] = useState("");
+  const [tenthMarksMin, setTenthMarksMin] = useState("");
+  const [tenthMarksMax, setTenthMarksMax] = useState("");
+  const [twelfthMarksMin, setTwelfthMarksMin] = useState("");
+  const [twelfthMarksMax, setTwelfthMarksMax] = useState("");
+  const [diplomaMarksMin, setDiplomaMarksMin] = useState("");
+  const [diplomaMarksMax, setDiplomaMarksMax] = useState("");
   const [minAttendance, setMinAttendance] = useState("");
+  const [readinessMin, setReadinessMin] = useState("");
+  const [profileCompletenessMin, setProfileCompletenessMin] = useState("");
+  const [hasResumeFilter, setHasResumeFilter] = useState<"any" | "yes" | "no">("any");
+  const [isCertifiedFilter, setIsCertifiedFilter] = useState<"any" | "yes" | "no">("any");
+  const [canAccessResourcesFilter, setCanAccessResourcesFilter] = useState<"any" | "yes" | "no">("any");
+  const [canAccessMockTestsFilter, setCanAccessMockTestsFilter] = useState<"any" | "yes" | "no">("any");
   const [excludePlacedStudents, setExcludePlacedStudents] = useState(false);
 
   const normalizedBranches = useMemo(
@@ -51,7 +71,23 @@ export default function TpoDriveCreatePage() {
     [branches],
   );
 
-  const todayIso = new Date().toISOString().slice(0, 10);
+  const todayIso = useMemo(() => {
+    const now = new Date();
+    const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 60_000);
+    return localDate.toISOString().slice(0, 10);
+  }, []);
+
+  const canProceedStepOne = company.trim().length > 0 && Boolean(driveDate);
+
+  const triStateToBoolean = (value: "any" | "yes" | "no") => {
+    if (value === "any") return undefined;
+    return value === "yes";
+  };
+
+  const formatTriState = (value: "any" | "yes" | "no") => {
+    if (value === "any") return "Any";
+    return value === "yes" ? "Yes" : "No";
+  };
 
   const criteria = useMemo(
     () => ({
@@ -59,10 +95,41 @@ export default function TpoDriveCreatePage() {
       maxActiveBacklogs: maxActiveBacklogs ? Number(maxActiveBacklogs) : undefined,
       maxTotalBacklogs: maxTotalBacklogs ? Number(maxTotalBacklogs) : undefined,
       branches: normalizedBranches.length ? normalizedBranches : undefined,
+      tenthMarksMin: tenthMarksMin ? Number(tenthMarksMin) : undefined,
+      tenthMarksMax: tenthMarksMax ? Number(tenthMarksMax) : undefined,
+      twelfthMarksMin: twelfthMarksMin ? Number(twelfthMarksMin) : undefined,
+      twelfthMarksMax: twelfthMarksMax ? Number(twelfthMarksMax) : undefined,
+      diplomaMarksMin: diplomaMarksMin ? Number(diplomaMarksMin) : undefined,
+      diplomaMarksMax: diplomaMarksMax ? Number(diplomaMarksMax) : undefined,
       minAttendance: minAttendance ? Number(minAttendance) : undefined,
+      readinessMin: readinessMin ? Number(readinessMin) : undefined,
+      profileCompletenessMin: profileCompletenessMin ? Number(profileCompletenessMin) : undefined,
+      hasResume: triStateToBoolean(hasResumeFilter),
+      isCertified: triStateToBoolean(isCertifiedFilter),
+      canAccessResources: triStateToBoolean(canAccessResourcesFilter),
+      canAccessMockTests: triStateToBoolean(canAccessMockTestsFilter),
       excludePlacedStudents: excludePlacedStudents ? true : undefined,
     }),
-    [excludePlacedStudents, maxActiveBacklogs, maxTotalBacklogs, minAttendance, minCgpa, normalizedBranches],
+    [
+      canAccessMockTestsFilter,
+      canAccessResourcesFilter,
+      excludePlacedStudents,
+      hasResumeFilter,
+      isCertifiedFilter,
+      maxActiveBacklogs,
+      maxTotalBacklogs,
+      minAttendance,
+      minCgpa,
+      normalizedBranches,
+      profileCompletenessMin,
+      readinessMin,
+      tenthMarksMin,
+      tenthMarksMax,
+      twelfthMarksMin,
+      twelfthMarksMax,
+      diplomaMarksMin,
+      diplomaMarksMax,
+    ],
   );
 
   const invalidatePreview = () => {
@@ -139,6 +206,14 @@ export default function TpoDriveCreatePage() {
         role: role || undefined,
         driveDate,
         sectorOrIndustry: sectorOrIndustry.trim() || undefined,
+        employerFirstName: employerFirstName.trim() || undefined,
+        employerLastName: employerLastName.trim() || undefined,
+        employerDesignation: employerDesignation.trim() || undefined,
+        employerDepartment: employerDepartment.trim() || undefined,
+        employerOfficialEmail: employerOfficialEmail.trim() || undefined,
+        employerPersonalEmail: employerPersonalEmail.trim() || undefined,
+        employerMobile: employerMobile.trim() || undefined,
+        employerOfficeAddress: employerOfficeAddress.trim() || undefined,
         ctcMinLpa: ctcMinLpa ? Number(ctcMinLpa) : undefined,
         ctcMaxLpa: ctcMaxLpa ? Number(ctcMaxLpa) : undefined,
         ctcFinalLpa: ctcFinalLpa ? Number(ctcFinalLpa) : undefined,
@@ -199,7 +274,15 @@ export default function TpoDriveCreatePage() {
           <div className="form-grid">
             <label>
               Company
-              <Input value={company} onChange={(event) => setCompany(event.target.value)} />
+              <Input
+                value={company}
+                onChange={(event) => {
+                  setCompany(event.target.value);
+                  if (error) {
+                    setError(null);
+                  }
+                }}
+              />
             </label>
             <label>
               Role
@@ -211,12 +294,49 @@ export default function TpoDriveCreatePage() {
                 type="date"
                 min={todayIso}
                 value={driveDate}
-                onChange={(event) => setDriveDate(event.target.value)}
+                onChange={(event) => {
+                  setDriveDate(event.target.value);
+                  if (error) {
+                    setError(null);
+                  }
+                }}
               />
             </label>
             <label>
               Sector / Industry
               <Input value={sectorOrIndustry} onChange={(event) => setSectorOrIndustry(event.target.value)} />
+            </label>
+            <label>
+              Employer First Name
+              <Input value={employerFirstName} onChange={(event) => setEmployerFirstName(event.target.value)} />
+            </label>
+            <label>
+              Employer Last Name
+              <Input value={employerLastName} onChange={(event) => setEmployerLastName(event.target.value)} />
+            </label>
+            <label>
+              Employer Designation
+              <Input value={employerDesignation} onChange={(event) => setEmployerDesignation(event.target.value)} />
+            </label>
+            <label>
+              Employer Department
+              <Input value={employerDepartment} onChange={(event) => setEmployerDepartment(event.target.value)} />
+            </label>
+            <label>
+              Official E-mail ID
+              <Input type="email" value={employerOfficialEmail} onChange={(event) => setEmployerOfficialEmail(event.target.value)} />
+            </label>
+            <label>
+              Personal Email ID
+              <Input type="email" value={employerPersonalEmail} onChange={(event) => setEmployerPersonalEmail(event.target.value)} />
+            </label>
+            <label>
+              Mobile No.
+              <Input value={employerMobile} onChange={(event) => setEmployerMobile(event.target.value)} />
+            </label>
+            <label>
+              Office Address
+              <Input value={employerOfficeAddress} onChange={(event) => setEmployerOfficeAddress(event.target.value)} />
             </label>
             <label>
               Visit Date
@@ -253,7 +373,7 @@ export default function TpoDriveCreatePage() {
             </label>
           </div>
           <div className="hero-actions">
-            <Button disabled={!company || !driveDate} onClick={onStepOneNext}>
+            <Button disabled={!canProceedStepOne} onClick={onStepOneNext}>
               Next
             </Button>
           </div>
@@ -314,6 +434,90 @@ export default function TpoDriveCreatePage() {
               />
             </label>
             <label>
+              10th Marks Min %
+              <Input
+                type="number"
+                min="0"
+                max="100"
+                step="0.1"
+                value={tenthMarksMin}
+                onChange={(event) => {
+                  setTenthMarksMin(event.target.value);
+                  invalidatePreview();
+                }}
+              />
+            </label>
+            <label>
+              10th Marks Max %
+              <Input
+                type="number"
+                min="0"
+                max="100"
+                step="0.1"
+                value={tenthMarksMax}
+                onChange={(event) => {
+                  setTenthMarksMax(event.target.value);
+                  invalidatePreview();
+                }}
+              />
+            </label>
+            <label>
+              12th Marks Min %
+              <Input
+                type="number"
+                min="0"
+                max="100"
+                step="0.1"
+                value={twelfthMarksMin}
+                onChange={(event) => {
+                  setTwelfthMarksMin(event.target.value);
+                  invalidatePreview();
+                }}
+              />
+            </label>
+            <label>
+              12th Marks Max %
+              <Input
+                type="number"
+                min="0"
+                max="100"
+                step="0.1"
+                value={twelfthMarksMax}
+                onChange={(event) => {
+                  setTwelfthMarksMax(event.target.value);
+                  invalidatePreview();
+                }}
+              />
+            </label>
+            <label>
+              Diploma Marks Min %
+              <Input
+                type="number"
+                min="0"
+                max="100"
+                step="0.1"
+                value={diplomaMarksMin}
+                onChange={(event) => {
+                  setDiplomaMarksMin(event.target.value);
+                  invalidatePreview();
+                }}
+              />
+            </label>
+            <label>
+              Diploma Marks Max %
+              <Input
+                type="number"
+                min="0"
+                max="100"
+                step="0.1"
+                value={diplomaMarksMax}
+                onChange={(event) => {
+                  setDiplomaMarksMax(event.target.value);
+                  invalidatePreview();
+                }}
+              />
+            </label>
+            <label>
               Min Attendance %
               <Input
                 type="number"
@@ -326,6 +530,90 @@ export default function TpoDriveCreatePage() {
                   invalidatePreview();
                 }}
               />
+            </label>
+            <label>
+              Min Readiness Score
+              <Input
+                type="number"
+                min="0"
+                max="100"
+                step="1"
+                value={readinessMin}
+                onChange={(event) => {
+                  setReadinessMin(event.target.value);
+                  invalidatePreview();
+                }}
+              />
+            </label>
+            <label>
+              Min Profile Completeness %
+              <Input
+                type="number"
+                min="0"
+                max="100"
+                step="1"
+                value={profileCompletenessMin}
+                onChange={(event) => {
+                  setProfileCompletenessMin(event.target.value);
+                  invalidatePreview();
+                }}
+              />
+            </label>
+            <label>
+              Resume Required
+              <Select
+                value={hasResumeFilter}
+                onChange={(event) => {
+                  setHasResumeFilter(event.target.value as "any" | "yes" | "no");
+                  invalidatePreview();
+                }}
+              >
+                <option value="any">Any</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </Select>
+            </label>
+            <label>
+              Profile Certified Required
+              <Select
+                value={isCertifiedFilter}
+                onChange={(event) => {
+                  setIsCertifiedFilter(event.target.value as "any" | "yes" | "no");
+                  invalidatePreview();
+                }}
+              >
+                <option value="any">Any</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </Select>
+            </label>
+            <label>
+              Resource Access Required
+              <Select
+                value={canAccessResourcesFilter}
+                onChange={(event) => {
+                  setCanAccessResourcesFilter(event.target.value as "any" | "yes" | "no");
+                  invalidatePreview();
+                }}
+              >
+                <option value="any">Any</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </Select>
+            </label>
+            <label>
+              Mock Test Access Required
+              <Select
+                value={canAccessMockTestsFilter}
+                onChange={(event) => {
+                  setCanAccessMockTestsFilter(event.target.value as "any" | "yes" | "no");
+                  invalidatePreview();
+                }}
+              >
+                <option value="any">Any</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </Select>
             </label>
             <label style={{ display: "flex", gap: 10, alignItems: "center" }}>
               <input
@@ -358,6 +646,13 @@ export default function TpoDriveCreatePage() {
           <p>Role: {role || "-"}</p>
           <p>Date: {driveDate}</p>
           <p>Sector / Industry: {sectorOrIndustry || "-"}</p>
+          <p>Employer Contact: {`${employerFirstName} ${employerLastName}`.trim() || "-"}</p>
+          <p>Employer Designation: {employerDesignation || "-"}</p>
+          <p>Employer Department: {employerDepartment || "-"}</p>
+          <p>Official E-mail ID: {employerOfficialEmail || "-"}</p>
+          <p>Personal Email ID: {employerPersonalEmail || "-"}</p>
+          <p>Mobile No.: {employerMobile || "-"}</p>
+          <p>Office Address: {employerOfficeAddress || "-"}</p>
           <p>Visit Date: {visitDate || "-"}</p>
           <p>CTC Range: {(ctcMinLpa || "-")}{ctcMaxLpa ? ` - ${ctcMaxLpa}` : ""}</p>
           <p>Final CTC: {ctcFinalLpa || "-"}</p>
@@ -368,7 +663,19 @@ export default function TpoDriveCreatePage() {
           <p>Max Active Backlogs: {maxActiveBacklogs || "-"}</p>
           <p>Max Total Backlogs: {maxTotalBacklogs || "-"}</p>
           <p>Branches: {normalizedBranches.join(", ") || "-"}</p>
+          <p>10th Marks Min: {tenthMarksMin || "-"}</p>
+          <p>10th Marks Max: {tenthMarksMax || "-"}</p>
+          <p>12th Marks Min: {twelfthMarksMin || "-"}</p>
+          <p>12th Marks Max: {twelfthMarksMax || "-"}</p>
+          <p>Diploma Marks Min: {diplomaMarksMin || "-"}</p>
+          <p>Diploma Marks Max: {diplomaMarksMax || "-"}</p>
           <p>Min Attendance: {minAttendance || "-"}</p>
+          <p>Min Readiness Score: {readinessMin || "-"}</p>
+          <p>Min Profile Completeness: {profileCompletenessMin || "-"}</p>
+          <p>Resume Required: {formatTriState(hasResumeFilter)}</p>
+          <p>Profile Certified Required: {formatTriState(isCertifiedFilter)}</p>
+          <p>Resource Access Required: {formatTriState(canAccessResourcesFilter)}</p>
+          <p>Mock Test Access Required: {formatTriState(canAccessMockTestsFilter)}</p>
           <p>Exclude Already Placed: {excludePlacedStudents ? "Yes" : "No"}</p>
           <label>
             Publish mode
