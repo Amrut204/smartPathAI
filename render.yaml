@@ -1,3 +1,6 @@
+# Render is the primary pilot launch target for this repo.
+# Backend APP_URL must be set to the public client URL in the Render dashboard.
+# Frontend API_UPSTREAM must point to the public backend Render URL.
 services:
   - type: web
     name: smartpath-server
@@ -11,6 +14,8 @@ services:
         value: production
       - key: PORT
         value: 5000
+      - key: TRUST_PROXY
+        value: true
 
   - type: web
     name: smartpath-client
@@ -21,4 +26,4 @@ services:
     healthCheckPath: /
     envVars:
       - key: API_UPSTREAM
-        value: https://smartpath-server.onrender.com # replace if your backend service name differs
+        value: https://smartpath-server.onrender.com # replace with your actual backend Render URL

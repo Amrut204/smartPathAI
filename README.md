@@ -26,12 +26,13 @@ It combines:
 - [`server/`](./server) backend API, services, scripts, tests
 - [`docs/`](./docs) deployment and project notes
 
-This repository is prepared for containerized deployment. The current recommended path is:
+This repository is prepared for containerized deployment. The current recommended launch path is:
 
-- DigitalOcean droplet for hosting
+- Render for hosting
 - MongoDB Atlas for database
 - AWS S3 for resource files
 - Resend for email
+- AI off for the first pilot rollout
 
 Local-only folders like scraped data, backups, reports, and material archives are ignored.
 
@@ -97,21 +98,21 @@ At minimum:
 - `NODE_ENV`
 - `PORT`
 
-Current production-oriented integrations also require:
+Current production-oriented integrations required for the Render pilot launch:
 
 - `RESEND_API_KEY`
 - `RESEND_FROM_EMAIL`
+- `COMM_UNSUB_SECRET`
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
 - `AWS_S3_BUCKET`
 - `AWS_REGION`
 - `STORAGE_MODE=s3`
 - `STORAGE_S3_PUBLIC_BASE_URL`
-- `GROQ_API_KEY`
+- `TRUST_PROXY=true`
 
 Common optional runtime settings:
 
-- `COMM_UNSUB_SECRET`
 - `GROQ_MODEL`
 - `GROQ_BUDGET_ENABLED`
 - `GROQ_REQUEST_LIMIT_MONTHLY`
@@ -122,31 +123,9 @@ Common optional runtime settings:
 - `RESOURCE_S3_READ_LIMIT_MONTHLY`
 - `RESOURCE_S3_TRANSFER_LIMIT_GB_MONTHLY`
 
-## DigitalOcean Deployment
-
-The recommended deployment path is a single Ubuntu droplet running:
-
-1. `server` container
-2. `client` container
-3. host Nginx for domain + HTTPS
-
-Use:
-
-- compose file: [`docker-compose.digitalocean.yml`](./docker-compose.digitalocean.yml)
-- backend env template: [`ops/digitalocean/server.env.example`](./ops/digitalocean/server.env.example)
-- Nginx vhost template: [`ops/digitalocean/nginx/smartpath.conf.example`](./ops/digitalocean/nginx/smartpath.conf.example)
-- full guide: [`docs/DEPLOYMENT_DIGITALOCEAN.md`](./docs/DEPLOYMENT_DIGITALOCEAN.md)
-
-### Why this is the recommended path
-
-- Atlas is already the live database
-- S3 is already the live resource storage path
-- Resend is already the live email path
-- the droplet only needs to host the app containers
-
 ## Render Deployment
 
-Render support is still documented, but it is now the secondary path.
+Render is the primary launch path for the pilot-safe production rollout.
 
 This repo is set up for a two-service Render deployment:
 
@@ -178,6 +157,9 @@ The client Nginx config injects this at container start and proxies `/api/*` to 
 - Root Directory: `server`
 - Environment: `Docker`
 - Start from [`server/Dockerfile`](./server/Dockerfile)
+- Health check: `/api/v1/health`
+- Set `APP_URL` to the public frontend Render URL
+- Set `TRUST_PROXY=true`
 
 #### Frontend service
 
@@ -186,6 +168,7 @@ The client Nginx config injects this at container start and proxies `/api/*` to 
 - Start from [`client/Dockerfile`](./client/Dockerfile)
 - Env var:
   - `API_UPSTREAM=https://<your-backend>.onrender.com`
+- Health check: `/`
 
 ### Important Render Notes
 
@@ -194,6 +177,19 @@ The client Nginx config injects this at container start and proxies `/api/*` to 
 - use Render environment variables for all secrets
 - use MongoDB Atlas for production
 - use your production S3 bucket, not local files
+- keep AI off for the first launch by leaving `GROQ_API_KEY` unset
+- treat AI flows as non-blocking until after the pilot launch is stable
+
+## DigitalOcean Deployment
+
+DigitalOcean remains an alternate deployment path, not the primary launch recommendation for this tranche.
+
+Use:
+
+- compose file: [`docker-compose.digitalocean.yml`](./docker-compose.digitalocean.yml)
+- backend env template: [`ops/digitalocean/server.env.example`](./ops/digitalocean/server.env.example)
+- Nginx vhost template: [`ops/digitalocean/nginx/smartpath.conf.example`](./ops/digitalocean/nginx/smartpath.conf.example)
+- full guide: [`docs/DEPLOYMENT_DIGITALOCEAN.md`](./docs/DEPLOYMENT_DIGITALOCEAN.md)
 
 ## Build Commands
 
@@ -236,6 +232,7 @@ Seeded demo users vary by database/seed script. Keep demo credentials out of pub
 - tenant branding changes the visible sender name
 - resources are expected to be S3-backed in production
 - local scripts for scraping/import/auditing are not required for Render runtime
+- AI is off for the first pilot rollout unless deliberately enabled later
 
 ## License
 

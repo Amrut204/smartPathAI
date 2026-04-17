@@ -67,3 +67,25 @@ desktop.ini
 # Misc local files
 tmp.cookies.txt
 home-shot.png
+
+# One-off debug/transform scripts (not part of the app)
+triage_readme.js
+retry_transform.js
+test_script.js
+transform_script.js
+
+# Debug/experiment output files
+final_output.txt
+test.txt
+free_m.txt
+syntax_err.txt
+temp_err.txt
+triage_log.txt
+retry_log.txt
+
+# Scraped HTML (should never be committed)
+tmp_*.html
+
+# Test framework ghost files
+tmp-smoke.spec.cjs
+tmp-playwright-require.cjs
