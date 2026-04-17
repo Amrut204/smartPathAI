@@ -3,15 +3,9 @@ import { Router } from "express";
 import { asyncHandler } from "../middleware/error-handler.js";
 import { requireAuth } from "../middleware/auth.middleware.js";
 import { authorizeRole } from "../middleware/rbac.middleware.js";
-import { DemoFeedbackService } from "../services/demo-feedback.service.js";
 import { QuestionBankService } from "../services/question-bank.service.js";
 import { getMongoDb } from "../utils/mongodb.js";
 import adminOpsRoutes from "./admin-ops.routes.js";
-import {
-  createDemoFeedbackSchema,
-  listDemoFeedbackQuerySchema,
-  updateDemoFeedbackSchema,
-} from "../validators/demo-feedback.schema.js";
 import {
   listQuestionBankQuerySchema,
   reviewQuestionBankSchema,
@@ -87,15 +81,6 @@ router.get(
   }),
 );
 
-router.post(
-  "/demo-feedback",
-  asyncHandler(async (req, res) => {
-    const body = createDemoFeedbackSchema.parse(req.body);
-    const data = await DemoFeedbackService.create(req.auth!.tenantId, req.auth!.userId, body);
-    res.status(201).json(successResponse(data));
-  }),
-);
-
 router.get(
   "/question-bank",
   asyncHandler(async (req, res) => {
@@ -130,38 +115,6 @@ router.patch(
   }),
 );
 
-router.get(
-  "/demo-feedback",
-  asyncHandler(async (req, res) => {
-    const query = listDemoFeedbackQuerySchema.parse(req.query);
-    const data = await DemoFeedbackService.list(req.auth!.tenantId, query);
-    res.json(successResponse(data));
-  }),
-);
-
-router.get(
-  "/demo-feedback/:id",
-  asyncHandler(async (req, res) => {
-    const data = await DemoFeedbackService.getById(req.auth!.tenantId, String(req.params.id));
-    res.json(successResponse(data));
-  }),
-);
-
-router.patch(
-  "/demo-feedback/:id",
-  asyncHandler(async (req, res) => {
-    const body = updateDemoFeedbackSchema.parse(req.body);
-    const data = await DemoFeedbackService.update(req.auth!.tenantId, String(req.params.id), body);
-    res.json(successResponse(data));
-  }),
-);
-
-router.get(
-  "/demo-analytics",
-  asyncHandler(async (req, res) => {
-    const data = await DemoFeedbackService.getAnalytics(req.auth!.tenantId);
-    res.json(successResponse(data));
-  }),
-);
+// REMOVED: All /demo-feedback and /demo-analytics routes (demo mode deleted)
 
 export default router;
