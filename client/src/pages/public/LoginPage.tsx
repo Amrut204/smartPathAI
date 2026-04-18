@@ -111,6 +111,9 @@ export default function LoginPage() {
               Accounts are created by your college admin or TPO. Use the seeded credentials shared with you to sign in.
             </p>
             <p>
+              First-time student flow: Sign in, set your permanent password, review onboarding declaration, then continue to dashboard.
+            </p>
+            <p>
               Need access help? <a href="mailto:admin@campusdrive.me?subject=Smart%20Path%20Access">Contact us</a>
             </p>
           </div>

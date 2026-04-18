@@ -10,6 +10,12 @@ export default function StudentOnboardingDeclarationPage() {
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
 
+  const quickChecklist = useMemo(() => ([
+    "My profile data directly affects my drive eligibility.",
+    "Incorrect or misleading data can lead to drive removal or disciplinary escalation.",
+    "Platform resources are for learning use and must not be redistributed.",
+  ]), []);
+
   const warnings = useMemo(() => ([
     "If a discrepancy is found before a drive, you may be removed from that drive and asked to meet the TPO before continuing.",
     "If falsification is confirmed, the college may block you from further drives for the academic year and place a written record in your placement file.",
@@ -32,7 +38,7 @@ export default function StudentOnboardingDeclarationPage() {
     setStatus(null);
 
     if (!confirmed) {
-      setStatus("Confirm that you have understood the warning before continuing.");
+      setStatus("Select the acknowledgement checkbox before continuing.");
       return;
     }
 
@@ -52,32 +58,42 @@ export default function StudentOnboardingDeclarationPage() {
       <section className="student-workspace-panel student-declaration-panel">
         <div className="student-workspace-panel-head">
           <div>
-            <p className="resources-kicker">Placement Declaration</p>
-            <h1>Read this before using placement features.</h1>
+            <p className="resources-kicker">Step 2 of 3 · Onboarding declaration</p>
+            <h1>Confirm your placement profile acknowledgement.</h1>
             <p>
-              The details you submit can affect your drive eligibility and the college&apos;s relationship with recruiters.
-              If any locked academic detail is wrong, contact the TPO instead of working around it.
+              Before entering your student workspace, review these points and confirm you understand them.
             </p>
           </div>
         </div>
 
         <div className="student-declaration-warning">
+          <h2>Quick checklist</h2>
+          <ul className="dashboard-bullet-list">
+            {quickChecklist.map((line) => (
+              <li key={line}>{line}</li>
+            ))}
+          </ul>
+        </div>
+
+        <details className="student-declaration-warning">
+          <summary>
+            <strong>Read full policy details</strong>
+          </summary>
+
           <h2>Consequences of false or misleading data</h2>
           <ul className="dashboard-bullet-list">
             {warnings.map((warning) => (
               <li key={warning}>{warning}</li>
             ))}
           </ul>
-        </div>
 
-        <div className="student-declaration-warning">
           <h2>Resource usage acknowledgement</h2>
           <ul className="dashboard-bullet-list">
             {resourceUsageLines.map((line) => (
               <li key={line}>{line}</li>
             ))}
           </ul>
-        </div>
+        </details>
 
         <form className="student-declaration-form" onSubmit={onSubmit}>
           <label className="student-profile-checkbox">
@@ -95,6 +111,7 @@ export default function StudentOnboardingDeclarationPage() {
           <label>
             Type <strong>{expectedValue}</strong> to continue
             <Input value={typedValue} onChange={(event) => setTypedValue(event.target.value)} />
+            <small className="muted-text">Use the value exactly as shown.</small>
           </label>
 
           <div className="hero-actions">

@@ -160,7 +160,9 @@ function StudentLayout() {
         title="PlacementIQ"
         userName={profile?.full_name ?? "Student"}
         studentProfileCompletionPct={studentProfile?.profileCompleteness.pct ?? null}
-        studentHasAnnouncementDot={(announcements ?? []).some((item) => item.hasNavIndicator)}
+        studentHasAnnouncementDot={(announcements ?? []).some((item) => item.unread)}
+        studentCanAccessResources={studentProfile?.canAccessResources ?? null}
+        studentCanAccessMockTests={studentProfile?.canAccessMockTests ?? null}
         onLogout={logout}
       />
       <StudentTopicSearchStrip />

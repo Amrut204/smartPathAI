@@ -38,6 +38,8 @@ interface WorkspaceNavbarProps {
   userName: string;
   studentProfileCompletionPct?: number | null;
   studentHasAnnouncementDot?: boolean;
+  studentCanAccessResources?: boolean | null;
+  studentCanAccessMockTests?: boolean | null;
   onLogout: () => void;
 }
 
@@ -47,6 +49,8 @@ export function WorkspaceNavbar({
   userName,
   studentProfileCompletionPct = null,
   studentHasAnnouncementDot = false,
+  studentCanAccessResources = null,
+  studentCanAccessMockTests = null,
   onLogout,
 }: WorkspaceNavbarProps) {
   const location = useLocation();
@@ -89,15 +93,25 @@ export function WorkspaceNavbar({
 
       <div className={`navbar-nav ${menuOpen ? "open" : ""}`.trim()}>
         {desktopLinks.map((link) => {
+          const isResourcesLocked = role === "student" && link.href === "/resources" && studentCanAccessResources === false;
+          const isMockTestsLocked = role === "student" && link.href === "/mock-tests" && studentCanAccessMockTests === false;
+          const isLockedLink = isResourcesLocked || isMockTestsLocked;
+          const lockedModule = isResourcesLocked ? "resources" : isMockTestsLocked ? "mock-tests" : null;
+          const targetHref = isLockedLink && lockedModule
+            ? `/profile?blocked=${lockedModule}&from=${encodeURIComponent(link.href)}`
+            : link.href;
           const isActive = isLinkActive(link.href);
           return (
             <Link
               key={link.href}
-              to={link.href}
-              className={`navbar-link ${isActive ? "active" : ""}`.trim()}
+              to={targetHref}
+              className={`navbar-link ${isActive ? "active" : ""} ${isLockedLink ? "locked" : ""}`.trim()}
               onClick={() => setMenuOpen(false)}
+              aria-disabled={isLockedLink}
+              title={isLockedLink ? "Complete required profile fields to unlock this section." : undefined}
             >
               <span>{link.label}</span>
+              {isLockedLink ? <span className="navbar-link-badge locked">Locked</span> : null}
               {role === "student" && link.href === "/announcements" && studentHasAnnouncementDot ? (
                 <span className="navbar-link-dot" aria-label="New announcements" />
               ) : null}
