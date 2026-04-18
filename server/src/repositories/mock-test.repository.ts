@@ -14,6 +14,7 @@ interface ListFilters {
   studentAudience?: {
     branch: string;
     batch: string;
+    academicYear: string;
   };
 }
 
@@ -22,12 +23,14 @@ function buildAudienceProjection() {
     audience_mode: 1,
     audience_branches: 1,
     audience_batches: 1,
+    audience_years: 1,
   };
 }
 
-function buildStudentAudienceFilter(tenantId: string, studentAudience?: { branch: string; batch: string }) {
+function buildStudentAudienceFilter(tenantId: string, studentAudience?: { branch: string; batch: string; academicYear: string }) {
   const branch = String(studentAudience?.branch ?? "").trim();
   const batch = String(studentAudience?.batch ?? "").trim();
+  const academicYear = String(studentAudience?.academicYear ?? "").trim();
 
   return {
     $or: [
@@ -52,6 +55,13 @@ function buildStudentAudienceFilter(tenantId: string, studentAudience?: { branch
                   { audience_batches: { $exists: false } },
                   { audience_batches: { $size: 0 } },
                   { audience_batches: batch },
+                ],
+              },
+              {
+                $or: [
+                  { audience_years: { $exists: false } },
+                  { audience_years: { $size: 0 } },
+                  { audience_years: academicYear },
                 ],
               },
             ],
@@ -124,6 +134,7 @@ export const MockTestRepository = {
         audienceMode: String(row.audience_mode ?? "all"),
         audienceBranches: Array.isArray(row.audience_branches) ? row.audience_branches.map((value) => String(value)) : [],
         audienceBatches: Array.isArray(row.audience_batches) ? row.audience_batches.map((value) => String(value)) : [],
+        audienceYears: Array.isArray(row.audience_years) ? row.audience_years.map((value) => String(value)) : [],
       })),
       hasMore,
       nextCursor: hasMore ? String(items[items.length - 1]?.created_at) : null,
@@ -136,6 +147,7 @@ export const MockTestRepository = {
     studentAudience?: {
       branch: string;
       batch: string;
+      academicYear: string;
     };
   }) {
     const db = await getMongoDb();
@@ -180,6 +192,7 @@ export const MockTestRepository = {
       audienceMode: "all" | "filtered";
       audienceBranches?: string[];
       audienceBatches?: string[];
+      audienceYears?: string[];
     },
   ) {
     const db = await getMongoDb();
@@ -200,6 +213,7 @@ export const MockTestRepository = {
       audience_mode: input.audienceMode,
       audience_branches: normalizeAudienceValues(input.audienceBranches),
       audience_batches: normalizeAudienceValues(input.audienceBatches),
+      audience_years: normalizeAudienceValues(input.audienceYears),
       primary_branches: [],
       is_cross_branch: false,
       created_at: now,
@@ -222,6 +236,7 @@ export const MockTestRepository = {
       audienceMode: "all" | "filtered";
       audienceBranches: string[];
       audienceBatches: string[];
+      audienceYears: string[];
     }>,
   ) {
     const db = await getMongoDb();
@@ -235,6 +250,7 @@ export const MockTestRepository = {
     if (updates.audienceMode !== undefined) payload.audience_mode = updates.audienceMode;
     if (updates.audienceBranches !== undefined) payload.audience_branches = normalizeAudienceValues(updates.audienceBranches);
     if (updates.audienceBatches !== undefined) payload.audience_batches = normalizeAudienceValues(updates.audienceBatches);
+    if (updates.audienceYears !== undefined) payload.audience_years = normalizeAudienceValues(updates.audienceYears);
     payload.updated_at = new Date().toISOString();
 
     const result = await db.collection("mock_tests").updateOne(

@@ -45,14 +45,15 @@ const mockTestAudienceFields = {
   audienceMode: mockTestAudienceModeSchema.default("all"),
   audienceBranches: z.array(z.string().trim().min(1).max(80)).max(20).default([]),
   audienceBatches: z.array(z.string().trim().min(1).max(12)).max(20).default([]),
+  audienceYears: z.array(z.enum(["first_year", "second_year", "third_year", "final_year"])).max(4).default([]),
 };
 
-function hasAudienceSelection(value: { audienceMode?: "all" | "filtered"; audienceBranches?: string[]; audienceBatches?: string[] }) {
+function hasAudienceSelection(value: { audienceMode?: "all" | "filtered"; audienceBranches?: string[]; audienceBatches?: string[]; audienceYears?: string[] }) {
   if (value.audienceMode !== "filtered") {
     return true;
   }
 
-  return (value.audienceBranches?.length ?? 0) > 0 || (value.audienceBatches?.length ?? 0) > 0;
+  return (value.audienceBranches?.length ?? 0) > 0 || (value.audienceBatches?.length ?? 0) > 0 || (value.audienceYears?.length ?? 0) > 0;
 }
 
 export const createMockTestSchema = z.object({
@@ -79,6 +80,7 @@ export const updateMockTestSchema = z.object({
   audienceMode: mockTestAudienceModeSchema.optional(),
   audienceBranches: z.array(z.string().trim().min(1).max(80)).max(20).optional(),
   audienceBatches: z.array(z.string().trim().min(1).max(12)).max(20).optional(),
+  audienceYears: z.array(z.enum(["first_year", "second_year", "third_year", "final_year"])).max(4).optional(),
 }).refine((value) => Object.keys(value).length > 0, { message: "At least one field is required" });
 
 export const publishMockTestSchema = z.object({

@@ -156,6 +156,7 @@ export type AdminMockTestRow = {
   audienceMode: "all" | "filtered";
   audienceBranches: string[];
   audienceBatches: string[];
+  audienceYears: string[];
   audienceSummary: string;
 };
 
@@ -485,6 +486,9 @@ export async function adminCreateMockTest(input: {
   audienceMode?: "all" | "filtered";
   audienceBranches?: string[];
   audienceBatches?: string[];
+  audienceYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
+  customTopicName?: string;
+  customCompanyName?: string;
 }) {
   const data = await sendJson<AdminMockTestRow>("/api/v1/internal/admin-ops/mock-tests", "POST", input);
   await Promise.all([
@@ -506,6 +510,9 @@ export async function adminUpdateMockTest(input: {
   audienceMode?: "all" | "filtered";
   audienceBranches?: string[];
   audienceBatches?: string[];
+  audienceYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
+  customTopicName?: string;
+  customCompanyName?: string;
 }) {
   const data = await sendJson<AdminMockTestRow>(`/api/v1/internal/admin-ops/mock-tests/${encodeURIComponent(input.testId)}`, "PATCH", input);
   await mutate(`/api/v1/internal/admin-ops/mock-tests?tenantId=${encodeURIComponent(input.tenantId)}`);
@@ -556,6 +563,9 @@ export async function adminCreateMockTestFromImport(input: {
   audienceMode?: "all" | "filtered";
   audienceBranches?: string[];
   audienceBatches?: string[];
+  audienceYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
+  customTopicName?: string;
+  customCompanyName?: string;
   rows: Array<Record<string, string>>;
 }) {
   const data = await sendJson<AdminMockTestRow>("/api/v1/internal/admin-ops/mock-tests/import/create", "POST", input);

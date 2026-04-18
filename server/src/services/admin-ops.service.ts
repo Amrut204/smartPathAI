@@ -80,23 +80,20 @@ function summarizeMockTestAudience(input: {
   audienceMode?: string | null;
   audienceBranches?: string[];
   audienceBatches?: string[];
+  audienceYears?: string[];
 }) {
   const audienceMode = String(input.audienceMode ?? "all");
   const branches = normalizeStringList(input.audienceBranches);
   const batches = normalizeStringList(input.audienceBatches);
+  const years = normalizeStringList(input.audienceYears).map((value) => value.replace(/_/g, " "));
   if (audienceMode !== "filtered") {
     return "All students";
   }
-  if (branches.length > 0 && batches.length > 0) {
-    return `${branches.join(", ")} | ${batches.join(", ")}`;
-  }
-  if (branches.length > 0) {
-    return branches.join(", ");
-  }
-  if (batches.length > 0) {
-    return batches.join(", ");
-  }
-  return "All students";
+  const parts = [];
+  if (branches.length > 0) parts.push(branches.join(", "));
+  if (batches.length > 0) parts.push(batches.join(", "));
+  if (years.length > 0) parts.push(years.join(", "));
+  return parts.length > 0 ? parts.join(" | ") : "All students";
 }
 
 function normalizeQuestionImportHeader(value: string) {
@@ -210,6 +207,74 @@ async function listCompanies(tenantId: string) {
   ).sort({ name: 1 }).toArray();
 
   return rows.map((row) => ({ id: String(row.id), name: String(row.name ?? "") }));
+}
+
+async function resolveTopicId(tenantId: string, topicId?: string, customTopicName?: string) {
+  if (topicId) {
+    return topicId;
+  }
+  const customName = String(customTopicName ?? "").trim();
+  if (!customName) {
+    return undefined;
+  }
+
+  const db = await getMongoDb();
+  const existing = await db.collection("topics").findOne(
+    {
+      name: { $regex: `^${customName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`, $options: "i" },
+      $or: [{ tenant_id: tenantId }, { tenant_id: null }, { tenant_id: { $exists: false } }],
+    },
+    { projection: { _id: 0, id: 1 } },
+  );
+
+  if (existing?.id) {
+    return String(existing.id);
+  }
+
+  const id = randomUUID();
+  const now = nowIso();
+  await db.collection("topics").insertOne({
+    id,
+    tenant_id: tenantId,
+    name: customName,
+    created_at: now,
+    updated_at: now,
+  });
+  return id;
+}
+
+async function resolveCompanyId(tenantId: string, companyId?: string, customCompanyName?: string) {
+  if (companyId) {
+    return companyId;
+  }
+  const customName = String(customCompanyName ?? "").trim();
+  if (!customName) {
+    return undefined;
+  }
+
+  const db = await getMongoDb();
+  const existing = await db.collection("companies").findOne(
+    {
+      name: { $regex: `^${customName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`, $options: "i" },
+      $or: [{ tenant_id: tenantId }, { tenant_id: null }, { tenant_id: { $exists: false } }],
+    },
+    { projection: { _id: 0, id: 1 } },
+  );
+
+  if (existing?.id) {
+    return String(existing.id);
+  }
+
+  const id = randomUUID();
+  const now = nowIso();
+  await db.collection("companies").insertOne({
+    id,
+    tenant_id: tenantId,
+    name: customName,
+    created_at: now,
+    updated_at: now,
+  });
+  return id;
 }
 
 const PLATFORM_SETTINGS_COLLECTION = "platform_settings";
@@ -1072,7 +1137,7 @@ export const AdminOpsService = {
     const db = await getMongoDb();
     const rows = await db.collection("mock_tests").find(
       { $or: [{ tenant_id: selectedTenantId }, { tenant_id: null }] },
-      { projection: { _id: 0, id: 1, title: 1, topic_id: 1, company_id: 1, duration_sec: 1, difficulty: 1, is_active: 1, tenant_id: 1, created_at: 1, audience_mode: 1, audience_branches: 1, audience_batches: 1 } },
+      { projection: { _id: 0, id: 1, title: 1, topic_id: 1, company_id: 1, duration_sec: 1, difficulty: 1, is_active: 1, tenant_id: 1, created_at: 1, audience_mode: 1, audience_branches: 1, audience_batches: 1, audience_years: 1 } },
     ).sort({ created_at: -1 }).limit(200).toArray();
     const topics = await listTopics(selectedTenantId);
     const companies = await listCompanies(selectedTenantId);
@@ -1093,10 +1158,12 @@ export const AdminOpsService = {
       audienceMode: String(row.audience_mode ?? "all"),
       audienceBranches: Array.isArray(row.audience_branches) ? row.audience_branches.map((value) => String(value)) : [],
       audienceBatches: Array.isArray(row.audience_batches) ? row.audience_batches.map((value) => String(value)) : [],
+      audienceYears: Array.isArray(row.audience_years) ? row.audience_years.map((value) => String(value)) : [],
       audienceSummary: summarizeMockTestAudience({
         audienceMode: String(row.audience_mode ?? "all"),
         audienceBranches: Array.isArray(row.audience_branches) ? row.audience_branches.map((value) => String(value)) : [],
         audienceBatches: Array.isArray(row.audience_batches) ? row.audience_batches.map((value) => String(value)) : [],
+        audienceYears: Array.isArray(row.audience_years) ? row.audience_years.map((value) => String(value)) : [],
       }),
     }));
   },
@@ -1120,7 +1187,9 @@ export const AdminOpsService = {
     actorUserId: string;
     title: string;
     topicId?: string;
+    customTopicName?: string;
     companyId?: string;
+    customCompanyName?: string;
     durationSec: number;
     difficulty: "easy" | "medium" | "hard";
     questions: Array<{ text: string; options: string[]; correctIndex: number; explanation?: string; skillTag?: string }>;
@@ -1128,10 +1197,19 @@ export const AdminOpsService = {
     audienceMode: "all" | "filtered";
     audienceBranches?: string[];
     audienceBatches?: string[];
+    audienceYears?: string[];
   }) {
     const tenantId = assertSelectedTenantId(input.tenantId);
     await assertTenantExists(tenantId);
-    const result = await MockTestService.createTest(tenantId, input.actorUserId, input);
+    const [resolvedTopicId, resolvedCompanyId] = await Promise.all([
+      resolveTopicId(tenantId, input.topicId, input.customTopicName),
+      resolveCompanyId(tenantId, input.companyId, input.customCompanyName),
+    ]);
+    const result = await MockTestService.createTest(tenantId, input.actorUserId, {
+      ...input,
+      topicId: resolvedTopicId,
+      companyId: resolvedCompanyId,
+    });
     this.clearTenantWorkspaceCache(tenantId);
     return result;
   },
@@ -1141,13 +1219,16 @@ export const AdminOpsService = {
     actorUserId: string;
     title: string;
     topicId?: string;
+    customTopicName?: string;
     companyId?: string;
+    customCompanyName?: string;
     durationSec: number;
     difficulty: "easy" | "medium" | "hard";
     isActive: boolean;
     audienceMode: "all" | "filtered";
     audienceBranches?: string[];
     audienceBatches?: string[];
+    audienceYears?: string[];
     rows: Array<Record<string, string>>;
   }) {
     const parsed = await this.previewMockQuestionImport(input.rows);
@@ -1166,17 +1247,28 @@ export const AdminOpsService = {
     testId: string;
     title?: string;
     topicId?: string;
+    customTopicName?: string;
     companyId?: string;
+    customCompanyName?: string;
     durationSec?: number;
     difficulty?: "easy" | "medium" | "hard";
     isActive?: boolean;
     audienceMode?: "all" | "filtered";
     audienceBranches?: string[];
     audienceBatches?: string[];
+    audienceYears?: string[];
   }) {
     const tenantId = assertSelectedTenantId(input.tenantId);
     await assertTenantExists(tenantId);
-    return MockTestService.updateTest(tenantId, input.testId, input);
+    const [resolvedTopicId, resolvedCompanyId] = await Promise.all([
+      resolveTopicId(tenantId, input.topicId, input.customTopicName),
+      resolveCompanyId(tenantId, input.companyId, input.customCompanyName),
+    ]);
+    return MockTestService.updateTest(tenantId, input.testId, {
+      ...input,
+      topicId: resolvedTopicId,
+      companyId: resolvedCompanyId,
+    });
   },
 
   async publishMockTest(input: { tenantId: string; testId: string; isActive: boolean }) {

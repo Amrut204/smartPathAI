@@ -21,6 +21,17 @@ import {
   normalizeMockTestBranches,
 } from "../config/mock-test-branch.config.js";
 
+function inferAcademicYear(currentSemester: string | null | undefined) {
+  const semester = Number(String(currentSemester ?? "").trim());
+  if (!Number.isFinite(semester) || semester <= 0) {
+    return "";
+  }
+  if (semester <= 2) return "first_year";
+  if (semester <= 4) return "second_year";
+  if (semester <= 6) return "third_year";
+  return "final_year";
+}
+
 const STUDENT_MIN_VISIBLE_QUESTION_COUNT = 10;
 const MOCK_BRANCH_SECTION_THRESHOLD = 5;
 const PERCENTILE_MIN_ATTEMPTS = 15;
@@ -58,48 +69,50 @@ function summarizeAudience(input: {
   audienceMode?: string | null;
   audienceBranches?: string[];
   audienceBatches?: string[];
+  audienceYears?: string[];
 }) {
   const audienceMode = String(input.audienceMode ?? "all");
   const branches = [...new Set((input.audienceBranches ?? []).map((value) => String(value).trim()).filter(Boolean))];
   const batches = [...new Set((input.audienceBatches ?? []).map((value) => String(value).trim()).filter(Boolean))];
+  const years = [...new Set((input.audienceYears ?? []).map((value) => String(value).trim()).filter(Boolean))];
 
   if (audienceMode !== "filtered") {
     return "All students";
   }
 
-  if (branches.length > 0 && batches.length > 0) {
-    return `${branches.join(", ")} | ${batches.join(", ")}`;
+  const parts = [];
+  if (branches.length > 0) parts.push(branches.join(", "));
+  if (batches.length > 0) parts.push(batches.join(", "));
+  if (years.length > 0) {
+    parts.push(years.map((value) => value.replace(/_/g, " ")).join(", "));
   }
-  if (branches.length > 0) {
-    return branches.join(", ");
-  }
-  if (batches.length > 0) {
-    return batches.join(", ");
-  }
-  return "All students";
+  return parts.length > 0 ? parts.join(" | ") : "All students";
 }
 
 function assertValidAudience(input: {
   audienceMode?: "all" | "filtered";
   audienceBranches?: string[];
   audienceBatches?: string[];
+  audienceYears?: string[];
 }) {
   if (input.audienceMode !== "filtered") {
     return;
   }
 
-  if ((input.audienceBranches?.length ?? 0) === 0 && (input.audienceBatches?.length ?? 0) === 0) {
-    throw new AppError("MOCK_TEST_AUDIENCE_INVALID", "Select at least one branch or batch for a filtered audience.", 400);
+  if ((input.audienceBranches?.length ?? 0) === 0 && (input.audienceBatches?.length ?? 0) === 0 && (input.audienceYears?.length ?? 0) === 0) {
+    throw new AppError("MOCK_TEST_AUDIENCE_INVALID", "Select at least one branch, batch, or academic year for a filtered audience.", 400);
   }
 }
 
 async function getStudentAudienceContext(tenantId: string, userId: string) {
   const student = await StudentRepository.getStudentByUserId(tenantId, userId);
+  const profileData = normalizeStudentProfileData(student.profile_data);
   return {
     student,
     audience: {
       branch: String(student.branch ?? ""),
       batch: String(student.batch ?? ""),
+      academicYear: inferAcademicYear(profileData.currentSemester),
     },
   };
 }
@@ -699,6 +712,7 @@ export const MockTestService = {
       audienceMode: "all" | "filtered";
       audienceBranches?: string[];
       audienceBatches?: string[];
+      audienceYears?: string[];
     },
   ) {
     assertValidAudience(input);
@@ -721,10 +735,12 @@ export const MockTestService = {
       audienceMode: String(created.audience_mode ?? "all"),
       audienceBranches: Array.isArray(created.audience_branches) ? created.audience_branches.map((value) => String(value)) : [],
       audienceBatches: Array.isArray(created.audience_batches) ? created.audience_batches.map((value) => String(value)) : [],
+      audienceYears: Array.isArray(created.audience_years) ? created.audience_years.map((value) => String(value)) : [],
       audienceSummary: summarizeAudience({
         audienceMode: String(created.audience_mode ?? "all"),
         audienceBranches: Array.isArray(created.audience_branches) ? created.audience_branches.map((value) => String(value)) : [],
         audienceBatches: Array.isArray(created.audience_batches) ? created.audience_batches.map((value) => String(value)) : [],
+        audienceYears: Array.isArray(created.audience_years) ? created.audience_years.map((value) => String(value)) : [],
       }),
     };
   },
@@ -742,6 +758,7 @@ export const MockTestService = {
       audienceMode: "all" | "filtered";
       audienceBranches: string[];
       audienceBatches: string[];
+      audienceYears: string[];
     }>,
   ) {
     assertValidAudience(input);
@@ -760,10 +777,12 @@ export const MockTestService = {
       audienceMode: String(updated.audience_mode ?? "all"),
       audienceBranches: Array.isArray(updated.audience_branches) ? updated.audience_branches.map((value) => String(value)) : [],
       audienceBatches: Array.isArray(updated.audience_batches) ? updated.audience_batches.map((value) => String(value)) : [],
+      audienceYears: Array.isArray(updated.audience_years) ? updated.audience_years.map((value) => String(value)) : [],
       audienceSummary: summarizeAudience({
         audienceMode: String(updated.audience_mode ?? "all"),
         audienceBranches: Array.isArray(updated.audience_branches) ? updated.audience_branches.map((value) => String(value)) : [],
         audienceBatches: Array.isArray(updated.audience_batches) ? updated.audience_batches.map((value) => String(value)) : [],
+        audienceYears: Array.isArray(updated.audience_years) ? updated.audience_years.map((value) => String(value)) : [],
       }),
     };
   },
@@ -780,10 +799,12 @@ export const MockTestService = {
       audienceMode: String(updated.audience_mode ?? "all"),
       audienceBranches: Array.isArray(updated.audience_branches) ? updated.audience_branches.map((value) => String(value)) : [],
       audienceBatches: Array.isArray(updated.audience_batches) ? updated.audience_batches.map((value) => String(value)) : [],
+      audienceYears: Array.isArray(updated.audience_years) ? updated.audience_years.map((value) => String(value)) : [],
       audienceSummary: summarizeAudience({
         audienceMode: String(updated.audience_mode ?? "all"),
         audienceBranches: Array.isArray(updated.audience_branches) ? updated.audience_branches.map((value) => String(value)) : [],
         audienceBatches: Array.isArray(updated.audience_batches) ? updated.audience_batches.map((value) => String(value)) : [],
+        audienceYears: Array.isArray(updated.audience_years) ? updated.audience_years.map((value) => String(value)) : [],
       }),
     };
   },

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ChangeEvent } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { Button, ConfirmActionModal, Input, Select, Table } from "../../components/ui";
@@ -100,20 +100,47 @@ function blankMapping(): ImportMappingState {
   };
 }
 
-function blankMockTestForm() {
+function blankMockTestForm(): {
+  title: string;
+  topicId: string;
+  customTopicName: string;
+  companyId: string;
+  customCompanyName: string;
+  durationSec: string;
+  difficulty: string;
+  isActive: boolean;
+  audienceMode: "all" | "filtered";
+  audienceBranches: string[];
+  audienceBatches: string[];
+  audienceYears: Array<"first_year" | "second_year" | "third_year" | "final_year">;
+  questionsJson: string;
+} {
   return {
     title: "",
     topicId: "",
+    customTopicName: "",
     companyId: "",
+    customCompanyName: "",
     durationSec: "3600",
     difficulty: "medium",
     isActive: false,
     audienceMode: "all",
     audienceBranches: [] as string[],
     audienceBatches: [] as string[],
+    audienceYears: [] as Array<"first_year" | "second_year" | "third_year" | "final_year">,
     questionsJson: "[]",
   };
 }
+
+const CUSTOM_TOPIC_VALUE = "__custom_topic__";
+const CUSTOM_COMPANY_VALUE = "__custom_company__";
+
+const academicYearOptions: Array<{ value: "first_year" | "second_year" | "third_year" | "final_year"; label: string }> = [
+  { value: "first_year", label: "First year" },
+  { value: "second_year", label: "Second year" },
+  { value: "third_year", label: "Third year" },
+  { value: "final_year", label: "Final year" },
+];
 
 function isImportJob(job: AdminJobRow): job is Extract<AdminJobRow, { type: "student_import" }> {
   return (job as { type?: string }).type === "student_import";
@@ -136,8 +163,69 @@ function splitCsv(value: string) {
     .filter(Boolean);
 }
 
-function getSelectedValues(event: ChangeEvent<HTMLSelectElement>) {
-  return Array.from(event.target.selectedOptions).map((option) => option.value).filter(Boolean);
+function toggleListValue<T extends string>(values: T[], value: T, checked: boolean) {
+  if (checked) {
+    return values.includes(value) ? values : [...values, value];
+  }
+  return values.filter((item) => item !== value);
+}
+
+function formatAcademicYearLabel(value: string) {
+  return value
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function buildAudienceSummary(input: {
+  audienceMode: "all" | "filtered";
+  audienceBranches: string[];
+  audienceBatches: string[];
+  audienceYears: string[];
+}) {
+  if (input.audienceMode !== "filtered") {
+    return "All students";
+  }
+
+  const parts = [];
+  if (input.audienceBranches.length > 0) parts.push(input.audienceBranches.join(", "));
+  if (input.audienceBatches.length > 0) parts.push(input.audienceBatches.join(", "));
+  if (input.audienceYears.length > 0) parts.push(input.audienceYears.map(formatAcademicYearLabel).join(", "));
+  return parts.length > 0 ? parts.join(" | ") : "Choose at least one branch, year, or batch.";
+}
+
+function parseMockQuestionsJson(raw: string) {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    throw new Error("Questions JSON is invalid. Check commas, quotes, and brackets, then try again.");
+  }
+
+  if (!Array.isArray(parsed)) {
+    throw new Error("Questions JSON must be an array of question objects.");
+  }
+
+  parsed.forEach((question, index) => {
+    if (!question || typeof question !== "object") {
+      throw new Error(`Question ${index + 1} must be an object.`);
+    }
+    const row = question as Record<string, unknown>;
+    if (typeof row.text !== "string" || !row.text.trim()) {
+      throw new Error(`Question ${index + 1} is missing text.`);
+    }
+    if (!Array.isArray(row.options) || row.options.length < 2) {
+      throw new Error(`Question ${index + 1} needs at least 2 options.`);
+    }
+    if (!row.options.every((option) => typeof option === "string" && option.trim())) {
+      throw new Error(`Question ${index + 1} has an empty option.`);
+    }
+    if (!Number.isInteger(row.correctIndex)) {
+      throw new Error(`Question ${index + 1} needs a numeric correctIndex.`);
+    }
+  });
+
+  return parsed as Array<{ text: string; options: string[]; correctIndex: number; explanation?: string; skillTag?: string }>;
 }
 
 function downloadText(filename: string, content: string) {
@@ -320,13 +408,16 @@ export default function AdminHubPage() {
     setMockTestForm({
       title: selected.title,
       topicId: selected.topicId ?? "",
+      customTopicName: "",
       companyId: selected.companyId ?? "",
+      customCompanyName: "",
       durationSec: String(selected.durationSec),
       difficulty: selected.difficulty,
       isActive: selected.isActive,
       audienceMode: selected.audienceMode,
       audienceBranches: selected.audienceBranches,
       audienceBatches: selected.audienceBatches,
+      audienceYears: (selected.audienceYears ?? []) as Array<"first_year" | "second_year" | "third_year" | "final_year">,
       questionsJson: selectedMockTestQuestions.data ? JSON.stringify(selectedMockTestQuestions.data, null, 2) : "[]",
     });
     setMockQuestionImportPreview(null);
@@ -340,6 +431,12 @@ export default function AdminHubPage() {
   const tenantOptions = tenants.data ?? [];
   const effectiveTenantId = selectedTenantId ?? tenantOptions[0]?.id ?? null;
   const effectiveTenant = tenantOptions.find((tenant) => tenant.id === effectiveTenantId) ?? null;
+  const availableTopics = workspace.data?.referenceData.topics ?? [];
+  const availableCompanies = workspace.data?.referenceData.companies ?? [];
+  const availableBranches = workspace.data?.referenceData.branches ?? [];
+  const availableBatches = workspace.data?.referenceData.batches ?? [];
+  const isCustomTopic = mockTestForm.topicId === CUSTOM_TOPIC_VALUE;
+  const isCustomCompany = mockTestForm.companyId === CUSTOM_COMPANY_VALUE;
 
   const setMessage = (message: string | null, kind: "success" | "error") => {
     if (kind === "success") {
@@ -574,39 +671,6 @@ export default function AdminHubPage() {
 
       {activeTab === "mock-tests" ? (
         <>
-          <section className="admin-ops-section admin-ops-section-table">
-            <h2>Mock Test Catalog</h2>
-            {!selectedTenantId || tests.isLoading ? <p className="muted-text">Loading mock tests...</p> : tests.error || !tests.data ? <p className="error-text">Unable to load mock tests.</p> : (
-              <div className="tpo-ranking-table-wrap">
-                <Table>
-                  <thead><tr><th>Title</th><th>Topic</th><th>Difficulty</th><th>Audience</th><th>Source</th><th>Status</th><th>Action</th></tr></thead>
-                  <tbody>
-                    {tests.data.map((test) => (
-                      <tr key={test.id}>
-                        <td>{test.title}</td>
-                        <td>{test.topicName ?? "-"}</td>
-                        <td>{test.difficulty}</td>
-                        <td>{test.audienceSummary}</td>
-                        <td>{test.source}</td>
-                        <td>{test.isActive ? "Published" : "Draft"}</td>
-                        <td>
-                          <div className="hero-actions">
-                            <Button variant="secondary" disabled={test.source !== "tenant"} onClick={() => setSelectedTestId(test.id)}>Edit</Button>
-                            <Button variant="ghost" disabled={test.source !== "tenant"} onClick={() => runAction(`publish-${test.id}`, async () => {
-                              const tenantId = requireTenant();
-                              await adminPublishMockTest({ tenantId, testId: test.id, isActive: !test.isActive });
-                              setMessage(`${test.title} ${test.isActive ? "unpublished" : "published"}.`, "success");
-                            })}>{test.isActive ? "Unpublish" : "Publish"}</Button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </div>
-            )}
-          </section>
-
           <section className="admin-ops-section">
             <div className="hero-actions" style={{ justifyContent: "space-between" }}>
               <h2>{selectedTestId ? "Edit Tenant Mock Test" : "Create Tenant Mock Test"}</h2>
@@ -621,8 +685,46 @@ export default function AdminHubPage() {
             </div>
             <div className="form-grid">
               <label><span className="muted-text">Title</span><Input value={mockTestForm.title} onChange={(event) => setMockTestForm((current) => ({ ...current, title: event.target.value }))} /></label>
-              <label><span className="muted-text">Topic</span><Select value={mockTestForm.topicId} onChange={(event) => setMockTestForm((current) => ({ ...current, topicId: event.target.value }))}><option value="">Select topic</option>{(workspace.data?.referenceData.topics ?? []).map((topic) => <option key={topic.id} value={topic.id}>{topic.name}</option>)}</Select></label>
-              <label><span className="muted-text">Company</span><Select value={mockTestForm.companyId} onChange={(event) => setMockTestForm((current) => ({ ...current, companyId: event.target.value }))}><option value="">Select company</option>{(workspace.data?.referenceData.companies ?? []).map((company) => <option key={company.id} value={company.id}>{company.name}</option>)}</Select></label>
+              <label>
+                <span className="muted-text">Topic</span>
+                <Select value={mockTestForm.topicId} onChange={(event) => setMockTestForm((current) => ({
+                  ...current,
+                  topicId: event.target.value,
+                  customTopicName: event.target.value === CUSTOM_TOPIC_VALUE ? current.customTopicName : "",
+                }))}>
+                  <option value="">Select topic</option>
+                  {availableTopics.map((topic) => <option key={topic.id} value={topic.id}>{topic.name}</option>)}
+                  <option value={CUSTOM_TOPIC_VALUE}>Custom topic</option>
+                </Select>
+                {isCustomTopic ? (
+                  <Input
+                    value={mockTestForm.customTopicName}
+                    onChange={(event) => setMockTestForm((current) => ({ ...current, customTopicName: event.target.value }))}
+                    placeholder="Enter a new topic name"
+                    style={{ marginTop: 8 }}
+                  />
+                ) : null}
+              </label>
+              <label>
+                <span className="muted-text">Company</span>
+                <Select value={mockTestForm.companyId} onChange={(event) => setMockTestForm((current) => ({
+                  ...current,
+                  companyId: event.target.value,
+                  customCompanyName: event.target.value === CUSTOM_COMPANY_VALUE ? current.customCompanyName : "",
+                }))}>
+                  <option value="">Select company</option>
+                  {availableCompanies.map((company) => <option key={company.id} value={company.id}>{company.name}</option>)}
+                  <option value={CUSTOM_COMPANY_VALUE}>Custom company</option>
+                </Select>
+                {isCustomCompany ? (
+                  <Input
+                    value={mockTestForm.customCompanyName}
+                    onChange={(event) => setMockTestForm((current) => ({ ...current, customCompanyName: event.target.value }))}
+                    placeholder="Enter a new company name"
+                    style={{ marginTop: 8 }}
+                  />
+                ) : null}
+              </label>
               <label><span className="muted-text">Duration (seconds)</span><Input value={mockTestForm.durationSec} onChange={(event) => setMockTestForm((current) => ({ ...current, durationSec: event.target.value }))} /></label>
               <label><span className="muted-text">Difficulty</span><Select value={mockTestForm.difficulty} onChange={(event) => setMockTestForm((current) => ({ ...current, difficulty: event.target.value }))}><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></Select></label>
               <label><span className="muted-text">Status</span><Select value={String(mockTestForm.isActive)} onChange={(event) => setMockTestForm((current) => ({ ...current, isActive: event.target.value === "true" }))}><option value="false">Draft</option><option value="true">Published</option></Select></label>
@@ -637,6 +739,7 @@ export default function AdminHubPage() {
                     audienceMode: event.target.value as "all" | "filtered",
                     audienceBranches: event.target.value === "all" ? [] : current.audienceBranches,
                     audienceBatches: event.target.value === "all" ? [] : current.audienceBatches,
+                    audienceYears: event.target.value === "all" ? [] : current.audienceYears,
                   }))}
                 >
                   <option value="all">All students</option>
@@ -661,37 +764,65 @@ export default function AdminHubPage() {
               ) : null}
             </div>
             {mockTestForm.audienceMode === "filtered" ? (
-              <div className="form-grid" style={{ marginTop: 16 }}>
-                <label>
-                  <span className="muted-text">Branches</span>
-                  <Select
-                    multiple
-                    size={Math.min(4, Math.max(3, (workspace.data?.referenceData.branches ?? []).length || 3))}
-                    value={mockTestForm.audienceBranches}
-                    onChange={(event) => setMockTestForm((current) => ({ ...current, audienceBranches: getSelectedValues(event) }))}
-                  >
-                    {(workspace.data?.referenceData.branches ?? []).map((branch) => <option key={branch} value={branch}>{branch}</option>)}
-                  </Select>
-                </label>
-                <label>
-                  <span className="muted-text">Batch / year</span>
-                  <Select
-                    multiple
-                    size={Math.min(4, Math.max(3, (workspace.data?.referenceData.batches ?? []).length || 3))}
-                    value={mockTestForm.audienceBatches}
-                    onChange={(event) => setMockTestForm((current) => ({ ...current, audienceBatches: getSelectedValues(event) }))}
-                  >
-                    {(workspace.data?.referenceData.batches ?? []).map((batch) => <option key={batch} value={batch}>{batch}</option>)}
-                  </Select>
-                </label>
-                <div className="workspace-panel">
-                  <p className="muted-text">
-                    Audience summary: {
-                      mockTestForm.audienceBranches.length > 0 || mockTestForm.audienceBatches.length > 0
-                        ? `${mockTestForm.audienceBranches.join(", ") || "All branches"}${mockTestForm.audienceBatches.length > 0 ? ` | ${mockTestForm.audienceBatches.join(", ")}` : ""}`
-                        : "Choose at least one branch or batch."
-                    }
-                  </p>
+              <div style={{ marginTop: 16 }}>
+                <div className="form-grid">
+                  <div className="workspace-panel">
+                    <span className="muted-text">Branches</span>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 10 }}>
+                      {availableBranches.map((branch) => (
+                        <label key={branch} style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                          <input
+                            type="checkbox"
+                            checked={mockTestForm.audienceBranches.includes(branch)}
+                            onChange={(event) => setMockTestForm((current) => ({
+                              ...current,
+                              audienceBranches: toggleListValue(current.audienceBranches, branch, event.target.checked),
+                            }))}
+                          />
+                          <span>{branch}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="workspace-panel">
+                    <span className="muted-text">Batch / year</span>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 10 }}>
+                      {availableBatches.map((batch) => (
+                        <label key={batch} style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                          <input
+                            type="checkbox"
+                            checked={mockTestForm.audienceBatches.includes(batch)}
+                            onChange={(event) => setMockTestForm((current) => ({
+                              ...current,
+                              audienceBatches: toggleListValue(current.audienceBatches, batch, event.target.checked),
+                            }))}
+                          />
+                          <span>{batch}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className="workspace-panel" style={{ marginTop: 16 }}>
+                  <span className="muted-text">Academic year</span>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 10 }}>
+                    {academicYearOptions.map((year) => (
+                      <label key={year.value} style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                        <input
+                          type="checkbox"
+                          checked={mockTestForm.audienceYears.includes(year.value)}
+                          onChange={(event) => setMockTestForm((current) => ({
+                            ...current,
+                            audienceYears: toggleListValue(current.audienceYears, year.value, event.target.checked),
+                          }))}
+                        />
+                        <span>{year.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                <div className="workspace-panel" style={{ marginTop: 16 }}>
+                  <p className="muted-text">Audience summary: {buildAudienceSummary(mockTestForm)}</p>
                 </div>
               </div>
             ) : (
@@ -735,17 +866,25 @@ export default function AdminHubPage() {
                     <span className="muted-text">Questions JSON</span>
                     <textarea className="ui-input" rows={10} value={mockTestForm.questionsJson} onChange={(event) => setMockTestForm((current) => ({ ...current, questionsJson: event.target.value }))} placeholder='[{"text":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"...","skillTag":"Time and Work"}]' />
                   </label>
+                  <p className="muted-text">If the JSON is malformed or a question is missing text, options, or correctIndex, save will stop with a clear error before anything is created.</p>
                 </details>
               </div>
             ) : (
-              <label style={{ display: "block", marginTop: 16 }}>
-                <span className="muted-text">Questions JSON</span>
-                <textarea className="ui-input" rows={10} value={mockTestForm.questionsJson} onChange={(event) => setMockTestForm((current) => ({ ...current, questionsJson: event.target.value }))} placeholder='[{"text":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"...","skillTag":"Time and Work"}]' />
-              </label>
+              <div style={{ marginTop: 16 }}>
+                <label style={{ display: "block" }}>
+                  <span className="muted-text">Questions JSON</span>
+                  <textarea className="ui-input" rows={10} value={mockTestForm.questionsJson} onChange={(event) => setMockTestForm((current) => ({ ...current, questionsJson: event.target.value }))} placeholder='[{"text":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"...","skillTag":"Time and Work"}]' />
+                </label>
+                <p className="muted-text" style={{ marginTop: 8 }}>Save validates the JSON before sending it. If there is a syntax issue or a broken question row, the form will stop and show a clear error.</p>
+              </div>
             )}
             <div className="hero-actions" style={{ marginTop: 16 }}>
               <Button onClick={() => runAction("create-mock", async () => {
                 const tenantId = requireTenant();
+                const topicId = isCustomTopic ? undefined : (mockTestForm.topicId || undefined);
+                const companyId = isCustomCompany ? undefined : (mockTestForm.companyId || undefined);
+                const customTopicName = isCustomTopic ? mockTestForm.customTopicName.trim() : undefined;
+                const customCompanyName = isCustomCompany ? mockTestForm.customCompanyName.trim() : undefined;
                 if (mockQuestionSource === "upload") {
                   if (!mockQuestionImportPreview) throw new Error("Preview the question sheet before saving this mock test.");
                   if (mockQuestionImportPreview.validRows === 0 || mockQuestionImportPreview.rejectedRows > 0) {
@@ -755,14 +894,17 @@ export default function AdminHubPage() {
                     await adminCreateMockTestFromImport({
                       tenantId,
                       title: mockTestForm.title,
-                      topicId: mockTestForm.topicId || undefined,
-                      companyId: mockTestForm.companyId || undefined,
+                      topicId,
+                      customTopicName,
+                      companyId,
+                      customCompanyName,
                       durationSec: Number(mockTestForm.durationSec),
                       difficulty: mockTestForm.difficulty as "easy" | "medium" | "hard",
                       isActive: mockTestForm.isActive,
                       audienceMode: mockTestForm.audienceMode as "all" | "filtered",
                       audienceBranches: mockTestForm.audienceBranches,
                       audienceBatches: mockTestForm.audienceBatches,
+                      audienceYears: mockTestForm.audienceYears,
                       rows: mockQuestionImportPreview.rows,
                     });
                     setMessage("Mock test created from uploaded question sheet.", "success");
@@ -771,14 +913,17 @@ export default function AdminHubPage() {
                       tenantId,
                       testId: selectedTestId,
                       title: mockTestForm.title,
-                      topicId: mockTestForm.topicId || undefined,
-                      companyId: mockTestForm.companyId || undefined,
+                      topicId,
+                      customTopicName,
+                      companyId,
+                      customCompanyName,
                       durationSec: Number(mockTestForm.durationSec),
                       difficulty: mockTestForm.difficulty as "easy" | "medium" | "hard",
                       isActive: mockTestForm.isActive,
                       audienceMode: mockTestForm.audienceMode as "all" | "filtered",
                       audienceBranches: mockTestForm.audienceBranches,
                       audienceBatches: mockTestForm.audienceBatches,
+                      audienceYears: mockTestForm.audienceYears,
                     });
                     await adminUpdateMockTestFromImport({
                       tenantId,
@@ -789,19 +934,22 @@ export default function AdminHubPage() {
                     setMessage("Mock test updated from uploaded question sheet.", "success");
                   }
                 } else {
-                  const questions = JSON.parse(mockTestForm.questionsJson) as Array<{ text: string; options: string[]; correctIndex: number; explanation?: string; skillTag?: string }>;
+                  const questions = parseMockQuestionsJson(mockTestForm.questionsJson);
                   if (!selectedTestId) {
                     await adminCreateMockTest({
                       tenantId,
                       title: mockTestForm.title,
-                      topicId: mockTestForm.topicId || undefined,
-                      companyId: mockTestForm.companyId || undefined,
+                      topicId,
+                      customTopicName,
+                      companyId,
+                      customCompanyName,
                       durationSec: Number(mockTestForm.durationSec),
                       difficulty: mockTestForm.difficulty as "easy" | "medium" | "hard",
                       isActive: mockTestForm.isActive,
                       audienceMode: mockTestForm.audienceMode as "all" | "filtered",
                       audienceBranches: mockTestForm.audienceBranches,
                       audienceBatches: mockTestForm.audienceBatches,
+                      audienceYears: mockTestForm.audienceYears,
                       questions,
                     });
                     setMessage("Mock test created.", "success");
@@ -810,14 +958,17 @@ export default function AdminHubPage() {
                       tenantId,
                       testId: selectedTestId,
                       title: mockTestForm.title,
-                      topicId: mockTestForm.topicId || undefined,
-                      companyId: mockTestForm.companyId || undefined,
+                      topicId,
+                      customTopicName,
+                      companyId,
+                      customCompanyName,
                       durationSec: Number(mockTestForm.durationSec),
                       difficulty: mockTestForm.difficulty as "easy" | "medium" | "hard",
                       isActive: mockTestForm.isActive,
                       audienceMode: mockTestForm.audienceMode as "all" | "filtered",
                       audienceBranches: mockTestForm.audienceBranches,
                       audienceBatches: mockTestForm.audienceBatches,
+                      audienceYears: mockTestForm.audienceYears,
                     });
                     await adminUpdateMockTestQuestions({ tenantId, testId: selectedTestId, append: false, questions });
                     setMessage("Mock test updated.", "success");
@@ -831,6 +982,39 @@ export default function AdminHubPage() {
                 setMockImportAppendMode("replace");
               })} disabled={busyAction === "create-mock"}>{selectedTestId ? "Save Mock Test" : "Create Mock Test"}</Button>
             </div>
+          </section>
+
+          <section className="admin-ops-section admin-ops-section-table">
+            <h2>Mock Test Catalog</h2>
+            {!selectedTenantId || tests.isLoading ? <p className="muted-text">Loading mock tests...</p> : tests.error || !tests.data ? <p className="error-text">Unable to load mock tests.</p> : (
+              <div className="tpo-ranking-table-wrap">
+                <Table>
+                  <thead><tr><th>Title</th><th>Topic</th><th>Difficulty</th><th>Audience</th><th>Source</th><th>Status</th><th>Action</th></tr></thead>
+                  <tbody>
+                    {tests.data.map((test) => (
+                      <tr key={test.id}>
+                        <td>{test.title}</td>
+                        <td>{test.topicName ?? "-"}</td>
+                        <td>{test.difficulty}</td>
+                        <td>{test.audienceSummary}</td>
+                        <td>{test.source}</td>
+                        <td>{test.isActive ? "Published" : "Draft"}</td>
+                        <td>
+                          <div className="hero-actions">
+                            <Button variant="secondary" disabled={test.source !== "tenant"} onClick={() => setSelectedTestId(test.id)}>Edit</Button>
+                            <Button variant="ghost" disabled={test.source !== "tenant"} onClick={() => runAction(`publish-${test.id}`, async () => {
+                              const tenantId = requireTenant();
+                              await adminPublishMockTest({ tenantId, testId: test.id, isActive: !test.isActive });
+                              setMessage(`${test.title} ${test.isActive ? "unpublished" : "published"}.`, "success");
+                            })}>{test.isActive ? "Unpublish" : "Publish"}</Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
+            )}
           </section>
         </>
       ) : null}
