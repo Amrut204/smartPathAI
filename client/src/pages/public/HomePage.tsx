@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import { Brand } from "../../components/composites/Brand";
 import { Badge } from "../../components/ui";
+import { isClientFeatureEnabled } from "../../config/features";
 
 const PAGE_TITLE = "Smart Path | Placement Readiness And Intervention For TPOs";
 const PAGE_DESCRIPTION = "Smart Path helps placement offices see readiness, blockers, and interventions in one place so students know what to do next.";
@@ -51,6 +52,8 @@ const audienceBlocks = [
 ];
 
 export default function HomePage() {
+  const demoAutoLoginEnabled = isClientFeatureEnabled("demoAutoLogin");
+
   useEffect(() => {
     document.title = PAGE_TITLE;
     upsertMeta('meta[name="description"]', { name: "description", content: PAGE_DESCRIPTION });
@@ -110,6 +113,12 @@ export default function HomePage() {
             <li>Students can see what to do next for placements instead of getting lost in feature clutter</li>
             <li>Drive operations, reminders, and readiness proof stay inside one operational flow</li>
           </ul>
+          {demoAutoLoginEnabled ? (
+            <div className="hero-actions" style={{ marginTop: "0.75rem" }}>
+              <a href="/api/v1/demo/auto-login-tpo" className="ui-button secondary">Open TPO demo</a>
+              <a href="/api/v1/demo/auto-login-student" className="ui-button ghost">Open student demo</a>
+            </div>
+          ) : null}
         </div>
       </section>
 
