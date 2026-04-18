@@ -10,6 +10,37 @@ const DEFAULT_DEMO_TPO_EMAIL = "tpo@stxaviers-demo.edu";
 const DEFAULT_DEMO_TPO_PASSWORD = "Demo@123";
 const DEFAULT_DEMO_STUDENT_EMAIL = "student001@stxaviers-demo.edu";
 const DEFAULT_DEMO_STUDENT_PASSWORD = "Student@123";
+const DEMO_AUTO_LOGIN_FLAG = "DEMO_AUTO_LOGIN_ENABLED";
+
+function parseBooleanEnv(value: string | undefined): boolean | null {
+  if (!value) return null;
+
+  const normalized = value.trim().toLowerCase();
+  if (["1", "true", "yes", "on"].includes(normalized)) return true;
+  if (["0", "false", "no", "off"].includes(normalized)) return false;
+  return null;
+}
+
+function isDemoAutoLoginEnabled(): boolean {
+  const configured = parseBooleanEnv(process.env[DEMO_AUTO_LOGIN_FLAG]);
+  if (configured !== null) {
+    return configured;
+  }
+
+  // Safe default: keep demo routes available for non-production environments,
+  // require explicit opt-in in production.
+  return process.env.NODE_ENV !== "production";
+}
+
+function ensureDemoAutoLoginEnabled() {
+  if (!isDemoAutoLoginEnabled()) {
+    throw new AppError(
+      "DEMO_LOGIN_DISABLED",
+      "Demo auto-login is disabled for this deployment.",
+      404,
+    );
+  }
+}
 
 function resolveDemoCredentials(kind: "tpo" | "student") {
   if (kind === "tpo") {
@@ -48,6 +79,8 @@ async function autoLoginDemoUser(kind: "tpo" | "student") {
 router.get(
   "/auto-login-tpo",
   asyncHandler(async (_req, res) => {
+    ensureDemoAutoLoginEnabled();
+
     const result = await autoLoginDemoUser("tpo");
     setSessionCookies(res, {
       accessToken: result.accessToken,
@@ -62,6 +95,8 @@ router.get(
 router.get(
   "/auto-login-student",
   asyncHandler(async (_req, res) => {
+    ensureDemoAutoLoginEnabled();
+
     const result = await autoLoginDemoUser("student");
     setSessionCookies(res, {
       accessToken: result.accessToken,

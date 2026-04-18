@@ -379,7 +379,7 @@ export default function TpoDashboardPage() {
         eyebrow="TPO Workspace"
         greeting={greeting}
         title="Start with today's queue, then open one workspace at a time."
-        description="This dashboard is now the calm starting point for TPO work. Pick the current workspace below and focus on one operational block instead of scanning multiple competing cards."
+        description="Use this dashboard as your starting point for TPO work. Pick one workspace below and focus on one operational block at a time."
         primaryAction={(
           <Link to={reviewQueuePath}>
             <Button>Open Review Queue</Button>

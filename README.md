@@ -122,6 +122,11 @@ Common optional runtime settings:
 - `RESOURCE_S3_BUDGET_ENABLED`
 - `RESOURCE_S3_READ_LIMIT_MONTHLY`
 - `RESOURCE_S3_TRANSFER_LIMIT_GB_MONTHLY`
+- `DEMO_AUTO_LOGIN_ENABLED` (set `true` to enable `/api/v1/demo/auto-login-*` routes in production)
+
+Client optional runtime settings:
+
+- `VITE_ENABLE_DEMO_AUTO_LOGIN` (set `true` to show demo auto-login links in the login page on production builds)
 
 ## Render Deployment
 

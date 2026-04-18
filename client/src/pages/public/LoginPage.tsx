@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { Brand } from "../../components/composites/Brand";
 import { useAuth } from "../../components/providers/AuthProvider";
 import { Badge, Button, Input } from "../../components/ui";
+import { isClientFeatureEnabled } from "../../config/features";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const demoAutoLoginEnabled = isClientFeatureEnabled("demoAutoLogin");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -57,10 +59,12 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <div className="public-auth-demo-links">
-            <a href="/api/v1/demo/auto-login-tpo">Open TPO demo</a>
-            <a href="/api/v1/demo/auto-login-student">Open student demo</a>
-          </div>
+          {demoAutoLoginEnabled ? (
+            <div className="public-auth-demo-links">
+              <a href="/api/v1/demo/auto-login-tpo">Open TPO demo</a>
+              <a href="/api/v1/demo/auto-login-student">Open student demo</a>
+            </div>
+          ) : null}
         </aside>
 
         <div className="public-auth-panel">
