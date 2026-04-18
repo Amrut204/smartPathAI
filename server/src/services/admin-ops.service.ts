@@ -1663,20 +1663,8 @@ export const AdminOpsService = {
 
     const hydratedImportJobs = await Promise.all(importJobs.map((job) => StudentImportJobService.getJob({ tenantId: selectedTenantId, jobId: String(job.id) })));
     const normalizedImports = hydratedImportJobs.map((job) => ({
-      id: job.id,
-      type: "student_import",
-      status: job.status,
-      createdAt: job.createdAt,
-      updatedAt: job.updatedAt,
-      startedAt: job.startedAt,
-      finishedAt: job.finishedAt,
-      progress: job.totals,
-      result: {
-        createdStudentIds: job.createdStudentIds,
-        updatedStudentIds: job.updatedStudentIds,
-      },
-      errorMessage: job.errorMessage,
-      errors: job.errors,
+      type: "student_import" as const,
+      ...job,
     }));
 
     return [...normalizedImports, ...opsJobs].sort((left, right) => String(right.createdAt).localeCompare(String(left.createdAt)));

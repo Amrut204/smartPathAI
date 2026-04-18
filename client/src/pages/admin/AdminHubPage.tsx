@@ -12,6 +12,7 @@ import {
   adminDeleteStudent,
   adminCreateTpo,
   adminDownloadImportErrorReport,
+  adminFetchImportJob,
   adminPreviewStudentCsv,
   adminPreviewStudentFile,
   adminPreviewMockTestImportFile,
@@ -61,6 +62,16 @@ const tabs = [
 
 type TabId = (typeof tabs)[number]["id"];
 type ImportMappingState = NonNullable<StudentImportPreview["mapping"]>;
+type StudentImportSeedPreviewRow = {
+  rowNumber: number;
+  fullName: string;
+  email: string;
+  prn: string;
+  rollNumber: string;
+  branch: string;
+  batch: string;
+  issues: string[];
+};
 const storageSections = [
   { id: "summary", label: "Summary" },
   { id: "history", label: "History" },
@@ -75,12 +86,6 @@ const importFields: Array<{ key: keyof ImportMappingState; label: string; requir
   { key: "rollNumber", label: "Roll number", required: false },
   { key: "branch", label: "Branch", required: true },
   { key: "batch", label: "Batch", required: true },
-  { key: "degree", label: "Degree", required: false },
-  { key: "currentSemester", label: "Semester", required: false },
-  { key: "cgpa", label: "CGPA", required: false },
-  { key: "backlogs", label: "Backlogs", required: false },
-  { key: "totalHistoricalBacklogs", label: "Historical backlogs", required: false },
-  { key: "attendancePct", label: "Attendance %", required: false },
 ];
 
 function blankMapping(): ImportMappingState {
@@ -91,12 +96,6 @@ function blankMapping(): ImportMappingState {
     branch: "",
     batch: "",
     prn: "",
-    degree: "",
-    currentSemester: "",
-    cgpa: "",
-    backlogs: "",
-    totalHistoricalBacklogs: "",
-    attendancePct: "",
   };
 }
 
@@ -240,6 +239,10 @@ function downloadText(filename: string, content: string) {
   URL.revokeObjectURL(url);
 }
 
+function isValidEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+}
+
 function validateStudentForm(input: {
   fullName: string;
   email: string;
@@ -250,7 +253,7 @@ function validateStudentForm(input: {
 }) {
   if (!input.fullName.trim()) throw new Error("Enter the student's full name.");
   if (!input.email.trim()) throw new Error("Enter the student's email address.");
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email.trim())) throw new Error("Enter a valid student email address.");
+  if (!isValidEmail(input.email.trim())) throw new Error("Enter a valid student email address.");
   if (!input.prn.trim()) throw new Error("Enter the student's PRN.");
   if (!input.branch.trim() || input.branch.trim().length < 2) throw new Error("Enter a valid branch name.");
   if (!/^\d{4}$/.test(input.batch.trim())) throw new Error("Batch must be a 4-digit year like 2026.");
@@ -259,7 +262,7 @@ function validateStudentForm(input: {
 function validateTpoForm(input: { fullName: string; email: string }) {
   if (!input.fullName.trim()) throw new Error("Enter the TPO's full name.");
   if (!input.email.trim()) throw new Error("Enter the TPO email address.");
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email.trim())) throw new Error("Enter a valid TPO email address.");
+  if (!isValidEmail(input.email.trim())) throw new Error("Enter a valid TPO email address.");
 }
 
 function validateCollegeForm(input: {
@@ -438,6 +441,68 @@ export default function AdminHubPage() {
   const isCustomTopic = mockTestForm.topicId === CUSTOM_TOPIC_VALUE;
   const isCustomCompany = mockTestForm.companyId === CUSTOM_COMPANY_VALUE;
 
+  const previewStudents = useMemo<StudentImportSeedPreviewRow[]>(() => {
+    if (!importPreview) return [];
+
+    const getMappedValue = (row: Record<string, string>, key: keyof ImportMappingState) => {
+      const mappedColumn = String(importMapping[key] ?? "").trim();
+      if (!mappedColumn) return "";
+      return String(row[mappedColumn] ?? "").trim();
+    };
+
+    return importPreview.rows
+      .map((row, index) => {
+        const fullName = getMappedValue(row, "fullName");
+        const email = getMappedValue(row, "email");
+        const prn = getMappedValue(row, "prn");
+        const rollNumber = getMappedValue(row, "rollNumber");
+        const branch = getMappedValue(row, "branch");
+        const batch = getMappedValue(row, "batch");
+
+        const hasAnyData = [fullName, email, prn, rollNumber, branch, batch].some(Boolean);
+        if (!hasAnyData) {
+          return null;
+        }
+
+        const issues: string[] = [];
+        if (!fullName) issues.push("Full name missing");
+        if (!email) {
+          issues.push("Email missing");
+        } else if (!isValidEmail(email)) {
+          issues.push("Email format invalid");
+        }
+        if (!prn) issues.push("PRN missing");
+        if (!branch) issues.push("Branch missing");
+        if (!batch) {
+          issues.push("Batch missing");
+        } else if (!/^\d{4}$/.test(batch)) {
+          issues.push("Batch must be 4 digits");
+        }
+
+        return {
+          rowNumber: index + 2,
+          fullName,
+          email,
+          prn,
+          rollNumber,
+          branch,
+          batch,
+          issues,
+        };
+      })
+      .filter((item): item is StudentImportSeedPreviewRow => Boolean(item));
+  }, [importPreview, importMapping]);
+
+  const previewStudentsSummary = useMemo(() => {
+    const totalRows = previewStudents.length;
+    const validRows = previewStudents.filter((row) => row.issues.length === 0).length;
+    return {
+      totalRows,
+      validRows,
+      invalidRows: totalRows - validRows,
+    };
+  }, [previewStudents]);
+
   const setMessage = (message: string | null, kind: "success" | "error") => {
     if (kind === "success") {
       setStatusMessage(message);
@@ -462,6 +527,21 @@ export default function AdminHubPage() {
     } finally {
       setBusyAction(null);
     }
+  };
+
+  const waitForStudentImportCompletion = async (tenantId: string, jobId: string) => {
+    for (let attempt = 0; attempt < 90; attempt += 1) {
+      const latest = await adminFetchImportJob({ tenantId, jobId });
+      if (latest.status === "completed" || latest.status === "failed") {
+        return latest;
+      }
+
+      await new Promise<void>((resolve) => {
+        window.setTimeout(resolve, 1500);
+      });
+    }
+
+    throw new Error("Import is taking longer than expected. Check Jobs for live progress.");
   };
 
   const setTab = (tab: TabId) => {
@@ -541,6 +621,19 @@ export default function AdminHubPage() {
         <>
           <section className="admin-ops-section">
             <h2>Student Import</h2>
+            <p className="muted-text">
+              Use the same columns as single-student creation: <strong>full_name</strong>, <strong>email</strong>, <strong>prn</strong>, <strong>roll_number</strong>, <strong>branch</strong>, <strong>batch</strong>.
+            </p>
+            <p className="muted-text">
+              Mandatory columns: <strong>full_name</strong>, <strong>email</strong>, <strong>prn</strong>, <strong>branch</strong>, <strong>batch</strong>. <strong>roll_number</strong> is optional.
+            </p>
+            <p className="muted-text">
+              If a student email is wrong, the import can still complete but credential delivery may fail for that student.
+              Re-import the corrected row (same PRN), then use <strong>Send Credentials</strong> (or <strong>Retry</strong> from Jobs).
+            </p>
+            <div className="hero-actions" style={{ marginBottom: 12 }}>
+              <a href="/student-import-sample.csv" download className="ui-button ghost">Download Sample CSV</a>
+            </div>
             <div className="form-grid">
               <label><span className="muted-text">Paste CSV</span><textarea className="ui-input" rows={8} value={csvText} onChange={(event) => setCsvText(event.target.value)} /></label>
               <label><span className="muted-text">Or upload file</span><input type="file" accept=".csv,.xlsx,.xls" onChange={(event) => setSelectedImportFile(event.target.files?.[0] ?? null)} /></label>
@@ -552,14 +645,14 @@ export default function AdminHubPage() {
                 const preview = await adminPreviewStudentCsv({ tenantId, csv: csvText });
                 setImportPreview(preview);
                 setMessage("CSV preview loaded.", "success");
-              })} disabled={busyAction === "preview-csv"}>Preview CSV</Button>
+              })} disabled={busyAction === "preview-csv"}>Preview Pasted CSV</Button>
               <Button variant="secondary" onClick={() => runAction("preview-file", async () => {
                 const tenantId = requireTenant();
                 if (!selectedImportFile) throw new Error("Choose a file before previewing.");
                 const preview = await adminPreviewStudentFile({ tenantId, file: selectedImportFile });
                 setImportPreview(preview);
                 setMessage(`Loaded ${preview.rows.length} rows from file preview.`, "success");
-              })} disabled={busyAction === "preview-file"}>Preview File</Button>
+              })} disabled={busyAction === "preview-file"}>Upload File And Preview Students</Button>
             </div>
             {importPreview ? (
               <div style={{ marginTop: 16 }}>
@@ -569,19 +662,104 @@ export default function AdminHubPage() {
                     <label key={field.key}><span className="muted-text">{field.label}{field.required ? " *" : ""}</span><Select value={importMapping[field.key] ?? ""} onChange={(event) => setImportMapping((current) => ({ ...current, [field.key]: event.target.value }))}><option value="">{field.required ? "Select column" : "Ignore"}</option>{importPreview.headers.map((header) => <option key={header} value={header}>{header}</option>)}</Select></label>
                   ))}
                 </div>
+
+                <div className="workspace-panel" style={{ marginTop: 16 }}>
+                  <h3>Preview Students To Be Seeded</h3>
+                  <p className="muted-text">
+                    Total preview rows: {previewStudentsSummary.totalRows}. Ready: {previewStudentsSummary.validRows}. Needs fixes: {previewStudentsSummary.invalidRows}.
+                  </p>
+
+                  {importPreview.errors.length > 0 ? (
+                    <>
+                      <p className="error-text">Fix the import preview errors below before confirming.</p>
+                      <ul className="dashboard-bullet-list">
+                        {importPreview.errors.slice(0, 10).map((error) => (
+                          <li key={`${error.row}:${error.message}`}>Row {error.row}: {error.message}</li>
+                        ))}
+                      </ul>
+                    </>
+                  ) : null}
+
+                  {previewStudents.length > 0 ? (
+                    <div className="tpo-ranking-table-wrap">
+                      <Table>
+                        <thead>
+                          <tr>
+                            <th>Row</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>PRN</th>
+                            <th>Roll No.</th>
+                            <th>Branch</th>
+                            <th>Batch</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {previewStudents.slice(0, 25).map((row) => (
+                            <tr key={`${row.rowNumber}:${row.email}:${row.prn}`}>
+                              <td>{row.rowNumber}</td>
+                              <td>{row.fullName || "-"}</td>
+                              <td>{row.email || "-"}</td>
+                              <td>{row.prn || "-"}</td>
+                              <td>{row.rollNumber || "-"}</td>
+                              <td>{row.branch || "-"}</td>
+                              <td>{row.batch || "-"}</td>
+                              <td>{row.issues.length === 0 ? <span className="success-text">Ready</span> : <span className="error-text">{row.issues.join("; ")}</span>}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+                    </div>
+                  ) : (
+                    <p className="muted-text">No mapped rows to preview yet.</p>
+                  )}
+
+                  {previewStudents.length > 25 ? <p className="muted-text">Showing first 25 rows. Upload still includes all rows.</p> : null}
+                </div>
+
                 <div className="hero-actions" style={{ marginTop: 16 }}>
                   <Button onClick={() => openConfirmAction({
-                    title: "Start student import job",
-                    message: `You are about to queue ${importPreview.rows.length} student row(s) for import into ${selectedTenantName}.`,
-                    confirmLabel: "Start import",
+                    title: "Confirm student import",
+                    message: `Import ${previewStudentsSummary.validRows} ready row(s) into ${selectedTenantName}? Credentials for newly created students will be queued automatically after import completes.`,
+                    confirmLabel: "Confirm import",
                     onConfirm: async () => runAction("import-job", async () => {
                       const tenantId = requireTenant();
                       for (const field of importFields.filter((item) => item.required)) if (!importMapping[field.key]) throw new Error(`Map the ${field.label} column before starting the import.`);
+                      if (importPreview.errors.length > 0) throw new Error("Fix preview errors before confirming import.");
+                      if (previewStudentsSummary.totalRows === 0) throw new Error("No student rows found in preview.");
+                      if (previewStudentsSummary.invalidRows > 0) throw new Error(`Fix ${previewStudentsSummary.invalidRows} invalid preview row(s) before confirming import.`);
+
                       const job = await adminCreateStudentImportJob({ tenantId, mapping: importMapping, rows: importPreview.rows });
-                      setMessage(`Import job ${job.id} queued. Track it in Jobs.`, "success");
-                      setTab("jobs");
+                      setMessage(`Import job ${job.id} started. Waiting for completion...`, "success");
+
+                      const completedImport = await waitForStudentImportCompletion(tenantId, job.id);
+                      if (completedImport.status !== "completed") {
+                        throw new Error(completedImport.errorMessage ?? `Import job ${job.id} failed.`);
+                      }
+
+                      let credentialStatus = "No new students were created, so no credentials were queued.";
+                      const createdCount = completedImport.createdStudentIds?.length ?? 0;
+                      if (createdCount > 0) {
+                        const credentialJob = await adminQueueImportCredentials({ tenantId, importJobId: job.id });
+                        credentialStatus = `Credential job ${credentialJob.id} queued automatically for ${createdCount} new student(s).`;
+                      }
+
+                      await students.mutate();
+                      await jobs.mutate();
+                      await workspace.mutate();
+
+                      setMessage(
+                        `Import completed. Created ${completedImport.totals.created}, updated ${completedImport.totals.updated}, skipped ${completedImport.totals.skipped}. ${credentialStatus}`,
+                        "success",
+                      );
+
+                      setImportPreview(null);
+                      setImportMapping(blankMapping());
+                      setSelectedImportFile(null);
+                      setCsvText("");
                     }),
-                  })} disabled={busyAction === "import-job"}>Start Import Job</Button>
+                  })} disabled={busyAction === "import-job"}>Confirm Import And Auto Send Credentials</Button>
                 </div>
               </div>
             ) : null}
