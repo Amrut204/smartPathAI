@@ -265,26 +265,6 @@ export default function DashboardPage() {
     };
   })();
   const nextAction = sharedNextActions[0] ?? fallbackNextAction;
-  const firstRunContextCard = activeBlockers[0]
-    ? {
-        title: activeBlockers[0].label,
-        explanation: activeBlockers[0].explanation,
-        ctaLabel: activeBlockers[0].ctaLabel,
-        targetPath: activeBlockers[0].targetPath,
-      }
-    : nearestUpcomingDrive
-      ? {
-          title: `Nearest drive: ${nearestUpcomingDrive.company}`,
-          explanation: `${nearestUpcomingDrive.role ? `${nearestUpcomingDrive.role} | ` : ""}${daysUntilNearestDrive === null ? "Check the drive date and prepare early." : `${daysUntilNearestDrive} day(s) left to prepare.`}`,
-          ctaLabel: "Open drives",
-          targetPath: "/drives",
-        }
-      : {
-          title: "No blocker is stopping you right now",
-          explanation: "That means your best move is to keep your practice active and stay ready for the next drive announcement.",
-          ctaLabel: "Check drives",
-          targetPath: "/drives",
-        };
   const firstRunPracticeCard = pendingAttempt
     ? {
         title: "Resume your pending mock test",
@@ -312,6 +292,54 @@ export default function DashboardPage() {
             ctaLabel: "Open profile",
             targetPath: "/profile",
           };
+  const quickStartContextStep = activeBlockers[0]
+    ? {
+        title: `Resolve blocker: ${activeBlockers[0].label}`,
+        explanation: activeBlockers[0].explanation,
+        ctaLabel: activeBlockers[0].ctaLabel,
+        targetPath: activeBlockers[0].targetPath,
+      }
+    : nearestUpcomingDrive
+      ? {
+          title: `Review nearest drive: ${nearestUpcomingDrive.company}`,
+          explanation: daysUntilNearestDrive === null
+            ? "Check the drive details and prepare early."
+            : `${daysUntilNearestDrive} day(s) left. Confirm your readiness and next prep step now.`,
+          ctaLabel: "Open drives",
+          targetPath: "/drives",
+        }
+      : {
+          title: "Check live opportunities",
+          explanation: "Review current drive feed so your preparation stays aligned with active roles.",
+          ctaLabel: "Open drives",
+          targetPath: "/drives",
+        };
+  const quickStartSteps = [
+    {
+      id: "primary",
+      title: nextAction.title,
+      explanation: nextAction.explanation,
+      ctaLabel: nextAction.ctaLabel,
+      targetPath: nextAction.targetPath,
+    },
+    {
+      id: "context",
+      ...quickStartContextStep,
+    },
+    {
+      id: "practice",
+      title: firstRunPracticeCard.title,
+      explanation: firstRunPracticeCard.explanation,
+      ctaLabel: firstRunPracticeCard.ctaLabel,
+      targetPath: firstRunPracticeCard.targetPath,
+    },
+  ];
+  const quickStartContextBadges = [
+    daysUntilNearestDrive === null ? null : `${daysUntilNearestDrive} day(s) to nearest drive`,
+    unreadAnnouncements.length > 0 ? `${unreadAnnouncements.length} unread announcement(s)` : null,
+    canAccessMockTests ? null : "Mock tests unlock after required profile fields are complete",
+    canAccessResources ? null : "Resources unlock after required profile fields are complete",
+  ].filter((badge): badge is string => Boolean(badge));
   const dashboardMetricItems = [
     { label: "CGPA", value: cgpa.toFixed(2) },
     { label: "Profile", value: `${profileCompletenessPct}%` },
@@ -382,6 +410,7 @@ export default function DashboardPage() {
               <p className="muted-text">
                 {profileCompletenessPct}% profile complete • {eligibleUpcomingDrives} eligible drive{eligibleUpcomingDrives === 1 ? "" : "s"}
               </p>
+              <p className="muted-text">Readiness combines profile completion, current practice activity, and live drive eligibility.</p>
             </div>
             <div className="student-home-score-metrics">
               {dashboardMetricItems.slice(0, 4).map((item, index) => (
@@ -397,7 +426,7 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="student-home-hero-copy">
-            <span className="student-workspace-eyebrow">Next Best Action</span>
+            <span className="student-workspace-eyebrow">Do this next</span>
             <strong>{nextAction.title}</strong>
             <p>{nextAction.explanation}</p>
           </div>
@@ -407,60 +436,46 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        <section className="student-workspace-panel student-home-support-card">
+        <section className="student-workspace-panel student-home-support-card student-home-quickstart-card">
           <div className="student-workspace-panel-head">
             <div>
-              <h2>{firstRunContextCard.title}</h2>
-              <p>{firstRunContextCard.explanation}</p>
+              <h2>{shouldShowOrientation ? "Guided quick start" : "Current focus sequence"}</h2>
+              <p>
+                {shouldShowOrientation
+                  ? "Follow these three steps in order to avoid extra navigation and keep your first session clear."
+                  : "Use this sequence to keep momentum without context-switching."}
+              </p>
             </div>
+            {shouldShowOrientation ? <Button variant="ghost" onClick={dismissOrientationBanner}>Hide guide</Button> : null}
           </div>
-          <div className="student-home-context-meta">
-            <span>{nearestUpcomingDrive ? `${nearestUpcomingDrive.company}${nearestUpcomingDrive.role ? ` • ${nearestUpcomingDrive.role}` : ""}` : "No nearest drive yet"}</span>
-            <span>{daysUntilNearestDrive === null ? "No countdown yet" : `${daysUntilNearestDrive} day(s) left`}</span>
-          </div>
-          <Link to={firstRunContextCard.targetPath} className="ui-button secondary">{firstRunContextCard.ctaLabel}</Link>
-        </section>
-
-        <section className="student-workspace-panel student-home-support-card">
-          <div className="student-workspace-panel-head">
-            <div>
-              <h2>{firstRunPracticeCard.title}</h2>
-              <p>{firstRunPracticeCard.explanation}</p>
+          {quickStartContextBadges.length > 0 ? (
+            <div className="student-workspace-inline-note student-home-quickstart-meta">
+              {quickStartContextBadges.map((badge) => (
+                <span key={badge}>{badge}</span>
+              ))}
             </div>
-          </div>
-          <div className="student-home-context-meta">
-            <span>{canAccessMockTests ? `${mockTestsTaken7d} mock${mockTestsTaken7d === 1 ? "" : "s"} in 7d` : "Mocks unlock after profile completion"}</span>
-            <span>{canAccessResources ? "Curated resources available" : "Resources currently locked"}</span>
-          </div>
-          <Link to={firstRunPracticeCard.targetPath} className="ui-button ghost">{firstRunPracticeCard.ctaLabel}</Link>
+          ) : null}
+          <ol className="student-home-quickstart-list">
+            {quickStartSteps.map((step, index) => (
+              <li key={step.id} className="student-home-quickstart-item">
+                <div className="student-home-quickstart-copy">
+                  <span className="student-workspace-eyebrow">{index === 0 ? "Now" : index === 1 ? "Then" : "After that"}</span>
+                  <strong>{step.title}</strong>
+                  <p>{step.explanation}</p>
+                </div>
+                <Link to={step.targetPath} className={`ui-button ${index === 0 ? "primary" : "ghost"}`}>{step.ctaLabel}</Link>
+              </li>
+            ))}
+          </ol>
         </section>
       </section>
 
-      {shouldShowOrientation ? (
-        <section className="student-workspace-panel student-dashboard-guided-start">
-          <div className="student-workspace-panel-head">
-            <div>
-              <h2>Start here first</h2>
-              <p>
-                Keep this first view narrow: finish the next action, check the closest blocker or drive, then complete one practice step.
-              </p>
-            </div>
-            <Button variant="ghost" onClick={dismissOrientationBanner}>Show more detail</Button>
-          </div>
-          <div className="student-workspace-inline-note">
-            <span>1. Finish the current profile or drive blocker</span>
-            <span>2. Check the nearest live opportunity</span>
-            <span>3. Complete one mock or resource step</span>
-          </div>
-        </section>
-      ) : null}
-
-      {sharedNextActions.length > 1 ? (
+      {sharedNextActions.length > 1 && !shouldShowOrientation ? (
         <section className="student-workspace-panel">
           <div className="student-workspace-panel-head">
             <div>
-              <h2>More actions you can take next</h2>
-              <p>Only the highest-value follow-through items stay visible here.</p>
+              <h2>Optional follow-up actions</h2>
+              <p>Use these only after you finish the guided sequence above.</p>
             </div>
           </div>
           <div className="student-dashboard-action-feed">
@@ -481,8 +496,8 @@ export default function DashboardPage() {
         <section className="student-workspace-panel">
           <div className="student-workspace-panel-head">
             <div>
-              <h2>Unlock the rest of your workspace</h2>
-              <p>Resources and mock tests stay behind your required profile steps so drive workflows stay trustworthy.</p>
+              <h2>Finish profile steps to unlock resources and tests</h2>
+              <p>Complete required profile fields below to enable learning modules and keep drive workflows trustworthy.</p>
             </div>
             <Link to="/profile" className="ui-button ghost">Open profile</Link>
           </div>

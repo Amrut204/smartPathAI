@@ -55,17 +55,20 @@
 .student-home-v2-grid {
   display: grid;
   gap: var(--space-4);
-  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 1fr);
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.95fr);
   align-items: start;
 }
 
 .student-home-v2-grid > .student-home-primary-card {
   grid-column: 1;
-  grid-row: span 2;
 }
 
 .student-home-v2-grid > .student-home-support-card {
   grid-column: 2;
+}
+
+.student-home-v2-grid > .student-home-quickstart-card {
+  align-self: stretch;
 }
 
 .student-home-primary-card,
@@ -146,6 +149,52 @@
 
 .student-home-context-meta {
   margin-bottom: var(--space-3);
+}
+
+.student-home-quickstart-card {
+  gap: var(--space-3);
+}
+
+.student-home-quickstart-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.student-home-quickstart-meta {
+  margin-bottom: 0.2rem;
+}
+
+.student-home-quickstart-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  padding: 0.85rem 0.95rem;
+  border-radius: 14px;
+  border: 1px solid rgba(99, 102, 241, 0.12);
+  background: #f8faff;
+  align-items: center;
+}
+
+.student-home-quickstart-copy {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.student-home-quickstart-copy strong {
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.student-home-quickstart-copy p {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.student-home-quickstart-item .ui-button {
+  justify-self: start;
 }
 
 .student-drives-panel-v2 .student-workspace-panel-head p {
@@ -331,6 +380,16 @@
 
   .navbar-bottom-link small {
     display: none;
+  }
+
+  .student-home-quickstart-item {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .student-home-quickstart-item .ui-button {
+    width: 100%;
+    justify-content: center;
   }
 }
 

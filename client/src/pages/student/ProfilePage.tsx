@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { Button, Card, Modal, Skeleton, Tabs } from "../../components/ui";
+import { Badge, Button, Card, Modal, Skeleton, Tabs } from "../../components/ui";
 import { useOnlineStatus } from "../../hooks/use-online-status";
 import {
   certifyStudentProfile,
@@ -50,7 +50,7 @@ type ProfileSuccessAction = "save_profile" | "certify_profile" | "upload_resume"
 const baseProfileSectionTabs: Array<{ id: ProfileSection; label: string }> = [
   { id: "overview", label: "Overview" },
   { id: "verified", label: "Academic Details" },
-  { id: "details", label: "Placement & Resume" },
+  { id: "details", label: "Professional & Resume" },
   { id: "recommended", label: "Preferences" },
 ];
 
@@ -96,6 +96,53 @@ function toggleSelection(current: string[], value: string) {
   return current.includes(value)
     ? current.filter((item) => item !== value)
     : [...current, value];
+}
+
+function mapFieldKeyToProfileSection(fieldKey: string): ProfileSection {
+  if ([
+    "prn",
+    "rollNumber",
+    "branch",
+    "batch",
+    "degree",
+    "currentSemester",
+    "cgpa",
+    "activeBacklogs",
+    "totalHistoricalBacklogs",
+    "attendancePct",
+  ].includes(fieldKey)) {
+    return "verified";
+  }
+
+  if (["targetRoles", "preferredLocations", "willingToRelocate"].includes(fieldKey)) {
+    return "recommended";
+  }
+
+  if ([
+    "resumeUrl",
+    "phone",
+    "personalEmail",
+    "linkedIn",
+    "githubUrl",
+    "portfolioUrl",
+    "skills",
+    "languages",
+    "internships",
+    "projects",
+    "certifications",
+    "achievements",
+  ].includes(fieldKey)) {
+    return "details";
+  }
+
+  return "overview";
+}
+
+function getProfileSectionLabel(section: ProfileSection): string {
+  if (section === "verified") return "Academic Details";
+  if (section === "details") return "Professional & Resume";
+  if (section === "recommended") return "Preferences";
+  return "Overview";
 }
 
 function buildProfileContinuityState(params: {
@@ -300,6 +347,7 @@ export default function ProfilePage() {
   }, [searchParams]);
 
   const blockedModule = searchParams.get("blocked");
+  const blockedFrom = searchParams.get("from");
   const requiredFieldKeys = useMemo(
     () => new Set((data?.requiredFields ?? []).map((field) => field.key)),
     [data],
@@ -317,6 +365,68 @@ export default function ProfilePage() {
   const activeUnlockRequest = data?.unlockRequest ?? null;
   const canReviewAndCertify = Boolean(data?.profileCompleteness.isComplete) && !isLocked;
   const continuityState = data ? buildProfileContinuityState({ lastSuccessAction, data }) : null;
+  const missingRequiredFields = data?.missingRequiredFields ?? [];
+  const firstMissingRequiredField = missingRequiredFields[0] ?? null;
+  const primaryMissingSection = firstMissingRequiredField
+    ? mapFieldKeyToProfileSection(firstMissingRequiredField.key)
+    : "overview";
+  const primaryMissingSectionLabel = getProfileSectionLabel(primaryMissingSection);
+  const profileCertificationStatus = data?.declarationStatus.profileCertification;
+  const lockedModules = [
+    data?.canAccessResources ? null : "Resources",
+    data?.canAccessMockTests ? null : "Mock tests",
+  ].filter((module): module is string => Boolean(module));
+  const unlockImpactMessage = lockedModules.length > 0
+    ? `${lockedModules.join(" and ")} unlock automatically after required profile fields are complete and saved.`
+    : "Resources and mock tests are already unlocked. Keep this profile current so drive readiness stays accurate.";
+  const priorityChecklistItems = [
+    {
+      id: "required-fields",
+      title: "Complete required profile fields",
+      detail: missingRequiredFields.length > 0
+        ? `${missingRequiredFields.length} required field(s) still missing. Start with ${firstMissingRequiredField?.label ?? "the next required field"}.`
+        : `All ${data?.profileCompleteness.totalRequiredFields ?? 0} required fields are complete.`,
+      done: missingRequiredFields.length === 0,
+      actionLabel: missingRequiredFields.length === 0 ? "Review overview" : `Open ${primaryMissingSectionLabel}`,
+      actionType: "section" as const,
+      sectionTarget: missingRequiredFields.length === 0 ? "overview" as ProfileSection : primaryMissingSection,
+      actionDisabled: false,
+    },
+    {
+      id: "profile-certification",
+      title: "Review and certify profile",
+      detail: profileCertificationStatus?.isCertified
+        ? `Certified on ${formatDateTime(profileCertificationStatus.acceptedAt)}.`
+        : data?.profileCompleteness.isComplete
+          ? "Required fields are complete. Review final details and certify for drive use."
+          : "Certification unlocks only after required fields are complete.",
+      done: Boolean(profileCertificationStatus?.isCertified),
+      actionLabel: profileCertificationStatus?.isCertified
+        ? "Certified"
+        : data?.profileCompleteness.isComplete
+          ? "Review and certify"
+          : `Open ${primaryMissingSectionLabel}`,
+      actionType: profileCertificationStatus?.isCertified
+        ? "section" as const
+        : data?.profileCompleteness.isComplete
+          ? "certify" as const
+          : "section" as const,
+      sectionTarget: data?.profileCompleteness.isComplete ? "overview" as ProfileSection : primaryMissingSection,
+      actionDisabled: Boolean(profileCertificationStatus?.isCertified),
+    },
+    {
+      id: "managed-resume",
+      title: "Upload or verify managed resume",
+      detail: data?.resumeInsights.hasManagedResume
+        ? "Managed resume is available and will be used in drive applications."
+        : "Upload a PDF resume so applications and exports use your latest version.",
+      done: Boolean(data?.resumeInsights.hasManagedResume),
+      actionLabel: data?.resumeInsights.hasManagedResume ? "Review resume section" : "Open resume section",
+      actionType: "section" as const,
+      sectionTarget: "details" as ProfileSection,
+      actionDisabled: false,
+    },
+  ];
 
   if (isLoading) {
     return (
@@ -533,9 +643,18 @@ export default function ProfilePage() {
         </div>
 
         {blockedModule ? (
-          <div className="student-profile-inline-alert">
-            <strong>{blockedModule === "mock-tests" ? "Mock tests are locked" : "Resources are locked"}</strong>
-            <span>Finish the missing required fields below to unlock this section.</span>
+          <div className="student-profile-inline-alert is-warning">
+            <strong>{blockedModule === "mock-tests" ? "Mock tests are currently locked" : "Resources are currently locked"}</strong>
+            <span>
+              {blockedFrom
+                ? `You were redirected from ${blockedFrom}. Complete your required profile fields below to unlock this section.`
+                : "Complete your required profile fields below to unlock this section."}
+            </span>
+            {data.missingStudentFields.length > 0 ? (
+              <span>
+                Start with: {data.missingStudentFields.slice(0, 3).map((field) => field.label).join(", ")}
+              </span>
+            ) : null}
           </div>
         ) : null}
 
@@ -591,6 +710,48 @@ export default function ProfilePage() {
           </div>
         ) : null}
 
+        <section className="student-profile-priority-panel">
+          <div className="student-workspace-panel-head">
+            <div>
+              <h2>Priority checklist</h2>
+              <p>Finish these in order so unlocks and drive readiness stay in sync.</p>
+            </div>
+          </div>
+          <ol className="student-profile-priority-list">
+            {priorityChecklistItems.map((item, index) => (
+              <li
+                key={item.id}
+                className={`student-profile-priority-item ${item.done ? "is-complete" : index === 0 ? "is-active" : "is-pending"}`}
+              >
+                <div className="student-profile-priority-copy">
+                  <span className="resources-kicker">{item.done ? "Done" : `Step ${index + 1}`}</span>
+                  <strong>{item.title}</strong>
+                  <p>{item.detail}</p>
+                </div>
+                <div className="student-profile-priority-actions">
+                  <Badge variant={item.done ? "success" : "warning"}>{item.done ? "Completed" : "Pending"}</Badge>
+                  <Button
+                    type="button"
+                    variant={index === 0 && !item.done ? "primary" : "secondary"}
+                    disabled={item.actionDisabled}
+                    onClick={() => {
+                      if (item.actionType === "certify") {
+                        void openCertification();
+                        return;
+                      }
+
+                      setActiveSection(item.sectionTarget);
+                    }}
+                  >
+                    {item.actionLabel}
+                  </Button>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <p className="student-profile-unlock-impact">{unlockImpactMessage}</p>
+        </section>
+
         <div className="student-profile-action-bar">
           <Button
             type="submit"
@@ -612,58 +773,6 @@ export default function ProfilePage() {
           <Button type="button" variant="ghost" onClick={() => setActiveSection("details")}>
             {data.resumeInsights.hasManagedResume ? "Replace resume" : "Upload resume"}
           </Button>
-        </div>
-
-        {data.nextBestActions.length > 0 ? (
-          <div className="student-profile-next-actions">
-            {data.nextBestActions.slice(0, 3).map((action) => (
-              <div key={action.id} className="student-profile-next-action-card">
-                <span className="resources-kicker">What to do next</span>
-                <strong>{action.title}</strong>
-                <p>{action.explanation}</p>
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={() => {
-                    if (action.targetPath === "/profile") {
-                      setActiveSection("overview");
-                      return;
-                    }
-                    navigate(action.targetPath);
-                  }}
-                >
-                  {action.ctaLabel}
-                </Button>
-              </div>
-            ))}
-          </div>
-        ) : null}
-
-        <div className="student-profile-section-state-grid">
-          {data.sectionStates.map((section) => {
-            const tabTarget: ProfileSection =
-              section.key === "verification"
-                ? "overview"
-                : section.key === "resume"
-                  ? "details"
-                  : section.key === "preferences"
-                    ? "recommended"
-                    : section.key === "academic"
-                      ? "verified"
-                      : "details";
-            return (
-              <button
-                key={section.key}
-                type="button"
-                className={`student-profile-section-state ${section.status === "complete" ? "is-complete" : section.status === "needs_review" ? "is-review" : "is-missing"}`}
-                onClick={() => setActiveSection(tabTarget)}
-              >
-                <span>{section.label}</span>
-                <strong>{section.status === "complete" ? "Complete" : section.status === "needs_review" ? "Needs review" : "Missing required"}</strong>
-                <small>{section.summary}</small>
-              </button>
-            );
-          })}
         </div>
       </section>
 
@@ -834,7 +943,7 @@ export default function ProfilePage() {
           <section className="student-workspace-panel">
             <div className="student-workspace-panel-head">
               <div>
-                <h2>Placement & resume</h2>
+                <h2>Professional & resume</h2>
                 <p>Manage the resume and professional links that feed drive applications and TPO exports.</p>
               </div>
             </div>
@@ -984,7 +1093,7 @@ export default function ProfilePage() {
               ) : (
                 <p className="success-text">
                   Certified on {formatDateTime(data.declarationStatus.profileCertification.acceptedAt)}
-                  {data.declarationStatus.profileCertification.isLocked ? " � Locked for edits" : ""}
+                  {data.declarationStatus.profileCertification.isLocked ? " - Locked for edits" : ""}
                 </p>
               )}
             </div>
