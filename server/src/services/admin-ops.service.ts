@@ -67,6 +67,108 @@ function normalizeBranchList(values: unknown): string[] {
   )];
 }
 
+function normalizeStringList(values: unknown): string[] {
+  if (!Array.isArray(values)) return [];
+  return [...new Set(
+    values
+      .map((value) => String(value ?? "").trim())
+      .filter(Boolean),
+  )];
+}
+
+function summarizeMockTestAudience(input: {
+  audienceMode?: string | null;
+  audienceBranches?: string[];
+  audienceBatches?: string[];
+}) {
+  const audienceMode = String(input.audienceMode ?? "all");
+  const branches = normalizeStringList(input.audienceBranches);
+  const batches = normalizeStringList(input.audienceBatches);
+  if (audienceMode !== "filtered") {
+    return "All students";
+  }
+  if (branches.length > 0 && batches.length > 0) {
+    return `${branches.join(", ")} | ${batches.join(", ")}`;
+  }
+  if (branches.length > 0) {
+    return branches.join(", ");
+  }
+  if (batches.length > 0) {
+    return batches.join(", ");
+  }
+  return "All students";
+}
+
+function normalizeQuestionImportHeader(value: string) {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+}
+
+function parseImportedMockQuestionRows(rows: Array<Record<string, string>>) {
+  const normalizedRows = rows.map((row) => {
+    const next: Record<string, string> = {};
+    Object.entries(row).forEach(([key, value]) => {
+      next[normalizeQuestionImportHeader(key)] = String(value ?? "").trim();
+    });
+    return next;
+  });
+
+  const errors: Array<{ row: number; message: string }> = [];
+  const questions: Array<{ text: string; options: string[]; correctIndex: number; explanation?: string; skillTag?: string }> = [];
+
+  normalizedRows.forEach((row, index) => {
+    const rowNumber = index + 2;
+    const text = row.text ?? "";
+    const options = [row.option_1 ?? "", row.option_2 ?? "", row.option_3 ?? "", row.option_4 ?? ""];
+    const explanation = row.explanation ?? "";
+    const skillTag = row.skill_tag ?? "";
+    const allBlank = !text && options.every((option) => !option) && !String(row.correct_index ?? "").trim() && !explanation && !skillTag;
+    if (allBlank) {
+      return;
+    }
+
+    if (!text) {
+      errors.push({ row: rowNumber, message: "text is required" });
+      return;
+    }
+
+    const missingOptionIndex = options.findIndex((option) => !option);
+    if (missingOptionIndex >= 0) {
+      errors.push({ row: rowNumber, message: `option_${missingOptionIndex + 1} is required` });
+      return;
+    }
+
+    const correctIndexRaw = String(row.correct_index ?? "").trim();
+    if (!/^\d+$/.test(correctIndexRaw)) {
+      errors.push({ row: rowNumber, message: "correct_index must be a number from 1 to 4" });
+      return;
+    }
+
+    const correctIndex = Number(correctIndexRaw) - 1;
+    if (!Number.isInteger(correctIndex) || correctIndex < 0 || correctIndex >= options.length) {
+      errors.push({ row: rowNumber, message: "correct_index must be a number from 1 to 4" });
+      return;
+    }
+
+    questions.push({
+      text,
+      options,
+      correctIndex,
+      explanation: explanation || undefined,
+      skillTag: skillTag || undefined,
+    });
+  });
+
+  return {
+    questions,
+    errors,
+    rejectedRows: new Set(errors.map((error) => error.row)).size,
+  };
+}
+
 function assertSelectedTenantId(tenantId: string | null | undefined) {
   const normalized = String(tenantId ?? "").trim();
   if (!normalized) {
@@ -145,6 +247,7 @@ const tenantWorkspaceCache = new Map<string, {
       topics: Array<{ id: string; name: string }>;
       companies: Array<{ id: string; name: string }>;
       branches: string[];
+      batches: string[];
       loginUrl: string;
     };
   };
@@ -273,7 +376,7 @@ export const AdminOpsService = {
     const tenant = await assertTenantExists(selectedTenantId);
     const db = await getMongoDb();
 
-    const [students, tpos, tests, resources, communications, topics, companies] = await Promise.all([
+    const [students, tpos, tests, resources, communications, topics, companies, batches] = await Promise.all([
       db.collection("students").countDocuments({ tenant_id: selectedTenantId }),
       db.collection("users").countDocuments({ tenant_id: selectedTenantId, role: "tpo" }),
       db.collection("mock_tests").countDocuments({ $or: [{ tenant_id: selectedTenantId }, { tenant_id: null }] }),
@@ -281,6 +384,7 @@ export const AdminOpsService = {
       db.collection("communications").countDocuments({ tenant_id: selectedTenantId }),
       listTopics(selectedTenantId),
       listCompanies(selectedTenantId),
+      db.collection("students").distinct("batch", { tenant_id: selectedTenantId }),
     ]);
 
     const value = {
@@ -302,6 +406,7 @@ export const AdminOpsService = {
         topics,
         companies,
         branches: getTenantBranchesFromConfig(tenant.config),
+        batches: normalizeStringList(batches).sort(),
         loginUrl: buildLoginUrl(),
       },
     };
@@ -967,7 +1072,7 @@ export const AdminOpsService = {
     const db = await getMongoDb();
     const rows = await db.collection("mock_tests").find(
       { $or: [{ tenant_id: selectedTenantId }, { tenant_id: null }] },
-      { projection: { _id: 0, id: 1, title: 1, topic_id: 1, company_id: 1, duration_sec: 1, difficulty: 1, is_active: 1, tenant_id: 1, created_at: 1 } },
+      { projection: { _id: 0, id: 1, title: 1, topic_id: 1, company_id: 1, duration_sec: 1, difficulty: 1, is_active: 1, tenant_id: 1, created_at: 1, audience_mode: 1, audience_branches: 1, audience_batches: 1 } },
     ).sort({ created_at: -1 }).limit(200).toArray();
     const topics = await listTopics(selectedTenantId);
     const companies = await listCompanies(selectedTenantId);
@@ -985,7 +1090,29 @@ export const AdminOpsService = {
       isActive: Boolean(row.is_active),
       source: row.tenant_id ? "tenant" : "global",
       tenantId: row.tenant_id ? String(row.tenant_id) : null,
+      audienceMode: String(row.audience_mode ?? "all"),
+      audienceBranches: Array.isArray(row.audience_branches) ? row.audience_branches.map((value) => String(value)) : [],
+      audienceBatches: Array.isArray(row.audience_batches) ? row.audience_batches.map((value) => String(value)) : [],
+      audienceSummary: summarizeMockTestAudience({
+        audienceMode: String(row.audience_mode ?? "all"),
+        audienceBranches: Array.isArray(row.audience_branches) ? row.audience_branches.map((value) => String(value)) : [],
+        audienceBatches: Array.isArray(row.audience_batches) ? row.audience_batches.map((value) => String(value)) : [],
+      }),
     }));
+  },
+
+  async previewMockQuestionImport(rows: Array<Record<string, string>>) {
+    const headers = [...new Set(rows.flatMap((row) => Object.keys(row).map((key) => String(key).trim()).filter(Boolean)))];
+    const parsed = parseImportedMockQuestionRows(rows);
+    return {
+      headers,
+      rows,
+      totalRows: rows.length,
+      validRows: parsed.questions.length,
+      rejectedRows: parsed.rejectedRows,
+      errors: parsed.errors,
+      questions: parsed.questions,
+    };
   },
 
   async createMockTest(input: {
@@ -998,12 +1125,40 @@ export const AdminOpsService = {
     difficulty: "easy" | "medium" | "hard";
     questions: Array<{ text: string; options: string[]; correctIndex: number; explanation?: string; skillTag?: string }>;
     isActive: boolean;
+    audienceMode: "all" | "filtered";
+    audienceBranches?: string[];
+    audienceBatches?: string[];
   }) {
     const tenantId = assertSelectedTenantId(input.tenantId);
     await assertTenantExists(tenantId);
     const result = await MockTestService.createTest(tenantId, input.actorUserId, input);
     this.clearTenantWorkspaceCache(tenantId);
     return result;
+  },
+
+  async createMockTestFromImportedRows(input: {
+    tenantId: string;
+    actorUserId: string;
+    title: string;
+    topicId?: string;
+    companyId?: string;
+    durationSec: number;
+    difficulty: "easy" | "medium" | "hard";
+    isActive: boolean;
+    audienceMode: "all" | "filtered";
+    audienceBranches?: string[];
+    audienceBatches?: string[];
+    rows: Array<Record<string, string>>;
+  }) {
+    const parsed = await this.previewMockQuestionImport(input.rows);
+    if (parsed.questions.length === 0 || parsed.errors.length > 0) {
+      throw new AppError("MOCK_TEST_IMPORT_INVALID", "Fix the rejected rows in the question sheet before creating the mock test.", 400);
+    }
+
+    return this.createMockTest({
+      ...input,
+      questions: parsed.questions,
+    });
   },
 
   async updateMockTest(input: {
@@ -1015,6 +1170,9 @@ export const AdminOpsService = {
     durationSec?: number;
     difficulty?: "easy" | "medium" | "hard";
     isActive?: boolean;
+    audienceMode?: "all" | "filtered";
+    audienceBranches?: string[];
+    audienceBatches?: string[];
   }) {
     const tenantId = assertSelectedTenantId(input.tenantId);
     await assertTenantExists(tenantId);
@@ -1044,6 +1202,25 @@ export const AdminOpsService = {
     const tenantId = assertSelectedTenantId(input.tenantId);
     await assertTenantExists(tenantId);
     return MockTestService.upsertQuestions(tenantId, input.testId, input);
+  },
+
+  async updateMockTestQuestionsFromImportedRows(input: {
+    tenantId: string;
+    testId: string;
+    append: boolean;
+    rows: Array<Record<string, string>>;
+  }) {
+    const parsed = await this.previewMockQuestionImport(input.rows);
+    if (parsed.questions.length === 0 || parsed.errors.length > 0) {
+      throw new AppError("MOCK_TEST_IMPORT_INVALID", "Fix the rejected rows in the question sheet before updating this mock test.", 400);
+    }
+
+    return this.updateMockTestQuestions({
+      tenantId: input.tenantId,
+      testId: input.testId,
+      append: input.append,
+      questions: parsed.questions,
+    });
   },
 
   async listTenantResources(tenantId: string) {

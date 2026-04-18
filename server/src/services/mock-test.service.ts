@@ -54,6 +54,56 @@ interface SubmitInput {
   };
 }
 
+function summarizeAudience(input: {
+  audienceMode?: string | null;
+  audienceBranches?: string[];
+  audienceBatches?: string[];
+}) {
+  const audienceMode = String(input.audienceMode ?? "all");
+  const branches = [...new Set((input.audienceBranches ?? []).map((value) => String(value).trim()).filter(Boolean))];
+  const batches = [...new Set((input.audienceBatches ?? []).map((value) => String(value).trim()).filter(Boolean))];
+
+  if (audienceMode !== "filtered") {
+    return "All students";
+  }
+
+  if (branches.length > 0 && batches.length > 0) {
+    return `${branches.join(", ")} | ${batches.join(", ")}`;
+  }
+  if (branches.length > 0) {
+    return branches.join(", ");
+  }
+  if (batches.length > 0) {
+    return batches.join(", ");
+  }
+  return "All students";
+}
+
+function assertValidAudience(input: {
+  audienceMode?: "all" | "filtered";
+  audienceBranches?: string[];
+  audienceBatches?: string[];
+}) {
+  if (input.audienceMode !== "filtered") {
+    return;
+  }
+
+  if ((input.audienceBranches?.length ?? 0) === 0 && (input.audienceBatches?.length ?? 0) === 0) {
+    throw new AppError("MOCK_TEST_AUDIENCE_INVALID", "Select at least one branch or batch for a filtered audience.", 400);
+  }
+}
+
+async function getStudentAudienceContext(tenantId: string, userId: string) {
+  const student = await StudentRepository.getStudentByUserId(tenantId, userId);
+  return {
+    student,
+    audience: {
+      branch: String(student.branch ?? ""),
+      batch: String(student.batch ?? ""),
+    },
+  };
+}
+
 function buildIntegritySummary(input: SubmitInput["integrity"] | undefined, timeTakenSec: number, questionCount: number) {
   const base = {
     copyEvents: Number(input?.copyEvents ?? 0),
@@ -391,6 +441,9 @@ async function decorateListedItems(
 
 export const MockTestService = {
   async listTests(input: ListTestsInput) {
+    const studentContext = input.role === "student"
+      ? await getStudentAudienceContext(input.tenantId, input.userId)
+      : null;
     const listed = await MockTestRepository.listTests(input.tenantId, {
       topicId: input.topicId,
       companyId: input.companyId,
@@ -399,6 +452,7 @@ export const MockTestService = {
       cursor: input.cursor,
       includeInactive: input.role !== "student",
       minQuestionCount: input.role === "student" ? STUDENT_MIN_VISIBLE_QUESTION_COUNT : undefined,
+      studentAudience: studentContext?.audience,
     });
 
     if (input.role !== "student") {
@@ -412,7 +466,7 @@ export const MockTestService = {
       };
     }
 
-    const student = await StudentRepository.getStudentByUserId(input.tenantId, input.userId);
+    const student = studentContext!.student;
     const attemptCounts = await MockTestRepository.countAttemptsByStudent(
       input.tenantId,
       String(student.id),
@@ -603,10 +657,14 @@ export const MockTestService = {
     };
   },
 
-  async getTestMetadata(tenantId: string, testId: string, role: "student" | "tpo" | "admin") {
+  async getTestMetadata(tenantId: string, testId: string, role: "student" | "tpo" | "admin", userId?: string) {
+    const studentContext = role === "student"
+      ? await getStudentAudienceContext(tenantId, String(userId ?? ""))
+      : null;
     const test = await MockTestRepository.getTestById(tenantId, testId, {
       includeInactive: role !== "student",
       minQuestionCount: role === "student" ? STUDENT_MIN_VISIBLE_QUESTION_COUNT : undefined,
+      studentAudience: studentContext?.audience,
     });
     const questions = parseQuestions(test.questions);
 
@@ -638,8 +696,12 @@ export const MockTestService = {
         skillTag?: string;
       }>;
       isActive: boolean;
+      audienceMode: "all" | "filtered";
+      audienceBranches?: string[];
+      audienceBatches?: string[];
     },
   ) {
+    assertValidAudience(input);
     const normalizedQuestions = parseQuestions(input.questions);
     const created = await MockTestRepository.createTest(tenantId, createdBy, {
       ...input,
@@ -656,6 +718,14 @@ export const MockTestService = {
       difficulty: String(created.difficulty ?? "medium"),
       isActive: Boolean(created.is_active),
       questionCount: questions.length,
+      audienceMode: String(created.audience_mode ?? "all"),
+      audienceBranches: Array.isArray(created.audience_branches) ? created.audience_branches.map((value) => String(value)) : [],
+      audienceBatches: Array.isArray(created.audience_batches) ? created.audience_batches.map((value) => String(value)) : [],
+      audienceSummary: summarizeAudience({
+        audienceMode: String(created.audience_mode ?? "all"),
+        audienceBranches: Array.isArray(created.audience_branches) ? created.audience_branches.map((value) => String(value)) : [],
+        audienceBatches: Array.isArray(created.audience_batches) ? created.audience_batches.map((value) => String(value)) : [],
+      }),
     };
   },
 
@@ -669,8 +739,12 @@ export const MockTestService = {
       durationSec: number;
       difficulty: "easy" | "medium" | "hard";
       isActive: boolean;
+      audienceMode: "all" | "filtered";
+      audienceBranches: string[];
+      audienceBatches: string[];
     }>,
   ) {
+    assertValidAudience(input);
     const updated = await MockTestRepository.updateTest(tenantId, testId, input);
     const questions = parseQuestions(updated.questions);
 
@@ -683,6 +757,14 @@ export const MockTestService = {
       difficulty: String(updated.difficulty ?? "medium"),
       isActive: Boolean(updated.is_active),
       questionCount: questions.length,
+      audienceMode: String(updated.audience_mode ?? "all"),
+      audienceBranches: Array.isArray(updated.audience_branches) ? updated.audience_branches.map((value) => String(value)) : [],
+      audienceBatches: Array.isArray(updated.audience_batches) ? updated.audience_batches.map((value) => String(value)) : [],
+      audienceSummary: summarizeAudience({
+        audienceMode: String(updated.audience_mode ?? "all"),
+        audienceBranches: Array.isArray(updated.audience_branches) ? updated.audience_branches.map((value) => String(value)) : [],
+        audienceBatches: Array.isArray(updated.audience_batches) ? updated.audience_batches.map((value) => String(value)) : [],
+      }),
     };
   },
 
@@ -695,6 +777,14 @@ export const MockTestService = {
       title: String(updated.title),
       isActive: Boolean(updated.is_active),
       questionCount: questions.length,
+      audienceMode: String(updated.audience_mode ?? "all"),
+      audienceBranches: Array.isArray(updated.audience_branches) ? updated.audience_branches.map((value) => String(value)) : [],
+      audienceBatches: Array.isArray(updated.audience_batches) ? updated.audience_batches.map((value) => String(value)) : [],
+      audienceSummary: summarizeAudience({
+        audienceMode: String(updated.audience_mode ?? "all"),
+        audienceBranches: Array.isArray(updated.audience_branches) ? updated.audience_branches.map((value) => String(value)) : [],
+        audienceBatches: Array.isArray(updated.audience_batches) ? updated.audience_batches.map((value) => String(value)) : [],
+      }),
     };
   },
 
@@ -702,10 +792,13 @@ export const MockTestService = {
     tenantId: string,
     testId: string,
     role: "student" | "tpo" | "admin",
+    userId?: string,
   ) {
     if (role === "student") {
+      const studentContext = await getStudentAudienceContext(tenantId, String(userId ?? ""));
       await MockTestRepository.getTestById(tenantId, testId, {
         minQuestionCount: STUDENT_MIN_VISIBLE_QUESTION_COUNT,
+        studentAudience: studentContext.audience,
       });
     }
 
@@ -756,9 +849,11 @@ export const MockTestService = {
   },
 
   async startAttempt(tenantId: string, userId: string, testId: string) {
-    const student = await StudentRepository.getStudentByUserId(tenantId, userId);
+    const studentContext = await getStudentAudienceContext(tenantId, userId);
+    const student = studentContext.student;
     const test = await MockTestRepository.getTestById(tenantId, testId, {
       minQuestionCount: STUDENT_MIN_VISIBLE_QUESTION_COUNT,
+      studentAudience: studentContext.audience,
     });
     const durationSec = Number(test.duration_sec ?? 0);
 

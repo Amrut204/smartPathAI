@@ -20,6 +20,8 @@ import {
   adminCsvUploadPreviewSchema,
   adminDeleteStudentSchema,
   adminMockTestQuerySchema,
+  adminMockTestImportApplySchema,
+  adminMockTestImportCreateSchema,
   adminPublishMockTestSchema,
   adminQueueImportCredentialsSchema,
   adminResetStudentCredentialsSchema,
@@ -386,6 +388,97 @@ router.get(
   asyncHandler(async (req, res) => {
     const query = adminMockTestQuerySchema.parse(req.query);
     const data = await AdminOpsService.listMockTests(query.tenantId);
+    res.json(successResponse(data));
+  }),
+);
+
+router.post(
+  "/mock-tests/import/preview",
+  uploadRateLimiter,
+  upload.single("file"),
+  asyncHandler(async (req, res) => {
+    const body = adminTenantQuerySchema.parse(req.body);
+    const file = req.file;
+    if (!file) {
+      res.status(400).json({
+        success: false,
+        error: { code: "UPLOAD_FILE_MISSING", message: "Upload a .csv, .xlsx, or .xls file in form field 'file'." },
+      });
+      return;
+    }
+
+    const ext = path.extname(file.originalname ?? "").toLowerCase();
+    if (![".csv", ".xlsx", ".xls"].includes(ext)) {
+      res.status(400).json({
+        success: false,
+        error: { code: "UPLOAD_FILE_UNSUPPORTED", message: "Only .csv, .xlsx, and .xls files are supported." },
+      });
+      return;
+    }
+
+    const workbook = XLSX.read(file.buffer, { type: "buffer" });
+    const sheetName = workbook.SheetNames[0];
+    const sheet = sheetName ? workbook.Sheets[sheetName] : undefined;
+    if (!sheet) {
+      res.status(400).json({
+        success: false,
+        error: { code: "UPLOAD_SHEET_MISSING", message: "Unable to read the first sheet from this file." },
+      });
+      return;
+    }
+
+    const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, {
+      defval: "",
+      raw: false,
+      blankrows: false,
+    }).map((row) =>
+      Object.fromEntries(
+        Object.entries(row).map(([key, value]) => [String(key), String(value ?? "").trim()]),
+      ),
+    );
+
+    const data = await AdminOpsService.previewMockQuestionImport(rows);
+    res.json(successResponse({ ...data, tenantId: body.tenantId }));
+  }),
+);
+
+router.post(
+  "/mock-tests/import/create",
+  asyncHandler(async (req, res) => {
+    const body = adminMockTestImportCreateSchema.parse(req.body);
+    const data = await AdminOpsService.createMockTestFromImportedRows({
+      ...body,
+      tenantId: body.tenantId,
+      actorUserId: req.auth!.userId,
+    });
+    await logAdminAudit(req, body.tenantId, "admin_ops_mock_test_created", {
+      testId: data.id,
+      title: data.title,
+      isActive: data.isActive,
+      questionCount: data.questionCount,
+      audienceSummary: data.audienceSummary,
+      importMode: "excel_csv",
+    });
+    res.status(201).json(successResponse(data));
+  }),
+);
+
+router.post(
+  "/mock-tests/:testId/import",
+  asyncHandler(async (req, res) => {
+    const body = adminMockTestImportApplySchema.parse(req.body);
+    const data = await AdminOpsService.updateMockTestQuestionsFromImportedRows({
+      tenantId: body.tenantId,
+      testId: String(req.params.testId),
+      append: body.append,
+      rows: body.rows,
+    });
+    await logAdminAudit(req, body.tenantId, "admin_ops_mock_test_updated", {
+      testId: req.params.testId,
+      append: body.append,
+      questionCount: data.questionCount,
+      importMode: "excel_csv",
+    });
     res.json(successResponse(data));
   }),
 );

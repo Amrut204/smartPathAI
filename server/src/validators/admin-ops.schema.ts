@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { createMockTestSchema, publishMockTestSchema, upsertMockQuestionsSchema } from "./mock-test.schema.js";
+import { mockQuestionSchema, mockTestAudienceModeSchema, publishMockTestSchema, upsertMockQuestionsSchema } from "./mock-test.schema.js";
 import { csvUploadConfirmSchema, csvUploadPreviewSchema } from "./student.schema.js";
 import { updateTenantEmailSettingsSchema, updateTenantPlacementPolicySchema } from "./tenant.schema.js";
 
@@ -111,8 +111,21 @@ export const adminCsvUploadConfirmSchema = csvUploadConfirmSchema.extend({
 
 export const adminMockTestQuerySchema = adminTenantQuerySchema;
 
-export const adminCreateMockTestSchema = createMockTestSchema.extend({
+export const adminCreateMockTestSchema = z.object({
   tenantId: z.string().trim().min(1).max(120),
+  title: z.string().trim().min(3).max(200),
+  topicId: z.string().uuid().optional(),
+  companyId: z.string().uuid().optional(),
+  durationSec: z.coerce.number().int().min(60).max(14_400),
+  difficulty: z.enum(["easy", "medium", "hard"]).default("medium"),
+  questions: z.array(mockQuestionSchema).default([]),
+  isActive: z.boolean().default(false),
+  audienceMode: mockTestAudienceModeSchema.default("all"),
+  audienceBranches: z.array(z.string().trim().min(1).max(80)).max(20).default([]),
+  audienceBatches: z.array(z.string().trim().min(1).max(12)).max(20).default([]),
+}).refine((value) => value.audienceMode !== "filtered" || value.audienceBranches.length > 0 || value.audienceBatches.length > 0, {
+  message: "Select at least one branch or batch when using a filtered audience.",
+  path: ["audienceMode"],
 });
 
 export const adminUpdateMockTestSchema = z.object({
@@ -123,6 +136,9 @@ export const adminUpdateMockTestSchema = z.object({
   durationSec: z.coerce.number().int().min(60).max(14_400).optional(),
   difficulty: z.enum(["easy", "medium", "hard"]).optional(),
   isActive: z.boolean().optional(),
+  audienceMode: mockTestAudienceModeSchema.optional(),
+  audienceBranches: z.array(z.string().trim().min(1).max(80)).max(20).optional(),
+  audienceBatches: z.array(z.string().trim().min(1).max(12)).max(20).optional(),
 }).refine((value) => Object.keys(value).some((key) => key !== "tenantId"), {
   message: "At least one field is required",
 });
@@ -133,6 +149,29 @@ export const adminPublishMockTestSchema = publishMockTestSchema.extend({
 
 export const adminUpsertMockQuestionsSchema = upsertMockQuestionsSchema.extend({
   tenantId: z.string().trim().min(1).max(120),
+});
+
+export const adminMockTestImportApplySchema = z.object({
+  tenantId: z.string().trim().min(1).max(120),
+  append: z.boolean().default(false),
+  rows: z.array(z.record(z.string(), z.string())).min(1).max(500),
+});
+
+export const adminMockTestImportCreateSchema = z.object({
+  tenantId: z.string().trim().min(1).max(120),
+  title: z.string().trim().min(3).max(200),
+  topicId: z.string().uuid().optional(),
+  companyId: z.string().uuid().optional(),
+  durationSec: z.coerce.number().int().min(60).max(14_400),
+  difficulty: z.enum(["easy", "medium", "hard"]).default("medium"),
+  isActive: z.boolean().default(false),
+  audienceMode: mockTestAudienceModeSchema.default("all"),
+  audienceBranches: z.array(z.string().trim().min(1).max(80)).max(20).default([]),
+  audienceBatches: z.array(z.string().trim().min(1).max(12)).max(20).default([]),
+  rows: z.array(z.record(z.string(), z.string())).min(1).max(500),
+}).refine((value) => value.audienceMode !== "filtered" || value.audienceBranches.length > 0 || value.audienceBatches.length > 0, {
+  message: "Select at least one branch or batch when using a filtered audience.",
+  path: ["audienceMode"],
 });
 
 export const adminResourceQuerySchema = adminTenantQuerySchema;

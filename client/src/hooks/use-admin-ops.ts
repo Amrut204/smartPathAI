@@ -43,6 +43,7 @@ export type AdminWorkspace = {
     topics: Array<{ id: string; name: string }>;
     companies: Array<{ id: string; name: string }>;
     branches: string[];
+    batches: string[];
     loginUrl: string;
   };
 };
@@ -152,6 +153,10 @@ export type AdminMockTestRow = {
   isActive: boolean;
   source: "tenant" | "global";
   tenantId: string | null;
+  audienceMode: "all" | "filtered";
+  audienceBranches: string[];
+  audienceBatches: string[];
+  audienceSummary: string;
 };
 
 export type AdminMockQuestion = {
@@ -160,6 +165,17 @@ export type AdminMockQuestion = {
   correctIndex: number;
   explanation?: string;
   skillTag?: string;
+};
+
+export type AdminMockQuestionImportPreview = {
+  tenantId?: string;
+  headers: string[];
+  rows: Array<Record<string, string>>;
+  totalRows: number;
+  validRows: number;
+  rejectedRows: number;
+  errors: Array<{ row: number; message: string }>;
+  questions: AdminMockQuestion[];
 };
 
 export type AdminResourceRow = {
@@ -466,6 +482,9 @@ export async function adminCreateMockTest(input: {
   difficulty: "easy" | "medium" | "hard";
   questions: AdminMockQuestion[];
   isActive: boolean;
+  audienceMode?: "all" | "filtered";
+  audienceBranches?: string[];
+  audienceBatches?: string[];
 }) {
   const data = await sendJson<AdminMockTestRow>("/api/v1/internal/admin-ops/mock-tests", "POST", input);
   await Promise.all([
@@ -484,6 +503,9 @@ export async function adminUpdateMockTest(input: {
   durationSec?: number;
   difficulty?: "easy" | "medium" | "hard";
   isActive?: boolean;
+  audienceMode?: "all" | "filtered";
+  audienceBranches?: string[];
+  audienceBatches?: string[];
 }) {
   const data = await sendJson<AdminMockTestRow>(`/api/v1/internal/admin-ops/mock-tests/${encodeURIComponent(input.testId)}`, "PATCH", input);
   await mutate(`/api/v1/internal/admin-ops/mock-tests?tenantId=${encodeURIComponent(input.tenantId)}`);
@@ -506,6 +528,51 @@ export async function adminUpdateMockTestQuestions(input: {
   questions: AdminMockQuestion[];
 }) {
   const data = await sendJson<unknown>(`/api/v1/internal/admin-ops/mock-tests/${encodeURIComponent(input.testId)}/questions`, "PUT", input);
+  await mutate(`/api/v1/internal/admin-ops/mock-tests/${encodeURIComponent(input.testId)}/questions?tenantId=${encodeURIComponent(input.tenantId)}`);
+  return data;
+}
+
+export async function adminPreviewMockTestImportFile(input: { tenantId: string; file: File }) {
+  const form = new FormData();
+  form.append("tenantId", input.tenantId);
+  form.append("file", input.file);
+  const response = await fetch("/api/v1/internal/admin-ops/mock-tests/import/preview", {
+    method: "POST",
+    credentials: "include",
+    headers: withCsrfHeader(undefined),
+    body: form,
+  });
+  return parseApiResponse<AdminMockQuestionImportPreview>(response, "Admin API");
+}
+
+export async function adminCreateMockTestFromImport(input: {
+  tenantId: string;
+  title: string;
+  topicId?: string;
+  companyId?: string;
+  durationSec: number;
+  difficulty: "easy" | "medium" | "hard";
+  isActive: boolean;
+  audienceMode?: "all" | "filtered";
+  audienceBranches?: string[];
+  audienceBatches?: string[];
+  rows: Array<Record<string, string>>;
+}) {
+  const data = await sendJson<AdminMockTestRow>("/api/v1/internal/admin-ops/mock-tests/import/create", "POST", input);
+  await Promise.all([
+    mutate(`/api/v1/internal/admin-ops/mock-tests?tenantId=${encodeURIComponent(input.tenantId)}`),
+    mutate(`/api/v1/internal/admin-ops/workspace?tenantId=${encodeURIComponent(input.tenantId)}`),
+  ]);
+  return data;
+}
+
+export async function adminUpdateMockTestFromImport(input: {
+  tenantId: string;
+  testId: string;
+  append: boolean;
+  rows: Array<Record<string, string>>;
+}) {
+  const data = await sendJson<{ testId: string; questionCount: number }>(`/api/v1/internal/admin-ops/mock-tests/${encodeURIComponent(input.testId)}/import`, "POST", input);
   await mutate(`/api/v1/internal/admin-ops/mock-tests/${encodeURIComponent(input.testId)}/questions?tenantId=${encodeURIComponent(input.tenantId)}`);
   return data;
 }

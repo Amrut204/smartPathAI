@@ -11,6 +11,59 @@ interface ListFilters {
   cursor?: string;
   includeInactive?: boolean;
   minQuestionCount?: number;
+  studentAudience?: {
+    branch: string;
+    batch: string;
+  };
+}
+
+function buildAudienceProjection() {
+  return {
+    audience_mode: 1,
+    audience_branches: 1,
+    audience_batches: 1,
+  };
+}
+
+function buildStudentAudienceFilter(tenantId: string, studentAudience?: { branch: string; batch: string }) {
+  const branch = String(studentAudience?.branch ?? "").trim();
+  const batch = String(studentAudience?.batch ?? "").trim();
+
+  return {
+    $or: [
+      { tenant_id: null },
+      {
+        tenant_id: tenantId,
+        $or: [
+          { audience_mode: { $exists: false } },
+          { audience_mode: "all" },
+          {
+            audience_mode: "filtered",
+            $and: [
+              {
+                $or: [
+                  { audience_branches: { $exists: false } },
+                  { audience_branches: { $size: 0 } },
+                  { audience_branches: branch },
+                ],
+              },
+              {
+                $or: [
+                  { audience_batches: { $exists: false } },
+                  { audience_batches: { $size: 0 } },
+                  { audience_batches: batch },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  };
+}
+
+function normalizeAudienceValues(values?: string[]) {
+  return [...new Set((values ?? []).map((value) => String(value).trim()).filter(Boolean))];
 }
 
 function buildMinimumQuestionFilter(minQuestionCount?: number) {
@@ -38,7 +91,7 @@ export const MockTestRepository = {
       filter.tenant_id = tenantId;
     } else {
       filter.is_active = true;
-      filter.$or = [{ tenant_id: tenantId }, { tenant_id: null }];
+      Object.assign(filter, buildStudentAudienceFilter(tenantId, filters.studentAudience));
     }
 
     if (filters.cursor) {
@@ -51,7 +104,7 @@ export const MockTestRepository = {
 
     const data = await db.collection("mock_tests").find(
       filter,
-      { projection: { _id: 0, id: 1, title: 1, topic_id: 1, company_id: 1, duration_sec: 1, difficulty: 1, is_active: 1, created_at: 1, primary_branches: 1, is_cross_branch: 1 } },
+      { projection: { _id: 0, id: 1, title: 1, topic_id: 1, company_id: 1, duration_sec: 1, difficulty: 1, is_active: 1, created_at: 1, primary_branches: 1, is_cross_branch: 1, ...buildAudienceProjection() } },
     ).sort({ created_at: -1 }).limit(filters.limit + 1).toArray();
 
     const hasMore = data.length > filters.limit;
@@ -68,19 +121,34 @@ export const MockTestRepository = {
         isActive: Boolean(row.is_active),
         primaryBranches: Array.isArray(row.primary_branches) ? row.primary_branches.map((value) => String(value)) : [],
         isCrossBranch: Boolean(row.is_cross_branch),
+        audienceMode: String(row.audience_mode ?? "all"),
+        audienceBranches: Array.isArray(row.audience_branches) ? row.audience_branches.map((value) => String(value)) : [],
+        audienceBatches: Array.isArray(row.audience_batches) ? row.audience_batches.map((value) => String(value)) : [],
       })),
       hasMore,
       nextCursor: hasMore ? String(items[items.length - 1]?.created_at) : null,
     };
   },
 
-  async getTestById(tenantId: string, testId: string, options?: { includeInactive?: boolean; minQuestionCount?: number }) {
+  async getTestById(tenantId: string, testId: string, options?: {
+    includeInactive?: boolean;
+    minQuestionCount?: number;
+    studentAudience?: {
+      branch: string;
+      batch: string;
+    };
+  }) {
     const db = await getMongoDb();
     const filter: Record<string, unknown> = {
       id: testId,
-      $or: [{ tenant_id: tenantId }, { tenant_id: null }],
       ...buildMinimumQuestionFilter(options?.minQuestionCount),
     };
+
+    if (options?.studentAudience) {
+      Object.assign(filter, buildStudentAudienceFilter(tenantId, options.studentAudience));
+    } else {
+      filter.$or = [{ tenant_id: tenantId }, { tenant_id: null }];
+    }
 
     if (!options?.includeInactive) {
       filter.is_active = true;
@@ -88,7 +156,7 @@ export const MockTestRepository = {
 
     const data = await db.collection("mock_tests").findOne(
       filter,
-      { projection: { _id: 0, id: 1, title: 1, topic_id: 1, company_id: 1, questions: 1, duration_sec: 1, difficulty: 1, is_active: 1, primary_branches: 1, is_cross_branch: 1 } },
+      { projection: { _id: 0, id: 1, title: 1, topic_id: 1, company_id: 1, questions: 1, duration_sec: 1, difficulty: 1, is_active: 1, primary_branches: 1, is_cross_branch: 1, ...buildAudienceProjection() } },
     );
 
     if (!data) {
@@ -109,6 +177,9 @@ export const MockTestRepository = {
       difficulty: "easy" | "medium" | "hard";
       questions: unknown[];
       isActive: boolean;
+      audienceMode: "all" | "filtered";
+      audienceBranches?: string[];
+      audienceBatches?: string[];
     },
   ) {
     const db = await getMongoDb();
@@ -126,6 +197,9 @@ export const MockTestRepository = {
       difficulty: input.difficulty,
       questions: input.questions,
       is_active: input.isActive,
+      audience_mode: input.audienceMode,
+      audience_branches: normalizeAudienceValues(input.audienceBranches),
+      audience_batches: normalizeAudienceValues(input.audienceBatches),
       primary_branches: [],
       is_cross_branch: false,
       created_at: now,
@@ -145,6 +219,9 @@ export const MockTestRepository = {
       durationSec: number;
       difficulty: "easy" | "medium" | "hard";
       isActive: boolean;
+      audienceMode: "all" | "filtered";
+      audienceBranches: string[];
+      audienceBatches: string[];
     }>,
   ) {
     const db = await getMongoDb();
@@ -155,6 +232,9 @@ export const MockTestRepository = {
     if (updates.durationSec !== undefined) payload.duration_sec = updates.durationSec;
     if (updates.difficulty !== undefined) payload.difficulty = updates.difficulty;
     if (updates.isActive !== undefined) payload.is_active = updates.isActive;
+    if (updates.audienceMode !== undefined) payload.audience_mode = updates.audienceMode;
+    if (updates.audienceBranches !== undefined) payload.audience_branches = normalizeAudienceValues(updates.audienceBranches);
+    if (updates.audienceBatches !== undefined) payload.audience_batches = normalizeAudienceValues(updates.audienceBatches);
     payload.updated_at = new Date().toISOString();
 
     const result = await db.collection("mock_tests").updateOne(

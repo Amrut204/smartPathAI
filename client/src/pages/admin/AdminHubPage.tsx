@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { Button, ConfirmActionModal, Input, Select, Table } from "../../components/ui";
 import {
   adminCreateExternalResource,
   adminCreateCollege,
+  adminCreateMockTestFromImport,
   adminCreateMockTest,
   adminCreateStudent,
   adminCreateStudentImportJob,
@@ -13,6 +14,7 @@ import {
   adminDownloadImportErrorReport,
   adminPreviewStudentCsv,
   adminPreviewStudentFile,
+  adminPreviewMockTestImportFile,
   adminPublishMockTest,
   adminQueueImportCredentials,
   adminReleaseJob,
@@ -25,11 +27,13 @@ import {
   adminSaveIntegrations,
   adminSavePlacementPolicy,
   adminUpdateMockTest,
+  adminUpdateMockTestFromImport,
   adminUpdateMockTestQuestions,
   adminUpdateResource,
   adminUpdateTpo,
   adminUploadResource,
   type AdminJobRow,
+  type AdminMockQuestionImportPreview,
   useAdminEmailSettings,
   useAdminIntegrations,
   useAdminJobs,
@@ -96,6 +100,21 @@ function blankMapping(): ImportMappingState {
   };
 }
 
+function blankMockTestForm() {
+  return {
+    title: "",
+    topicId: "",
+    companyId: "",
+    durationSec: "3600",
+    difficulty: "medium",
+    isActive: false,
+    audienceMode: "all",
+    audienceBranches: [] as string[],
+    audienceBatches: [] as string[],
+    questionsJson: "[]",
+  };
+}
+
 function isImportJob(job: AdminJobRow): job is Extract<AdminJobRow, { type: "student_import" }> {
   return (job as { type?: string }).type === "student_import";
 }
@@ -115,6 +134,10 @@ function splitCsv(value: string) {
     .split(",")
     .map((item) => item.trim())
     .filter(Boolean);
+}
+
+function getSelectedValues(event: ChangeEvent<HTMLSelectElement>) {
+  return Array.from(event.target.selectedOptions).map((option) => option.value).filter(Boolean);
 }
 
 function downloadText(filename: string, content: string) {
@@ -200,8 +223,12 @@ export default function AdminHubPage() {
   const [studentForm, setStudentForm] = useState({ fullName: "", email: "", prn: "", rollNumber: "", branch: "", batch: "2026" });
   const [tpoForm, setTpoForm] = useState({ fullName: "", email: "" });
   const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
-  const [mockTestForm, setMockTestForm] = useState({ title: "", topicId: "", companyId: "", durationSec: "3600", difficulty: "medium", isActive: false, questionsJson: "[]" });
+  const [mockTestForm, setMockTestForm] = useState(blankMockTestForm);
   const selectedMockTestQuestions = useAdminMockTestQuestions(activeTab === "mock-tests" ? selectedTenantId : null, activeTab === "mock-tests" ? selectedTestId : null);
+  const [mockQuestionSource, setMockQuestionSource] = useState<"upload" | "json">("upload");
+  const [mockQuestionImportFile, setMockQuestionImportFile] = useState<File | null>(null);
+  const [mockQuestionImportPreview, setMockQuestionImportPreview] = useState<AdminMockQuestionImportPreview | null>(null);
+  const [mockImportAppendMode, setMockImportAppendMode] = useState<"replace" | "append">("replace");
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [resourceForm, setResourceForm] = useState({ title: "", description: "", topicId: "", resourceType: "pdf", url: "", isActive: true, branchRelevance: "", careerTracks: "", recommendedFor: "", contentPackLabels: "" });
   const [externalForm, setExternalForm] = useState({ title: "", description: "", topicId: "", resourceType: "external_link", url: "", isActive: true, branchRelevance: "", careerTracks: "", recommendedFor: "", contentPackLabels: "" });
@@ -297,8 +324,14 @@ export default function AdminHubPage() {
       durationSec: String(selected.durationSec),
       difficulty: selected.difficulty,
       isActive: selected.isActive,
+      audienceMode: selected.audienceMode,
+      audienceBranches: selected.audienceBranches,
+      audienceBatches: selected.audienceBatches,
       questionsJson: selectedMockTestQuestions.data ? JSON.stringify(selectedMockTestQuestions.data, null, 2) : "[]",
     });
+    setMockQuestionImportPreview(null);
+    setMockQuestionImportFile(null);
+    setMockImportAppendMode("replace");
   }, [selectedTenantId, selectedTestId, selectedMockTestQuestions.data, tests.data]);
 
   const latestImportJobs = useMemo(() => (jobs.data ?? []).filter(isImportJob), [jobs.data]);
@@ -546,13 +579,14 @@ export default function AdminHubPage() {
             {!selectedTenantId || tests.isLoading ? <p className="muted-text">Loading mock tests...</p> : tests.error || !tests.data ? <p className="error-text">Unable to load mock tests.</p> : (
               <div className="tpo-ranking-table-wrap">
                 <Table>
-                  <thead><tr><th>Title</th><th>Topic</th><th>Difficulty</th><th>Source</th><th>Status</th><th>Action</th></tr></thead>
+                  <thead><tr><th>Title</th><th>Topic</th><th>Difficulty</th><th>Audience</th><th>Source</th><th>Status</th><th>Action</th></tr></thead>
                   <tbody>
                     {tests.data.map((test) => (
                       <tr key={test.id}>
                         <td>{test.title}</td>
                         <td>{test.topicName ?? "-"}</td>
                         <td>{test.difficulty}</td>
+                        <td>{test.audienceSummary}</td>
                         <td>{test.source}</td>
                         <td>{test.isActive ? "Published" : "Draft"}</td>
                         <td>
@@ -578,7 +612,11 @@ export default function AdminHubPage() {
               <h2>{selectedTestId ? "Edit Tenant Mock Test" : "Create Tenant Mock Test"}</h2>
               {selectedTestId ? <Button variant="ghost" onClick={() => {
                 setSelectedTestId(null);
-                setMockTestForm({ title: "", topicId: "", companyId: "", durationSec: "3600", difficulty: "medium", isActive: false, questionsJson: "[]" });
+                setMockTestForm(blankMockTestForm());
+                setMockQuestionSource("upload");
+                setMockQuestionImportFile(null);
+                setMockQuestionImportPreview(null);
+                setMockImportAppendMode("replace");
               }}>Create New</Button> : null}
             </div>
             <div className="form-grid">
@@ -589,21 +627,208 @@ export default function AdminHubPage() {
               <label><span className="muted-text">Difficulty</span><Select value={mockTestForm.difficulty} onChange={(event) => setMockTestForm((current) => ({ ...current, difficulty: event.target.value }))}><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></Select></label>
               <label><span className="muted-text">Status</span><Select value={String(mockTestForm.isActive)} onChange={(event) => setMockTestForm((current) => ({ ...current, isActive: event.target.value === "true" }))}><option value="false">Draft</option><option value="true">Published</option></Select></label>
             </div>
-              <label><span className="muted-text">Questions JSON</span><textarea className="ui-input" rows={10} value={mockTestForm.questionsJson} onChange={(event) => setMockTestForm((current) => ({ ...current, questionsJson: event.target.value }))} placeholder='[{"text":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"...","skillTag":"Time and Work"}]' /></label>
+            <div className="form-grid" style={{ marginTop: 16 }}>
+              <label>
+                <span className="muted-text">Audience</span>
+                <Select
+                  value={mockTestForm.audienceMode}
+                  onChange={(event) => setMockTestForm((current) => ({
+                    ...current,
+                    audienceMode: event.target.value as "all" | "filtered",
+                    audienceBranches: event.target.value === "all" ? [] : current.audienceBranches,
+                    audienceBatches: event.target.value === "all" ? [] : current.audienceBatches,
+                  }))}
+                >
+                  <option value="all">All students</option>
+                  <option value="filtered">Filtered audience</option>
+                </Select>
+              </label>
+              <label>
+                <span className="muted-text">Question source</span>
+                <Select value={mockQuestionSource} onChange={(event) => setMockQuestionSource(event.target.value as "upload" | "json")}>
+                  <option value="upload">Upload Excel/CSV</option>
+                  <option value="json">Paste JSON</option>
+                </Select>
+              </label>
+              {selectedTestId && mockQuestionSource === "upload" ? (
+                <label>
+                  <span className="muted-text">Import mode</span>
+                  <Select value={mockImportAppendMode} onChange={(event) => setMockImportAppendMode(event.target.value as "replace" | "append")}>
+                    <option value="replace">Replace questions</option>
+                    <option value="append">Append questions</option>
+                  </Select>
+                </label>
+              ) : null}
+            </div>
+            {mockTestForm.audienceMode === "filtered" ? (
+              <div className="form-grid" style={{ marginTop: 16 }}>
+                <label>
+                  <span className="muted-text">Branches</span>
+                  <Select
+                    multiple
+                    size={Math.min(4, Math.max(3, (workspace.data?.referenceData.branches ?? []).length || 3))}
+                    value={mockTestForm.audienceBranches}
+                    onChange={(event) => setMockTestForm((current) => ({ ...current, audienceBranches: getSelectedValues(event) }))}
+                  >
+                    {(workspace.data?.referenceData.branches ?? []).map((branch) => <option key={branch} value={branch}>{branch}</option>)}
+                  </Select>
+                </label>
+                <label>
+                  <span className="muted-text">Batch / year</span>
+                  <Select
+                    multiple
+                    size={Math.min(4, Math.max(3, (workspace.data?.referenceData.batches ?? []).length || 3))}
+                    value={mockTestForm.audienceBatches}
+                    onChange={(event) => setMockTestForm((current) => ({ ...current, audienceBatches: getSelectedValues(event) }))}
+                  >
+                    {(workspace.data?.referenceData.batches ?? []).map((batch) => <option key={batch} value={batch}>{batch}</option>)}
+                  </Select>
+                </label>
+                <div className="workspace-panel">
+                  <p className="muted-text">
+                    Audience summary: {
+                      mockTestForm.audienceBranches.length > 0 || mockTestForm.audienceBatches.length > 0
+                        ? `${mockTestForm.audienceBranches.join(", ") || "All branches"}${mockTestForm.audienceBatches.length > 0 ? ` | ${mockTestForm.audienceBatches.join(", ")}` : ""}`
+                        : "Choose at least one branch or batch."
+                    }
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <p className="muted-text" style={{ marginTop: 16 }}>This mock test will be visible to every student in the selected college.</p>
+            )}
+            {mockQuestionSource === "upload" ? (
+              <div style={{ marginTop: 16 }}>
+                <div className="form-grid">
+                  <label>
+                    <span className="muted-text">Upload question sheet</span>
+                    <input type="file" accept=".csv,.xlsx,.xls" onChange={(event) => setMockQuestionImportFile(event.target.files?.[0] ?? null)} />
+                  </label>
+                </div>
+                <p className="muted-text">Expected columns: text, option_1, option_2, option_3, option_4, correct_index, explanation, skill_tag</p>
+                <div className="hero-actions" style={{ marginTop: 12 }}>
+                  <Button variant="secondary" onClick={() => runAction("preview-mock-import", async () => {
+                    const tenantId = requireTenant();
+                    if (!mockQuestionImportFile) throw new Error("Choose a .csv, .xlsx, or .xls file before previewing.");
+                    const preview = await adminPreviewMockTestImportFile({ tenantId, file: mockQuestionImportFile });
+                    setMockQuestionImportPreview(preview);
+                    setMessage(`Question sheet preview ready. ${preview.validRows} valid row(s), ${preview.rejectedRows} rejected.`, "success");
+                  })} disabled={busyAction === "preview-mock-import"}>Preview Question Sheet</Button>
+                </div>
+                {mockQuestionImportPreview ? (
+                  <div className="workspace-panel" style={{ marginTop: 16 }}>
+                    <p className="muted-text">
+                      Rows: {mockQuestionImportPreview.totalRows}. Valid: {mockQuestionImportPreview.validRows}. Rejected: {mockQuestionImportPreview.rejectedRows}.
+                    </p>
+                    {mockQuestionImportPreview.errors.length > 0 ? (
+                      <ul className="dashboard-bullet-list">
+                        {mockQuestionImportPreview.errors.slice(0, 8).map((error) => <li key={`${error.row}:${error.message}`}>Row {error.row}: {error.message}</li>)}
+                      </ul>
+                    ) : (
+                      <p className="success-text">All imported rows are valid.</p>
+                    )}
+                  </div>
+                ) : null}
+                <details style={{ marginTop: 16 }}>
+                  <summary>Paste JSON instead</summary>
+                  <label>
+                    <span className="muted-text">Questions JSON</span>
+                    <textarea className="ui-input" rows={10} value={mockTestForm.questionsJson} onChange={(event) => setMockTestForm((current) => ({ ...current, questionsJson: event.target.value }))} placeholder='[{"text":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"...","skillTag":"Time and Work"}]' />
+                  </label>
+                </details>
+              </div>
+            ) : (
+              <label style={{ display: "block", marginTop: 16 }}>
+                <span className="muted-text">Questions JSON</span>
+                <textarea className="ui-input" rows={10} value={mockTestForm.questionsJson} onChange={(event) => setMockTestForm((current) => ({ ...current, questionsJson: event.target.value }))} placeholder='[{"text":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"...","skillTag":"Time and Work"}]' />
+              </label>
+            )}
             <div className="hero-actions" style={{ marginTop: 16 }}>
               <Button onClick={() => runAction("create-mock", async () => {
                 const tenantId = requireTenant();
-                const questions = JSON.parse(mockTestForm.questionsJson) as Array<{ text: string; options: string[]; correctIndex: number; explanation?: string; skillTag?: string }>;
-                if (!selectedTestId) {
-                  await adminCreateMockTest({ tenantId, title: mockTestForm.title, topicId: mockTestForm.topicId || undefined, companyId: mockTestForm.companyId || undefined, durationSec: Number(mockTestForm.durationSec), difficulty: mockTestForm.difficulty as "easy" | "medium" | "hard", isActive: mockTestForm.isActive, questions });
-                  setMessage("Mock test created.", "success");
+                if (mockQuestionSource === "upload") {
+                  if (!mockQuestionImportPreview) throw new Error("Preview the question sheet before saving this mock test.");
+                  if (mockQuestionImportPreview.validRows === 0 || mockQuestionImportPreview.rejectedRows > 0) {
+                    throw new Error("Fix the rejected rows in the question sheet before saving.");
+                  }
+                  if (!selectedTestId) {
+                    await adminCreateMockTestFromImport({
+                      tenantId,
+                      title: mockTestForm.title,
+                      topicId: mockTestForm.topicId || undefined,
+                      companyId: mockTestForm.companyId || undefined,
+                      durationSec: Number(mockTestForm.durationSec),
+                      difficulty: mockTestForm.difficulty as "easy" | "medium" | "hard",
+                      isActive: mockTestForm.isActive,
+                      audienceMode: mockTestForm.audienceMode as "all" | "filtered",
+                      audienceBranches: mockTestForm.audienceBranches,
+                      audienceBatches: mockTestForm.audienceBatches,
+                      rows: mockQuestionImportPreview.rows,
+                    });
+                    setMessage("Mock test created from uploaded question sheet.", "success");
+                  } else {
+                    await adminUpdateMockTest({
+                      tenantId,
+                      testId: selectedTestId,
+                      title: mockTestForm.title,
+                      topicId: mockTestForm.topicId || undefined,
+                      companyId: mockTestForm.companyId || undefined,
+                      durationSec: Number(mockTestForm.durationSec),
+                      difficulty: mockTestForm.difficulty as "easy" | "medium" | "hard",
+                      isActive: mockTestForm.isActive,
+                      audienceMode: mockTestForm.audienceMode as "all" | "filtered",
+                      audienceBranches: mockTestForm.audienceBranches,
+                      audienceBatches: mockTestForm.audienceBatches,
+                    });
+                    await adminUpdateMockTestFromImport({
+                      tenantId,
+                      testId: selectedTestId,
+                      append: mockImportAppendMode === "append",
+                      rows: mockQuestionImportPreview.rows,
+                    });
+                    setMessage("Mock test updated from uploaded question sheet.", "success");
+                  }
                 } else {
-                  await adminUpdateMockTest({ tenantId, testId: selectedTestId, title: mockTestForm.title, topicId: mockTestForm.topicId || undefined, companyId: mockTestForm.companyId || undefined, durationSec: Number(mockTestForm.durationSec), difficulty: mockTestForm.difficulty as "easy" | "medium" | "hard", isActive: mockTestForm.isActive });
-                  await adminUpdateMockTestQuestions({ tenantId, testId: selectedTestId, append: false, questions });
-                  setMessage("Mock test updated.", "success");
+                  const questions = JSON.parse(mockTestForm.questionsJson) as Array<{ text: string; options: string[]; correctIndex: number; explanation?: string; skillTag?: string }>;
+                  if (!selectedTestId) {
+                    await adminCreateMockTest({
+                      tenantId,
+                      title: mockTestForm.title,
+                      topicId: mockTestForm.topicId || undefined,
+                      companyId: mockTestForm.companyId || undefined,
+                      durationSec: Number(mockTestForm.durationSec),
+                      difficulty: mockTestForm.difficulty as "easy" | "medium" | "hard",
+                      isActive: mockTestForm.isActive,
+                      audienceMode: mockTestForm.audienceMode as "all" | "filtered",
+                      audienceBranches: mockTestForm.audienceBranches,
+                      audienceBatches: mockTestForm.audienceBatches,
+                      questions,
+                    });
+                    setMessage("Mock test created.", "success");
+                  } else {
+                    await adminUpdateMockTest({
+                      tenantId,
+                      testId: selectedTestId,
+                      title: mockTestForm.title,
+                      topicId: mockTestForm.topicId || undefined,
+                      companyId: mockTestForm.companyId || undefined,
+                      durationSec: Number(mockTestForm.durationSec),
+                      difficulty: mockTestForm.difficulty as "easy" | "medium" | "hard",
+                      isActive: mockTestForm.isActive,
+                      audienceMode: mockTestForm.audienceMode as "all" | "filtered",
+                      audienceBranches: mockTestForm.audienceBranches,
+                      audienceBatches: mockTestForm.audienceBatches,
+                    });
+                    await adminUpdateMockTestQuestions({ tenantId, testId: selectedTestId, append: false, questions });
+                    setMessage("Mock test updated.", "success");
+                  }
                 }
-                setMockTestForm({ title: "", topicId: "", companyId: "", durationSec: "3600", difficulty: "medium", isActive: false, questionsJson: "[]" });
+                setMockTestForm(blankMockTestForm());
                 setSelectedTestId(null);
+                setMockQuestionSource("upload");
+                setMockQuestionImportFile(null);
+                setMockQuestionImportPreview(null);
+                setMockImportAppendMode("replace");
               })} disabled={busyAction === "create-mock"}>{selectedTestId ? "Save Mock Test" : "Create Mock Test"}</Button>
             </div>
           </section>

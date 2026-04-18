@@ -39,6 +39,22 @@ export const mockQuestionSchema = z.object({
   skillTag: z.string().trim().min(1).max(160).optional(),
 });
 
+export const mockTestAudienceModeSchema = z.enum(["all", "filtered"]);
+
+const mockTestAudienceFields = {
+  audienceMode: mockTestAudienceModeSchema.default("all"),
+  audienceBranches: z.array(z.string().trim().min(1).max(80)).max(20).default([]),
+  audienceBatches: z.array(z.string().trim().min(1).max(12)).max(20).default([]),
+};
+
+function hasAudienceSelection(value: { audienceMode?: "all" | "filtered"; audienceBranches?: string[]; audienceBatches?: string[] }) {
+  if (value.audienceMode !== "filtered") {
+    return true;
+  }
+
+  return (value.audienceBranches?.length ?? 0) > 0 || (value.audienceBatches?.length ?? 0) > 0;
+}
+
 export const createMockTestSchema = z.object({
   title: z.string().trim().min(3).max(200),
   topicId: z.string().uuid().optional(),
@@ -47,6 +63,10 @@ export const createMockTestSchema = z.object({
   difficulty: z.enum(["easy", "medium", "hard"]).default("medium"),
   questions: z.array(mockQuestionSchema).default([]),
   isActive: z.boolean().default(false),
+  ...mockTestAudienceFields,
+}).refine(hasAudienceSelection, {
+  message: "Select at least one branch or batch when using a filtered audience.",
+  path: ["audienceMode"],
 });
 
 export const updateMockTestSchema = z.object({
@@ -56,6 +76,9 @@ export const updateMockTestSchema = z.object({
   durationSec: z.coerce.number().int().min(60).max(14_400).optional(),
   difficulty: z.enum(["easy", "medium", "hard"]).optional(),
   isActive: z.boolean().optional(),
+  audienceMode: mockTestAudienceModeSchema.optional(),
+  audienceBranches: z.array(z.string().trim().min(1).max(80)).max(20).optional(),
+  audienceBatches: z.array(z.string().trim().min(1).max(12)).max(20).optional(),
 }).refine((value) => Object.keys(value).length > 0, { message: "At least one field is required" });
 
 export const publishMockTestSchema = z.object({

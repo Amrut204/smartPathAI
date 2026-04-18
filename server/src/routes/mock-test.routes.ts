@@ -105,6 +105,7 @@ router.get(
       req.auth!.tenantId,
       req.params.testId as string,
       req.auth!.role,
+      req.auth!.userId,
     );
     res.json(successResponse(data));
   }),
@@ -146,6 +147,7 @@ router.get(
       req.auth!.tenantId,
       req.params.testId as string,
       req.auth!.role,
+      req.auth!.userId,
     );
     res.json(successResponse(data));
   }),
