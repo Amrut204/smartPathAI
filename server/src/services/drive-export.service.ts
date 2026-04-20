@@ -212,6 +212,7 @@ export const DriveExportService = {
     drawLine(`Resource Access Required: ${criteria.canAccessResources === undefined ? "-" : criteria.canAccessResources ? "Yes" : "No"}`);
     drawLine(`Mock Test Access Required: ${criteria.canAccessMockTests === undefined ? "-" : criteria.canAccessMockTests ? "Yes" : "No"}`);
     drawLine(`Branches: ${criteria.branches?.length ? criteria.branches.join(", ") : "-"}`);
+    drawLine(`Academic Years: ${criteria.academicYears?.length ? criteria.academicYears.join(", ") : "-"}`);
     drawLine(`Exclude Already Placed: ${criteria.excludePlacedStudents ? "Yes" : "No"}`);
     drawLine("");
 

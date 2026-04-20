@@ -1,9 +1,21 @@
 import { MongoAuthRepository } from "../repositories/mongo-auth.repository.js";
 import { getMongoDb } from "../utils/mongodb.js";
 import { buildStudentDeclarationStatus } from "../utils/student-declaration.js";
-import { buildStudentProfileSummary } from "../utils/student-profile.js";
+import { buildStudentProfileSummary, normalizeStudentProfileData } from "../utils/student-profile.js";
 import { evaluateStudentEligibility } from "./eligibility.logic.js";
 import { computeReadinessScore } from "./readiness.logic.js";
+
+function inferAcademicYear(currentSemester: unknown): "first_year" | "second_year" | "third_year" | "final_year" | undefined {
+  const raw = String(currentSemester ?? "").trim();
+  if (!raw) return undefined;
+  const parsed = Number(raw);
+  if (!Number.isInteger(parsed)) return undefined;
+  if (parsed >= 1 && parsed <= 2) return "first_year";
+  if (parsed >= 3 && parsed <= 4) return "second_year";
+  if (parsed >= 5 && parsed <= 6) return "third_year";
+  if (parsed >= 7 && parsed <= 8) return "final_year";
+  return undefined;
+}
 
 export const ReadinessService = {
   async calculate(tenantId: string, studentId: string): Promise<number> {
@@ -85,6 +97,8 @@ export const ReadinessService = {
       student,
       user: userLike,
     });
+    const normalizedProfile = normalizeStudentProfileData(student.profile_data);
+    const academicYear = inferAcademicYear(normalizedProfile.currentSemester);
     const hasResume = Boolean(
       profileSummary.studentEditableProfile.resumeDriveWebLink
       || profileSummary.studentEditableProfile.resumeUrl,
@@ -125,6 +139,7 @@ export const ReadinessService = {
           activeBacklogs: Number(student.backlogs ?? 0),
           totalBacklogs: Number(student.backlogs_total ?? 0),
           branch: String(student.branch ?? ""),
+          academicYear,
           attendancePct: Number(student.attendance_pct ?? 0),
           isPlaced,
         },
@@ -134,6 +149,7 @@ export const ReadinessService = {
           maxActiveBacklogs: criteria.maxActiveBacklogs === undefined ? undefined : Number(criteria.maxActiveBacklogs),
           maxTotalBacklogs: criteria.maxTotalBacklogs === undefined ? undefined : Number(criteria.maxTotalBacklogs),
           branches: Array.isArray(criteria.branches) ? criteria.branches.map((value) => String(value)) : undefined,
+          academicYears: Array.isArray(criteria.academicYears) ? criteria.academicYears.map((value) => String(value) as "first_year" | "second_year" | "third_year" | "final_year") : undefined,
           minAttendance: criteria.minAttendance === undefined ? undefined : Number(criteria.minAttendance),
           excludePlacedStudents: excludePlacedStudentsByDefault || criteria.excludePlacedStudents === true,
         },

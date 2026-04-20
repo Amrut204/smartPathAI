@@ -12,6 +12,7 @@ export interface DriveCriteria {
   maxActiveBacklogs?: number;
   maxTotalBacklogs?: number;
   branches?: string[];
+  academicYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
   tenthMarksMin?: number;
   tenthMarksMax?: number;
   twelfthMarksMin?: number;
@@ -136,6 +137,7 @@ export interface EnrichedStudent {
   rollNumber: string;
   branch: string;
   batch: string;
+  academicYear?: "first_year" | "second_year" | "third_year" | "final_year";
   cgpa: number;
   backlogs: number;
   backlogsTotal: number;
@@ -348,6 +350,18 @@ function buildStatusFilter(status: DriveLifecycle) {
   return status;
 }
 
+function inferAcademicYear(currentSemester: unknown): EnrichedStudent["academicYear"] {
+  const raw = String(currentSemester ?? "").trim();
+  if (!raw) return undefined;
+  const parsed = Number(raw);
+  if (!Number.isInteger(parsed)) return undefined;
+  if (parsed >= 1 && parsed <= 2) return "first_year";
+  if (parsed >= 3 && parsed <= 4) return "second_year";
+  if (parsed >= 5 && parsed <= 6) return "third_year";
+  if (parsed >= 7 && parsed <= 8) return "final_year";
+  return undefined;
+}
+
 export function buildDriveCriteriaDigest(criteria: DriveCriteria) {
   const normalized: Record<string, unknown> = {
     minCgpa: criteria.minCgpa ?? null,
@@ -355,6 +369,7 @@ export function buildDriveCriteriaDigest(criteria: DriveCriteria) {
     maxActiveBacklogs: criteria.maxActiveBacklogs ?? null,
     maxTotalBacklogs: criteria.maxTotalBacklogs ?? null,
     branches: Array.isArray(criteria.branches) ? [...criteria.branches].map(String).sort() : [],
+    academicYears: Array.isArray(criteria.academicYears) ? [...criteria.academicYears].map(String).sort() : [],
     minAttendance: criteria.minAttendance ?? null,
     excludePlacedStudents: Boolean(criteria.excludePlacedStudents),
   };
@@ -442,6 +457,7 @@ async function enrichStudents(
     });
     const normalizedProfile = normalizeStudentProfileData(student.profile_data);
     const academicMarks = extractAcademicMarksFromProfileData(student.profile_data);
+    const academicYear = inferAcademicYear(normalizedProfile.currentSemester);
     const hasResumeReady = Boolean(
       summary.studentEditableProfile.resumeStorageProvider
       || summary.studentEditableProfile.resumeDriveFileId
@@ -459,6 +475,7 @@ async function enrichStudents(
       rollNumber: student.roll_number ? String(student.roll_number) : "",
       branch: String(student.branch),
       batch: String(student.batch),
+      academicYear,
       cgpa: Number(student.cgpa ?? 0),
       backlogs: Number(student.backlogs ?? 0),
       backlogsTotal: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
@@ -862,7 +879,11 @@ export const DriveRepository = {
       { projection: { _id: 0, id: 1, user_id: 1, roll_number: 1, branch: 1, batch: 1, cgpa: 1, backlogs: 1, backlogs_total: 1, attendance_pct: 1, readiness_score: 1, profile_data: 1 } },
     ).sort({ cgpa: -1, id: 1 }).toArray();
 
-    return enrichStudents(tenantId, students as unknown as StudentEligibilityRow[]);
+    const enriched = await enrichStudents(tenantId, students as unknown as StudentEligibilityRow[]);
+    if (!criteria.academicYears || criteria.academicYears.length === 0) {
+      return enriched;
+    }
+    return enriched.filter((student) => student.academicYear && criteria.academicYears?.includes(student.academicYear));
   },
 
   async listStudentsForEligibilityPool(tenantId: string) {

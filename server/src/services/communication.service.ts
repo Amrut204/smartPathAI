@@ -1244,6 +1244,8 @@ async function queueEmailBatch(params: {
   subject: string;
   body: string;
   providerMode?: EmailMode;
+  senderFromNameOverride?: string;
+  senderReplyToEmailOverride?: string;
   templateId?: string | null;
   variables?: Record<string, string>;
   metadata?: Record<string, unknown>;
@@ -1251,7 +1253,22 @@ async function queueEmailBatch(params: {
 }) {
   const db = await getMongoDb();
   const mode = params.providerMode ?? normalizeEmailMode();
-  const senderIdentity = await resolveSenderIdentity(params.tenantId, mode);
+  const resolvedSenderIdentity = await resolveSenderIdentity(params.tenantId, mode);
+  const senderFromNameOverride = String(params.senderFromNameOverride ?? "").trim();
+  const senderReplyToEmailOverride = normalizeEmail(String(params.senderReplyToEmailOverride ?? ""));
+  const senderIdentityWithName = senderFromNameOverride
+    ? {
+        ...resolvedSenderIdentity,
+        fromName: senderFromNameOverride,
+        displayFrom: `${senderFromNameOverride} <${resolvedSenderIdentity.fromEmail}>`,
+      }
+    : resolvedSenderIdentity;
+  const senderIdentity = senderReplyToEmailOverride && senderReplyToEmailOverride.includes("@")
+    ? {
+        ...senderIdentityWithName,
+        replyToEmail: senderReplyToEmailOverride,
+      }
+    : senderIdentityWithName;
   assertResendConfig();
 
   if (params.recipients.length === 0) {
@@ -2211,6 +2228,8 @@ export const CommunicationService = {
     senderId: string;
     templateSlug: string;
     recipients: Array<Recipient>;
+    senderFromNameOverride?: string;
+    senderReplyToEmailOverride?: string;
     variables?: Record<string, string>;
     metadata?: Record<string, unknown>;
     allowUnsubscribe?: boolean;
@@ -2220,6 +2239,8 @@ export const CommunicationService = {
       tenantId: input.tenantId,
       senderId: input.senderId,
       recipients: input.recipients,
+      senderFromNameOverride: input.senderFromNameOverride,
+      senderReplyToEmailOverride: input.senderReplyToEmailOverride,
       subject: template.subject,
       body: template.body,
       templateId: template.id,

@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+const academicYearSchema = z.enum(["first_year", "second_year", "third_year", "final_year"]);
+
 export const driveStatusSchema = z.enum([
   "draft",
   "published",
@@ -35,6 +37,7 @@ export const driveCriteriaSchema = z.object({
   maxActiveBacklogs: z.number().int().min(0).optional(),
   maxTotalBacklogs: z.number().int().min(0).optional(),
   branches: z.array(z.string().trim().min(1).max(64)).max(30).optional(),
+  academicYears: z.array(academicYearSchema).max(4).optional(),
   tenthMarksMin: z.number().min(0).max(100).optional(),
   tenthMarksMax: z.number().min(0).max(100).optional(),
   twelfthMarksMin: z.number().min(0).max(100).optional(),

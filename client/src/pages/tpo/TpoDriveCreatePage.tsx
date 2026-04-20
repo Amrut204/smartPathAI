@@ -5,6 +5,7 @@ import { TpoActionMenu } from "../../components/composites/TpoActionMenu";
 import { TpoSubviewSwitcher } from "../../components/composites/TpoSubviewSwitcher";
 import { TpoWorkspaceHeader } from "../../components/composites/TpoWorkspaceHeader";
 import { useAuth } from "../../components/providers/AuthProvider";
+import { useTenant } from "../../components/providers/TenantProvider";
 import { Button, Card, Input, Select } from "../../components/ui";
 import { getTpoGreeting } from "../../config/tpo-workspace";
 import {
@@ -15,6 +16,7 @@ import {
 
 export default function TpoDriveCreatePage() {
   const { profile } = useAuth();
+  const { config } = useTenant();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [busy, setBusy] = useState(false);
@@ -47,6 +49,8 @@ export default function TpoDriveCreatePage() {
   const [maxActiveBacklogs, setMaxActiveBacklogs] = useState("");
   const [maxTotalBacklogs, setMaxTotalBacklogs] = useState("");
   const [branches, setBranches] = useState("");
+  const [selectedBranches, setSelectedBranches] = useState<string[]>([]);
+  const [selectedAcademicYears, setSelectedAcademicYears] = useState<Array<"first_year" | "second_year" | "third_year" | "final_year">>([]);
   const [tenthMarksMin, setTenthMarksMin] = useState("");
   const [tenthMarksMax, setTenthMarksMax] = useState("");
   const [twelfthMarksMin, setTwelfthMarksMin] = useState("");
@@ -62,13 +66,29 @@ export default function TpoDriveCreatePage() {
   const [canAccessMockTestsFilter, setCanAccessMockTestsFilter] = useState<"any" | "yes" | "no">("any");
   const [excludePlacedStudents, setExcludePlacedStudents] = useState(false);
 
+  const tenantBranches = useMemo(() => {
+    const raw = (config as { branches?: unknown } | null)?.branches;
+    if (!Array.isArray(raw)) return [];
+    return [...new Set(raw.map((value) => String(value ?? "").trim()).filter(Boolean))];
+  }, [config]);
+
+  const academicYearOptions: Array<{ value: "first_year" | "second_year" | "third_year" | "final_year"; label: string }> = [
+    { value: "first_year", label: "First year" },
+    { value: "second_year", label: "Second year" },
+    { value: "third_year", label: "Third year" },
+    { value: "final_year", label: "Final year" },
+  ];
+
   const normalizedBranches = useMemo(
-    () =>
-      branches
-        .split(",")
-        .map((value) => value.trim())
-        .filter(Boolean),
-    [branches],
+    () => (
+      tenantBranches.length > 0
+        ? selectedBranches
+        : branches
+            .split(",")
+            .map((value) => value.trim())
+            .filter(Boolean)
+    ),
+    [branches, selectedBranches, tenantBranches],
   );
 
   const todayIso = useMemo(() => {
@@ -95,6 +115,7 @@ export default function TpoDriveCreatePage() {
       maxActiveBacklogs: maxActiveBacklogs ? Number(maxActiveBacklogs) : undefined,
       maxTotalBacklogs: maxTotalBacklogs ? Number(maxTotalBacklogs) : undefined,
       branches: normalizedBranches.length ? normalizedBranches : undefined,
+      academicYears: selectedAcademicYears.length ? selectedAcademicYears : undefined,
       tenthMarksMin: tenthMarksMin ? Number(tenthMarksMin) : undefined,
       tenthMarksMax: tenthMarksMax ? Number(tenthMarksMax) : undefined,
       twelfthMarksMin: twelfthMarksMin ? Number(twelfthMarksMin) : undefined,
@@ -121,6 +142,7 @@ export default function TpoDriveCreatePage() {
       minAttendance,
       minCgpa,
       normalizedBranches,
+      selectedAcademicYears,
       profileCompletenessMin,
       readinessMin,
       tenthMarksMin,
@@ -135,6 +157,16 @@ export default function TpoDriveCreatePage() {
   const invalidatePreview = () => {
     setEligibilityPreview(null);
     setReviewConfirmed(false);
+  };
+
+  const toggleBranch = (branch: string) => {
+    setSelectedBranches((current) => (current.includes(branch) ? current.filter((item) => item !== branch) : [...current, branch]));
+    invalidatePreview();
+  };
+
+  const toggleAcademicYear = (year: "first_year" | "second_year" | "third_year" | "final_year") => {
+    setSelectedAcademicYears((current) => (current.includes(year) ? current.filter((item) => item !== year) : [...current, year]));
+    invalidatePreview();
   };
 
   const validateStepOne = () => {
@@ -423,16 +455,63 @@ export default function TpoDriveCreatePage() {
                 }}
               />
             </label>
-            <label>
-              Allowed Branches (comma separated)
-              <Input
-                value={branches}
-                onChange={(event) => {
-                  setBranches(event.target.value);
-                  invalidatePreview();
-                }}
-              />
-            </label>
+            {tenantBranches.length > 0 ? (
+              <div style={{ display: "grid", gap: "0.75rem" }}>
+                <span style={{ color: "var(--color-text-muted)", fontSize: "0.92rem", fontWeight: 600 }}>Allowed branches</span>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
+                  {tenantBranches.map((branch) => (
+                    <label
+                      key={branch}
+                      style={{
+                        display: "inline-flex",
+                        gap: 8,
+                        alignItems: "center",
+                        padding: "0.65rem 0.9rem",
+                        border: "1px solid var(--color-border)",
+                        borderRadius: 14,
+                        background: selectedBranches.includes(branch) ? "rgba(37, 99, 235, 0.08)" : "rgba(255,255,255,0.92)",
+                      }}
+                    >
+                      <input type="checkbox" checked={selectedBranches.includes(branch)} onChange={() => toggleBranch(branch)} />
+                      {branch}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <label>
+                Allowed Branches (comma separated)
+                <Input
+                  value={branches}
+                  onChange={(event) => {
+                    setBranches(event.target.value);
+                    invalidatePreview();
+                  }}
+                />
+              </label>
+            )}
+            <div style={{ display: "grid", gap: "0.75rem" }}>
+              <span style={{ color: "var(--color-text-muted)", fontSize: "0.92rem", fontWeight: 600 }}>Allowed academic years</span>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
+                {academicYearOptions.map((option) => (
+                  <label
+                    key={option.value}
+                    style={{
+                      display: "inline-flex",
+                      gap: 8,
+                      alignItems: "center",
+                      padding: "0.65rem 0.9rem",
+                      border: "1px solid var(--color-border)",
+                      borderRadius: 14,
+                      background: selectedAcademicYears.includes(option.value) ? "rgba(37, 99, 235, 0.08)" : "rgba(255,255,255,0.92)",
+                    }}
+                  >
+                    <input type="checkbox" checked={selectedAcademicYears.includes(option.value)} onChange={() => toggleAcademicYear(option.value)} />
+                    {option.label}
+                  </label>
+                ))}
+              </div>
+            </div>
             <label>
               10th Marks Min %
               <Input
@@ -663,6 +742,7 @@ export default function TpoDriveCreatePage() {
           <p>Max Active Backlogs: {maxActiveBacklogs || "-"}</p>
           <p>Max Total Backlogs: {maxTotalBacklogs || "-"}</p>
           <p>Branches: {normalizedBranches.join(", ") || "-"}</p>
+          <p>Academic years: {selectedAcademicYears.map((value) => academicYearOptions.find((option) => option.value === value)?.label ?? value).join(", ") || "-"}</p>
           <p>10th Marks Min: {tenthMarksMin || "-"}</p>
           <p>10th Marks Max: {tenthMarksMax || "-"}</p>
           <p>12th Marks Min: {twelfthMarksMin || "-"}</p>

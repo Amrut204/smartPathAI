@@ -228,6 +228,7 @@ export default function TpoCommunicationPage() {
   const [needsIntervention, setNeedsIntervention] = useState<TriStateFilter>("any");
   const [selectedStudentIds, setSelectedStudentIds] = useState<string[]>([]);
   const [confirmAction, setConfirmAction] = useState<null | "send-email" | "publish-announcement">(null);
+  const isSettingsFocusMode = mode === "email" && (showSenderSettings || showPlacementSettings);
 
   const selectedTemplate = useMemo(
     () => (templates ?? []).find((template) => template.id === templateId) ?? null,
@@ -765,7 +766,17 @@ export default function TpoCommunicationPage() {
             Compose Email
           </Button>
         )}
-        secondaryAction={activeView === "compose-email" ? (
+        secondaryAction={isSettingsFocusMode ? (
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setShowSenderSettings(false);
+              setShowPlacementSettings(false);
+            }}
+          >
+            Back to communication
+          </Button>
+        ) : activeView === "compose-email" ? (
           <Button
             variant="secondary"
             onClick={() => setFiltersOpen((current) => !current)}
@@ -797,11 +808,17 @@ export default function TpoCommunicationPage() {
               },
               {
                 label: showPlacementSettings ? "Hide placement policy" : "Placement policy",
-                onSelect: () => setShowPlacementSettings((current) => !current),
+                onSelect: () => {
+                  setShowSenderSettings(false);
+                  setShowPlacementSettings((current) => !current);
+                },
               },
               {
                 label: showSenderSettings ? "Hide sender settings" : "Sender settings",
-                onSelect: () => setShowSenderSettings((current) => !current),
+                onSelect: () => {
+                  setShowPlacementSettings(false);
+                  setShowSenderSettings((current) => !current);
+                },
               },
               {
                 label: "Open history",
@@ -816,23 +833,25 @@ export default function TpoCommunicationPage() {
         )}
       />
 
-      <TpoSubviewSwitcher
-        label="Communication views"
-        items={[
-          { id: "review", label: "Review Queue" },
-          { id: "compose-email", label: "Compose Email" },
-          { id: "announcements", label: "Announcements" },
-          { id: "history", label: "History" },
-        ]}
-        activeId={activeView}
-        onChange={(next) => {
-          const nextParams = new URLSearchParams(searchParams);
-          nextParams.set("view", String(next));
-          setSearchParams(nextParams, { replace: true });
-        }}
-      />
+      {!isSettingsFocusMode ? (
+        <TpoSubviewSwitcher
+          label="Communication views"
+          items={[
+            { id: "review", label: "Review Queue" },
+            { id: "compose-email", label: "Compose Email" },
+            { id: "announcements", label: "Announcements" },
+            { id: "history", label: "History" },
+          ]}
+          activeId={activeView}
+          onChange={(next) => {
+            const nextParams = new URLSearchParams(searchParams);
+            nextParams.set("view", String(next));
+            setSearchParams(nextParams, { replace: true });
+          }}
+        />
+      ) : null}
 
-      {activeView === "review" && automationDrafts && automationDrafts.length > 0 ? (
+      {!isSettingsFocusMode && activeView === "review" && automationDrafts && automationDrafts.length > 0 ? (
         <section className="tpo-communication-panel">
           <div className="workspace-panel-header">
             <div>
@@ -901,7 +920,7 @@ export default function TpoCommunicationPage() {
         </section>
       ) : null}
 
-      {activeView === "review" && (!automationDrafts || automationDrafts.length === 0) ? (
+      {!isSettingsFocusMode && activeView === "review" && (!automationDrafts || automationDrafts.length === 0) ? (
         <section className="tpo-communication-panel">
           <div className="workspace-panel-header">
             <div>
@@ -962,7 +981,7 @@ export default function TpoCommunicationPage() {
         </section>
       ) : null}
 
-      {(activeView === "compose-email" || activeView === "announcements") ? (
+      {!isSettingsFocusMode && (activeView === "compose-email" || activeView === "announcements") ? (
         <section className="tpo-communication-simple-grid">
           <div className="tpo-communication-main">
             {selectedStudentIds.length > 0 ? (
@@ -1585,7 +1604,7 @@ export default function TpoCommunicationPage() {
         </section>
       ) : null}
 
-      {activeView === "history" ? (
+      {!isSettingsFocusMode && activeView === "history" ? (
       <section className="tpo-communication-panel">
         <div className="tpo-communication-panel-head">
           <div>

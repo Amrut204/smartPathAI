@@ -163,6 +163,32 @@ function normalizeSemesterValue(value: unknown): number | null {
   return parsed;
 }
 
+function deriveAcademicYearFromSemester(value: unknown): "first_year" | "second_year" | "third_year" | "final_year" | null {
+  const semester = normalizeSemesterValue(value);
+  if (semester === null) return null;
+  if (semester <= 2) return "first_year";
+  if (semester <= 4) return "second_year";
+  if (semester <= 6) return "third_year";
+  return "final_year";
+}
+
+function matchesDriveAudience(params: {
+  branch: string;
+  academicYear: "first_year" | "second_year" | "third_year" | "final_year" | null;
+  criteria: {
+    branches?: string[];
+    academicYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
+  };
+}) {
+  const branchAllowed = !params.criteria.branches || params.criteria.branches.length === 0 || params.criteria.branches.includes(params.branch);
+  const academicYearAllowed =
+    !params.criteria.academicYears
+    || params.criteria.academicYears.length === 0
+    || (params.academicYear !== null && params.criteria.academicYears.includes(params.academicYear));
+
+  return branchAllowed && academicYearAllowed;
+}
+
 function buildProfileFieldTrust(base: ReturnType<typeof buildMyProfileResponse>) {
   const locked = Boolean(base.declarationStatus.profileCertification.isLocked);
   const seededKeys = new Set(base.requiredFields.filter((field) => field.owner === "seeded").map((field) => field.key));
@@ -285,6 +311,7 @@ async function evaluateEligibilityWithPlacementPolicy(params: {
     maxActiveBacklogs?: number;
     maxTotalBacklogs?: number;
     branches?: string[];
+    academicYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
     minAttendance?: number;
     readinessMin?: number;
     profileCompletenessMin?: number;
@@ -299,6 +326,7 @@ async function evaluateEligibilityWithPlacementPolicy(params: {
     activeBacklogs: number;
     totalBacklogs: number;
     branch: string;
+    academicYear?: "first_year" | "second_year" | "third_year" | "final_year";
     attendancePct: number;
     readinessScore?: number;
     profileCompletenessPct?: number;
@@ -1253,6 +1281,7 @@ async function buildProfileExperience(profile: Awaited<ReturnType<typeof Student
   const currentDegree = base.studentEditableProfile.degree;
   const currentProfile = normalizeStudentProfileData(profile.profile_data);
   const hasResume = hasResumeOnProfile(currentProfile);
+  const academicYear = deriveAcademicYearFromSemester(currentProfile.currentSemester);
 
   const [resumeUsageCount, upcomingDrives, unlockRequest] = await Promise.all([
     db.collection("drive_results").countDocuments({
@@ -1270,6 +1299,15 @@ async function buildProfileExperience(profile: Awaited<ReturnType<typeof Student
     getLatestProfileUnlockRequest(tenantId, studentId),
   ]);
 
+  const visibleUpcomingDrives = upcomingDrives.filter((drive) => matchesDriveAudience({
+    branch: String(profile.branch ?? ""),
+    academicYear,
+    criteria: (drive.criteria ?? {}) as {
+      branches?: string[];
+      academicYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
+    },
+  }));
+
   const actualEligibilityReasons: string[] = [];
   const blockerCounts = new Map<string, number>();
   let readyDriveCount = 0;
@@ -1278,7 +1316,7 @@ async function buildProfileExperience(profile: Awaited<ReturnType<typeof Student
   let certificationUnlockCount = 0;
   let resumeUnlockCount = 0;
 
-  for (const drive of upcomingDrives) {
+  for (const drive of visibleUpcomingDrives) {
     const evaluation = await evaluateEligibilityWithPlacementPolicy({
       tenantId,
       student: {
@@ -1286,6 +1324,7 @@ async function buildProfileExperience(profile: Awaited<ReturnType<typeof Student
         activeBacklogs: Number(profile.backlogs ?? 0),
         totalBacklogs: Number((profile as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
         branch: String(profile.branch ?? ""),
+        academicYear: academicYear ?? undefined,
         attendancePct: Number(profile.attendance_pct ?? 0),
         readinessScore: Number(profile.readiness_score ?? 0),
         profileCompletenessPct: Number(base.profileCompleteness.pct ?? 0),
@@ -1300,6 +1339,7 @@ async function buildProfileExperience(profile: Awaited<ReturnType<typeof Student
         maxActiveBacklogs?: number;
         maxTotalBacklogs?: number;
         branches?: string[];
+        academicYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
         minAttendance?: number;
         excludePlacedStudents?: boolean;
       },
@@ -1737,6 +1777,15 @@ async function collectStudentDriveReadinessNotificationContext(params: {
   const hasResume =
     Boolean(params.profileResponse.studentEditableProfile.resumeDriveWebLink)
     || Boolean(params.profileResponse.studentEditableProfile.resumeUrl);
+  const academicYear = deriveAcademicYearFromSemester(params.profileResponse.studentEditableProfile.currentSemester);
+  const visibleDrives = drives.filter((drive) => matchesDriveAudience({
+    branch: String(student.branch ?? ""),
+    academicYear,
+    criteria: (drive.criteria ?? {}) as {
+      branches?: string[];
+      academicYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
+    },
+  }));
 
   const context: StudentDriveReadinessNotificationContext = {
     readyToApply: [],
@@ -1745,7 +1794,7 @@ async function collectStudentDriveReadinessNotificationContext(params: {
     blockedByResumeAndCertification: [],
   };
 
-  for (const drive of drives) {
+  for (const drive of visibleDrives) {
     const evaluation = await evaluateEligibilityWithPlacementPolicy({
       tenantId: params.tenantId,
       student: {
@@ -1753,6 +1802,7 @@ async function collectStudentDriveReadinessNotificationContext(params: {
         activeBacklogs: Number(student.backlogs ?? 0),
         totalBacklogs: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
         branch: String(student.branch ?? ""),
+        academicYear: academicYear ?? undefined,
         attendancePct: Number(student.attendance_pct ?? 0),
         readinessScore: Number(student.readiness_score ?? 0),
         profileCompletenessPct: Number(params.profileResponse.profileCompleteness.pct ?? 0),
@@ -1767,6 +1817,7 @@ async function collectStudentDriveReadinessNotificationContext(params: {
         maxActiveBacklogs?: number;
         maxTotalBacklogs?: number;
         branches?: string[];
+        academicYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
         minAttendance?: number;
         excludePlacedStudents?: boolean;
       },
@@ -2074,7 +2125,7 @@ export const StudentService = {
       db.collection("drives").find(
         { tenant_id: tenantId, deleted_at: null, drive_date: { $gte: todayIso } },
         { projection: { _id: 0, id: 1, company: 1, role: 1, drive_date: 1, criteria: 1, status: 1, eligible_count: 1 } },
-      ).sort({ drive_date: 1 }).limit(6).toArray(),
+      ).sort({ drive_date: 1 }).limit(24).toArray(),
       db.collection("student_attempts").find(
         { tenant_id: tenantId, student_id: studentId, status: "submitted", submitted_at: { $gte: start7Iso } },
         { projection: { _id: 0, id: 1, score: 1, submitted_at: 1, test_id: 1 } },
@@ -2111,9 +2162,21 @@ export const StudentService = {
       || profileSummary.studentEditableProfile.resumeUrl,
     );
     const profileCompletenessPct = profileSummary.profileCompleteness.pct;
+    const normalizedProfile = normalizeStudentProfileData(student.profile_data);
+    const academicYear = deriveAcademicYearFromSemester(normalizedProfile.currentSemester);
     const driveResultMap = new Map(driveResults.map((item) => [String(item.drive_id), item]));
+    const visibleUpcomingDrives = upcomingDrives
+      .filter((drive) => matchesDriveAudience({
+        branch: String(student.branch ?? ""),
+        academicYear,
+        criteria: (drive.criteria ?? {}) as {
+          branches?: string[];
+          academicYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
+        },
+      }))
+      .slice(0, 6);
     const eligibilityChecks = await Promise.all(
-      upcomingDrives.map((drive) =>
+      visibleUpcomingDrives.map((drive) =>
         evaluateEligibilityWithPlacementPolicy({
           tenantId,
           student: {
@@ -2121,6 +2184,7 @@ export const StudentService = {
             activeBacklogs: Number(student.backlogs ?? 0),
             totalBacklogs: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
             branch: String(student.branch ?? ""),
+            academicYear: academicYear ?? undefined,
             attendancePct: Number(student.attendance_pct ?? 0),
             readinessScore: Number(student.readiness_score ?? 0),
             profileCompletenessPct,
@@ -2135,6 +2199,7 @@ export const StudentService = {
             maxActiveBacklogs?: number;
             maxTotalBacklogs?: number;
             branches?: string[];
+            academicYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
             minAttendance?: number;
             excludePlacedStudents?: boolean;
           },
@@ -2164,7 +2229,7 @@ export const StudentService = {
         { id: "mock", label: "Take one mock test this week", done: attempts7d.length > 0 },
         { id: "resources", label: "Open a placement resource", done: resources7d.length > 0 },
       ],
-      upcomingDrives: upcomingDrives.map((drive) => ({
+      upcomingDrives: visibleUpcomingDrives.map((drive) => ({
         id: String(drive.id),
         company: String(drive.company ?? ""),
         role: String(drive.role ?? ""),
@@ -2194,6 +2259,8 @@ export const StudentService = {
     const student = await StudentRepository.getStudentByUserId(tenantId, userId);
     const profile = await StudentRepository.getStudentProfile(tenantId, userId);
     const profileExperience = await buildProfileExperience(profile);
+    const normalizedProfile = normalizeStudentProfileData(profile.profile_data);
+    const academicYear = deriveAcademicYearFromSemester(normalizedProfile.currentSemester);
     const profileCertified = profileExperience.declarationStatus.profileCertification.isCertified;
     const hasResume = profileExperience.resumeInsights.hasManagedResume || profileExperience.resumeInsights.hasLegacyResumeLink;
     const drives = await db.collection("drives").find(
@@ -2210,7 +2277,16 @@ export const StudentService = {
         : Promise.resolve(null),
     ]);
 
-    const driveIds = drives.map((drive) => String(drive.id));
+    const visibleDrives = drives.filter((drive) => matchesDriveAudience({
+      branch: String(student.branch ?? ""),
+      academicYear,
+      criteria: (drive.criteria ?? {}) as {
+        branches?: string[];
+        academicYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
+      },
+    }));
+
+    const driveIds = visibleDrives.map((drive) => String(drive.id));
     const results = driveIds.length > 0
       ? await db.collection("drive_results").find(
           { tenant_id: tenantId, student_id: student.id, drive_id: { $in: driveIds } },
@@ -2219,7 +2295,7 @@ export const StudentService = {
       : [];
     const resultMap = new Map(results.map((item) => [String(item.drive_id), item]));
 
-    return Promise.all(drives.map(async (drive) => {
+    return Promise.all(visibleDrives.map(async (drive) => {
       const lifecycle = normalizeDriveLifecycle(drive.status);
       const evaluation = await evaluateEligibilityWithPlacementPolicy({
         tenantId,
@@ -2228,6 +2304,7 @@ export const StudentService = {
           activeBacklogs: Number(student.backlogs ?? 0),
           totalBacklogs: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
           branch: String(student.branch ?? ""),
+          academicYear: academicYear ?? undefined,
           attendancePct: Number(student.attendance_pct ?? 0),
           readinessScore: Number(student.readiness_score ?? 0),
           profileCompletenessPct: Number(profileExperience.profileCompleteness.pct ?? 0),
@@ -2242,6 +2319,7 @@ export const StudentService = {
           maxActiveBacklogs?: number;
           maxTotalBacklogs?: number;
           branches?: string[];
+          academicYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
           minAttendance?: number;
           excludePlacedStudents?: boolean;
         },
@@ -2334,6 +2412,7 @@ export const StudentService = {
             maxActiveBacklogs: Number(drive.criteria?.maxActiveBacklogs ?? drive.criteria?.maxBacklogs ?? 0),
             maxTotalBacklogs: Number(drive.criteria?.maxTotalBacklogs ?? 0),
             branches: Array.isArray(drive.criteria?.branches) ? drive.criteria.branches : [],
+            academicYears: Array.isArray(drive.criteria?.academicYears) ? drive.criteria.academicYears : [],
             minAttendance: Number(drive.criteria?.minAttendance ?? 0),
           },
         },
@@ -2347,6 +2426,7 @@ export const StudentService = {
           maxActiveBacklogs: Number(drive.criteria?.maxActiveBacklogs ?? drive.criteria?.maxBacklogs ?? 0),
           maxTotalBacklogs: Number(drive.criteria?.maxTotalBacklogs ?? 0),
           branches: Array.isArray(drive.criteria?.branches) ? drive.criteria.branches : [],
+          academicYears: Array.isArray(drive.criteria?.academicYears) ? drive.criteria.academicYears : [],
           minAttendance: Number(drive.criteria?.minAttendance ?? 0),
           excludePlacedStudents: Boolean(evaluation.effectiveExcludePlacedStudents),
         },
@@ -2388,15 +2468,26 @@ export const StudentService = {
 
     const profile = await StudentRepository.getStudentProfile(tenantId, userId);
     const myProfile = buildMyProfileResponse(profile);
+    const normalizedProfile = normalizeStudentProfileData(profile.profile_data);
+    const academicYear = deriveAcademicYearFromSemester(normalizedProfile.currentSemester);
     const criteria = (drive.criteria ?? {}) as {
       minCgpa?: number;
       maxBacklogs?: number;
       maxActiveBacklogs?: number;
       maxTotalBacklogs?: number;
       branches?: string[];
+      academicYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
       minAttendance?: number;
       excludePlacedStudents?: boolean;
     };
+
+    if (!matchesDriveAudience({
+      branch: String(student.branch ?? ""),
+      academicYear,
+      criteria,
+    })) {
+      throw new AppError("DRIVE_NOT_FOUND", "Drive not found", 404);
+    }
 
     const evaluation = await evaluateEligibilityWithPlacementPolicy({
       tenantId,
@@ -2406,6 +2497,7 @@ export const StudentService = {
         activeBacklogs: Number(student.backlogs ?? 0),
         totalBacklogs: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
         branch: String(student.branch ?? ""),
+        academicYear: academicYear ?? undefined,
         attendancePct: Number(student.attendance_pct ?? 0),
         readinessScore: Number(student.readiness_score ?? 0),
         profileCompletenessPct: Number(myProfile.profileCompleteness.pct ?? 0),
@@ -2439,6 +2531,7 @@ export const StudentService = {
         maxTotalBacklogs: criteria.maxTotalBacklogs ?? null,
         minAttendance: criteria.minAttendance ?? null,
         branches: Array.isArray(criteria.branches) ? criteria.branches : [],
+        academicYears: Array.isArray(criteria.academicYears) ? criteria.academicYears : [],
         excludePlacedStudents: evaluation.effectiveExcludePlacedStudents,
       },
       studentValues: {
@@ -2447,6 +2540,7 @@ export const StudentService = {
         totalHistoricalBacklogs: Number((student as unknown as { backlogs_total?: unknown }).backlogs_total ?? 0),
         attendancePct: Number(student.attendance_pct ?? 0),
         branch: String(student.branch ?? ""),
+        academicYear,
       },
       declarationStatus: myProfile.declarationStatus,
       applicationState: "not_applied",
@@ -3424,8 +3518,8 @@ export const StudentService = {
     if (!isPdf) {
       throw new AppError("RESUME_FILE_INVALID", "Upload a PDF resume file.", 400);
     }
-    if (params.file.size > 3 * 1024 * 1024) {
-      throw new AppError("RESUME_FILE_TOO_LARGE", "Keep the resume PDF under 3 MB for now.", 400);
+    if (params.file.size > 1 * 1024 * 1024) {
+      throw new AppError("RESUME_FILE_TOO_LARGE", "Keep the resume PDF under 1 MB.", 400);
     }
 
     const currentProfile = normalizeStudentProfileData(profile.profile_data);

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { Request, Response, NextFunction } from "express";
+import { MulterError } from "multer";
 
 import { errorResponse } from "../utils/response-envelope.js";
 import { logger } from "../utils/logger.js";
@@ -64,6 +65,26 @@ export function errorHandler(err: Error, req: Request, res: Response, _next: Nex
     res.status(400).json(
       errorResponse(
         { code: "VALIDATION_ERROR", message: "Request validation failed", details },
+        { correlation_id: correlationId },
+      ),
+    );
+    return;
+  }
+
+  if (err instanceof MulterError) {
+    if (err.code === "LIMIT_FILE_SIZE") {
+      res.status(400).json(
+        errorResponse(
+          { code: "RESUME_FILE_TOO_LARGE", message: "Keep the resume PDF under 1 MB." },
+          { correlation_id: correlationId },
+        ),
+      );
+      return;
+    }
+
+    res.status(400).json(
+      errorResponse(
+        { code: "UPLOAD_ERROR", message: err.message || "File upload failed" },
         { correlation_id: correlationId },
       ),
     );

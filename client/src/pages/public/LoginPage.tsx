@@ -1,9 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Brand } from "../../components/composites/Brand";
 import { useAuth } from "../../components/providers/AuthProvider";
-import { Badge, Button, Input } from "../../components/ui";
+import { Button, Input } from "../../components/ui";
 import { isClientFeatureEnabled } from "../../config/features";
 
 export default function LoginPage() {
@@ -33,45 +32,14 @@ export default function LoginPage() {
 
   return (
     <section className="public-auth-shell">
-      <div className="public-auth-layout">
-        <aside className="public-auth-aside">
-          <Brand href="/" variant="full" descriptor="Placement readiness platform" className="public-auth-brand" />
-
-          <Badge>Readiness and intervention workspace</Badge>
-          <h1>See readiness, blockers, and next actions in one college placement workspace.</h1>
-          <p className="public-auth-lead">
-            Smart Path is designed for placement offices that need clearer operational visibility and students who need
-            a guided next step for placements. Students can still prepare from GFG, PrepInsta, YouTube, or any trusted source while using Smart Path for official college workflow and readiness guidance.
-          </p>
-
-          <div className="public-auth-highlights">
-            <div>
-              <strong>For TPOs</strong>
-              <span>Find blocked students, nudge ready-but-inactive students, and run drives from one operations console.</span>
-            </div>
-            <div>
-              <strong>For students</strong>
-              <span>Know what to do next for placements with clearer readiness, drive, resource, and mock guidance.</span>
-            </div>
-            <div>
-              <strong>For rollout</strong>
-              <span>Start with activation, readiness, and intervention workflows before expanding the wider platform footprint.</span>
-            </div>
-          </div>
-
-          {demoAutoLoginEnabled ? (
-            <div className="public-auth-demo-links">
-              <a href="/api/v1/demo/auto-login-tpo">Open TPO demo</a>
-              <a href="/api/v1/demo/auto-login-student">Open student demo</a>
-            </div>
-          ) : null}
-        </aside>
-
+      <div className="public-auth-layout public-auth-layout-login-only">
         <div className="public-auth-panel">
           <header className="public-auth-header">
+            <div className="public-auth-login-actions">
+              <a href="/" className="ui-button ghost">Home</a>
+            </div>
             <p className="public-auth-kicker">Sign in</p>
             <h2>Welcome back</h2>
-            <p>Use your college credentials to open the student, TPO, or admin workspace connected to your placement process.</p>
           </header>
 
           <form onSubmit={onSubmit} className="form-grid public-auth-form">
@@ -110,17 +78,12 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <div className="public-auth-meta">
-            <p>
-              Accounts are created by your college admin or TPO. Use the seeded credentials shared with you to sign in.
-            </p>
-            <p>
-              First-time student flow: Sign in, set your permanent password, review onboarding declaration, then continue to dashboard.
-            </p>
-            <p>
-              Need access help? <a href="mailto:admin@campusdrive.me?subject=Smart%20Path%20Access">Contact us</a>
-            </p>
-          </div>
+          {demoAutoLoginEnabled ? (
+            <div className="public-auth-login-demo-links">
+              <a href="/api/v1/demo/auto-login-tpo">Open TPO demo</a>
+              <a href="/api/v1/demo/auto-login-student">Open student demo</a>
+            </div>
+          ) : null}
         </div>
       </div>
     </section>

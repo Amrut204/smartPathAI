@@ -144,6 +144,7 @@ export default function DashboardPage() {
     ? richDashboard.resourceUsage.recentResources
     : [];
   const profileCompletenessPct = profileData?.profileCompleteness.pct ?? Number(data.profileCompletenessPct ?? 0);
+  const isProfileComplete = profileCompletenessPct >= 100;
   const canAccessMockTests = profileData?.canAccessMockTests ?? Boolean(data.canAccessMockTests);
   const canAccessResources = profileData?.canAccessResources ?? Boolean(data.canAccessResources);
   const missingStudentFields = profileData?.missingRequiredFields ?? (Array.isArray(data.missingStudentFields) ? data.missingStudentFields : []);
@@ -170,11 +171,13 @@ export default function DashboardPage() {
       )
     : null;
   const recommendedMockTest = richDashboard?.recommendedTest ?? null;
-  const shouldShowOrientation = !orientationDismissed
-    && (
-      profileCompletenessPct < 100
-      || mockTestsTaken7d === 0
-      || richerRecentResources.length === 0
+  const shouldShowOrientation = !isProfileComplete
+    || (
+      !orientationDismissed
+      && (
+        mockTestsTaken7d === 0
+        || richerRecentResources.length === 0
+      )
     );
   const peerComparison = riskScore?.comparisonToPeers ?? {
     yourMockTests: 0,
@@ -292,28 +295,35 @@ export default function DashboardPage() {
             ctaLabel: "Open profile",
             targetPath: "/profile",
           };
-  const quickStartContextStep = activeBlockers[0]
+  const quickStartContextStep = !isProfileComplete
     ? {
-        title: `Resolve blocker: ${activeBlockers[0].label}`,
-        explanation: activeBlockers[0].explanation,
-        ctaLabel: activeBlockers[0].ctaLabel,
-        targetPath: activeBlockers[0].targetPath,
+        title: "Complete your profile first",
+        explanation: "Eligibility and blocker diagnostics appear after required profile fields are complete.",
+        ctaLabel: "Open profile",
+        targetPath: "/profile",
       }
-    : nearestUpcomingDrive
+    : activeBlockers[0]
       ? {
-          title: `Review nearest drive: ${nearestUpcomingDrive.company}`,
-          explanation: daysUntilNearestDrive === null
-            ? "Check the drive details and prepare early."
-            : `${daysUntilNearestDrive} day(s) left. Confirm your readiness and next prep step now.`,
-          ctaLabel: "Open drives",
-          targetPath: "/drives",
+          title: `Resolve blocker: ${activeBlockers[0].label}`,
+          explanation: activeBlockers[0].explanation,
+          ctaLabel: activeBlockers[0].ctaLabel,
+          targetPath: activeBlockers[0].targetPath,
         }
-      : {
-          title: "Check live opportunities",
-          explanation: "Review current drive feed so your preparation stays aligned with active roles.",
-          ctaLabel: "Open drives",
-          targetPath: "/drives",
-        };
+      : nearestUpcomingDrive
+        ? {
+            title: `Review nearest drive: ${nearestUpcomingDrive.company}`,
+            explanation: daysUntilNearestDrive === null
+              ? "Check the drive details and prepare early."
+              : `${daysUntilNearestDrive} day(s) left. Confirm your readiness and next prep step now.`,
+            ctaLabel: "Open drives",
+            targetPath: "/drives",
+          }
+        : {
+            title: "Check live opportunities",
+            explanation: "Review current drive feed so your preparation stays aligned with active roles.",
+            ctaLabel: "Open drives",
+            targetPath: "/drives",
+          };
   const quickStartSteps = [
     {
       id: "primary",
@@ -335,7 +345,7 @@ export default function DashboardPage() {
     },
   ];
   const quickStartContextBadges = [
-    daysUntilNearestDrive === null ? null : `${daysUntilNearestDrive} day(s) to nearest drive`,
+    !isProfileComplete || daysUntilNearestDrive === null ? null : `${daysUntilNearestDrive} day(s) to nearest drive`,
     unreadAnnouncements.length > 0 ? `${unreadAnnouncements.length} unread announcement(s)` : null,
     canAccessMockTests ? null : "Mock tests unlock after required profile fields are complete",
     canAccessResources ? null : "Resources unlock after required profile fields are complete",
@@ -345,7 +355,16 @@ export default function DashboardPage() {
     { label: "Profile", value: `${profileCompletenessPct}%` },
     ...(showAdvancedMetrics ? [{ label: "Study 7d", value: `${studyHours7d.toFixed(1)}h` }] : []),
     { label: "Mocks 7d", value: String(mockTestsTaken7d) },
-    { label: "Eligible Drives", value: String(eligibleUpcomingDrives) },
+    ...(isProfileComplete ? [{ label: "Eligible Drives", value: String(eligibleUpcomingDrives) }] : []),
+  ];
+  const overviewMetricItems = [
+    { label: "CGPA", value: cgpa.toFixed(2) },
+    ...(isProfileComplete ? [{ label: "Upcoming eligible drives", value: String(eligibleUpcomingDrives) }] : []),
+    { label: "Profile completion", value: `${profileCompletenessPct}%` },
+    {
+      label: showAdvancedMetrics ? "Platform engagement" : "Mock tests taken",
+      value: showAdvancedMetrics ? `${studyHours7d.toFixed(1)} hrs` : String(mockTestsTaken7d),
+    },
   ];
 
   return (
@@ -382,8 +401,17 @@ export default function DashboardPage() {
           </p>
         </div>
         <div className="hero-actions">
-          <Link to="/drives" className="ui-button primary">View eligible drives</Link>
-          <Link to="/profile" className="ui-button secondary">Review profile</Link>
+          {isProfileComplete ? (
+            <>
+              <Link to="/drives" className="ui-button primary">View eligible drives</Link>
+              <Link to="/profile" className="ui-button secondary">Review profile</Link>
+            </>
+          ) : (
+            <>
+              <Link to="/profile" className="ui-button primary">Complete profile</Link>
+              <Link to="/drives" className="ui-button secondary">Open drives</Link>
+            </>
+          )}
         </div>
       </header>
 
@@ -408,7 +436,8 @@ export default function DashboardPage() {
               <span className="student-workspace-eyebrow">Readiness</span>
               <h2>{readinessScore.toFixed(0)}%</h2>
               <p className="muted-text">
-                {profileCompletenessPct}% profile complete • {eligibleUpcomingDrives} eligible drive{eligibleUpcomingDrives === 1 ? "" : "s"}
+                {profileCompletenessPct}% profile complete
+                {isProfileComplete ? ` • ${eligibleUpcomingDrives} eligible drive${eligibleUpcomingDrives === 1 ? "" : "s"}` : ""}
               </p>
               <p className="muted-text">Readiness combines profile completion, current practice activity, and live drive eligibility.</p>
             </div>
@@ -434,6 +463,114 @@ export default function DashboardPage() {
             <Link to={nextAction.targetPath} className="ui-button primary">{nextAction.ctaLabel}</Link>
             <Link to="/drives" className="ui-button ghost">Open drives</Link>
           </div>
+
+          {activeView === "overview" ? (
+            <>
+              <div className="student-workspace-panel-head" style={{ marginTop: 20 }}>
+                <div>
+                  <h3>Progress and activity</h3>
+                  <p>Expanded context is merged here so everything stays in one place.</p>
+                </div>
+              </div>
+
+              <div className="student-workspace-metric-grid">
+                {overviewMetricItems.map((item) => (
+                  <div key={item.label}><span>{item.label}</span><strong>{item.value}</strong></div>
+                ))}
+              </div>
+
+              {featuredDrivePrep ? (
+                <div className="student-dashboard-prep-grid">
+                  <div className="student-dashboard-prep-card">
+                    <span>Nearest drive</span>
+                    <strong>{featuredDrivePrep.company}{featuredDrivePrep.role ? ` - ${featuredDrivePrep.role}` : ""}</strong>
+                    <p>{new Date(featuredDrivePrep.driveDate).toLocaleDateString()} {featuredDrivePrep.daysRemaining === null ? "" : `- ${featuredDrivePrep.daysRemaining} day(s) left`}</p>
+                  </div>
+                  <div className="student-dashboard-prep-card">
+                    <span>Recommended mocks</span>
+                    {featuredDrivePrep.mockTests.length > 0 ? (
+                      <ul>
+                        {featuredDrivePrep.mockTests.slice(0, 2).map((test) => (
+                          <li key={test.id}>
+                            <Link to={`/mock-tests/${test.id}`}>{test.title}</Link>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No mock bundle yet. Keep your common prep active.</p>
+                    )}
+                  </div>
+                  <div className="student-dashboard-prep-card">
+                    <span>Recommended resources</span>
+                    {featuredDrivePrep.resources.length > 0 ? (
+                      <ul>
+                        {featuredDrivePrep.resources.slice(0, 2).map((resource) => (
+                          <li key={resource.id}>
+                            <Link to={`/resources/view/${encodeURIComponent(resource.id)}`}>{resource.title}</Link>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No resource bundle yet. Start with placement essentials.</p>
+                    )}
+                  </div>
+                </div>
+              ) : null}
+
+              {safeAnnouncements.length > 0 ? (
+                <div className="student-workspace-inline-note">
+                  <span>{unreadAnnouncements.length} unread announcement(s)</span>
+                  <span>{safeAnnouncements.length} active notice(s)</span>
+                </div>
+              ) : null}
+
+              {showAdvancedMetrics && riskScore ? (
+                <div className="student-workspace-inline-note">
+                  <span>Your mocks: {peerComparison.yourMockTests}</span>
+                  <span>Branch avg mocks: {peerComparison.avgInYourBranch}</span>
+                  <span>Your score: {peerComparison.yourScore}</span>
+                  <span>Branch avg score: {peerComparison.avgScoreInYourBranch}</span>
+                </div>
+              ) : null}
+
+              {isProfileComplete && activeBlockers.length > 0 ? (
+                <div className="student-dashboard-action-feed">
+                  {activeBlockers.slice(0, 3).map((blocker) => (
+                    <div key={blocker.code} className="student-dashboard-action-card">
+                      <div>
+                        <strong>{blocker.label}</strong>
+                        <p>{blocker.explanation}</p>
+                        <span className="muted-text">{blocker.count} drive(s) affected</span>
+                      </div>
+                      <Link to={blocker.targetPath} className="ui-button ghost">{blocker.ctaLabel}</Link>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+
+              {showAdvancedMetrics && riskScore ? (
+                <section className="student-dashboard-risk-inline">
+                  <div className="student-workspace-panel-head">
+                    <div>
+                      <h3>Your placement risk check</h3>
+                      <p>{riskScore.message}</p>
+                    </div>
+                    <div className="risk-student-meta">
+                      <Badge variant={riskScore.category === "HIGH_RISK" ? "danger" : riskScore.category === "MEDIUM_RISK" ? "warning" : "success"}>
+                        {riskScore.category.replace("_", " ")}
+                      </Badge>
+                      <strong>Score {riskScore.score}</strong>
+                    </div>
+                  </div>
+                  <ul className="risk-student-actions">
+                    {riskRecommendations.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </section>
+              ) : null}
+            </>
+          ) : null}
         </section>
 
         <section className="student-workspace-panel student-home-support-card student-home-quickstart-card">
@@ -512,115 +649,6 @@ export default function DashboardPage() {
       <div className="student-workspace-switcher">
         <Tabs tabs={dashboardTabs} activeId={activeView} onChange={(id) => setActiveView(id as DashboardView)} />
       </div>
-
-      {activeView === "overview" ? (
-        <section className="student-workspace-panel">
-          <div className="student-workspace-panel-head">
-            <div>
-              <h2>Readiness and progress</h2>
-              <p>This section keeps the broader context below the action cards instead of crowding the top of the screen.</p>
-            </div>
-          </div>
-
-          <div className="student-workspace-metric-grid">
-            <div><span>CGPA</span><strong>{cgpa.toFixed(2)}</strong></div>
-            <div><span>Upcoming eligible drives</span><strong>{eligibleUpcomingDrives}</strong></div>
-            <div><span>Profile completion</span><strong>{profileCompletenessPct}%</strong></div>
-            <div><span>{showAdvancedMetrics ? "Platform engagement" : "Mock tests taken"}</span><strong>{showAdvancedMetrics ? `${studyHours7d.toFixed(1)} hrs` : mockTestsTaken7d}</strong></div>
-          </div>
-
-          {featuredDrivePrep ? (
-            <div className="student-dashboard-prep-grid">
-              <div className="student-dashboard-prep-card">
-                <span>Nearest drive</span>
-                <strong>{featuredDrivePrep.company}{featuredDrivePrep.role ? ` - ${featuredDrivePrep.role}` : ""}</strong>
-                <p>{new Date(featuredDrivePrep.driveDate).toLocaleDateString()} {featuredDrivePrep.daysRemaining === null ? "" : `- ${featuredDrivePrep.daysRemaining} day(s) left`}</p>
-              </div>
-              <div className="student-dashboard-prep-card">
-                <span>Recommended mocks</span>
-                {featuredDrivePrep.mockTests.length > 0 ? (
-                  <ul>
-                    {featuredDrivePrep.mockTests.slice(0, 2).map((test) => (
-                      <li key={test.id}>
-                        <Link to={`/mock-tests/${test.id}`}>{test.title}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No mock bundle yet. Keep your common prep active.</p>
-                )}
-              </div>
-              <div className="student-dashboard-prep-card">
-                <span>Recommended resources</span>
-                {featuredDrivePrep.resources.length > 0 ? (
-                  <ul>
-                    {featuredDrivePrep.resources.slice(0, 2).map((resource) => (
-                      <li key={resource.id}>
-                        <Link to={`/resources/view/${encodeURIComponent(resource.id)}`}>{resource.title}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No resource bundle yet. Start with placement essentials.</p>
-                )}
-              </div>
-            </div>
-          ) : null}
-
-          {safeAnnouncements.length > 0 ? (
-            <div className="student-workspace-inline-note">
-              <span>{unreadAnnouncements.length} unread announcement(s)</span>
-              <span>{safeAnnouncements.length} active notice(s)</span>
-            </div>
-          ) : null}
-
-          {showAdvancedMetrics && riskScore ? (
-            <div className="student-workspace-inline-note">
-              <span>Your mocks: {peerComparison.yourMockTests}</span>
-              <span>Branch avg mocks: {peerComparison.avgInYourBranch}</span>
-              <span>Your score: {peerComparison.yourScore}</span>
-              <span>Branch avg score: {peerComparison.avgScoreInYourBranch}</span>
-            </div>
-          ) : null}
-
-          {activeBlockers.length > 0 ? (
-            <div className="student-dashboard-action-feed">
-              {activeBlockers.slice(0, 3).map((blocker) => (
-                <div key={blocker.code} className="student-dashboard-action-card">
-                  <div>
-                    <strong>{blocker.label}</strong>
-                    <p>{blocker.explanation}</p>
-                    <span className="muted-text">{blocker.count} drive(s) affected</span>
-                  </div>
-                  <Link to={blocker.targetPath} className="ui-button ghost">{blocker.ctaLabel}</Link>
-                </div>
-              ))}
-            </div>
-          ) : null}
-
-          {showAdvancedMetrics && riskScore ? (
-            <section className="student-dashboard-risk-inline">
-              <div className="student-workspace-panel-head">
-                <div>
-                  <h3>Your placement risk check</h3>
-                  <p>{riskScore.message}</p>
-                </div>
-                <div className="risk-student-meta">
-                  <Badge variant={riskScore.category === "HIGH_RISK" ? "danger" : riskScore.category === "MEDIUM_RISK" ? "warning" : "success"}>
-                    {riskScore.category.replace("_", " ")}
-                  </Badge>
-                  <strong>Score {riskScore.score}</strong>
-                </div>
-              </div>
-              <ul className="risk-student-actions">
-                {riskRecommendations.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </section>
-          ) : null}
-        </section>
-      ) : null}
 
       {activeView === "announcements" ? (
         <section className="student-workspace-panel">

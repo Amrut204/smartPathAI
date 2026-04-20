@@ -10,6 +10,7 @@ export interface EligibilityCriteria {
   /** Total/historical backlogs (lifetime). */
   maxTotalBacklogs?: number;
   branches?: string[];
+  academicYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
   tenthMarksMin?: number;
   tenthMarksMax?: number;
   twelfthMarksMin?: number;
@@ -35,6 +36,7 @@ export type EligibilityReasonCode =
   | "active_backlogs_above_max"
   | "total_backlogs_above_max"
   | "branch_not_allowed"
+  | "academic_year_not_allowed"
   | "tenth_marks_below_min"
   | "tenth_marks_above_max"
   | "twelfth_marks_below_min"
@@ -56,6 +58,7 @@ export const ELIGIBILITY_REASON_LABELS: Record<EligibilityReasonCode, string> = 
   active_backlogs_above_max: "Active backlogs above maximum",
   total_backlogs_above_max: "Total backlogs above maximum",
   branch_not_allowed: "Branch not in allowed list",
+  academic_year_not_allowed: "Academic year not in allowed list",
   tenth_marks_below_min: "10th marks below minimum",
   tenth_marks_above_max: "10th marks above maximum",
   twelfth_marks_below_min: "12th marks below minimum",
@@ -84,6 +87,7 @@ export function evaluateStudentEligibility(
     activeBacklogs: number;
     totalBacklogs: number;
     branch: string;
+    academicYear?: "first_year" | "second_year" | "third_year" | "final_year";
     tenthMarks?: number;
     twelfthMarks?: number;
     diplomaMarks?: number;
@@ -113,6 +117,13 @@ export function evaluateStudentEligibility(
   }
   if (criteria.branches && criteria.branches.length > 0 && !criteria.branches.includes(student.branch)) {
     reasons.push("branch_not_allowed");
+  }
+  if (
+    criteria.academicYears
+    && criteria.academicYears.length > 0
+    && (!student.academicYear || !criteria.academicYears.includes(student.academicYear))
+  ) {
+    reasons.push("academic_year_not_allowed");
   }
   if (criteria.tenthMarksMin !== undefined && (student.tenthMarks === undefined || student.tenthMarks < criteria.tenthMarksMin)) {
     reasons.push("tenth_marks_below_min");

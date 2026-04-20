@@ -361,6 +361,7 @@ export const DriveService = {
         maxActiveBacklogs?: number;
         maxTotalBacklogs?: number;
         branches?: string[];
+        academicYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
         tenthMarksMin?: number;
         tenthMarksMax?: number;
         twelfthMarksMin?: number;
@@ -396,6 +397,7 @@ export const DriveService = {
       maxActiveBacklogs?: number;
       maxTotalBacklogs?: number;
       branches?: string[];
+      academicYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
       tenthMarksMin?: number;
       tenthMarksMax?: number;
       twelfthMarksMin?: number;
@@ -454,6 +456,7 @@ export const DriveService = {
         maxActiveBacklogs?: number;
         maxTotalBacklogs?: number;
         branches?: string[];
+        academicYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
         tenthMarksMin?: number;
         tenthMarksMax?: number;
         twelfthMarksMin?: number;

@@ -75,7 +75,7 @@ export function WorkspaceNavbar({
     location.pathname === href || location.pathname.startsWith(`${href}/`);
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${menuOpen ? "menu-open" : ""}`.trim()}>
       <div className="navbar-brand-wrap">
         <div className="navbar-brand">{title}</div>
         <span className="navbar-workspace-label">
@@ -90,6 +90,15 @@ export function WorkspaceNavbar({
       >
         {menuOpen ? "\u2715" : "\u2630"}
       </button>
+
+      {menuOpen ? (
+        <button
+          type="button"
+          className="navbar-drawer-backdrop"
+          aria-label="Close navigation menu"
+          onClick={() => setMenuOpen(false)}
+        />
+      ) : null}
 
       <div className={`navbar-nav ${menuOpen ? "open" : ""}`.trim()}>
         {desktopLinks.map((link) => {

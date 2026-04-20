@@ -71,6 +71,7 @@ export interface PilotStudentDrive {
     maxActiveBacklogs?: number;
     maxTotalBacklogs?: number;
     branches: string[];
+    academicYears?: Array<"first_year" | "second_year" | "third_year" | "final_year">;
     minAttendance: number;
     excludePlacedStudents?: boolean;
   };

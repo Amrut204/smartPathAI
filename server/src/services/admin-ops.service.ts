@@ -517,11 +517,19 @@ export const AdminOpsService = {
       slug,
       config: {
         branches,
+        emailSettings: {
+          replyToEmail: tpoEmail,
+        },
       },
     });
 
     const passwordHash = await bcryptHash(input.tpoPassword, 12);
     const timestamp = nowIso();
+    const actorUser = await db.collection("users").findOne(
+      { id: input.actorUserId },
+      { projection: { _id: 0, email: 1 } },
+    );
+    const actorReplyToEmail = String(actorUser?.email ?? input.actorName ?? "").trim().toLowerCase();
     const user = await MongoAuthRepository.createUser({
       tenantId: tenant.id,
       email: tpoEmail,
@@ -537,6 +545,8 @@ export const AdminOpsService = {
       tenantId: tenant.id,
       senderId: input.actorUserId,
       templateSlug: "tpo-onboarding-credentials",
+      senderFromNameOverride: "Team SmartPath",
+      senderReplyToEmailOverride: actorReplyToEmail.includes("@") ? actorReplyToEmail : undefined,
       recipients: [
         {
           studentId: user.id,

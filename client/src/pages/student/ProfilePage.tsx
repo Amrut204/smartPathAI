@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { Badge, Button, Card, Modal, Skeleton, Tabs } from "../../components/ui";
@@ -235,6 +235,8 @@ export default function ProfilePage() {
   const [lastSuccessAction, setLastSuccessAction] = useState<ProfileSuccessAction>(null);
   const [saving, setSaving] = useState(false);
   const [activeSection, setActiveSection] = useState<ProfileSection>("overview");
+  const [completionFocusMode, setCompletionFocusMode] = useState(false);
+  const completionSwitcherRef = useRef<HTMLElement | null>(null);
   const [isCertificationOpen, setIsCertificationOpen] = useState(false);
   const [certificationTypedValue, setCertificationTypedValue] = useState("");
   const [certificationStatus, setCertificationStatus] = useState<string | null>(null);
@@ -343,6 +345,7 @@ export default function ProfilePage() {
   useEffect(() => {
     if (searchParams.get("blocked")) {
       setActiveSection("overview");
+      setCompletionFocusMode(true);
     }
   }, [searchParams]);
 
@@ -601,19 +604,35 @@ export default function ProfilePage() {
     }
   };
 
+  const openCompletionSection = (section: ProfileSection) => {
+    setCompletionFocusMode(true);
+    setActiveSection(section);
+  };
+
+  useEffect(() => {
+    if (!completionFocusMode || typeof window === "undefined") return;
+    const frame = window.requestAnimationFrame(() => {
+      completionSwitcherRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [completionFocusMode, activeSection]);
+
   return (
     <section className="student-workspace-shell profile-page">
-      <header className="student-workspace-header student-profile-header">
-        <div>
-          <p className="resources-kicker">Student Profile</p>
-          <h1>Your placement identity, readiness, and documents in one place.</h1>
-          <p>
-            Keep your profile accurate, understand what is blocking drives, and manage the information Smart Path uses across resumes, recommendations, and applications.
-          </p>
-        </div>
-      </header>
+      {!completionFocusMode ? (
+        <header className="student-workspace-header student-profile-header">
+          <div>
+            <p className="resources-kicker">Student Profile</p>
+            <h1>Your placement identity, readiness, and documents in one place.</h1>
+            <p>
+              Keep your profile accurate, understand what is blocking drives, and manage the information Smart Path uses across resumes, recommendations, and applications.
+            </p>
+          </div>
+        </header>
+      ) : null}
 
-      <section className="student-workspace-panel student-profile-readiness-shell">
+      {!completionFocusMode ? (
+        <section className="student-workspace-panel student-profile-readiness-shell">
         {!isOnline ? (
           <div className="student-profile-inline-alert is-warning">
             <strong>You are offline.</strong>
@@ -637,7 +656,7 @@ export default function ProfilePage() {
                 {certificationBusy ? "Loading..." : "Review and certify"}
               </Button>
             ) : !data.resumeInsights.hasManagedResume ? (
-              <Button type="button" onClick={() => setActiveSection("details")}>Upload resume</Button>
+              <Button type="button" onClick={() => openCompletionSection("details")}>Upload resume</Button>
             ) : null}
           </div>
         </div>
@@ -696,7 +715,7 @@ export default function ProfilePage() {
                   variant={action.targetPath === "/drives" ? "secondary" : "primary"}
                   onClick={() => {
                     if (action.targetPath === "/profile") {
-                      setActiveSection("overview");
+                      openCompletionSection("overview");
                       return;
                     }
                     navigate(action.targetPath);
@@ -736,11 +755,13 @@ export default function ProfilePage() {
                     disabled={item.actionDisabled}
                     onClick={() => {
                       if (item.actionType === "certify") {
+                        setCompletionFocusMode(true);
+                        setActiveSection("overview");
                         void openCertification();
                         return;
                       }
 
-                      setActiveSection(item.sectionTarget);
+                        openCompletionSection(item.sectionTarget);
                     }}
                   >
                     {item.actionLabel}
@@ -770,13 +791,22 @@ export default function ProfilePage() {
           >
             {data.declarationStatus.profileCertification.isCertified ? "Certified" : "Review and certify"}
           </Button>
-          <Button type="button" variant="ghost" onClick={() => setActiveSection("details")}>
+          <Button type="button" variant="ghost" onClick={() => openCompletionSection("details")}>
             {data.resumeInsights.hasManagedResume ? "Replace resume" : "Upload resume"}
           </Button>
         </div>
-      </section>
+        </section>
+      ) : null}
 
-      <section className="student-workspace-panel student-profile-switcher-panel">
+      <section ref={completionSwitcherRef} className="student-workspace-panel student-profile-switcher-panel">
+        {completionFocusMode ? (
+          <div className="student-profile-focus-head">
+            <span className="resources-kicker">Completion mode</span>
+            <Button type="button" variant="ghost" onClick={() => setCompletionFocusMode(false)}>
+              Show full profile page
+            </Button>
+          </div>
+        ) : null}
         <Tabs
           tabs={baseProfileSectionTabs}
           activeId={activeSection}
@@ -990,6 +1020,7 @@ export default function ProfilePage() {
                     accept="application/pdf,.pdf"
                     onChange={(event) => setResumeFile(event.target.files?.[0] ?? null)}
                   />
+                  <small className="muted-text">Upload a PDF resume under 1 MB.</small>
                   {data.fieldHelp.resumeUrl ? <small className="muted-text">{data.fieldHelp.resumeUrl}</small> : null}
                 </label>
                 <div className="hero-actions">
@@ -1165,7 +1196,8 @@ export default function ProfilePage() {
         ) : null}
       </form>
 
-      <section className="student-workspace-panel student-profile-visibility-panel">
+      {!completionFocusMode ? (
+        <section className="student-workspace-panel student-profile-visibility-panel">
         <button
           type="button"
           className="student-profile-visibility-toggle"
@@ -1215,7 +1247,8 @@ export default function ProfilePage() {
             <p className="muted-text student-profile-visibility-note">{data.tpoVisibilitySummary.note}</p>
           </div>
         ) : null}
-      </section>
+        </section>
+      ) : null}
       <Modal open={isCertificationOpen} onClose={() => setIsCertificationOpen(false)} title="Certify profile details">
         <div className="student-profile-certification-modal">
           <p>

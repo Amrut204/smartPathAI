@@ -17,6 +17,12 @@ type DriveContinuityState = {
   prepBundle: PilotStudentDrive["prepBundle"];
 };
 type DrivePrepBundle = NonNullable<PilotStudentDrive["prepBundle"]>;
+const ACADEMIC_YEAR_LABELS: Record<"first_year" | "second_year" | "third_year" | "final_year", string> = {
+  first_year: "First year",
+  second_year: "Second year",
+  third_year: "Third year",
+  final_year: "Final year",
+};
 
 const driveTabs: Array<{ id: DriveView; label: string }> = [
   { id: "eligible", label: "Eligible" },
@@ -50,6 +56,7 @@ export default function DrivesPage() {
       maxTotalBacklogs: number | null;
       minAttendance: number | null;
       branches: string[];
+      academicYears: Array<"first_year" | "second_year" | "third_year" | "final_year">;
       excludePlacedStudents: boolean;
     };
     studentValues: {
@@ -58,6 +65,7 @@ export default function DrivesPage() {
       totalHistoricalBacklogs: number;
       attendancePct: number;
       branch: string;
+      academicYear?: "first_year" | "second_year" | "third_year" | "final_year" | null;
     };
     declarationStatus: {
       profileCertification: {
@@ -110,6 +118,12 @@ export default function DrivesPage() {
     if (value === "pending") return "pending review";
     return value.replace(/_/g, " ");
   };
+
+  const formatAcademicYears = (values: Array<"first_year" | "second_year" | "third_year" | "final_year"> | undefined) => (
+    values && values.length > 0
+      ? values.map((value) => ACADEMIC_YEAR_LABELS[value] ?? value).join(", ")
+      : "All years"
+  );
 
   const getApplicationBadge = (value: string | undefined) => {
     if (value === "applied") return { label: "Applied", variant: "success" as const };
@@ -431,7 +445,7 @@ export default function DrivesPage() {
                         Criteria: CGPA {drive.criteria.minCgpa || 0}+ • Active backlogs up to {(drive.criteria.maxActiveBacklogs ?? drive.criteria.maxBacklogs) || 0} • Attendance {drive.criteria.minAttendance || 0}%+
                       </p>
                       <p className="student-workspace-meta">
-                        Allowed branches: {drive.criteria.branches.length > 0 ? drive.criteria.branches.join(", ") : "All branches"} • Application state: {humanizeApplicationState(drive.timeline?.applicationState ?? drive.applicationState)}
+                        Allowed branches: {drive.criteria.branches.length > 0 ? drive.criteria.branches.join(", ") : "All branches"} • Allowed years: {formatAcademicYears(drive.criteria.academicYears)} • Application state: {humanizeApplicationState(drive.timeline?.applicationState ?? drive.applicationState)}
                       </p>
                     </div>
 
@@ -511,6 +525,7 @@ export default function DrivesPage() {
               <div><span>Minimum attendance</span><strong>{preview.criteria.minAttendance ?? "Not set"}%</strong></div>
               <div><span>Your branch</span><strong>{preview.studentValues.branch}</strong></div>
               <div><span>Allowed branches</span><strong>{preview.criteria.branches.length > 0 ? preview.criteria.branches.join(", ") : "All branches"}</strong></div>
+              <div><span>Allowed academic years</span><strong>{formatAcademicYears(preview.criteria.academicYears)}</strong></div>
             </div>
             {!preview.declarationStatus.profileCertification.isCertified ? (
               <p className="error-text">Certify your profile first. You can do that from the Profile page.</p>

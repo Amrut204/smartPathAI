@@ -210,10 +210,18 @@ async function processCredentialBatch(job: AdminOpsJobDocument) {
     };
   }
 
+  const actorUser = await db.collection("users").findOne(
+    { id: job.created_by },
+    { projection: { _id: 0, email: 1 } },
+  );
+  const actorReplyToEmail = String(actorUser?.email ?? job.input.actorName ?? "").trim().toLowerCase();
+
   const communication = await CommunicationService.sendTemplatedToRecipients({
     tenantId: job.tenant_id,
     senderId: job.created_by,
     templateSlug: job.input.targetType === "tpo" ? "tpo-onboarding-credentials" : "student-onboarding-credentials",
+    senderFromNameOverride: "Team SmartPath",
+    senderReplyToEmailOverride: actorReplyToEmail.includes("@") ? actorReplyToEmail : undefined,
     recipients: deliveryRows.map((row) => ({
       studentId: row.accountId,
       fullName: row.fullName,

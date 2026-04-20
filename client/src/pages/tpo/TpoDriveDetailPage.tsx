@@ -332,6 +332,7 @@ export default function TpoDriveDetailPage() {
             <div><dt>Max Active Backlogs</dt><dd>{(criteria.maxActiveBacklogs ?? criteria.maxBacklogs) ?? "-"}</dd></div>
             <div><dt>Max Total Backlogs</dt><dd>{criteria.maxTotalBacklogs ?? "-"}</dd></div>
             <div><dt>Branches</dt><dd>{criteria.branches?.join(", ") ?? "-"}</dd></div>
+            <div><dt>Academic Years</dt><dd>{criteria.academicYears && criteria.academicYears.length > 0 ? criteria.academicYears.map((value) => value.replace(/_/g, " ")).join(", ") : "All years"}</dd></div>
             <div><dt>10th Marks Min</dt><dd>{criteria.tenthMarksMin ?? "-"}</dd></div>
             <div><dt>10th Marks Max</dt><dd>{criteria.tenthMarksMax ?? "-"}</dd></div>
             <div><dt>12th Marks Min</dt><dd>{criteria.twelfthMarksMin ?? "-"}</dd></div>
