@@ -4,6 +4,7 @@ import { AppError } from "../middleware/error-handler.js";
 import { getMongoDb } from "../utils/mongodb.js";
 import { MongoAuthRepository } from "../repositories/mongo-auth.repository.js";
 import { StudentRepository } from "../repositories/student.repository.js";
+import { NotificationService } from "./notification.service.js";
 import {
   getCommunicationQueueBackend,
   enqueueCommunicationJob,
@@ -1746,6 +1747,16 @@ export const CommunicationService = {
       updated_at: now,
     });
 
+    await NotificationService.createAnnouncementNotifications({
+      tenantId,
+      announcementId: id,
+      studentIds: recipients.map((recipient) => recipient.studentId),
+      title: payload.title,
+      message: payload.message,
+      priority: payload.priority,
+      relatedDriveId: payload.relatedDriveId ?? null,
+    });
+
     return {
       announcementId: id,
       recipientCount: recipients.length,
@@ -1814,6 +1825,17 @@ export const CommunicationService = {
       },
       { upsert: true },
     );
+
+    await NotificationService.createAnnouncementNotifications({
+      tenantId: params.tenantId,
+      announcementId,
+      studentIds: recipientStudentIds,
+      title: params.title,
+      message: params.message,
+      priority: params.priority,
+      relatedDriveId: params.relatedDriveId ?? null,
+      systemKey: params.systemKey,
+    });
 
     return {
       announcementId,
@@ -2055,6 +2077,12 @@ export const CommunicationService = {
       { ordered: false },
     );
 
+    await NotificationService.markAnnouncementSeen({
+      tenantId,
+      userId,
+      announcementIds,
+    });
+
     return {
       count: announcementIds.length,
       seenAt: now,
@@ -2093,6 +2121,19 @@ export const CommunicationService = {
       { upsert: true },
     );
 
+    await NotificationService.markRead({
+      tenantId,
+      userId,
+      role: "student",
+      notificationId: await (async () => {
+        const row = await db.collection("notifications").findOne(
+          { tenant_id: tenantId, recipient_user_id: userId, source_type: "announcement", source_id: announcementId },
+          { projection: { _id: 0, id: 1 } },
+        );
+        return row?.id ? String(row.id) : "";
+      })(),
+    }).catch(() => null);
+
     return { announcementId, readAt: now };
   },
 
@@ -2127,6 +2168,12 @@ export const CommunicationService = {
       },
       { upsert: true },
     );
+
+    await NotificationService.markAnnouncementDismissed({
+      tenantId,
+      userId,
+      announcementId,
+    });
 
     return { announcementId, dismissedPopupAt: now };
   },

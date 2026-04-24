@@ -8,6 +8,7 @@ import {
   markAnnouncementRead,
   useStudentAnnouncements,
 } from "../../hooks/use-announcements";
+import { useStudentAlumniOpportunities } from "../../hooks/use-alumni";
 import { usePilotStudentDashboard } from "../../hooks/use-pilot-dashboard";
 import { useStudentDashboard } from "../../hooks/use-student-dashboard";
 import { useStudentRiskScore } from "../../hooks/use-risk-assessment";
@@ -84,6 +85,7 @@ export default function DashboardPage() {
   const { data: profileData } = useStudentProfile();
   const { data: riskScore } = useStudentRiskScore();
   const { data: announcements } = useStudentAnnouncements();
+  const { data: alumniOpportunities } = useStudentAlumniOpportunities(isClientFeatureEnabled("alumniConnect"));
   const [activeView, setActiveView] = useState<DashboardView>("overview");
   const [announcementBusy, setAnnouncementBusy] = useState<string | null>(null);
   const [expandedAnnouncementId, setExpandedAnnouncementId] = useState<string | null>(null);
@@ -350,6 +352,9 @@ export default function DashboardPage() {
     canAccessMockTests ? null : "Mock tests unlock after required profile fields are complete",
     canAccessResources ? null : "Resources unlock after required profile fields are complete",
   ].filter((badge): badge is string => Boolean(badge));
+  const curatedAlumniOpportunities = isClientFeatureEnabled("alumniConnect")
+    ? (alumniOpportunities ?? []).slice(0, 3)
+    : [];
   const dashboardMetricItems = [
     { label: "CGPA", value: cgpa.toFixed(2) },
     { label: "Profile", value: `${profileCompletenessPct}%` },
@@ -623,6 +628,38 @@ export default function DashboardPage() {
                   <p>{action.explanation}</p>
                 </div>
                 <Link to={action.targetPath} className="ui-button ghost">{action.ctaLabel}</Link>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {curatedAlumniOpportunities.length > 0 ? (
+        <section className="student-workspace-panel">
+          <div className="student-workspace-panel-head">
+            <div>
+              <h2>Alumni-backed opportunities</h2>
+              <p>These are curated by the placement office. You are not browsing a public alumni directory here.</p>
+            </div>
+          </div>
+          <div className="student-workspace-list">
+            {curatedAlumniOpportunities.map((item) => (
+              <div key={item.id} className="student-workspace-row">
+                <div>
+                  <strong>{item.title}</strong>
+                  <p>
+                    {item.alumniContact?.fullName ?? "Alumni contact"}
+                    {item.alumniContact?.company ? ` • ${item.alumniContact.company}` : ""}
+                    {item.alumniContact?.role ? ` • ${item.alumniContact.role}` : ""}
+                  </p>
+                  <p className="muted-text">{item.description}</p>
+                  <p className="muted-text">
+                    {item.linkedDrive ? `Linked drive: ${item.linkedDrive.company}${item.linkedDrive.role ? ` - ${item.linkedDrive.role}` : ""}` : "Placement office curated opportunity"}
+                  </p>
+                </div>
+                <div className="student-announcement-row-meta">
+                  <Badge variant={item.status === "active" ? "success" : "default"}>{item.status}</Badge>
+                </div>
               </div>
             ))}
           </div>

@@ -43,7 +43,7 @@ const INTERVIEW_KEYWORDS = ["interview", "viva", "hr round", "technical round", 
 interface ListTestsInput {
   tenantId: string;
   userId: string;
-  role: "student" | "tpo" | "admin";
+  role: "student" | "tpo" | "admin" | "hod";
   topicId?: string;
   companyId?: string;
   difficulty?: "easy" | "medium" | "hard";
@@ -670,7 +670,7 @@ export const MockTestService = {
     };
   },
 
-  async getTestMetadata(tenantId: string, testId: string, role: "student" | "tpo" | "admin", userId?: string) {
+  async getTestMetadata(tenantId: string, testId: string, role: "student" | "tpo" | "admin" | "hod", userId?: string) {
     const studentContext = role === "student"
       ? await getStudentAudienceContext(tenantId, String(userId ?? ""))
       : null;
@@ -812,7 +812,7 @@ export const MockTestService = {
   async getQuestions(
     tenantId: string,
     testId: string,
-    role: "student" | "tpo" | "admin",
+    role: "student" | "tpo" | "admin" | "hod",
     userId?: string,
   ) {
     if (role === "student") {

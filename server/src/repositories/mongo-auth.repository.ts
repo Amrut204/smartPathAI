@@ -53,6 +53,7 @@ interface CreateUserInput {
   email: string;
   role: AppRole;
   fullName: string;
+  department?: string | null;
   passwordHash: string;
   mustChangePassword?: boolean;
   passwordIssuedAt?: string;
@@ -237,6 +238,7 @@ export const MongoAuthRepository = {
       email: input.email.toLowerCase(),
       role: input.role,
       full_name: input.fullName,
+      department: input.department?.trim() || null,
       is_active: true,
       must_change_password: Boolean(input.mustChangePassword),
       password_hash: input.passwordHash,

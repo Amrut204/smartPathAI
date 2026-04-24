@@ -8793,6 +8793,123 @@ textarea::placeholder {
   background: #f8fafc;
 }
 
+.feedback-tab-panel {
+  display: grid;
+  gap: 1rem;
+}
+
+.feedback-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-start;
+}
+
+.feedback-list-button {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+
+.feedback-list-button:hover,
+.feedback-list-button.active {
+  border-color: rgba(31, 79, 120, 0.35);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
+}
+
+.feedback-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  justify-content: flex-end;
+}
+
+.feedback-split-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.feedback-inline-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.feedback-chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.6rem;
+}
+
+.feedback-chip-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: #fff;
+}
+
+.feedback-custom-builder {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: linear-gradient(180deg, #ffffff, #f8fbff);
+}
+
+.feedback-question-builder {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.feedback-question-builder-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.feedback-question-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.feedback-response-row {
+  align-items: flex-start;
+}
+
+@media (max-width: 900px) {
+  .feedback-split-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .feedback-row-actions,
+  .feedback-question-row,
+  .feedback-question-builder-head {
+    grid-template-columns: minmax(0, 1fr);
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+
+  .feedback-row-actions {
+    display: grid;
+  }
+}
+
 .ui-tab {
   min-height: 2.5rem;
   padding: 0.5rem 0.9rem;
@@ -9422,6 +9539,54 @@ textarea::placeholder {
 
 .student-announcement-row .hero-actions {
   gap: 0.55rem;
+}
+
+.notification-center-panel,
+.notification-center-list,
+.notification-center-copy {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.notification-center-head,
+.notification-center-row-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.notification-center-row {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.notification-center-row.is-unread {
+  border-color: rgba(31, 79, 120, 0.18);
+  background: linear-gradient(135deg, rgba(31, 79, 120, 0.04), rgba(74, 163, 161, 0.03));
+}
+
+.notification-center-row.is-read {
+  opacity: 0.94;
+}
+
+.notification-center-copy p,
+.notification-center-copy strong,
+.notification-center-copy span {
+  margin: 0;
+}
+
+.notification-center-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.notification-center-action {
+  white-space: nowrap;
+  font-weight: 700;
 }
 
 .gemini-shell {

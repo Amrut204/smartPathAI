@@ -1,156 +1,233 @@
 import useSWR, { mutate } from "swr";
+
 import { withCsrfHeader } from "../utils/csrf";
 
 interface ApiResponse<T> {
   success: boolean;
   data: T;
-  error?: { message: string };
+  error: { code: string; message: string; details?: Array<{ field?: string; message: string }> };
+}
+
+async function parseApiResponse<T>(response: Response): Promise<ApiResponse<T>> {
+  const raw = await response.text();
+
+  try {
+    return JSON.parse(raw) as ApiResponse<T>;
+  } catch {
+    throw new Error("Support API returned an unexpected response. Refresh the page and try again.");
+  }
 }
 
 async function fetcher<T>(url: string): Promise<T> {
   const response = await fetch(url, { credentials: "include" });
-  const payload = (await response.json()) as ApiResponse<T>;
+  const payload = await parseApiResponse<T>(response);
   if (!response.ok || !payload.success) {
     throw new Error(payload.error?.message ?? "Request failed");
   }
   return payload.data;
 }
 
-async function postJson<T>(url: string, body: unknown): Promise<T> {
-  const response = await fetch(url, {
+export type SupportTicketDestinationRole = "tpo" | "hod";
+export type SupportTicketType = "grievance" | "suggestion" | "feedback";
+export type SupportTicketCategory =
+  | "placement_process"
+  | "drive_eligibility"
+  | "profile_or_resume"
+  | "mock_tests"
+  | "resources"
+  | "technical_issue"
+  | "harassment_or_misconduct"
+  | "general_feedback";
+export type SupportTicketPriority = "low" | "medium" | "high" | "urgent";
+export type SupportTicketStatus = "open" | "in_review" | "resolved" | "closed" | "rejected";
+
+export interface SupportTicketSummary {
+  id: string;
+  destinationRole: SupportTicketDestinationRole;
+  destinationDepartment: string | null;
+  ticketType: SupportTicketType;
+  category: SupportTicketCategory;
+  title: string;
+  description: string;
+  priority: SupportTicketPriority;
+  status: SupportTicketStatus;
+  confidential: boolean;
+  createdAt: string;
+  updatedAt: string;
+  resolvedAt: string | null;
+  closedAt: string | null;
+  resolutionNote: string | null;
+  createdBy: {
+    userId: string;
+    role: "student" | "tpo" | "admin" | "hod";
+    fullName: string;
+    email: string;
+  };
+  assignedTo: {
+    userId: string;
+    fullName: string;
+    email: string;
+  } | null;
+}
+
+export interface SupportTicketDetail extends SupportTicketSummary {
+  events: Array<{
+    id: string;
+    eventType: string;
+    actorUserId: string;
+    actorRole: "student" | "tpo" | "admin" | "hod";
+    note: string | null;
+    changes: Record<string, unknown>;
+    createdAt: string;
+  }>;
+}
+
+function ownerPrefix(owner: "tpo" | "hod") {
+  return owner === "hod" ? "/api/v1/hod/support" : "/api/v1/tpo/support";
+}
+
+export function useMySupportTickets() {
+  return useSWR<SupportTicketSummary[]>("/api/v1/support/tickets/me", fetcher, {
+    revalidateOnFocus: false,
+  });
+}
+
+export function useSupportOwnerTickets(owner: "tpo" | "hod", params: {
+  status?: SupportTicketStatus;
+  category?: SupportTicketCategory;
+  priority?: SupportTicketPriority;
+  submitterRole?: "student" | "tpo" | "hod";
+  assignedToMe?: boolean;
+  q?: string;
+}) {
+  const search = new URLSearchParams();
+  search.set("limit", "50");
+  if (params.status) search.set("status", params.status);
+  if (params.category) search.set("category", params.category);
+  if (params.priority) search.set("priority", params.priority);
+  if (params.submitterRole) search.set("submitterRole", params.submitterRole);
+  if (params.assignedToMe) search.set("assignedToMe", "true");
+  if (params.q) search.set("q", params.q);
+
+  return useSWR<{
+    counts: { open: number; inReview: number; resolved: number };
+    items: SupportTicketSummary[];
+  }>(`${ownerPrefix(owner)}/tickets?${search.toString()}`, fetcher, {
+    revalidateOnFocus: false,
+  });
+}
+
+export function useTpoSupportTickets(params: {
+  status?: SupportTicketStatus;
+  category?: SupportTicketCategory;
+  priority?: SupportTicketPriority;
+  submitterRole?: "student" | "tpo" | "hod";
+  assignedToMe?: boolean;
+  q?: string;
+}) {
+  return useSupportOwnerTickets("tpo", params);
+}
+
+export function useHodSupportTickets(params: {
+  status?: SupportTicketStatus;
+  category?: SupportTicketCategory;
+  priority?: SupportTicketPriority;
+  submitterRole?: "student" | "tpo" | "hod";
+  assignedToMe?: boolean;
+  q?: string;
+}) {
+  return useSupportOwnerTickets("hod", params);
+}
+
+export function useSupportOwnerTicket(owner: "tpo" | "hod", ticketId: string | null) {
+  return useSWR<SupportTicketDetail>(
+    ticketId ? `${ownerPrefix(owner)}/tickets/${encodeURIComponent(ticketId)}` : null,
+    fetcher,
+    { revalidateOnFocus: false },
+  );
+}
+
+export function useTpoSupportTicket(ticketId: string | null) {
+  return useSupportOwnerTicket("tpo", ticketId);
+}
+
+export function useHodSupportTicket(ticketId: string | null) {
+  return useSupportOwnerTicket("hod", ticketId);
+}
+
+export async function createSupportTicket(input: {
+  ticketType: SupportTicketType;
+  category: SupportTicketCategory;
+  title: string;
+  description: string;
+  priority: SupportTicketPriority;
+  destinationRole: SupportTicketDestinationRole;
+  confidential?: boolean;
+}) {
+  const response = await fetch("/api/v1/support/tickets", {
     method: "POST",
-    headers: withCsrfHeader({ "Content-Type": "application/json" }),
     credentials: "include",
-    body: JSON.stringify(body),
+    headers: withCsrfHeader({ "Content-Type": "application/json" }),
+    body: JSON.stringify(input),
   });
-  const payload = (await response.json()) as ApiResponse<T>;
+  const payload = await parseApiResponse<SupportTicketSummary>(response);
   if (!response.ok || !payload.success) {
     throw new Error(payload.error?.message ?? "Request failed");
   }
+
+  await Promise.all([
+    mutate("/api/v1/support/tickets/me"),
+    mutate((key) => typeof key === "string" && key.startsWith("/api/v1/tpo/support/tickets?")),
+    mutate((key) => typeof key === "string" && key.startsWith("/api/v1/hod/support/tickets?")),
+  ]);
   return payload.data;
 }
 
-export interface SupportSessionInfo {
-  active: boolean;
-  sessionId?: string;
-  tenantId?: string;
-  tenantSlug?: string;
-  tenantName?: string;
-  expiresAt?: string;
-  approvedBy?: string;
-}
-
-export interface SupportRequest {
-  id: string;
-  tenant_id: string;
-  tenant_slug: string;
-  tenant_name: string;
-  requested_by_user_id: string;
-  requested_by_email: string;
-  reason: string;
-  status: "pending" | "approved" | "denied" | "revoked";
-  is_expired?: boolean;
-  created_at: string;
-  decided_at: string | null;
-  decided_by_user_id: string | null;
-  decided_by_email: string | null;
-  decision_note: string | null;
-  expires_at: string | null;
-  last_started_at: string | null;
-  last_stopped_at: string | null;
-  revoked_at: string | null;
-}
-
-export interface StudentSupportRequest {
-  id: string;
-  tenant_id: string;
-  student_id: string;
-  student_email: string;
-  student_name: string;
-  subject: string;
-  message: string;
-  status: "open" | "resolved";
-  created_at: string;
-  updated_at: string;
-  resolved_at: string | null;
-  resolved_by_user_id: string | null;
-  resolved_by_email: string | null;
-  resolution_note: string | null;
-}
-
-export function useSupportSession(enabled: boolean) {
-  return useSWR<SupportSessionInfo>(enabled ? "/api/v1/support/session" : null, fetcher, {
-    revalidateOnFocus: false,
+export async function updateSupportTicket(owner: "tpo" | "hod", ticketId: string, input: {
+  status?: SupportTicketStatus;
+  priority?: SupportTicketPriority;
+  assignedToUserId?: string | null;
+  resolutionNote?: string | null;
+  confidential?: boolean;
+}) {
+  const response = await fetch(`${ownerPrefix(owner)}/tickets/${encodeURIComponent(ticketId)}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: withCsrfHeader({ "Content-Type": "application/json" }),
+    body: JSON.stringify(input),
   });
+  const payload = await parseApiResponse<SupportTicketDetail>(response);
+  if (!response.ok || !payload.success) {
+    throw new Error(payload.error?.message ?? "Request failed");
+  }
+
+  await Promise.all([
+    mutate(`${ownerPrefix(owner)}/tickets/${encodeURIComponent(ticketId)}`),
+    mutate((key) => typeof key === "string" && key.startsWith(`${ownerPrefix(owner)}/tickets?`)),
+    mutate("/api/v1/support/tickets/me"),
+  ]);
+  return payload.data;
 }
 
-export function useAdminSupportRequests(enabled: boolean) {
-  return useSWR<SupportRequest[]>(enabled ? "/api/v1/support/requests" : null, fetcher, {
-    revalidateOnFocus: false,
+export async function resolveSupportTicket(owner: "tpo" | "hod", ticketId: string, input: {
+  resolutionNote: string;
+  status?: "resolved" | "closed" | "rejected";
+}) {
+  const response = await fetch(`${ownerPrefix(owner)}/tickets/${encodeURIComponent(ticketId)}/resolve`, {
+    method: "POST",
+    credentials: "include",
+    headers: withCsrfHeader({ "Content-Type": "application/json" }),
+    body: JSON.stringify(input),
   });
-}
+  const payload = await parseApiResponse<SupportTicketDetail>(response);
+  if (!response.ok || !payload.success) {
+    throw new Error(payload.error?.message ?? "Request failed");
+  }
 
-export function useTpoSupportInbox(enabled: boolean) {
-  return useSWR<SupportRequest[]>(enabled ? "/api/v1/support/inbox" : null, fetcher, {
-    revalidateOnFocus: false,
-  });
-}
-
-export function useStudentSupportRequests(enabled: boolean) {
-  return useSWR<StudentSupportRequest[]>(enabled ? "/api/v1/support/student-requests/me" : null, fetcher, {
-    revalidateOnFocus: false,
-  });
-}
-
-export function useTpoStudentSupportInbox(enabled: boolean) {
-  return useSWR<StudentSupportRequest[]>(enabled ? "/api/v1/support/student-requests/inbox" : null, fetcher, {
-    revalidateOnFocus: false,
-  });
-}
-
-export async function requestSupportAccess(input: { tenantSlug: string; reason: string }) {
-  const data = await postJson<SupportRequest>("/api/v1/support/requests", input);
-  await mutate("/api/v1/support/requests");
-  return data;
-}
-
-export async function startSupportSession(sessionId: string) {
-  const data = await postJson<SupportSessionInfo>(`/api/v1/support/requests/${encodeURIComponent(sessionId)}/start`, {});
-  await mutate("/api/v1/support/session");
-  // Tenant changes, so revalidate everything.
-  await mutate(() => true, undefined, { revalidate: true });
-  return data;
-}
-
-export async function stopSupportSession() {
-  const data = await postJson<SupportSessionInfo>("/api/v1/support/session/stop", {});
-  await mutate("/api/v1/support/session");
-  await mutate(() => true, undefined, { revalidate: true });
-  return data;
-}
-
-export async function approveSupportRequest(sessionId: string, ttlMinutes = 60) {
-  const data = await postJson<SupportRequest>(`/api/v1/support/requests/${encodeURIComponent(sessionId)}/approve`, { ttlMinutes });
-  await mutate("/api/v1/support/inbox");
-  return data;
-}
-
-export async function denySupportRequest(sessionId: string, note: string) {
-  const data = await postJson<SupportRequest>(`/api/v1/support/requests/${encodeURIComponent(sessionId)}/deny`, { note });
-  await mutate("/api/v1/support/inbox");
-  return data;
-}
-
-export async function createStudentSupportRequest(input: { subject: string; message: string }) {
-  const data = await postJson<StudentSupportRequest>("/api/v1/support/student-requests", input);
-  await mutate("/api/v1/support/student-requests/me");
-  await mutate("/api/v1/support/student-requests/inbox");
-  return data;
-}
-
-export async function resolveStudentSupportRequest(requestId: string, note: string) {
-  const data = await postJson<StudentSupportRequest>(`/api/v1/support/student-requests/${encodeURIComponent(requestId)}/resolve`, { note });
-  await mutate("/api/v1/support/student-requests/inbox");
-  await mutate("/api/v1/support/student-requests/me");
-  return data;
+  await Promise.all([
+    mutate(`${ownerPrefix(owner)}/tickets/${encodeURIComponent(ticketId)}`),
+    mutate((key) => typeof key === "string" && key.startsWith(`${ownerPrefix(owner)}/tickets?`)),
+    mutate("/api/v1/support/tickets/me"),
+  ]);
+  return payload.data;
 }

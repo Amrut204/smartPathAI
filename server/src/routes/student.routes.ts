@@ -11,6 +11,7 @@ import { requireCompletedStudentProfile } from "../middleware/student-profile.mi
 import { StudentService } from "../services/student.service.js";
 import { RiskAssessmentService } from "../services/risk-assessment.service.js";
 import { StudentImportJobService } from "../services/student-import-job.service.js";
+import { AlumniService } from "../services/alumni.service.js";
 import { uploadRateLimiter } from "../middleware/rate-limit.middleware.js";
 import {
   studyHoursSchema,
@@ -230,6 +231,16 @@ router.get(
       req.auth!.userId,
       query,
     );
+    res.json(successResponse(data));
+  }),
+);
+
+router.get(
+  "/me/alumni-opportunities",
+  requireFeature("alumniConnect"),
+  authorizeRole("student"),
+  asyncHandler(async (req, res) => {
+    const data = await AlumniService.listStudentOpportunities(req.auth!.tenantId, req.auth!.userId);
     res.json(successResponse(data));
   }),
 );

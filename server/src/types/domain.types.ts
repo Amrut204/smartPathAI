@@ -1,4 +1,4 @@
-export type AppRole = "student" | "tpo" | "admin";
+export type AppRole = "student" | "tpo" | "admin" | "hod";
 
 export interface AuthContext {
   userId: string;
@@ -30,6 +30,7 @@ export interface UserProfile {
   email: string;
   role: AppRole;
   full_name: string | null;
+  department?: string | null;
   is_active: boolean;
   must_change_password: boolean;
 }

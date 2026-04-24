@@ -363,7 +363,7 @@ export const AIService = {
     };
   },
 
-  async getUsage(tenantId: string, userId: string, role: "student" | "tpo" | "admin") {
+  async getUsage(tenantId: string, userId: string, role: "student" | "tpo" | "admin" | "hod") {
     const db = await getMongoDb();
     const today = new Date();
     today.setUTCHours(0, 0, 0, 0);

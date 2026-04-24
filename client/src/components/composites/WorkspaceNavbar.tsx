@@ -1,18 +1,20 @@
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
+import { isClientFeatureEnabled } from "../../config/features";
 import { pilotFeedbackLinks } from "../../config/pilot-feedback";
 import { Button } from "../ui";
 
-type NavbarRole = "student" | "tpo" | "admin";
+type NavbarRole = "student" | "tpo" | "admin" | "hod";
 
 interface NavLink {
   href: string;
   label: string;
 }
 
-const studentDesktopLinks: NavLink[] = [
+const baseStudentDesktopLinks: NavLink[] = [
   { href: "/dashboard", label: "Home" },
+  { href: "/notifications", label: "Notifications" },
   { href: "/announcements", label: "Announcements" },
   { href: "/drives", label: "Drives" },
   { href: "/resources", label: "Resources" },
@@ -20,8 +22,9 @@ const studentDesktopLinks: NavLink[] = [
   { href: "/profile", label: "Profile" },
 ];
 
-const tpoDesktopLinks: NavLink[] = [
+const baseTpoDesktopLinks: NavLink[] = [
   { href: "/tpo/dashboard", label: "Dashboard" },
+  { href: "/tpo/notifications", label: "Notifications" },
   { href: "/tpo/students", label: "Students" },
   { href: "/tpo/drives", label: "Drives" },
   { href: "/tpo/reports", label: "Reports" },
@@ -32,12 +35,18 @@ const adminDesktopLinks: NavLink[] = [
   { href: "/admin/hub", label: "Admin Hub" },
 ];
 
+const hodDesktopLinks: NavLink[] = [
+  { href: "/hod", label: "Dashboard" },
+  { href: "/hod/notifications", label: "Notifications" },
+];
+
 interface WorkspaceNavbarProps {
   role: NavbarRole;
   title: string;
   userName: string;
   studentProfileCompletionPct?: number | null;
   studentHasAnnouncementDot?: boolean;
+  notificationUnreadCount?: number | null;
   studentCanAccessResources?: boolean | null;
   studentCanAccessMockTests?: boolean | null;
   onLogout: () => void;
@@ -49,6 +58,7 @@ export function WorkspaceNavbar({
   userName,
   studentProfileCompletionPct = null,
   studentHasAnnouncementDot = false,
+  notificationUnreadCount = 0,
   studentCanAccessResources = null,
   studentCanAccessMockTests = null,
   onLogout,
@@ -58,9 +68,32 @@ export function WorkspaceNavbar({
   const [supportOpen, setSupportOpen] = useState(false);
 
   const desktopLinks = useMemo(() => {
-    if (role === "student") return studentDesktopLinks;
+    if (role === "student") {
+      return isClientFeatureEnabled("grievanceFeedback")
+        ? [
+            ...baseStudentDesktopLinks,
+            ...(isClientFeatureEnabled("hodFeedback") ? [{ href: "/feedback", label: "Feedback" }] : []),
+            { href: "/support", label: "Support" },
+          ]
+        : [
+            ...baseStudentDesktopLinks,
+            ...(isClientFeatureEnabled("hodFeedback") ? [{ href: "/feedback", label: "Feedback" }] : []),
+          ];
+    }
+    if (role === "hod") {
+      return isClientFeatureEnabled("grievanceFeedback")
+        ? [...hodDesktopLinks, { href: "/hod#grievance", label: "Grievance" }]
+        : hodDesktopLinks;
+    }
     if (role === "admin") return adminDesktopLinks;
-    return tpoDesktopLinks;
+    const links = [...baseTpoDesktopLinks];
+    if (isClientFeatureEnabled("grievanceFeedback")) {
+      links.push({ href: "/tpo/support", label: "Support" });
+    }
+    if (isClientFeatureEnabled("alumniConnect")) {
+      links.push({ href: "/tpo/alumni", label: "Alumni" });
+    }
+    return links;
   }, [role]);
 
   useEffect(() => {
@@ -79,7 +112,7 @@ export function WorkspaceNavbar({
       <div className="navbar-brand-wrap">
         <div className="navbar-brand">{title}</div>
         <span className="navbar-workspace-label">
-          {role === "student" ? "Student workspace" : role === "admin" ? "Admin workspace" : "TPO workspace"}
+          {role === "student" ? "Student workspace" : role === "admin" ? "Admin workspace" : role === "hod" ? "HOD workspace" : "TPO workspace"}
         </span>
       </div>
 
@@ -123,6 +156,13 @@ export function WorkspaceNavbar({
               {isLockedLink ? <span className="navbar-link-badge locked">Locked</span> : null}
               {role === "student" && link.href === "/announcements" && studentHasAnnouncementDot ? (
                 <span className="navbar-link-dot" aria-label="New announcements" />
+              ) : null}
+              {typeof notificationUnreadCount === "number" && notificationUnreadCount > 0 && (
+                (role === "student" && link.href === "/notifications")
+                || (role === "tpo" && link.href === "/tpo/notifications")
+                || (role === "hod" && link.href === "/hod/notifications")
+              ) ? (
+                <span className="navbar-link-badge warning">{notificationUnreadCount}</span>
               ) : null}
               {role === "student" && link.href === "/profile" && typeof studentProfileCompletionPct === "number" ? (
                 <span className={`navbar-link-badge ${studentProfileCompletionPct >= 100 ? "complete" : ""}`.trim()}>
@@ -174,7 +214,7 @@ export function WorkspaceNavbar({
             <span className="ui-avatar">{userName.charAt(0).toUpperCase()}</span>
             <div>
               <strong>{userName}</strong>
-              <p>{role === "student" ? "Student workspace" : role === "admin" ? "Admin workspace" : "TPO workspace"}</p>
+              <p>{role === "student" ? "Student workspace" : role === "admin" ? "Admin workspace" : role === "hod" ? "HOD workspace" : "TPO workspace"}</p>
             </div>
           </div>
           <Button variant="ghost" onClick={onLogout}>

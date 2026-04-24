@@ -18,8 +18,11 @@ function isDemoAutoLoginEnabled(): boolean {
 
 export const clientFeatures = {
   aiAssistant: false,
+  alumniConnect: true,
   careerLab: false,
   demoAutoLogin: isDemoAutoLoginEnabled(),
+  grievanceFeedback: true,
+  hodFeedback: true,
   mastery: false,
   mentorship: false,
   opsHub: false,

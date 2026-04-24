@@ -6,7 +6,9 @@ import { StudentFooter } from "./components/composites/StudentFooter";
 import { WorkspaceNavbar } from "./components/composites/WorkspaceNavbar";
 import { useAuth } from "./components/providers/AuthProvider";
 import { useStudentAnnouncements } from "./hooks/use-announcements";
+import { useNotifications } from "./hooks/use-notifications";
 import { useStudentProfile } from "./hooks/use-student-profile";
+import { isClientFeatureEnabled } from "./config/features";
 import { Button, Input, Spinner } from "./components/ui";
 
 const HomePage = lazy(() => import("./pages/public/HomePage"));
@@ -26,6 +28,9 @@ const MockTestResultsPage = lazy(() => import("./pages/student/MockTestResultsPa
 const ResourcesPage = lazy(() => import("./pages/student/ResourcesPage"));
 const ResourceViewerPage = lazy(() => import("./pages/student/ResourceViewerPage"));
 const ProfilePage = lazy(() => import("./pages/student/ProfilePage"));
+const SupportPage = lazy(() => import("./pages/student/SupportPage"));
+const FeedbackPage = lazy(() => import("./pages/student/FeedbackPage"));
+const NotificationsPage = lazy(() => import("./pages/student/NotificationsPage"));
 const TpoDashboardPage = lazy(() => import("./pages/tpo/TpoDashboardPage"));
 const TpoStudentsPage = lazy(() => import("./pages/tpo/TpoStudentsPage"));
 const TpoStudentDetailPage = lazy(() => import("./pages/tpo/TpoStudentDetailPage"));
@@ -36,13 +41,19 @@ const TpoDriveResultsPage = lazy(() => import("./pages/tpo/TpoDriveResultsPage")
 const TpoReportsPage = lazy(() => import("./pages/tpo/TpoReportsPage"));
 const TpoCommunicationPage = lazy(() => import("./pages/tpo/TpoCommunicationPage"));
 const TpoCommunicationComposePage = lazy(() => import("./pages/tpo/TpoCommunicationComposePage"));
+const TpoSupportPage = lazy(() => import("./pages/tpo/TpoSupportPage"));
+const TpoNotificationsPage = lazy(() => import("./pages/tpo/TpoNotificationsPage"));
+const TpoAlumniPage = lazy(() => import("./pages/tpo/TpoAlumniPage"));
 const TpoStudentUploadPage = lazy(() => import("./pages/tpo/TpoStudentUploadPage"));
 const TpoWhatsNewPage = lazy(() => import("./pages/tpo/TpoWhatsNewPage"));
+const HodDashboardPage = lazy(() => import("./pages/hod/HodDashboardPage"));
+const HodNotificationsPage = lazy(() => import("./pages/hod/HodNotificationsPage"));
 const AdminHubPage = lazy(() => import("./pages/admin/AdminHubPage"));
 
-function getDefaultRouteForRole(role: "student" | "tpo" | "admin") {
+function getDefaultRouteForRole(role: "student" | "tpo" | "admin" | "hod") {
   if (role === "student") return "/dashboard";
   if (role === "admin") return "/admin/hub";
+  if (role === "hod") return "/hod";
   return "/tpo/dashboard";
 }
 
@@ -152,6 +163,7 @@ function StudentLayout() {
   const { profile, logout } = useAuth();
   const { data: studentProfile } = useStudentProfile();
   const { data: announcements } = useStudentAnnouncements();
+  const { data: notifications } = useNotifications({ view: "all", limit: 10 });
 
   return (
     <div className="app-shell app-shell-with-strip app-shell-with-mobile-nav app-shell-student">
@@ -161,6 +173,7 @@ function StudentLayout() {
         userName={profile?.full_name ?? "Student"}
         studentProfileCompletionPct={studentProfile?.profileCompleteness.pct ?? null}
         studentHasAnnouncementDot={(announcements ?? []).some((item) => item.unread)}
+        notificationUnreadCount={notifications?.unreadCount ?? 0}
         studentCanAccessResources={studentProfile?.canAccessResources ?? null}
         studentCanAccessMockTests={studentProfile?.canAccessMockTests ?? null}
         onLogout={logout}
@@ -235,6 +248,7 @@ function StudentCompletionGuard({ children, module }: { children: ReactNode; mod
 
 function TpoLayout() {
   const { profile, logout } = useAuth();
+  const { data: notifications } = useNotifications({ view: "all", limit: 10 });
 
   return (
     <div className="app-shell app-shell-with-mobile-nav app-shell-tpo">
@@ -242,6 +256,7 @@ function TpoLayout() {
         role="tpo"
         title="PlacementIQ"
         userName={profile?.full_name ?? "Admin"}
+        notificationUnreadCount={notifications?.unreadCount ?? 0}
         onLogout={logout}
       />
       <main className="content-main">
@@ -262,6 +277,28 @@ function AdminLayout() {
         role="admin"
         title="PlacementIQ"
         userName={profile?.full_name ?? "Admin"}
+        onLogout={logout}
+      />
+      <main className="content-main">
+        <ErrorBoundary fallbackTitle="This page encountered an error">
+          <Outlet />
+        </ErrorBoundary>
+      </main>
+    </div>
+  );
+}
+
+function HodLayout() {
+  const { profile, logout } = useAuth();
+  const { data: notifications } = useNotifications({ view: "all", limit: 10 });
+
+  return (
+    <div className="app-shell app-shell-with-mobile-nav app-shell-tpo">
+      <WorkspaceNavbar
+        role="hod"
+        title="PlacementIQ"
+        userName={profile?.full_name ?? "HOD"}
+        notificationUnreadCount={notifications?.unreadCount ?? 0}
         onLogout={logout}
       />
       <main className="content-main">
@@ -294,7 +331,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    element: <AuthGuard allowedRoles={["student", "tpo", "admin"]} />,
+    element: <AuthGuard allowedRoles={["student", "tpo", "admin", "hod"]} />,
     children: [
       {
         element: <PasswordResetLayout />,
@@ -312,6 +349,7 @@ const router = createBrowserRouter([
         children: [
           { path: "/declaration/onboarding", element: renderRoute(<StudentDeclarationGuard><StudentOnboardingDeclarationPage /></StudentDeclarationGuard>) },
           { path: "/dashboard", element: renderRoute(<StudentDeclarationGuard><DashboardPage /></StudentDeclarationGuard>) },
+          { path: "/notifications", element: renderRoute(<StudentDeclarationGuard><NotificationsPage /></StudentDeclarationGuard>) },
           { path: "/announcements", element: renderRoute(<StudentDeclarationGuard><AnnouncementsPage /></StudentDeclarationGuard>) },
           { path: "/drives", element: renderRoute(<StudentDeclarationGuard><DrivesPage /></StudentDeclarationGuard>) },
           { path: "/mock-tests", element: renderRoute(<StudentDeclarationGuard><StudentCompletionGuard module="mock-tests"><MockTestsPage /></StudentCompletionGuard></StudentDeclarationGuard>) },
@@ -323,6 +361,12 @@ const router = createBrowserRouter([
           { path: "/study-guides", element: <Navigate to="/resources" replace /> },
           { path: "/study-guides/:slug", element: <Navigate to="/resources" replace /> },
           { path: "/profile", element: renderRoute(<StudentDeclarationGuard><ProfilePage /></StudentDeclarationGuard>) },
+          ...(isClientFeatureEnabled("hodFeedback")
+            ? [{ path: "/feedback", element: renderRoute(<StudentDeclarationGuard><FeedbackPage /></StudentDeclarationGuard>) }]
+            : []),
+          ...(isClientFeatureEnabled("grievanceFeedback")
+            ? [{ path: "/support", element: renderRoute(<StudentDeclarationGuard><SupportPage /></StudentDeclarationGuard>) }]
+            : []),
         ],
       },
     ],
@@ -334,6 +378,7 @@ const router = createBrowserRouter([
         element: <TpoLayout />,
         children: [
           { path: "/tpo/dashboard", element: renderRoute(<TpoDashboardPage />) },
+          { path: "/tpo/notifications", element: renderRoute(<TpoNotificationsPage />) },
           { path: "/tpo/students", element: renderRoute(<TpoStudentsPage />) },
           { path: "/tpo/students/upload", element: renderRoute(<TpoStudentUploadPage />) },
           { path: "/tpo/students/:studentId", element: renderRoute(<TpoStudentDetailPage />) },
@@ -349,6 +394,12 @@ const router = createBrowserRouter([
           { path: "/tpo/analytics/placement", element: <Navigate to="/tpo/reports" replace /> },
           { path: "/tpo/communication", element: renderRoute(<TpoCommunicationPage />) },
           { path: "/tpo/communication/compose", element: renderRoute(<TpoCommunicationComposePage />) },
+          ...(isClientFeatureEnabled("grievanceFeedback")
+            ? [{ path: "/tpo/support", element: renderRoute(<TpoSupportPage />) }]
+            : []),
+          ...(isClientFeatureEnabled("alumniConnect")
+            ? [{ path: "/tpo/alumni", element: renderRoute(<TpoAlumniPage />) }]
+            : []),
           { path: "/tpo/whats-new", element: renderRoute(<TpoWhatsNewPage />) },
         ],
       },
@@ -366,6 +417,22 @@ const router = createBrowserRouter([
           { path: "/tpo/sales/pipeline", element: <Navigate to="/tpo/dashboard" replace /> },
           { path: "/tpo/sales/analytics", element: <Navigate to="/tpo/dashboard" replace /> },
           { path: "/tpo/sales/pipeline/:pipelineId", element: <Navigate to="/tpo/dashboard" replace /> },
+        ],
+      },
+    ],
+  },
+  {
+    element: <AuthGuard allowedRoles={["hod"]} />,
+    children: [
+      {
+        element: <HodLayout />,
+        children: [
+          ...(isClientFeatureEnabled("hodFeedback")
+            ? [
+                { path: "/hod", element: renderRoute(<HodDashboardPage />) },
+                { path: "/hod/notifications", element: renderRoute(<HodNotificationsPage />) },
+              ]
+            : []),
         ],
       },
     ],

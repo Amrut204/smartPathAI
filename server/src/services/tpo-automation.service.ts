@@ -6,6 +6,7 @@ import { buildStudentDeclarationStatus } from "../utils/student-declaration.js";
 import { buildStudentProfileSummary } from "../utils/student-profile.js";
 import { getMongoDb } from "../utils/mongodb.js";
 import { CommunicationService } from "./communication.service.js";
+import { NotificationService } from "./notification.service.js";
 import { ReportService, type ReportFilters, type ReportType } from "./report.service.js";
 import { TpoControlCenterService } from "./tpo-control-center.service.js";
 
@@ -195,6 +196,69 @@ function mapRunItem(row: Record<string, unknown>): StoredRunItem {
   };
 }
 
+function notificationConfigForRun(run: StoredRun) {
+  const preview = parseRecord(run.preview);
+  const targetPath = String(preview.targetPath ?? "/tpo/dashboard").trim() || "/tpo/dashboard";
+  const previewTitle = String(preview.title ?? "").trim();
+
+  if (run.automationType === "scheduled_report_pack") {
+    return {
+      type: "report_pack_ready" as const,
+      priority: "important" as const,
+      title: previewTitle || "Scheduled report pack ready",
+      message: run.explanation || "A scheduled report pack is ready for review or export.",
+      targetPath,
+    };
+  }
+
+  if (run.automationType === "result_notification_review") {
+    return {
+      type: "automation_review_ready" as const,
+      priority: "important" as const,
+      title: previewTitle || "Result notification review ready",
+      message: run.explanation || "Released result notifications are ready for audit.",
+      targetPath,
+    };
+  }
+
+  if (run.automationType === "weekly_tpo_digest") {
+    return null;
+  }
+
+  return {
+    type: "automation_review_ready" as const,
+    priority: run.automationType === "blocked_profile_followup" ? "important" as const : "normal" as const,
+    title: previewTitle || "Automation draft ready",
+    message: run.explanation || "A new automation draft is ready for review.",
+    targetPath,
+  };
+}
+
+async function syncRunNotification(tenantId: string, run: StoredRun) {
+  const config = notificationConfigForRun(run);
+  if (!config) return;
+
+  await NotificationService.createRoleNotifications({
+    tenantId,
+    recipientRole: "tpo",
+    type: config.type,
+    kind: "action",
+    priority: config.priority,
+    title: config.title,
+    message: config.message,
+    targetPath: config.targetPath,
+    targetEntityId: run.id,
+    sourceType: "automation_run",
+    sourceId: run.id,
+    metadata: {
+      automationType: run.automationType,
+      status: run.status,
+      triggerSource: run.triggerSource,
+      dateBucket: run.dateBucket,
+    },
+  });
+}
+
 async function ensureIndexes() {
   if (indexesEnsured) return;
   const db = await getMongoDb();
@@ -325,6 +389,7 @@ async function upsertRun(params: {
   if (!run) {
     throw new AppError("AUTOMATION_RUN_MISSING", "Automation run could not be loaded after save.", 500);
   }
+  await syncRunNotification(params.tenantId, run);
   return {
     ...run,
     items: await loadRunItems(params.tenantId, runId),

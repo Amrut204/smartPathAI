@@ -14,8 +14,9 @@ export interface UserProfile {
   id: string;
   tenant_id: string;
   email: string;
-  role: "student" | "tpo" | "admin";
+  role: "student" | "tpo" | "admin" | "hod";
   full_name: string;
+  department?: string | null;
   is_active: boolean;
   must_change_password: boolean;
 }
@@ -83,12 +84,16 @@ function prefetchForRole(role: UserProfile["role"]) {
         "/api/v1/tpo/dashboard/control-center",
         "/api/v1/students?limit=25",
       );
-    } else {
+    } else if (role === "admin") {
       routeImports.push(
         import("../../pages/admin/AdminHubPage"),
       );
       apiWarmups.push(
         "/api/v1/internal/admin-ops/tenants",
+      );
+    } else {
+      apiWarmups.push(
+        "/api/v1/hod/feedback/campaigns",
       );
     }
 

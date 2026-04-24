@@ -1,7 +1,10 @@
 export const serverFeatures = {
   aiAssistant: false,
+  alumniConnect: true,
   analytics: false,
   careerLab: false,
+  grievanceFeedback: true,
+  hodFeedback: true,
   mastery: false,
   mentorship: false,
   opsHub: false,

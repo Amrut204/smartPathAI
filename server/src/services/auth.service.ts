@@ -8,7 +8,7 @@ import {
   verifyAccessToken,
   verifyRefreshToken,
 } from "../utils/auth-session.js";
-import { TPO_DASHBOARD_PATH, STUDENT_DASHBOARD_PATH } from "../utils/constants.js";
+import { HOD_DASHBOARD_PATH, TPO_DASHBOARD_PATH, STUDENT_DASHBOARD_PATH } from "../utils/constants.js";
 import { StudentActivityService } from "./student-activity.service.js";
 
 interface LoginInput {
@@ -42,6 +42,10 @@ function resolveRedirectPath(role: AppRole): string {
     return "/admin/hub";
   }
 
+  if (role === "hod") {
+    return HOD_DASHBOARD_PATH;
+  }
+
   if (role === "tpo") {
     return TPO_DASHBOARD_PATH;
   }
@@ -69,6 +73,7 @@ async function getUserProfile(userId: string): Promise<UserProfile> {
     email: user.email,
     role: user.role,
     full_name: user.full_name,
+    department: user.department ?? null,
     is_active: user.is_active,
     must_change_password: Boolean((user as UserProfile & { must_change_password?: boolean }).must_change_password),
   };
