@@ -916,8 +916,12 @@ export default function CareerLabPage() {
           </div>
         </Card>
       </div>
-
+           {/* Career workflow grid */}
       {status ? <p className="muted-text">{status}</p> : null}
     </section>
   );
 }
+
+
+
+
